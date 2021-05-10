@@ -1,0 +1,68 @@
+// Here you can add other styles
+// .c-sidebar.c-sidebar-dark {
+//     color: #3c4b64;
+//     background: #fff;
+//     border-right: 1px solid rgba(159, 167, 179, 0.5);
+// }
+.text-lightblue {
+  color: #049bfe;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #049bfe !important;
+  border-color: #049bfe !important;
+}
+
+.boxshadow-contain {
+  -webkit-box-shadow: 0px 0px 2px 0px rgba(50, 50, 50, 0.35);
+  -moz-box-shadow: 0px 0px 2px 0px rgba(50, 50, 50, 0.35);
+  box-shadow: 0px 0px 2px 0px rgba(50, 50, 50, 0.35);
+  border-radius: 0 !important;
+}
+
+.c-sidebar.c-sidebar-light {
+  border-right: none !important;
+}
+.text-black-light {
+  color: #858181;
+}
+.logo-image-panel {
+  background-image: url("../assets/images/clearHealthLogo.png");
+  height: 40px;
+  width: 100%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.c-sidebar.c-sidebar-light .c-sidebar-brand {
+  color: #fff;
+  background: transparent;
+}
+.min-height-99 {
+  min-height: 86vh;
+}
+.h-97 {
+  height: 95vh;
+}
+.card {
+  margin-bottom: 0.5rem !important;
+}
+.box-shadow-bottom {
+  box-shadow: 1px 10px 19px -16px rgba(188, 186, 186, 0.67);
+  -webkit-box-shadow: 1px 10px 19px -16px rgba(188, 186, 186, 0.67);
+  -moz-box-shadow: 1px 10px 19px -16px rgba(188, 186, 186, 0.67);
+}
+.c-sidebar.c-sidebar-light .c-sidebar-brand {
+  border-bottom: 1px solid #dcdfe3;
+  padding-top: 1px;
+}
+
+.text-icon-footer {
+  font-size: 1.2rem;
+  padding-top: 5px;
+}
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover, .c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle:hover {
+  color: #fff;
+  background: #049bfe;
+}
