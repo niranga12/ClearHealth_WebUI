@@ -1,16 +1,21 @@
 import React from 'react'
+
+import { withRouter } from 'react-router-dom'
 import {
   TheContent,
   TheSidebar,
-  TheFooter,
+  
   TheHeader
 } from './index'
+import NotificationLayout from "../_helpers/notification";
 
 const TheLayout = () => {
 
   return (
     <>
+
     <div className="c-app c-default-layout">
+    <NotificationLayout />
       <TheSidebar/>
       <div className="c-wrapper">
         <TheHeader/>
@@ -25,4 +30,4 @@ const TheLayout = () => {
   )
 }
 
-export default TheLayout
+export default withRouter(TheLayout)

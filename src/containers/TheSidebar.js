@@ -19,10 +19,11 @@ import CIcon from "@coreui/icons-react";
 import navigation from "./_nav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { changeHeadToggle } from "src/actions/changeAction";
 
 const TheSidebar = () => {
   const dispatch = useDispatch();
-  const show = useSelector((state) => state.sidebarShow);
+  const show = useSelector((state) => state.sidebar.sidebarShow);
 
   return (
     <CSidebar

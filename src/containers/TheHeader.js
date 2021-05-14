@@ -23,10 +23,11 @@ import {
   TheHeaderDropdownTasks,
   TheTittleUser,
 } from "./index";
+// import { changeHeadToggle } from "src/actions/changeAction";
 
 const TheHeader = () => {
   const dispatch = useDispatch();
-  const sidebarShow = useSelector((state) => state.sidebarShow);
+  const sidebarShow = useSelector((state) => state.sidebar.sidebarShow);
 
   const toggleSidebar = () => {
     const val = [true, "responsive"].includes(sidebarShow)
