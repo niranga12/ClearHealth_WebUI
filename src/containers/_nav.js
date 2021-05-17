@@ -14,12 +14,12 @@ const _nav =  [
   // },
   {
     _tag: 'CSidebarNavTitle',
-    _children: ['Theme']
+    _children: ['Menu']
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Orders',
-    to: '/theme/colors',
+    // to: '/theme/colors',
     icon: 'cil-drop',
   },
   // {
@@ -28,10 +28,10 @@ const _nav =  [
   //   to: '/theme/typography',
   //   icon: 'cil-pencil',
   // },
-  {
-    _tag: 'CSidebarNavTitle',
-    _children: ['Components']
-  },
+  // {
+  //   _tag: 'CSidebarNavTitle',
+  //   _children: ['Admin']
+  // },
   {
     _tag: 'CSidebarNavDropdown',
     name: 'Admin',
@@ -40,86 +40,134 @@ const _nav =  [
     _children: [
       {
         _tag: 'CSidebarNavItem',
-        name: 'Breadcrumb',
-        to: '/base/breadcrumbs',
+        name: 'Health Systems',
+        // to: '/base/breadcrumbs',
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Cards',
-        to: '/base/cards',
+        name: 'Hospitals',
+        // to: '/base/cards',
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Carousel',
-        to: '/base/carousels',
+        name: 'Providers',
+        // to: '/base/cards',
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Collapse',
-        to: '/base/collapses',
+        name: 'Specialities',
+        // to: '/base/cards',
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Forms',
-        to: '/base/forms',
+        name: 'Packages',
+        // to: '/base/cards',
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Jumbotron',
-        to: '/base/jumbotrons',
+        name: 'Patients',
+        // to: '/base/cards',
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'List group',
-        to: '/base/list-groups',
+        name: 'Ancillary Providers',
+        // to: '/base/cards',
       },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Navs',
-        to: '/base/navs',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Navbars',
-        to: '/base/navbars',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Pagination',
-        to: '/base/paginations',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Popovers',
-        to: '/base/popovers',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Progress',
-        to: '/base/progress-bar',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Switches',
-        to: '/base/switches',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Tables',
-        to: '/base/tables',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Tabs',
-        to: '/base/tabs',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Tooltips',
-        to: '/base/tooltips',
-      },
-    ],
+    ]
   },
+
+  // {
+  //   _tag: 'CSidebarNavTitle',
+  //   _children: ['Components']
+  // },
+  // {
+  //   _tag: 'CSidebarNavDropdown',
+  //   name: 'Admin',
+  //   route: '/base',
+  //   icon: 'cil-puzzle',
+  //   _children: [
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Breadcrumb',
+  //       to: '/base/breadcrumbs',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Cards',
+  //       to: '/base/cards',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Carousel',
+  //       to: '/base/carousels',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Collapse',
+  //       to: '/base/collapses',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Forms',
+  //       to: '/base/forms',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Jumbotron',
+  //       to: '/base/jumbotrons',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'List group',
+  //       to: '/base/list-groups',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Navs',
+  //       to: '/base/navs',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Navbars',
+  //       to: '/base/navbars',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Pagination',
+  //       to: '/base/paginations',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Popovers',
+  //       to: '/base/popovers',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Progress',
+  //       to: '/base/progress-bar',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Switches',
+  //       to: '/base/switches',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Tables',
+  //       to: '/base/tables',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Tabs',
+  //       to: '/base/tabs',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Tooltips',
+  //       to: '/base/tooltips',
+  //     },
+  //   ],
+  // },
   // {
   //   _tag: 'CSidebarNavDropdown',
   //   name: 'Buttons',
