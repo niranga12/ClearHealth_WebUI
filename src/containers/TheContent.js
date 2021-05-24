@@ -15,8 +15,8 @@ const loading = (
 
 const TheContent = () => {
   return (
-    <main className="c-main p-2  bg-white">
-      <CContainer fluid className="card boxshadow-contain  min-height-99 pt-2">
+    <main className="c-main p-3  ">
+      <CContainer fluid className="card  cover-content  min-height-99 pt-2">
         <Suspense fallback={loading}>
           <Switch>
             {routes.map((route, idx) => {
@@ -41,7 +41,7 @@ const TheContent = () => {
         </Suspense>
       </CContainer>
      
-      <div className="row">
+      {/* <div className="row">
         <div className="col-md-4">
         <FontAwesomeIcon icon={faPhone} className="pr-2 fa-x text-lightblue text-icon-footer" />
         <span>800 (229)-01528</span>
@@ -52,7 +52,7 @@ const TheContent = () => {
           <span> Accessibility Statement</span>
 
         </div>
-      </div>
+      </div> */}
 
     </main>
   );

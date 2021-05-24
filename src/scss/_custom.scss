@@ -4,14 +4,39 @@
 //     background: #fff;
 //     border-right: 1px solid rgba(159, 167, 179, 0.5);
 // }
+
+@font-face {
+  font-family: "LatoBlack";
+  src: local("LatoBlack"),
+    url(../assets/fonts/Lato/Lato-Black.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "LatoBold";
+  src: local("LatoBold"),
+    url(../assets/fonts/Lato/Lato-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "LatoRegular";
+  src: local("LatoRegular"),
+    url(../assets/fonts/Lato/Lato-Regular.ttf) format("truetype");
+}
+
+body {
+  font-family: LatoRegular, serif;
+}
+
 .text-lightblue {
-  color: #049bfe;
+  color: #7f74fd;
 }
 
 .btn-primary {
   color: #fff;
-  background-color: #049bfe !important;
-  border-color: #049bfe !important;
+  background-color: #5b4dfd !important;
+  border-color: #5b4dfd !important;
+
+  box-shadow: 0 2px 15px 0 rgba(91, 77, 253, 0.46);
 }
 
 .boxshadow-contain {
@@ -22,6 +47,8 @@
 }
 
 .c-sidebar.c-sidebar-light {
+  background-color: #ffffff;
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.3) !important;
   border-right: none !important;
 }
 .text-black-light {
@@ -54,7 +81,7 @@
   -moz-box-shadow: 1px 10px 19px -16px rgba(188, 186, 186, 0.67);
 }
 .c-sidebar.c-sidebar-light .c-sidebar-brand {
-  border-bottom: 1px solid #dcdfe3;
+  // border-bottom: 1px solid #dcdfe3;
   padding-top: 1px;
 }
 
@@ -62,13 +89,42 @@
   font-size: 1.2rem;
   padding-top: 5px;
 }
-.c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover, .c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle:hover {
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover,
+.c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle:hover {
   color: #fff;
   background: #049bfe;
 }
+// .c-sidebar-nav-item {
 
+// }
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link,
+.c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle {
+  color: #7a7e83;
+  font-family: LatoRegular;
+  font-size: 17px;
+  letter-spacing: 0;
+  line-height: 21px;
+}
 
-// login/single layout 
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover,
+.c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle:hover {
+  background-color: rgba(194, 112, 252, 0.5) !important;
+  color: #c270fc !important;
+
+  border-left: 5px solid #c270fc !important;
+}
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link .c-sidebar-nav-icon,
+.c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon {
+  color: #c270fc !important;
+}
+.c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown.c-show .c-sidebar-nav-link,
+.c-sidebar.c-sidebar-light
+  .c-sidebar-nav-dropdown.c-show
+  .c-sidebar-nav-dropdown-toggle {
+  color: #7a7e83;
+}
+
+// login/single layout
 
 .bg-brown {
   background-color: brown;
@@ -94,18 +150,178 @@
   top: 45%;
   font-size: 1.1rem;
 }
-.bg-login{
-    background-image: url('../assets/images/login-bg.png');
-    // url('../assets/images/login-bg.png');
-    background-position: bottom;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-color:white;
+.bg-login {
+  // background-image: url('../assets/images/login-bg.png');
+
+  // background-position: bottom;
+  // background-size: contain;
+  // background-repeat: no-repeat;
+  // background-color:white;
+  // background: linear-gradient(90deg, #ffffff 50%, #5b4dfd 50%);
+  background-color: #ffffff;
+  background-image: url("../assets/images/Background.png");
+  background-size: 50% 100%;
+  background-position: right;
+  background-repeat: no-repeat;
+}
+
+.form-control {
+  height: calc(2.5em + 0.75rem + 2px) !important;
+}
+
+.login-blue-bg {
+  background-color: #5b4dfd;
+}
+.login-footer {
+  margin-top: 10px;
+  border-top: 2px solid #c3c3c3;
+  // padding-top: 5px;
+  padding: 1.5rem;
+  position: absolute;
+  bottom: 0;
+  width: 95%;
+  margin: auto;
+  // right: 10px;
+}
+.email {
+  height: 25px;
+  width: 25px;
+  background-image: url("../assets/images/icons/email_open.svg");
+  background-size: contain;
+  position: absolute;
+  background-repeat: no-repeat;
+  margin-left: -30px;
+}
+
+.phone {
+  height: 25px;
+  width: 25px;
+  background-image: url("../assets/images/icons/call_male.svg");
+  background-size: contain;
+  position: absolute;
+  background-repeat: no-repeat;
+  margin-left: -30px;
 }
 
 
-.form-control {
- 
-  height: calc(2.5em + 0.75rem + 2px) !important;
+.email-sm {
+  height: 12.5px;
+  width: 12.5px;
+  background-image: url("../assets/images/icons/email_open.svg");
+  background-size: contain;
+  position: absolute;
+  background-repeat: no-repeat;
+  margin-left: -20px;
+  margin-top: 5px;
+
+}
+
+.phone-sm {
+  height:12.5px;
+  width: 12.5px;
+  background-image: url("../assets/images/icons/call_male.svg");
+  background-size: contain;
+  position: absolute;
+  background-repeat: no-repeat;
+  margin-left: -20px;
+  margin-top: 5px;
   
+}
+
+.support-clearhealth {
+  height: 19px;
+  width: 180px;
+  color: #7a7e83;
+  font-family: LatoRegular;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 19px;
+}
+.first-login-quote {
+  height: 48.4px;
+  width: 89.88px;
+  background-image: url("../assets/images/icons/shape1.png");
+  background-size: contain;
+}
+
+.secound-login-quote {
+  height: 49px;
+  width: 79px;
+  background-image: url("../assets/images/icons/shape2-1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.health-is-a-state-of {
+  // height: 208px;
+  // width: 472px;
+  color: #ffffff;
+  font-family: LatoRegular;
+  font-size: 32px;
+  letter-spacing: 0.2px;
+  line-height: 52px;
+}
+
+.secound-login-final {
+  height: 40px;
+  width: 40px;
+  margin-top: 20px;
+  margin-left: 30px;
+  background-image: url("../assets/images/icons/shape2.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.world-health-organiz {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 28px;
+}
+
+.cover-content {
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 20px 0 rgba(135, 135, 135, 0.3);
+}
+.light-green {
+  color: #01cca4;
+}
+
+.sidebar-bottom {
+  width: 95%;
+  border-top: 1px solid #c3c3c3;
+  margin: auto;
+  padding: 10px;
+}
+
+.support-clearhealth-slider {
+  
+  color: #7a7e83;
+  font-family: LatoRegular;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 19px;
+}
+
+.heart-icon{
+  height: 40px;
+  width:40px ;
+  fill: red;
+  
+  background-image: url('../assets/images/icons/heart.svg');
+  background-size: contain;
+}
+
+
+@media (max-width: 768px) {
+  .bg-login {
+    background-color: #ffffff;
+    background-image: none;
+    // background-size: 50% 100%;
+    // background-position: right;
+    // background-repeat: no-repeat;
+  }
 }

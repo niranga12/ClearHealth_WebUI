@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const TheTittleUser = () => {
-  const [name, setname] = useState("")
- const userName= useSelector(state=>state.Login.username)
+  const [loginDetail, setLoginDetail] = useState("")
+ const user= useSelector(state=>state.Login)
 
-  useEffect(() => { setname(userName)}, [])
+  useEffect(() => { setLoginDetail(user)}, [])
 
    
 
   return (
     <ul className="list-group pl-3 pr-2 list-unstyled">
-      <li className="font-weight-bold">{name}</li>
-      {/* <li className="small">Manager</li> */}
+      <li className="font-weight-bold">{user.name}</li>
+      <li className="small">{user.roleType}</li>
     </ul>
   );
 };

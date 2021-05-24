@@ -11,6 +11,9 @@ import CIcon from '@coreui/icons-react'
 import { useDispatch } from 'react-redux'
 import { logout } from 'src/actions/loginAction'
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSortDown } from "@fortawesome/free-solid-svg-icons";
+
 const TheHeaderDropdown = () => {
   let  dispatch = useDispatch()
 
@@ -26,13 +29,14 @@ const TheHeaderDropdown = () => {
       direction="down"
     >
       <CDropdownToggle className="c-header-nav-link" caret={false}>
-        <div className="c-avatar">
+      <FontAwesomeIcon icon={faSortDown} className="pr-1 fa-2x" />
+        {/* <div className="c-avatar">
           <CImg
             src={'avatars/6.jpg'}
             className="c-avatar-img"
             alt="admin@bootstrapmaster.com"
           />
-        </div>
+        </div> */}
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         {/* <CDropdownItem

@@ -5,16 +5,12 @@ import {
   CToggler,
   CHeaderBrand,
   CHeaderNav,
-  CHeaderNavItem,
-  CHeaderNavLink,
-  CSubheader,
-  CBreadcrumbRouter,
-  CLink,
+  
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
 // routes config
-import routes from "../routes";
+// import routes from "../routes";
 
 import {
   TheHeaderDropdown,
@@ -23,6 +19,7 @@ import {
   TheHeaderDropdownTasks,
   TheTittleUser,
 } from "./index";
+import TheHeaderDropdownImage from "./TheHeaderDropDownImage";
 // import { changeHeadToggle } from "src/actions/changeAction";
 
 const TheHeader = () => {
@@ -74,10 +71,12 @@ const TheHeader = () => {
       <CHeaderNav className="px-3">
      
         <TheHeaderDropdownNotif/>
-        <TheTittleUser/>
+        
         {/* <div className="font-weight-bold">Name</div> */}
         {/* <TheHeaderDropdownTasks/>
         <TheHeaderDropdownMssg/> */}
+       <TheHeaderDropdownImage/>
+        <TheTittleUser/>
         <TheHeaderDropdown />
        
       </CHeaderNav>

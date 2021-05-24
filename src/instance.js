@@ -1,5 +1,5 @@
 import axios from "axios";
-import WebAPi   from "./_config";
+import {WebAPi}   from "./_config";
 
 
 const instance = axios.create({

@@ -7,13 +7,12 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { login } from "src/actions/loginAction";
 // import NotificationLayout from "src/_helpers/notification";
 // import { notify } from "reapop";
 import SingleLayout from "../singlelayout/singleLayout";
 import history from "../../../_helpers/history";
-
 
 const schema = yup.object().shape({
   username: yup.string().required(),
@@ -21,31 +20,30 @@ const schema = yup.object().shape({
 });
 
 const Login = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const User=useSelector(state=>state.Login);
-  const disPatch =useDispatch();
-  
-
+  const User = useSelector((state) => state.Login);
+  const disPatch = useDispatch();
 
   const userLogin = (data) => {
     // console.log(data);
-    disPatch(login(data))
+    disPatch(login(data));
     // disPatch(notify('Welcome to the documentation', 'info'))
-    
   };
 
-  const redirectToPage=()=>{
-    history.push("/forgotpassword")
-
-  }
+  const redirectToPage = () => {
+    history.push("/forgotpassword");
+  };
 
   return (
     <SingleLayout>
-    
-    {/* // <div className="container-fluid bg-login">
+      {/* // <div className="container-fluid bg-login">
     //   <NotificationLayout/>
     //   <div className="row  ">
     //     <div className=" col-md-3 col-lg-3 col-sm-12 d-block align-items-center   height-100 box-shadow">
@@ -70,42 +68,53 @@ const Login = () => {
 
     //     
     //       <div> */}
-            <form onSubmit={handleSubmit(userLogin)}>
-              <input
-                type="text"
-              
-                {...register("username")}
-                className="form-control mb-2 mt-3 form-shadow"
-                placeholder="Email"
-                autoComplete="new-off"
-              />
-              <div className="small text-danger  ">{errors.username?.message}</div>
-              <input
-                type="password"
-                {...register("password")}
-               
-                className="form-control form-shadow"
-                placeholder="Password"
-                autoComplete="new"
-              />
-               <div className="small text-danger  ">{errors.password?.message}</div>
-              <label className=" label text-lightblue pt-1" onClick={redirectToPage}>
-                Forgot Password?
-              </label>
-              <button className="btn btn-primary col-md-12 mt-1">Login</button>
-              {/* {process.env.REACT_APP_BASE_URL} */}
-            </form>
+      <h3>Login</h3>
+      <form onSubmit={handleSubmit(userLogin)}>
+        <label className="mt-3">Email address</label>
+        <input
+          type="text"
+          {...register("username")}
+          className="form-control mb-2 "
+          placeholder="Email"
+          autoComplete="new-off"
+        />
+        <div className="small text-danger  ">{errors.username?.message}</div>
 
-          {/* </div>
+        <label>Password</label>
+        <input
+          type="password"
+          {...register("password")}
+          className="form-control"
+          placeholder="Enter password"
+          autoComplete="new"
+        />
+        <div className="small text-danger  ">{errors.password?.message}</div>
+        <div className="row p-2">
+<div className="col-md-6 pl-3">
+  <input type="checkbox" name="KeepSign" id="" /> <span className="label  pt-1">Keep me signed in</span>
+</div>
+<div className="col-md-6 text-right">
+<div className=" label  text-right text-lightblue pt-1" onClick={redirectToPage}>
+          Forgot Password?
+        </div>
+</div>
+
+        </div>
+       
+        <button className="btn btn-primary btn-lg col-md-12 mt-1 p-3">
+          Sign in
+        </button>
+        {/* {process.env.REACT_APP_BASE_URL} */}
+      </form>
+
+      {/* </div>
         </div>
         <div className=" col-md-9 d-sm-none border-darken-4"></div>
 
      
       </div>
     </div> */}
-
-</SingleLayout>
-
+    </SingleLayout>
   );
 };
 

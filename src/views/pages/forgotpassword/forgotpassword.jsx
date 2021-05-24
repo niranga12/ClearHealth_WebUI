@@ -31,7 +31,7 @@ export default function ForgotPassword() {
                     autoComplete="new-off"
                 />
                 <div className="small text-danger  ">{errors.username?.message}</div>
-                <button className="btn btn-primary col-md-12 mt-1">Send</button>
+                <button className="btn btn-primary  btn-lg col-md-12 mt-1">Send</button>
             </form>
         </SingleLayout>
     )

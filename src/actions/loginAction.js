@@ -14,6 +14,7 @@ import {notify} from 'reapop'
 
 import history from "../_helpers/history";
 import onError from "src/_helpers/onerror";
+import userLogin from "../service/userService";
 
 // export const  login = (loginDetail) =>{
 
@@ -63,7 +64,9 @@ export const login = (loginDetail) => async (dispatch) => {
   
     try {
       // const res = await axios.post(`${WebAPi}/auth/login`, loginDetail)
-      const res =  axios.post(`${WebAPi}/auth/login`, loginDetail).then(
+      // const res =  axios.post(`${WebAPi}/auth/login`, loginDetail).then(
+        const res =  userLogin(loginDetail).then(
+        
           res=>{
               const token = res.data.data.token;
               localStorage.setItem("token", token);

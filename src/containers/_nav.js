@@ -1,5 +1,7 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
+
 
 const _nav =  [
   // {
@@ -12,15 +14,16 @@ const _nav =  [
   //     text: 'NEW',
   //   }
   // },
-  {
-    _tag: 'CSidebarNavTitle',
-    _children: ['Menu']
-  },
+  // {
+  //   _tag: 'CSidebarNavTitle',
+  //   _children: ['Menu']
+  // },
   {
     _tag: 'CSidebarNavItem',
     name: 'Orders',
     // to: '/theme/colors',
-    icon: 'cil-drop',
+    // icon: 'cil-drop',
+    icon:<CIcon content={freeSet.cilLibraryAdd} size={'lg'} className="mr-3"/>,
   },
   // {
   //   _tag: 'CSidebarNavItem',
@@ -36,42 +39,50 @@ const _nav =  [
     _tag: 'CSidebarNavDropdown',
     name: 'Admin',
     route: '/base',
-    icon: 'cil-puzzle',
+    icon:<CIcon content={freeSet.cilAddressBook} size={'lg'} className="mr-3"/>,
+    // icon: 'cil-puzzle',
     _children: [
       {
         _tag: 'CSidebarNavItem',
         name: 'Health Systems',
         // to: '/base/breadcrumbs',
+        icon: <CIcon content={freeSet.cilHeart} size={'lg'} className="mr-3"/>,
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Hospitals',
         // to: '/base/cards',
+        icon:<CIcon content={freeSet.cilHospital} size={'lg'} className="mr-3"/>,
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Providers',
+        icon: <CIcon content={freeSet.cilBadge} size={'lg'} className="mr-3"/>,
         // to: '/base/cards',
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Specialities',
+        icon: <CIcon content={freeSet.cilStar} size={'lg'} className="mr-3"/>,
         // to: '/base/cards',
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Packages',
+        icon: <CIcon content={freeSet.cilFile} size={'lg'} className="mr-3"/>,
         // to: '/base/cards',
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Patients',
+        icon: <CIcon content={freeSet.cilGroup} size={'lg'} className="mr-3"/>,
         // to: '/base/cards',
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Ancillary Providers',
         // to: '/base/cards',
+        icon: <CIcon content={freeSet.cilNoteAdd} size={'lg'} className="mr-3"/>,
       },
     ]
   },
