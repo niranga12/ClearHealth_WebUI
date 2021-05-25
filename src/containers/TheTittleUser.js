@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 const TheTittleUser = () => {
-  const [loginDetail, setLoginDetail] = useState("")
+  // const [loginDetail, setLoginDetail] = useState("")
  const user= useSelector(state=>state.Login)
 
-  useEffect(() => { setLoginDetail(user)}, [])
+  // useEffect(() => { setLoginDetail(user)}, [])
 
    
 

@@ -4,8 +4,7 @@ import { CContainer, CFade } from "@coreui/react";
 
 // routes config
 import routes from "../routes";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
+
 
 const loading = (
   <div className="pt-3 text-center">

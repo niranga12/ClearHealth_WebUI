@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React  from "react";
+// import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Route, Redirect, withRouter } from "react-router";
-import { TheLayout } from "src/containers";
+import { Route, Redirect,  } from "react-router";
+// import { TheLayout } from "src/containers";
 // import Login from "src/views/pages/login/Login";
 
 const AuthRoute = (props) => {

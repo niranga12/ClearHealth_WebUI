@@ -1,4 +1,5 @@
-import React, { lazy } from 'react'
+// import React, { lazy } from 'react'
+import React from 'react'
 import {
  
   CCol,
@@ -12,8 +13,8 @@ import CIcon from '@coreui/icons-react'
 // import { useDispatch } from 'react-redux'
 // import { notify } from 'reapop'
 
-const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
-const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
+// const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
+// const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
   

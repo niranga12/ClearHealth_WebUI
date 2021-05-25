@@ -7,19 +7,19 @@ import {
   CSidebarNav,
   CSidebarNavDivider,
   CSidebarNavTitle,
-  CSidebarMinimizer,
+  
   CSidebarNavDropdown,
   CSidebarNavItem,
-  CImg,
+  
 } from "@coreui/react";
 
 import CIcon from "@coreui/icons-react";
 
 // sidebar nav config
 import navigation from "./_nav";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { changeHeadToggle } from "src/actions/changeAction";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+// import { changeHeadToggle } from "src/actions/changeAction";
 
 const TheSidebar = () => {
   const dispatch = useDispatch();

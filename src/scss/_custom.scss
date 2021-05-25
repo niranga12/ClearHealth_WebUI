@@ -25,6 +25,7 @@
 
 body {
   font-family: LatoRegular, serif;
+  background-color: white !important;
 }
 
 .text-lightblue {
@@ -32,7 +33,7 @@ body {
 
 }
 .text-loginblue{
-  color: #5B4DFD;
+  color: #5B4DFD !important; 
 
 }
 .btn-primary {
@@ -114,6 +115,7 @@ body {
 .c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown-toggle:hover {
   background-color: #eeedfe!important;
   color: #5e50fd !important;
+  font-weight: bold;
 
   border-left: 5px solid#5e50fd !important;
 }
@@ -185,10 +187,15 @@ body {
   // padding-top: 5px;
   padding: 1.5rem;
   position: absolute;
-  bottom: 0;
-  width: 95%;
+  // margin-top: 35%;
+  // bottom: 0;
+  width: 75%;
   margin: auto;
   // right: 10px;
+}
+
+.login-mt{
+  margin-top: 5vh;
 }
 .email {
   height: 25px;
@@ -237,10 +244,11 @@ body {
 
 .support-clearhealth {
   height: 19px;
-  width: 180px;
+  // width: 180px;
+  // border: 1px solid red;
   color: #7a7e83;
   font-family: LatoRegular;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 19px;
@@ -250,6 +258,7 @@ body {
   width: 89.88px;
   background-image: url("../assets/images/icons/shape1.png");
   background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .secound-login-quote {
@@ -332,9 +341,12 @@ body {
   margin:auto;
 }
 .c-body{
-  background-color: #f4f5f7;
+  // background-color: #f4f5f7;
+  background-color: #ffffffc2;
 }
-
+.curson-point{
+  cursor: pointer;
+}
 // .checkbox > input:checked + span::before {
 //   content: '\2713';
 //   display: block;
@@ -361,6 +373,19 @@ body {
   cursor: pointer;
 }
 
+.h-90vh{
+  height: 85%;
+
+}
+.h-10vh{
+  height: 15%;
+}
+label,.label{
+ color: #7A7E83;
+}
+.log-foot-phone{
+  text-align: right;
+}
 
 @media (max-width: 768px) {
   .bg-login {
@@ -369,5 +394,10 @@ body {
     // background-size: 50% 100%;
     // background-position: right;
     // background-repeat: no-repeat;
+  }
+
+  .log-foot-phone{
+    text-align: left;
+    margin-top: 5px;
   }
 }

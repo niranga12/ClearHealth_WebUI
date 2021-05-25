@@ -12,7 +12,7 @@ import {notify} from 'reapop'
 
 
 import history from "../_helpers/history";
-import onError from "src/_helpers/onerror";
+// import onError from "src/_helpers/onerror";
 import {userLogin} from "../service/userService";
 
 // export const  login = (loginDetail) =>{
@@ -64,7 +64,7 @@ export const login = (loginDetail) => async (dispatch) => {
     try {
       // const res = await axios.post(`${WebAPi}/auth/login`, loginDetail)
       // const res =  axios.post(`${WebAPi}/auth/login`, loginDetail).then(
-        const res =  userLogin(loginDetail).then(
+          userLogin(loginDetail).then(
         
           res=>{
               const token = res.data.data.token;
@@ -80,7 +80,9 @@ export const login = (loginDetail) => async (dispatch) => {
               dispatch(notify('Logged in successfully', 'success'))
               history.push("/dashboard");
           }
-      ).catch( error=> onError(error, dispatch) );
+      ).catch( error=>  dispatch(notify('Invalid Email or Password ', 'error'))
+        //  onError(error, dispatch) 
+         );
      
     } catch (e) {
         console.log(e);

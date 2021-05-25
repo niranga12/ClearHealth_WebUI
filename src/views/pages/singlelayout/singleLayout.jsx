@@ -35,27 +35,15 @@ const SingleLayout = ({ children }) => {
 
       <div>
         <div className="row row-equal  ">
-          <div className=" col-md-6 col-lg-6 col-sm-12 d-block align-items-center   height-100 ">
+          <div className=" col-md-6 col-lg-6 col-sm-12 d-block align-items-center   height-100  ">
+            {/* <div className=" h-90vh"> */}
             <div className="row ">
-              <div className="col-md-6  pt-5 mb-5">
+              <div className="col-md-6  pl-5 pt-5 mb-5">
                 <Logo />
               </div>
             </div>
 
-            {/* <div className="h-50">
-                <div className="row login-contact text-lightblue">
-                  <div className="col-md-12 text-center">
-                    <FontAwesomeIcon icon={faEnvelope} className="pr-2 fa-x" />
-                    <span className="text-black-light">
-                      support@clearhealth.com
-                    </span>
-                  </div>
-                  <div className="col-md-12 text-center pt-1">
-                    <FontAwesomeIcon icon={faPhone} className="pr-2 fa-x" />
-                    <span className="text-black-light">800 (229)-01528</span>
-                  </div>
-                </div>
-              </div> */}
+            
 
             {/* form */}
             <div className="row">
@@ -65,20 +53,23 @@ const SingleLayout = ({ children }) => {
                 <main>{children}</main>
               </div>
             </div>
+            {/* </div> */}
 
-            <div className=" p-3">
-              <div className="row  login-footer">
+            <div className=" p-3 login-mt  ">
+              <div className="login-footer"> 
+              <div className="row   ">
                 <div className="col-md-6">
                   <span className="email"></span>{" "}
                   <span className="support-clearhealth">
                     support@clearhealth.com
                   </span>
                 </div>
-                <div className="col-md-6 text-right">
+                <div className="col-md-6 log-foot-phone">
                   <span className="phone"></span>{" "}
                   <span className="support-clearhealth">(800) 229-01528</span>
                 </div>
               </div>
+            </div>
             </div>
           </div>
 

@@ -14,9 +14,8 @@ import CIcon from "@coreui/icons-react";
 
 import {
   TheHeaderDropdown,
-  TheHeaderDropdownMssg,
+  
   TheHeaderDropdownNotif,
-  TheHeaderDropdownTasks,
   TheTittleUser,
 } from "./index";
 import TheHeaderDropdownImage from "./TheHeaderDropDownImage";

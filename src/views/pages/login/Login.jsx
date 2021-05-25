@@ -75,7 +75,7 @@ const Login = () => {
           type="text"
           {...register("username")}
           className="form-control mb-3 "
-          placeholder="Email"
+          placeholder="Enter Email"
           autoComplete="new-off"
         />
         <div className="small text-danger  pb-2   ">{errors.username?.message}</div>
@@ -85,7 +85,7 @@ const Login = () => {
           type="password"
           {...register("password")}
           className="form-control mb-3"
-          placeholder="Enter password"
+          placeholder="Enter Password"
           autoComplete="new"
         />
         <div className="small text-danger pb-2  ">{errors.password?.message}</div>
@@ -94,7 +94,7 @@ const Login = () => {
   <input type="checkbox" name="KeepSign" id="" /> <span className="label pl-1 pt-1">Keep me signed in</span>
 </div>
 <div className="col-md-6 text-right">
-<div className=" label  text-right text-loginblue pt-1 font-lato-bold" onClick={redirectToPage}>
+<div className=" label  text-right text-loginblue  font-lato-bold cil-cursor curson-point" onClick={redirectToPage}>
           Forgot Password?
         </div>
 </div>
