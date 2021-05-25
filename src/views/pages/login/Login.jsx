@@ -7,7 +7,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 import { login } from "src/actions/loginAction";
 // import NotificationLayout from "src/_helpers/notification";
 // import { notify } from "reapop";
@@ -15,8 +15,8 @@ import SingleLayout from "../singlelayout/singleLayout";
 import history from "../../../_helpers/history";
 
 const schema = yup.object().shape({
-  username: yup.string().required(),
-  password: yup.string().required(),
+  username: yup.string().required("Email required"),
+  password: yup.string().required("Password required"),
 });
 
 const Login = () => {
@@ -28,7 +28,7 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const User = useSelector((state) => state.Login);
+  // const User = useSelector((state) => state.Login);
   const disPatch = useDispatch();
 
   const userLogin = (data) => {
@@ -68,33 +68,33 @@ const Login = () => {
 
     //     
     //       <div> */}
-      <h3>Login</h3>
+      <h2 className="font-lato-bold">Login</h2>
       <form onSubmit={handleSubmit(userLogin)}>
-        <label className="mt-3">Email address</label>
+        <label className="mt-3 pb-2">Email address</label>
         <input
           type="text"
           {...register("username")}
-          className="form-control mb-2 "
+          className="form-control mb-3 "
           placeholder="Email"
           autoComplete="new-off"
         />
-        <div className="small text-danger  ">{errors.username?.message}</div>
+        <div className="small text-danger  pb-2   ">{errors.username?.message}</div>
 
-        <label>Password</label>
+        <label className="pb-2">Password</label>
         <input
           type="password"
           {...register("password")}
-          className="form-control"
+          className="form-control mb-3"
           placeholder="Enter password"
           autoComplete="new"
         />
-        <div className="small text-danger  ">{errors.password?.message}</div>
+        <div className="small text-danger pb-2  ">{errors.password?.message}</div>
         <div className="row p-2">
-<div className="col-md-6 pl-3">
-  <input type="checkbox" name="KeepSign" id="" /> <span className="label  pt-1">Keep me signed in</span>
+<div className="col-md-6 pl-2 checkbox">
+  <input type="checkbox" name="KeepSign" id="" /> <span className="label pl-1 pt-1">Keep me signed in</span>
 </div>
 <div className="col-md-6 text-right">
-<div className=" label  text-right text-lightblue pt-1" onClick={redirectToPage}>
+<div className=" label  text-right text-loginblue pt-1 font-lato-bold" onClick={redirectToPage}>
           Forgot Password?
         </div>
 </div>

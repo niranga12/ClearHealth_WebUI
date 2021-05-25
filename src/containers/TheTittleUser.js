@@ -10,7 +10,7 @@ const TheTittleUser = () => {
    
 
   return (
-    <ul className="list-group pl-3 pr-2 list-unstyled">
+    <ul className="list-group  pr-1 list-unstyled">
       <li className="font-weight-bold">{user.name}</li>
       <li className="small">{user.roleType}</li>
     </ul>

@@ -4,24 +4,36 @@ import { useForm } from 'react-hook-form';
 import SingleLayout from '../singlelayout/singleLayout';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { forgotPassword } from 'src/service/userService';
+import { useDispatch } from 'react-redux';
+import onError from "src/_helpers/onerror";
+import { notify } from 'reapop';
+import history from "../../../_helpers/history";
+
+
 
 const schema = yup.object().shape({
-    username: yup.string().required(),
+    username: yup.string().required("Email required").email("Invalid email")
 });
 
 export default function ForgotPassword() {
-
+    const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 
-    const restFormSubmit = (data) => {
-        console.log(data);
+    const forgotFormSubmit = (data) => {
+        forgotPassword(data).then(
+            res=>{
+            dispatch(notify('please check your email.', 'success'));
+            history.push("/login");
+            }
+        ).catch((error) => onError(error, dispatch));
     }
 
     return (
         <SingleLayout>
-            <form onSubmit={handleSubmit(restFormSubmit)}>
+            <form onSubmit={handleSubmit(forgotFormSubmit)}>
                 <input
                     type="text"
 

@@ -1,10 +1,9 @@
-import axios from "axios";
-import { WebAPi } from "../_config";
+
 import jwt from "jwt-decode"; // import dependency
 import {
-  FETCHING_USER,
+  
   LOG_OUT,
-  SET_FETCHING_FALSE,
+  
   USER_LOGIN,
 } from "src/constansts";
 // import history  from "../_helpers/history";
@@ -14,7 +13,7 @@ import {notify} from 'reapop'
 
 import history from "../_helpers/history";
 import onError from "src/_helpers/onerror";
-import userLogin from "../service/userService";
+import {userLogin} from "../service/userService";
 
 // export const  login = (loginDetail) =>{
 
@@ -78,7 +77,7 @@ export const login = (loginDetail) => async (dispatch) => {
                 payload: loginUser,
               });
               
-              dispatch(notify('Login Success', 'success'))
+              dispatch(notify('Logged in successfully', 'success'))
               history.push("/dashboard");
           }
       ).catch( error=> onError(error, dispatch) );

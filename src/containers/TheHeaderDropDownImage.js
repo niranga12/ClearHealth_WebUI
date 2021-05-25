@@ -22,7 +22,7 @@ const TheHeaderDropdownImage = () => {
   return (
     <CDropdown
       inNav
-      className="c-header-nav-items mx-2"
+      className="c-header-nav-items "
       direction="down"
     >
       <CDropdownToggle className="c-header-nav-link" caret={false}>

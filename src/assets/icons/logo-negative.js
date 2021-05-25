@@ -1,7 +1,7 @@
 export const logoNegative = ['608 134', `
   <title>coreui react pro logo</title>
   
-  <g id="FF_ClearHealth3-03" data-name="FF ClearHealth3-03" transform="translate(-4.275 -6.846)">
+  <g id="FF_ClearHealth3-03" data-name="FF ClearHealth3-03" transform="translate(135.275 -6.846)">
     <g id="Group_60" data-name="Group 60" transform="translate(18.257 105.271)">
       <path id="Path_452" data-name="Path 452" d="M48.363,234.537v12.8H45.4v-5.248H39.584v5.248H36.621v-12.8h2.963v5.049H45.4v-5.049Z" transform="translate(-36.621 -234.537)" fill="#4334bb"/>
       <path id="Path_453" data-name="Path 453" d="M165.294,244.96v2.38H155.38v-12.8h9.675v2.378h-6.728v2.78h5.942V242h-5.942v2.963h6.967Z" transform="translate(-104.044 -234.537)" fill="#4334bb"/>

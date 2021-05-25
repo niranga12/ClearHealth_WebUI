@@ -7,8 +7,14 @@ const axiosBase = axios.create({
 });
 
 
-const forgotPassword=(loginDetail)=> axiosBase.post(`/auth/login`, loginDetail);
-export default forgotPassword;
+export const forgotPassword=(userDetail)=> axiosBase.post(`/auth/fogotpassword`, userDetail);
+// export default forgotPassword;
+export const userLogin=(loginDetail)=> axiosBase.post(`/auth/login`, loginDetail);
+ 
+export const forgotUserValidate=(id)=>axiosBase.get(`auth/validatetoken/${id}`)
+
+export const getHelp = () => axiosBase.get(`/help/quote`);
+
 
 
 

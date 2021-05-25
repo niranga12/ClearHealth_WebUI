@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react';
-import { HashRouter, Redirect, Route, Router, Switch } from 'react-router-dom';
+import React, { Component } from 'react';
+import {  Route, Router, Switch } from 'react-router-dom';
 import history from './_helpers/history';
 
 import './scss/style.scss';
@@ -21,6 +21,7 @@ const Register = React.lazy(() => import('./views/pages/register/Register'));
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'));
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 const ForgotPW= React.lazy(()=>import('./views/pages/forgotpassword/forgotpassword'));
+const ResetPW= React.lazy(()=>import('./views/pages/resetpassword/resetpassword'));
 
 class App extends Component {
 
@@ -36,7 +37,9 @@ class App extends Component {
               <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
               <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
               <Route exact path="/forgotpassword" name="Forgot Password" render={props => <ForgotPW {...props}/>} />
-              
+              <Route exact path="/resetpassword" name="Reset Password" render={props => <ResetPW {...props}/>} />
+              <Route exact path="/resetpassword/:id" name="Reset Password" render={props => <ResetPW {...props}/>} />
+
               <AuthRoute path="/" name="Home" render={props => <TheLayout {...props}/>} />
             </Switch>
           </React.Suspense>
