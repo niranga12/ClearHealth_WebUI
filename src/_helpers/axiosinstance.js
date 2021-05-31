@@ -1,17 +1,17 @@
 import axios from "axios";
-import {WebAPi}   from "./_config";
+import {WebAPi}   from "../_config";
 
 
-const instance = axios.create({
+const axiosInstance = axios.create({
     // @ts-ignore
     baseURL: WebAPi
 });
 
-instance.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   function(config) {
     const token = localStorage.getItem("token"); 
     if (token) {
-      config.headers["Authorization"] = 'Bearer ' + token;
+      config.headers["Authorization"] =  token;
     }
     return config;
   },
@@ -20,4 +20,4 @@ instance.interceptors.request.use(
   }
 );
 
-export default instance;
+export default axiosInstance;

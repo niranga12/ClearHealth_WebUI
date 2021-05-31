@@ -45,7 +45,7 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: 'Health Systems',
-        // to: '/base/breadcrumbs',
+         to: '/healthsystem',
         icon: <CIcon content={freeSet.cilHeart} size={'lg'} className="mr-3"/>,
       },
       {

@@ -38,7 +38,7 @@ const SingleLayout = ({ children }) => {
           <div className=" col-md-6 col-lg-6 col-sm-12 d-block align-items-center   height-100  ">
             {/* <div className=" h-90vh"> */}
             <div className="row ">
-              <div className="col-md-6  pl-5 pt-5 mb-5">
+              <div className="col-md-6  pl-4 pt-1 mb-1">
                 <Logo />
               </div>
             </div>

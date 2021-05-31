@@ -1,5 +1,6 @@
 import axios from "axios";
 import {WebAPi }  from "../_config";
+import axiosInstance  from "../_helpers/axiosinstance";
 
 const axiosBase = axios.create({
     // @ts-ignore
@@ -14,6 +15,8 @@ export const userLogin=(loginDetail)=> axiosBase.post(`/auth/login`, loginDetail
 export const forgotUserValidate=(id)=>axiosBase.get(`auth/validatetoken/${id}`)
 
 export const getHelp = () => axiosBase.get(`/help/quote`);
+
+export const getUserList=() => axiosInstance.get(`user`);
 
 
 

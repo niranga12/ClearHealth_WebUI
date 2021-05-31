@@ -7,7 +7,9 @@ import {
   CHeaderNav,
   
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
+// import CIcon from "@coreui/icons-react";
+import logo from "../assets/images/2.svg";
+
 
 // routes config
 // import routes from "../routes";
@@ -19,6 +21,7 @@ import {
   TheTittleUser,
 } from "./index";
 import TheHeaderDropdownImage from "./TheHeaderDropDownImage";
+import Logo from "src/reusable/Logo";
 // import { changeHeadToggle } from "src/actions/changeAction";
 
 const TheHeader = () => {
@@ -51,8 +54,11 @@ const TheHeader = () => {
         className="ml-3 d-md-down-none"
         onClick={toggleSidebar}
       />
-      <CHeaderBrand className="mx-auto d-lg-none" to="/">
-        <CIcon name="logo" height="60" alt="Logo" />
+      <CHeaderBrand className=" d-lg-none" to="/">
+
+      <img src={logo} alt="Logo" className="sm-logo-setting"/>   
+      {/* <Logo classname="sm-logo-setting" /> */}
+        {/* <CIcon name="logo" height="60" alt="Logo" /> */}
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
