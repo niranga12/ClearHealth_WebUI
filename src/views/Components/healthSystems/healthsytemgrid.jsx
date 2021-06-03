@@ -1,15 +1,16 @@
 import React from 'react'
-import HealthSystemHeader from './healthsystemheader';
+// import HealthPagination from './healthPagination';
 import HealthTable from './HealthTable';
-import Table from './Table'
+// import Table from './Table'
 
- const healthSystemGrid = () => {
+ const HealthSystemGrid = () => {
+    
+
     return (
         <div>
-            <HealthSystemHeader/>
-            <HealthTable/>
+            <HealthTable />
         </div>
     )
 }
-export default healthSystemGrid;
+export default HealthSystemGrid;
 

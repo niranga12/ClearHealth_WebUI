@@ -145,7 +145,7 @@ body {
 }
 
 .c-sidebar.c-sidebar-light .c-sidebar-nav-dropdown.c-show {
-  background: rgb(255 253 253 / 5%);
+  background: rgb(255 253 253 / 5%) !important;
 }
 // login/single layout
 
@@ -320,10 +320,10 @@ body {
 }
 
 .sidebar-bottom {
-  width: 85%;
-  border-top: 1px solid #c3c3c3;
-  margin: auto;
-  padding: 10px;
+  width: 85% !important;
+  border-top: 1px solid #c3c3c3 !important;
+  margin: auto !important;
+  padding: 10px !important;
 }
 
 .support-clearhealth-slider {
@@ -454,6 +454,41 @@ label,.label{
   background-color: #F7F7F7 !important;
   border-color: #F7F7F7 !important;
 }
+
+.rectangle-intable {
+  box-sizing: border-box;
+  // height: 30px;
+  padding: 4px;
+   min-width: 138px;
+   max-width: 250px;
+  border: 1px solid #EEEEEE;
+  border-radius: 8px;
+  color: #4E535A;
+  font-size: 1rem;
+  margin-bottom: 3px;
+  // background-color: #FFFFFF;
+}
+.text-health-icon{
+  color:#7C70FD ;
+}
+
+
+.max-celladdress{
+  width: 250;
+
+}
+
+.count-box{
+  font-size: 0.5rem;
+  height: 10px;
+  width: 100px;
+  border-radius: 5px;
+  background-color: #5b4dfd;
+  color:white;
+  padding: 5px;
+
+}
+
 
 @media (max-width: 768px) {
   .bg-login {

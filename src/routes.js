@@ -38,6 +38,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 const HealthSystem = React.lazy(() => import('./views/Components/healthSystems/healthsytemgrid'));
+const HealthSystemProfile = React.lazy(() => import('./views/Components/healthSystems/healthSystemProfile'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -80,7 +81,11 @@ const routes = [
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/healthsystem', name: 'Health System', component: HealthSystem }
+  { path: '/healthsystem', name: 'Health System', component: HealthSystem, exact: true},
+  { path: '/healthsystem/addHealthSystem', name: 'Health system Profile', component: HealthSystemProfile }
+
+
+
 ];
 
 export default routes;

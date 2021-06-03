@@ -18,7 +18,7 @@ export const getHelp = () => axiosBase.get(`/help/quote`);
 
 export const getUserList=() => axiosInstance.get(`user`);
 
-
+export const resetPasswordService=(data) =>axiosInstance.post(`/auth/resetpassword`,data);
 
 
 
