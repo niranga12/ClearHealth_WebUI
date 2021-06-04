@@ -123,7 +123,7 @@ const HealthTable = () => {
   };
 
   const addNewHeathSystem = () => {
-    history.push("/healthsystem/addHealthSystem");
+    history.push("/addHealthSystem");
   };
 
   //SETTING COLUMNS NAMES
