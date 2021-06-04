@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {
   forgotUserValidate,
   resetPasswordService,
@@ -11,7 +11,7 @@ import SingleLayout from "../singlelayout/singleLayout";
 import onError from "src/_helpers/onerror";
 import { useDispatch } from "react-redux";
 import { notify } from "reapop";
-import history from "src/_helpers/history";
+// import history from "src/_helpers/history";
 import OnError from "src/_helpers/onerror";
 
 const schema = yup.object().shape({
@@ -23,6 +23,7 @@ const schema = yup.object().shape({
 
 const ResetPassword = () => {
   let { id } = useParams();
+  let history = useHistory();
 
   const {
     register,

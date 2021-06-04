@@ -7,7 +7,8 @@ import { PartyTypeEnum, ValidationPatterns } from "src/reusable/enum";
 import { addHealthSystemNew } from "src/service/healthsystemService";
 import OnError from "src/_helpers/onerror";
 import { notify } from "reapop";
-import history from "src/_helpers/history";
+import { useHistory } from "react-router-dom";
+// import history from "src/_helpers/history";
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -42,6 +43,7 @@ const HealthSystemForm = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const dispatch = useDispatch();
+  let history = useHistory();
 
  
   const handleShippingChecked = (event) => {

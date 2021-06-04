@@ -57,7 +57,7 @@ import {userLogin} from "../service/userService";
 
 
 
-export const login = (loginDetail) => async (dispatch) => {
+export const login = (loginDetail,history) => async (dispatch) => {
     // let history = useHistory();
    
   

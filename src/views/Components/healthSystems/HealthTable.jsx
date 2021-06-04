@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { useTable } from "react-table";
 import { TableSettingsEnum } from "src/reusable/enum";
 import {
@@ -8,7 +9,7 @@ import {
 } from "src/service/healthsystemService";
 import AdminHeaderWithSearch from "src/views/common/adminHeaderWithSearch";
 import PaginationTable from "src/views/common/paginationTable";
-import history from "src/_helpers/history";
+// import history from "src/_helpers/history";
 // import { getUserList } from "src/service/userService";
 import OnError from "src/_helpers/onerror";
 
@@ -56,6 +57,8 @@ function CellAddress({ row }) {
 }
 
 const HealthTable = () => {
+  let history = useHistory();
+
   const [data, setdata] = useState([]);
   const [count, setCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState(initialSearch);
@@ -157,7 +160,6 @@ const HealthTable = () => {
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
-
   return (
     <>
       {/* <HealthSystemHeader  handleSearchChange={searchTextChange } handleAddNew={addNewHeathSystem}/> */}

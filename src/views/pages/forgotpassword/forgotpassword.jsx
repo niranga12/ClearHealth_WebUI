@@ -8,7 +8,8 @@ import { forgotPassword } from 'src/service/userService';
 import { useDispatch } from 'react-redux';
 import onError from "src/_helpers/onerror";
 import { notify } from 'reapop';
-import history from "../../../_helpers/history";
+import { useHistory } from 'react-router-dom';
+// import history from "../../../_helpers/history";
 
 
 
@@ -17,6 +18,8 @@ const schema = yup.object().shape({
 });
 
 export default function ForgotPassword() {
+    let history = useHistory();
+
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),

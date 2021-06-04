@@ -12,7 +12,8 @@ import { login } from "src/actions/loginAction";
 // import NotificationLayout from "src/_helpers/notification";
 // import { notify } from "reapop";
 import SingleLayout from "../singlelayout/singleLayout";
-import history from "../../../_helpers/history";
+// import history from "../../../_helpers/history";
+import { useHistory } from "react-router-dom";
 
 const schema = yup.object().shape({
   username: yup.string().required("Email required"),
@@ -30,10 +31,12 @@ const Login = () => {
 
   // const User = useSelector((state) => state.Login);
   const disPatch = useDispatch();
+  const history = useHistory();
+ 
 
   const userLogin = (data) => {
     // console.log(data);
-    disPatch(login(data));
+    disPatch(login(data,history));
     // disPatch(notify('Welcome to the documentation', 'info'))
   };
 
