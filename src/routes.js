@@ -82,7 +82,7 @@ const routes = [
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/healthsystem', name: 'Health System', component: HealthSystem, exact: true},
-  { path: '/healthsystem/addHealthSystem', name: 'Health system Profile', component: HealthSystemProfile }
+  { path: '/healthsystem/addHealthSystem', name: 'Health system Profile', component: HealthSystemProfile ,  exact: true}
 
 
 
