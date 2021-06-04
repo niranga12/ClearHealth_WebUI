@@ -21,7 +21,7 @@ import {
   TheTittleUser,
 } from "./index";
 import TheHeaderDropdownImage from "./TheHeaderDropDownImage";
-import Logo from "src/reusable/Logo";
+// import Logo from "src/reusable/Logo";
 // import { changeHeadToggle } from "src/actions/changeAction";
 
 const TheHeader = () => {
