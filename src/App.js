@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Router, Switch } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Router, Switch } from 'react-router-dom';
 import history from './_helpers/history';
 
 import './scss/style.scss';
@@ -28,9 +28,11 @@ class App extends Component {
   render() {
     return (
       // <Router history={history}>
-      <BrowserRouter>
+      // <BrowserRouter>
+<HashRouter hashType="slash">
 
       {/* <HashRouter> */}
+
           <React.Suspense fallback={loading}>
             <Switch>
               <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
@@ -46,7 +48,10 @@ class App extends Component {
           </React.Suspense>
        {/* </HashRouter> */}
       {/* // </Router> */}
-      </BrowserRouter>
+
+      </HashRouter>
+
+    // {/* </BrowserRouter> */}
     );
   }
 }
