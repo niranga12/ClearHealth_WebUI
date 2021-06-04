@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  Route, Router, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Router, Switch } from 'react-router-dom';
 import history from './_helpers/history';
 
 import './scss/style.scss';
@@ -27,7 +27,8 @@ class App extends Component {
 
   render() {
     return (
-      <Router history={history}>
+      // <Router history={history}>
+      <BrowserRouter>
 
       {/* <HashRouter> */}
           <React.Suspense fallback={loading}>
@@ -44,7 +45,8 @@ class App extends Component {
             </Switch>
           </React.Suspense>
        {/* </HashRouter> */}
-      </Router>
+      {/* // </Router> */}
+      </BrowserRouter>
     );
   }
 }
