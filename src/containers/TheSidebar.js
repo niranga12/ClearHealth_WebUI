@@ -31,7 +31,7 @@ const TheSidebar = () => {
       className="c-sidebar-light "
       onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
     >
-      <CSidebarBrand className="d-md-down-none " to="/">
+      <CSidebarBrand className="d-md-down-none " to="/dashboard">
         {/* <div className="logo-image-panel"></div> */}
         <CIcon
           className="c-sidebar-brand-full m-auto"
@@ -45,7 +45,7 @@ const TheSidebar = () => {
         /> */}
       </CSidebarBrand>
 
-      <CSidebarNav className="pt-5">
+      <CSidebarNav className="pt-4">
         {/* <div className="card boxshadow-contain h-97 text-black-50 m-2"> */}
         <CCreateElement
           items={navigation}

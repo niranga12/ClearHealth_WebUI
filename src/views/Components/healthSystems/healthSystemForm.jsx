@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -11,29 +11,31 @@ import { useHistory } from "react-router-dom";
 // import history from "src/_helpers/history";
 
 const schema = yup.object().shape({
-  name: yup.string().required(),
-  address1: yup.string().required(),
+  name: yup.string().required("Name is required"),
+  address1: yup.string().required("Address line1 is required"),
   address2: yup.string(),
-  city: yup.string().required(),
-  state: yup.string().required(),
-  zip: yup.string().required(),
+  city: yup.string().required("City is required"),
+  state: yup.string().required("State is required"),
+  zip: yup.string().required("Zip is required"),
   phone: yup
     .string()
-    .required()
+    .required("Phone is required")
     .matches(ValidationPatterns.phoneRegExp, "Phone number is not valid"),
-  shippingAddress1: yup.string().required(),
+  shippingAddress1: yup
+    .string()
+    .required("Shipping Address line 1 is required"),
   shippingAddress2: yup.string(),
-  shippingCity: yup.string().required(),
-  shippingState: yup.string().required(),
-  shippingZip: yup.string().required(),
-  contactName: yup.string().required(),
+  shippingCity: yup.string().required("City is required"),
+  shippingState: yup.string().required("State is required"),
+  shippingZip: yup.string().required("Zip is required"),
+  contactName: yup.string().required("Contact name is required"),
   contactPhone: yup
     .string()
-    .required()
+    .required("Contact phone is required")
     .matches(ValidationPatterns.phoneRegExp, "Phone number is not valid"),
-  contactEmail: yup.string().required().email(),
+  contactEmail: yup.string().required("Contact email is required").email(),
 });
-const HealthSystemForm = () => {
+const HealthSystemForm = ({ partyRoleId }) => {
   const {
     register,
     handleSubmit,
@@ -45,11 +47,20 @@ const HealthSystemForm = () => {
   const dispatch = useDispatch();
   let history = useHistory();
 
- 
+  const [healthSystemData, setHealthSystemData] = useState();
+  //if this a edit form get the data
+  useEffect(() => {
+    if (partyRoleId) {
+      try {
+        console.log(partyRoleId);
+      } catch (error) {}
+    }
+  }, [partyRoleId]);
+
   const handleShippingChecked = (event) => {
     if (event.target.checked) {
       setValue("shippingAddress1", getValues("address1"));
-      setValue("shippingAddress2", getValues("address1"));
+      setValue("shippingAddress2", getValues("address2"));
       setValue("shippingCity", getValues("city"));
       setValue("shippingState", getValues("state"));
       setValue("shippingZip", getValues("zip"));
@@ -344,8 +355,11 @@ const HealthSystemForm = () => {
 
         <div className="row">
           <div className="col-md-12">
-            <button type="submit" className="btn btn-primary float-right">
-              save
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg float-right"
+            >
+              Save
             </button>
           </div>
         </div>

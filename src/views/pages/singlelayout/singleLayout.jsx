@@ -60,7 +60,7 @@ const SingleLayout = ({ children }) => {
               <div className="row   ">
                 <div className="col-md-6">
                   <span className="email"></span>{" "}
-                  <span className="support-clearhealth">
+                  <span className="support-clearhealth pad-20">
                     support@clearhealth.com
                   </span>
                 </div>
@@ -76,7 +76,7 @@ const SingleLayout = ({ children }) => {
           {/* blue quote */}
           <div className=" col-md-6 pt-5  d-none d-sm-block">
             <div className="row">
-              <div className="col-md-12 mt-5 pt-3 mb-5">
+              <div className="col-md-12 mt-5 pt-3 mb-2">
                 <div className="first-login-quote float-right"></div>
               </div>
 
@@ -86,8 +86,8 @@ const SingleLayout = ({ children }) => {
                   className="fa-3x light-green"
                 />
               </div>
-              <div className="col-md-12 pl-5 pr-5 health-is-a-state-of ml-4 mr-4">
-                <p className="pl-5 pr-5">
+              <div className="col-md-12 pl-5 pt-3 pr-5 health-is-a-state-of ml-4 mr-4">
+                <p className="pl-4 pr-5">
                   {help.description}
                   {/* <FontAwesomeIcon icon={faQuoteLeft} className="fa-2x" /> */}
 

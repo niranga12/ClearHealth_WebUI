@@ -15,9 +15,9 @@ import { notify } from "reapop";
 import OnError from "src/_helpers/onerror";
 
 const schema = yup.object().shape({
-  password: yup.string().required(),
+  password: yup.string().required("Password is required"),
   retypePassword: yup
-    .string()
+    .string().required("Password is required")
     .oneOf([yup.ref("password"), null], "Passwords must match"),
 });
 
@@ -71,19 +71,19 @@ const ResetPassword = () => {
         {/* </div> */}
         <label className="mt-3">Password</label>
         <input
-          type="password"
+          type="Password"
           {...register("password")}
           className="form-control mb-2 "
           placeholder="password"
           autoComplete="new-off"
         />
         <div className="small text-danger  ">{errors.password?.message}</div>
-        <label className="mt-3">Re Enter Password</label>
+        <label className="mt-3">Re-Enter Password</label>
         <input
           type="password"
           {...register("retypePassword")}
           className="form-control mb-2 "
-          placeholder="Re Enter Password"
+          placeholder="Re-Enter Password"
           autoComplete="new-off"
         />
         <div className="small text-danger  ">

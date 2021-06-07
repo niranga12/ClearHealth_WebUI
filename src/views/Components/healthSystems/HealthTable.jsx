@@ -83,6 +83,7 @@ const HealthTable = () => {
           resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
         //  console.log(pageCount)
         setPage(Math.ceil(pageCount));
+        
         // console.log(count)
       } catch (error) {
         OnError(error, dispatch);
@@ -123,8 +124,13 @@ const HealthTable = () => {
   };
 
   const addNewHeathSystem = () => {
-    history.push("/addHealthSystem");
+    history.push("/healthsystem/profile");
   };
+
+  const redirectToPage=(value)=>{
+    history.push(`/healthsystem/profile/${value}`);
+
+  }
 
   //SETTING COLUMNS NAMES
   const columns = useMemo(
@@ -133,7 +139,7 @@ const HealthTable = () => {
         Header: "Name",
         accessor: "name", // accessor is the "key" in the data
         Cell: ({ value }) => (
-          <h6 className="mt-4 font-weight-bold"> {value} </h6>
+          <h5 className="font-weight-normal text-black"> {value} </h5>
         ),
       },
       {
@@ -142,14 +148,15 @@ const HealthTable = () => {
         Cell: CellAddress,
       },
       {
-        Header: "Contract",
+        Header: "Contact",
         Cell: CellContract,
       },
       {
         Header: "Action",
+        accessor: "partyRoleId",
         // accessor: '[row identifier to be passed to button]',
         Cell: ({ value }) => (
-          <div className="text-center">
+          <div className="text-center text-gray" onClick={()=>redirectToPage(value)}>
             <span className="fa fa-ellipsis-h "></span>
           </div>
         ),
@@ -167,7 +174,7 @@ const HealthTable = () => {
         showCount={count}
         handleSearchChange={searchTextChange}
         handleAddNew={addNewHeathSystem}
-        placeholder="&#xF002; Search Patient name order no"
+        placeholder="&#xF002; Search here.."
         buttonTitle="New Health System"
       />
       <div className="LatoRegular">
@@ -200,7 +207,7 @@ const HealthTable = () => {
           </tbody>
         </table>
 
-        <PaginationTable handlePageChange={pageChange} countPage={page} />
+        <PaginationTable handlePageChange={pageChange} countPage={page}  count={count} currentPage={searchQuery.pageNumber}/>
       </div>
     </>
   );

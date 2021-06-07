@@ -14,7 +14,7 @@ const AdminHeaderWithSearch = ({handleSearchChange,handleAddNew, placeholder="&#
             <div className="col-md-6">
                    
                     <button type="button" className="btn btn-primary float-right ml-3 text-white"  onClick={handleAddNew}> <CIcon content={freeSet.cilPlus}/> {buttonTitle}</button>
-                    <input type="text"  onChange={handleSearchChange}  className="float-right form-control-sm w-50 mt-1 fa " placeholder={placeholder} />
+                    <input type="text"  onBlur={handleSearchChange}  className="float-right form-control-sm w-50  fa " placeholder={placeholder} />
             </div>
             
         </div>
