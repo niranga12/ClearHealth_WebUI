@@ -67,14 +67,14 @@ const ResetPassword = () => {
       <h2 className="font-lato-bold">Reset password</h2>
       <form onSubmit={handleSubmit(resetPass)}>
         {/* <div className="row"> */}
-        <label className="mt-3 col-md-12">Email address : {userName} </label>
+        <label className="mt-3 p-0 col-md-12">Email address : {userName} </label>
         {/* </div> */}
         <label className="mt-3">Password</label>
         <input
           type="Password"
           {...register("password")}
           className="form-control mb-2 "
-          placeholder="password"
+          placeholder="Password"
           autoComplete="new-off"
         />
         <div className="small text-danger  ">{errors.password?.message}</div>

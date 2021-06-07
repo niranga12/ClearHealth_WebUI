@@ -156,7 +156,7 @@ const HealthTable = () => {
         accessor: "partyRoleId",
         // accessor: '[row identifier to be passed to button]',
         Cell: ({ value }) => (
-          <div className="text-center text-gray" onClick={()=>redirectToPage(value)}>
+          <div className="text-center text-gray font-15re" onClick={()=>redirectToPage(value)}>
             <span className="fa fa-ellipsis-h "></span>
           </div>
         ),
