@@ -6,7 +6,7 @@
 
 
 export const TableSettingsEnum={
-    ItemPerPage:10
+    ItemPerPage:5
 }
 
 export const ValidationPatterns={

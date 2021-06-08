@@ -12,12 +12,40 @@ import PaginationTable from "src/views/common/paginationTable";
 // import history from "src/_helpers/history";
 // import { getUserList } from "src/service/userService";
 import OnError from "src/_helpers/onerror";
+import { formatPhoneNumber, formatPhoneNumberIntl } from 'react-phone-number-input'
+import PhoneNumberFormater from "src/reusable/PhoneNumberFormater";
+
 
 const initialSearch = {
   itemsPerPage: TableSettingsEnum.ItemPerPage,
   pageNumber: 1,
   searchTerm: "",
 };
+
+// function getFormattedPhoneNum( input ) {
+//   let output = "(";
+//   input.replace( /^\D*(\d{0,3})\D*(\d{0,3})\D*(\d{0,4})/, function( match, g1, g2, g3 )
+//       {
+//         if ( g1.length ) {
+//           output += g1;
+//           if ( g1.length == 3 ) {
+//               output += ")";
+//               if ( g2.length ) {
+//                   output += " " + g2; 
+//                   if ( g2.length == 3 ) {
+//                       output += " - ";
+//                       if ( g3.length ) {
+//                           output += g3;
+//                       }
+//                   }
+//               }
+//            }
+//         }
+//       }       
+//     );        
+//   return output;
+//  }      
+
 
 function CellContract({ row }) {
   return (
@@ -26,12 +54,14 @@ function CellContract({ row }) {
       <div className="rectangle-intable">
         {" "}
         <span className="fa fa-phone text-health-icon pr-1"></span>{" "}
-        {row.original.contactNumber}
+        {/* {row.original.contactNumber} */}
+        {PhoneNumberFormater(row.original.contactNumber)}
       </div>
       <div className="rectangle-intable">
         {" "}
         <span className="fa fa-envelope text-health-icon pr-1"></span>{" "}
         {row.original.contactElectronicAddress}
+      
       </div>
     </>
   );
@@ -50,7 +80,10 @@ function CellAddress({ row }) {
       <div className="rectangle-intable">
         {" "}
         <span className="fa fa-phone text-health-icon pr-1"></span>{" "}
-        {row.original.phoneNumber}
+        {/* {row.original.phoneNumber} */}
+        {/* {row.original.phoneNumber && formatPhoneNumber(row.original.phoneNumber)} */}
+        {/* { formatPhoneNumberIntl("7765855854")} */}
+       {PhoneNumberFormater(row.original.phoneNumber)} 
       </div>
     </>
   );
@@ -169,6 +202,7 @@ const HealthTable = () => {
     useTable({ columns, data });
   return (
     <>
+
       {/* <HealthSystemHeader  handleSearchChange={searchTextChange } handleAddNew={addNewHeathSystem}/> */}
       <AdminHeaderWithSearch
         showCount={count}

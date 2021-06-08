@@ -200,6 +200,7 @@ body {
   // bottom: 0;
   width: 75%;
   margin: auto;
+  padding-right: 8px !important;
   // right: 10px;
 }
 
@@ -508,6 +509,9 @@ label,
 .MuiPaginationItem-textPrimary.Mui-selected {
   color: #7c70fd !important;
   background-color: #ffffff !important;
+}
+.MuiPaginationItem-root {
+  color: #92929D !important;
 }
 
 @media (max-width: 768px) {

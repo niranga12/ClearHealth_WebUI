@@ -52,18 +52,18 @@ const HealthSystemForm = ({ partyRoleId }) => {
   useEffect(() => {
     if (partyRoleId) {
       try {
-        console.log(partyRoleId);
+        // console.log(partyRoleId);
       } catch (error) {}
     }
   }, [partyRoleId]);
 
   const handleShippingChecked = (event) => {
     if (event.target.checked) {
-      setValue("shippingAddress1", getValues("address1"));
-      setValue("shippingAddress2", getValues("address2"));
-      setValue("shippingCity", getValues("city"));
-      setValue("shippingState", getValues("state"));
-      setValue("shippingZip", getValues("zip"));
+      setValue("shippingAddress1", getValues("address1"),{ shouldValidate: true });
+      setValue("shippingAddress2", getValues("address2"),{ shouldValidate: true });
+      setValue("shippingCity", getValues("city"),{ shouldValidate: true });
+      setValue("shippingState", getValues("state"),{ shouldValidate: true });
+      setValue("shippingZip", getValues("zip"),{ shouldValidate: true });
     } else {
       setValue("shippingAddress1", "");
       setValue("shippingAddress2", "");
