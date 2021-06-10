@@ -13,3 +13,14 @@ export const ValidationPatterns={
      phoneRegExp : /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 }
+
+export const ServiceMsg={
+        Added: "Added",
+        Updated: "Updated",
+        Deleted: "Deleted",
+        OK: "OK",
+        AuthFailed: "AuthFailed",
+        ServerError: "ServerError",
+        InvalidRequest: "InvalidRequest",
+    
+}

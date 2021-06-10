@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { PartyTypeEnum, ValidationPatterns } from "src/reusable/enum";
-import { addHealthSystemNew } from "src/service/healthsystemService";
+import {
+  PartyTypeEnum,
+  ServiceMsg,
+  ValidationPatterns,
+} from "src/reusable/enum";
+import {
+  addHealthSystemNew,
+  updateHealthSystemByPartyRoleId,
+} from "src/service/healthsystemService";
 import OnError from "src/_helpers/onerror";
 import { notify } from "reapop";
 import { useHistory } from "react-router-dom";
@@ -35,35 +42,134 @@ const schema = yup.object().shape({
     .matches(ValidationPatterns.phoneRegExp, "Phone number is not valid"),
   contactEmail: yup.string().required("Contact email is required").email(),
 });
-const HealthSystemForm = ({ partyRoleId }) => {
+
+const HealthSystemForm = ({
+  defaultValues,
+  isEdit = false,
+  partyRoleId = null,
+}) => {
   const {
     register,
     handleSubmit,
     setValue,
     getValues,
+    reset,
+    control,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+
+  // const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
+  const { dirtyFields } = useFormState({
+    control,
+  });
 
   const dispatch = useDispatch();
   let history = useHistory();
 
-  const [healthSystemData, setHealthSystemData] = useState();
-  //if this a edit form get the data
   useEffect(() => {
-    if (partyRoleId) {
+    reset(defaultValues);
+  }, [defaultValues]);
+
+  const updateHealthInfo = async () => {
+   
+    try {
+      
+    
+    let updatHealthSystem = {
+      ...(dirtyFields.name && { healthSystem: { name: getValues("name") } }),
+      ...((dirtyFields.address1 ||
+        dirtyFields.address2 ||
+        dirtyFields.city ||
+        dirtyFields.state ||
+        dirtyFields.zip ||
+        dirtyFields.shippingAddress1 ||
+        dirtyFields.shippingAddress2 ||
+        dirtyFields.shippingCity ||
+        dirtyFields.shippingState ||
+        dirtyFields.shippingZip) && {
+        postalAddress: [
+         ...(dirtyFields.address1 ||
+            dirtyFields.address2 ||
+            dirtyFields.city ||
+            dirtyFields.state ||
+            dirtyFields.zip) ?[ {
+              partyContactTypeId: PartyTypeEnum.primary,
+              address1: getValues("address1"),
+              address2: getValues("address2"),
+              city: getValues("city"),
+              state: getValues("state"),
+              zip: getValues("zip"),
+            }]:[],
+
+            ...(dirtyFields.shippingAddress1 ||
+              dirtyFields.shippingAddress2 ||
+              dirtyFields.shippingCity ||
+              dirtyFields.shippingState ||
+              dirtyFields.shippingZip)? [ {
+              partyContactTypeId: PartyTypeEnum.shipping,
+              address1: getValues("shippingAddress1"),
+              address2: getValues("shippingAddress2"),
+              city: getValues("shippingCity"),
+              state: getValues("shippingState"),
+              zip: getValues("shippingZip"),
+            }]:[]
+
+        
+        ],
+      }),
+      ...(dirtyFields.phone && {
+        telecommunicationsNumber: {
+          partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
+          number: getValues("phone"),
+        },
+      }),
+      ...((dirtyFields.contactName ||
+        dirtyFields.contactPhone ||
+        dirtyFields.contactEmail) && {
+        patientAccessContact: {
+          name: getValues("contactName"),
+          phone: getValues("contactPhone"),
+          email: getValues("contactEmail"),
+        },
+      }),
+    };
+  
+
+
+    if (Object.keys(updatHealthSystem).length == 0) {
+      dispatch(notify(`No record to update`, "error"));
+    } else {
+     
       try {
-        // console.log(partyRoleId);
-      } catch (error) {}
+        const result = await updateHealthSystemByPartyRoleId(
+          partyRoleId,
+          updatHealthSystem
+        );
+        if (result.data.message == ServiceMsg.OK) {
+          dispatch(notify(`Successfully updated`, "success"));
+          history.push("/healthsystem");
+        }
+      } catch (error) {
+        OnError(error, dispatch);
+      }
     }
-  }, [partyRoleId]);
+
+  } catch (error) {
+    OnError(error, dispatch);
+  }
+  };
 
   const handleShippingChecked = (event) => {
     if (event.target.checked) {
-      setValue("shippingAddress1", getValues("address1"),{ shouldValidate: true });
-      setValue("shippingAddress2", getValues("address2"),{ shouldValidate: true });
-      setValue("shippingCity", getValues("city"),{ shouldValidate: true });
-      setValue("shippingState", getValues("state"),{ shouldValidate: true });
-      setValue("shippingZip", getValues("zip"),{ shouldValidate: true });
+      setValue("shippingAddress1", getValues("address1"), {
+        shouldValidate: true,
+      });
+      setValue("shippingAddress2", getValues("address2"), {
+        shouldValidate: true,
+      });
+      setValue("shippingCity", getValues("city"), { shouldValidate: true });
+      setValue("shippingState", getValues("state"), { shouldValidate: true });
+      setValue("shippingZip", getValues("zip"), { shouldValidate: true });
     } else {
       setValue("shippingAddress1", "");
       setValue("shippingAddress2", "");
@@ -110,7 +216,7 @@ const HealthSystemForm = ({ partyRoleId }) => {
     try {
       if (newHealthSystem) {
         const result = await addHealthSystemNew(newHealthSystem);
-        if ((result.data.message = "OK")) {
+        if (result.data.message == ServiceMsg.OK) {
           dispatch(notify(`Successfully added`, "success"));
           history.push("/healthsystem");
         }
@@ -355,12 +461,22 @@ const HealthSystemForm = ({ partyRoleId }) => {
 
         <div className="row">
           <div className="col-md-12">
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg float-right"
-            >
-              Save
-            </button>
+            {isEdit ? (
+              <button
+                type="button"
+                onClick={updateHealthInfo}
+                className="btn btn-primary btn-lg float-right"
+              >
+                Update
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="btn btn-primary btn-lg float-right"
+              >
+                Save
+              </button>
+            )}
           </div>
         </div>
       </form>

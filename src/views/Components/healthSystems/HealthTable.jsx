@@ -161,7 +161,14 @@ const HealthTable = () => {
   };
 
   const redirectToPage=(value)=>{
-    history.push(`/healthsystem/profile/${value}`);
+    // history.push(`/healthsystem/profile/${value}`);
+
+
+    history.push({
+      pathname: `/healthsystem/profile`,
+      search: `?id=${value}`,
+      // state: { detail: 'some_value' }
+  });
 
   }
 

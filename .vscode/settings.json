@@ -1,3 +1,7 @@
 {
-    "emmet.syntaxProfiles": { "javascript": "jsx" }
+    "emmet.syntaxProfiles": {
+        "javascript": "jsx"
+    },
+    "prettier.printWidth": 380
+    
 }
