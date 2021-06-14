@@ -1,19 +1,37 @@
 import loginReducer  from './loginReducer';
 import changeState from './changeReducer'
 
+
 //third party npm for popup 
 import {reducer as notificationsReducer} from 'reapop'
 
 
 import {combineReducers } from 'redux'
+import { persistReducer } from "redux-persist";
+import storage from 'redux-persist/lib/storage';
 
 
+const persistConfig={
+   key:'root',
+   storage,
+   whitelist:['Login']
+}
 
-const allReducers= combineReducers({
+const rootReducer= combineReducers({
    Login: loginReducer,
    sidebar: changeState,
    notifications: notificationsReducer(),
 
 })
+
+
+// const allReducers= combineReducers({
+//    Login: loginReducer,
+//    sidebar: changeState,
+//    notifications: notificationsReducer(),
+
+// })
+
+const allReducers =persistReducer(persistConfig,rootReducer)
 
 export default allReducers;

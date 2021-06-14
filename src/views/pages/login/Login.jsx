@@ -97,7 +97,7 @@ const Login = () => {
   <input type="checkbox" name="KeepSign" id="" /> <span className="label pl-1 pt-1">Keep me signed in</span>
 </div>
 <div className="col-md-6 text-right">
-<div className=" label  text-right text-loginblue  font-lato-bold cil-cursor curson-point" onClick={redirectToPage}>
+<div className=" label  text-right text-loginblue  font-lato-bold cil-cursor cursor-point" onClick={redirectToPage}>
           Forgot Password?
         </div>
 </div>

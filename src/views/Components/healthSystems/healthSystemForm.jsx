@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm, useFormState } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -40,7 +40,7 @@ const schema = yup.object().shape({
     .string()
     .required("Contact phone is required")
     .matches(ValidationPatterns.phoneRegExp, "Phone number is not valid"),
-  contactEmail: yup.string().required("Contact email is required").email(),
+  contactEmail: yup.string().required("Contact email is required").email("Contact Email must be a valid email"),
 });
 
 const HealthSystemForm = ({
@@ -179,6 +179,19 @@ const HealthSystemForm = ({
     }
   };
 
+
+const healthSystemFormSubmit=(data)=>{
+  if(isEdit){
+    updateHealthInfo();
+
+  }
+  else{
+    addHealthSystem(data);
+  }
+}
+
+
+
   const addHealthSystem = async (data) => {
     const newHealthSystem = {
       healthSystem: {
@@ -212,6 +225,8 @@ const HealthSystemForm = ({
         email: data.contactEmail,
       },
     };
+   
+
 
     try {
       if (newHealthSystem) {
@@ -228,7 +243,13 @@ const HealthSystemForm = ({
 
   return (
     <div className="p-4">
-      <form onSubmit={handleSubmit(addHealthSystem)}>
+
+
+
+    
+     <form onSubmit={handleSubmit(healthSystemFormSubmit)}>
+     
+
         <div className="row mb-3">
           <div className="col-md-6">
             <div className="form-group">
@@ -461,7 +482,15 @@ const HealthSystemForm = ({
 
         <div className="row">
           <div className="col-md-12">
-            {isEdit ? (
+  
+          <button
+                type="submit"
+                className="btn btn-primary btn-lg float-right"
+              >
+               {isEdit?'Update':'Save'} 
+              </button>
+
+            {/* {isEdit ? (
               <button
                 type="button"
                 onClick={updateHealthInfo}
@@ -476,7 +505,7 @@ const HealthSystemForm = ({
               >
                 Save
               </button>
-            )}
+            )} */}
           </div>
         </div>
       </form>

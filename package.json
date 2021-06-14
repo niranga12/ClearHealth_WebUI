@@ -54,6 +54,7 @@
     "react-table": "^7.7.0",
     "reapop": "^3.0.4",
     "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "sass": "^1.32.8",
     "yup": "^0.32.9"

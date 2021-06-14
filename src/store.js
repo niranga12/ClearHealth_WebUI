@@ -1,7 +1,7 @@
 import { applyMiddleware, createStore ,compose} from "redux";
 import   allReducers from 'src/reducers'
 import thunk from 'redux-thunk';
-
+import { persistStore } from "redux-persist";
 
 
 
@@ -21,10 +21,12 @@ import thunk from 'redux-thunk';
 // const store = createStore(changeState);
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(
+export const store = createStore(
   allReducers,
   //  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   composeEnhancers(applyMiddleware(thunk)) 
   );
 
-export default store;
+export const  persistor = persistStore(store);
+
+export default {store, persistor};
