@@ -135,7 +135,6 @@ const HealthSystemForm = ({
     };
   
 
-
     if (Object.keys(updatHealthSystem).length == 0) {
       dispatch(notify(`No record to update`, "error"));
     } else {
@@ -162,14 +161,14 @@ const HealthSystemForm = ({
   const handleShippingChecked = (event) => {
     if (event.target.checked) {
       setValue("shippingAddress1", getValues("address1"), {
-        shouldValidate: true,
+        shouldValidate: true, shouldDirty:true
       });
       setValue("shippingAddress2", getValues("address2"), {
-        shouldValidate: true,
+        shouldValidate: true, shouldDirty:true
       });
-      setValue("shippingCity", getValues("city"), { shouldValidate: true });
-      setValue("shippingState", getValues("state"), { shouldValidate: true });
-      setValue("shippingZip", getValues("zip"), { shouldValidate: true });
+      setValue("shippingCity", getValues("city"), { shouldValidate: true ,shouldDirty:true});
+      setValue("shippingState", getValues("state"), { shouldValidate: true, shouldDirty:true });
+      setValue("shippingZip", getValues("zip"), { shouldValidate: true , shouldDirty:true});
     } else {
       setValue("shippingAddress1", "");
       setValue("shippingAddress2", "");

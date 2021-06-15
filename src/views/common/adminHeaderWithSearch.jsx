@@ -13,8 +13,8 @@ const AdminHeaderWithSearch = ({handleSearchChange,handleAddNew, placeholder="&#
             </div>
             <div className="col-md-6">
                    
-                    <button type="button" className="btn btn-primary float-right ml-3 text-white"  onClick={handleAddNew}> <CIcon content={freeSet.cilPlus}/> {buttonTitle}</button>
-                    <input type="text"  onBlur={handleSearchChange}  className="float-right form-control-sm w-50  fa " placeholder={placeholder} />
+                    <button type="button" className="btn btn-primary float-right ml-3 text-white"  onClick={handleAddNew}> <CIcon content={freeSet.cilPlus} color="white" className="add-icon-set" /> <span className="pt-1"> {buttonTitle}</span></button>
+                  <div className="float-right w-50"> <span className="fa fa-search search-icon" ></span> <input type="text"  onBlur={handleSearchChange}  className=" form-control-sm  search-space " placeholder={placeholder} /> </div> 
             </div>
             
         </div>

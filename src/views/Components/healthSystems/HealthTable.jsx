@@ -12,39 +12,13 @@ import PaginationTable from "src/views/common/paginationTable";
 // import history from "src/_helpers/history";
 // import { getUserList } from "src/service/userService";
 import OnError from "src/_helpers/onerror";
-import { formatPhoneNumber, formatPhoneNumberIntl } from 'react-phone-number-input'
 import PhoneNumberFormater from "src/reusable/PhoneNumberFormater";
-
 
 const initialSearch = {
   itemsPerPage: TableSettingsEnum.ItemPerPage,
   pageNumber: 1,
   searchTerm: "",
 };
-
-// function getFormattedPhoneNum( input ) {
-//   let output = "(";
-//   input.replace( /^\D*(\d{0,3})\D*(\d{0,3})\D*(\d{0,4})/, function( match, g1, g2, g3 )
-//       {
-//         if ( g1.length ) {
-//           output += g1;
-//           if ( g1.length == 3 ) {
-//               output += ")";
-//               if ( g2.length ) {
-//                   output += " " + g2; 
-//                   if ( g2.length == 3 ) {
-//                       output += " - ";
-//                       if ( g3.length ) {
-//                           output += g3;
-//                       }
-//                   }
-//               }
-//            }
-//         }
-//       }       
-//     );        
-//   return output;
-//  }      
 
 
 function CellContract({ row }) {
@@ -61,7 +35,6 @@ function CellContract({ row }) {
         {" "}
         <span className="fa fa-envelope text-health-icon pr-1"></span>{" "}
         {row.original.contactElectronicAddress}
-      
       </div>
     </>
   );
@@ -83,7 +56,7 @@ function CellAddress({ row }) {
         {/* {row.original.phoneNumber} */}
         {/* {row.original.phoneNumber && formatPhoneNumber(row.original.phoneNumber)} */}
         {/* { formatPhoneNumberIntl("7765855854")} */}
-       {PhoneNumberFormater(row.original.phoneNumber)} 
+        {PhoneNumberFormater(row.original.phoneNumber)}
       </div>
     </>
   );
@@ -116,7 +89,7 @@ const HealthTable = () => {
           resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
         //  console.log(pageCount)
         setPage(Math.ceil(pageCount));
-        
+
         // console.log(count)
       } catch (error) {
         OnError(error, dispatch);
@@ -160,17 +133,15 @@ const HealthTable = () => {
     history.push("/healthsystem/profile");
   };
 
-  const redirectToPage=(value)=>{
+  const redirectToPage = (value) => {
     // history.push(`/healthsystem/profile/${value}`);
-
 
     history.push({
       pathname: `/healthsystem/profile`,
       search: `?id=${value}`,
       // state: { detail: 'some_value' }
-  });
-
-  }
+    });
+  };
 
   //SETTING COLUMNS NAMES
   const columns = useMemo(
@@ -179,7 +150,7 @@ const HealthTable = () => {
         Header: "Name",
         accessor: "name", // accessor is the "key" in the data
         Cell: ({ value }) => (
-          <h5 className="font-weight-normal text-black"> {value} </h5>
+          <h5 className="font-weight-normal text-black ml-4"> {value} </h5>
         ),
       },
       {
@@ -196,7 +167,10 @@ const HealthTable = () => {
         accessor: "partyRoleId",
         // accessor: '[row identifier to be passed to button]',
         Cell: ({ value }) => (
-          <div className="text-center text-gray font-15re cursor-point" onClick={()=>redirectToPage(value)}>
+          <div
+            className="text-center text-gray font-15re cursor-point"
+            onClick={() => redirectToPage(value)}
+          >
             <span className="fa fa-ellipsis-h "></span>
           </div>
         ),
@@ -209,13 +183,12 @@ const HealthTable = () => {
     useTable({ columns, data });
   return (
     <>
-
       {/* <HealthSystemHeader  handleSearchChange={searchTextChange } handleAddNew={addNewHeathSystem}/> */}
       <AdminHeaderWithSearch
         showCount={count}
         handleSearchChange={searchTextChange}
         handleAddNew={addNewHeathSystem}
-        placeholder="&#xF002; Search here.."
+        placeholder="Search here.."
         buttonTitle="New Health System"
       />
       <div className="LatoRegular">
@@ -247,8 +220,20 @@ const HealthTable = () => {
             })}
           </tbody>
         </table>
-
-        <PaginationTable handlePageChange={pageChange} countPage={page}  count={count} currentPage={searchQuery.pageNumber}/>
+        <div className="row">
+          <div className="col-md-12 pl-5 pr-5">
+            {count > 0 ? (
+              <PaginationTable
+                handlePageChange={pageChange}
+                countPage={page}
+                count={count}
+                currentPage={searchQuery.pageNumber}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
       </div>
     </>
   );

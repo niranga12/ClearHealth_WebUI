@@ -205,7 +205,11 @@ body {
 }
 
 .login-mt {
-  margin-top: 5vh;
+  margin-top: 8vh;
+}
+
+button:focus{
+  outline: none !important;
 }
 .email {
   height: 25px;
@@ -444,7 +448,11 @@ label,
   background-color: #f7f7f7 !important;
   border-color: #f7f7f7 !important;
 }
+.table .thead-dark th:first-child {
+  padding-left: 2.2rem !important;
 
+  
+}
 .rectangle-intable {
   box-sizing: border-box;
   // height: 30px;
@@ -513,6 +521,22 @@ label,
 .MuiPaginationItem-root {
   color: #92929D !important;
 }
+
+.add-icon-set{
+  margin-top: -1px  !important;
+    color: #fff !important;
+}
+
+.search-icon{
+  position: absolute;
+    top: 12px;
+    margin-left: 10px;
+    color: #92929D;
+}
+.search-space{
+  padding-left: 30px;
+}
+
 
 @media (max-width: 768px) {
   .bg-login {
