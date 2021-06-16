@@ -34,14 +34,21 @@ const ResetPassword = () => {
   });
 
   const [userName, setUsername] = useState("");
+  const [isValid, setIsValid] = useState(true);
   const disPatch = useDispatch();
 
   useEffect(() => {
+    
     forgotUserValidate(id)
       .then((res) => {
         setUsername(res.data.data);
+        setIsValid(true);
+
       })
-      .catch((error) => onError(error, disPatch));
+      .catch((error) => {onError(error, disPatch);
+        // console.log( error.response.data.message);
+        setIsValid(false);
+      });
   }, []);
 
   const resetPass = async (data) => {
@@ -62,38 +69,45 @@ const ResetPassword = () => {
     }
   };
 
+const resetForm=()=>{
+  return (
+    <form onSubmit={handleSubmit(resetPass)}>
+        
+    <label className="mt-3 p-0 col-md-12">Email address : {userName} </label>
+    <label className="mt-3">Password</label>
+    <input
+      type="Password"
+      {...register("password")}
+      className="form-control mb-2 "
+      placeholder="Password"
+      autoComplete="new-off"
+    />
+    <div className="small text-danger  ">{errors.password?.message}</div>
+    <label className="mt-3">Re-Enter Password</label>
+    <input
+      type="password"
+      {...register("retypePassword")}
+      className="form-control mb-2 "
+      placeholder="Re-Enter Password"
+      autoComplete="new-off"
+    />
+    <div className="small text-danger  ">
+      {errors.retypePassword?.message}
+    </div>
+
+    <button className="btn btn-primary btn-lg col-md-12 mt-1 p-3">
+      Reset
+    </button>
+  </form>
+  );
+}
+
+
   return (
     <SingleLayout>
       <h2 className="font-lato-bold">Reset password</h2>
-      <form onSubmit={handleSubmit(resetPass)}>
-        {/* <div className="row"> */}
-        <label className="mt-3 p-0 col-md-12">Email address : {userName} </label>
-        {/* </div> */}
-        <label className="mt-3">Password</label>
-        <input
-          type="Password"
-          {...register("password")}
-          className="form-control mb-2 "
-          placeholder="Password"
-          autoComplete="new-off"
-        />
-        <div className="small text-danger  ">{errors.password?.message}</div>
-        <label className="mt-3">Re-Enter Password</label>
-        <input
-          type="password"
-          {...register("retypePassword")}
-          className="form-control mb-2 "
-          placeholder="Re-Enter Password"
-          autoComplete="new-off"
-        />
-        <div className="small text-danger  ">
-          {errors.retypePassword?.message}
-        </div>
-
-        <button className="btn btn-primary btn-lg col-md-12 mt-1 p-3">
-          Reset
-        </button>
-      </form>
+     
+     {isValid? resetForm() : <h4  className="font-lato-bold text-danger mt-3"> Invalid Request</h4>}
     </SingleLayout>
   );
 };

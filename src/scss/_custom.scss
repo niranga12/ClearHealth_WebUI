@@ -208,8 +208,9 @@ body {
   margin-top: 8vh;
 }
 
-button:focus{
-  outline: none !important;
+button:focus {
+ 
+  outline: 0px auto white !important;
 }
 .email {
   height: 25px;
