@@ -1,6 +1,15 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import { logoAccounting } from 'src/assets/icons/logo-accounting'
+import { logoOrders } from 'src/assets/icons/logo-orders'
+import { logoHealthSystem } from 'src/assets/icons/logo-healthsystem'
+import { logoHospital } from 'src/assets/icons/logo-hospital'
+import { logoProviders } from 'src/assets/icons/logo-provider'
+import { pricingTool } from 'src/assets/icons/logo-pricingtool'
+import { logoPatients } from 'src/assets/icons/logo-patients'
+import { Profile } from 'src/assets/icons/logo-profile'
+import { logoMenu } from 'src/assets/icons/logo-menu'
 
 
 const _nav =  [
@@ -21,9 +30,9 @@ const _nav =  [
   {
     _tag: 'CSidebarNavItem',
     name: 'Orders',
-    // to: '/theme/colors',
+     to: '/main',
     // icon: 'cil-drop',
-    icon:<CIcon content={freeSet.cilLibraryAdd} size={'lg'} className="mr-3"/>,
+    icon:<CIcon content={logoMenu} size={'2xl'} className="m-auto"/>,
   },
   // {
   //   _tag: 'CSidebarNavItem',
@@ -35,56 +44,112 @@ const _nav =  [
   //   _tag: 'CSidebarNavTitle',
   //   _children: ['Admin']
   // },
+
+
+
+
+  // {
+  //   _tag: 'CSidebarNavDropdown',
+  //   name: 'Admin',
+  //   route: '/base',
+  //   icon:<CIcon content={freeSet.cilAddressBook} size={'lg'} className="mr-3"/>,
+  //   // icon: 'cil-puzzle',
+  //   _children: [
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Health Systems',
+  //        to: '/healthsystem',
+  //       icon: <CIcon content={freeSet.cilHeart} size={'lg'} className="mr-3"/>,
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Hospitals',
+  //       // to: '/base/cards',
+  //       icon:<CIcon content={freeSet.cilHospital} size={'lg'} className="mr-3"/>,
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Providers',
+  //       icon: <CIcon content={freeSet.cilBadge} size={'lg'} className="mr-3"/>,
+  //       // to: '/base/cards',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Specialities',
+  //       icon: <CIcon content={freeSet.cilStar} size={'lg'} className="mr-3"/>,
+  //       // to: '/base/cards',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Packages',
+  //       icon: <CIcon content={freeSet.cilFile} size={'lg'} className="mr-3"/>,
+  //       // to: '/base/cards',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Patients',
+  //       icon: <CIcon content={freeSet.cilGroup} size={'lg'} className="mr-3"/>,
+  //       // to: '/base/cards',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Ancillary Providers',
+  //       // to: '/base/cards',
+  //       icon: <CIcon content={freeSet.cilNoteAdd} size={'lg'} className="mr-3"/>,
+  //     },
+  //   ]
+  // },
+
+
+ 
   {
-    _tag: 'CSidebarNavDropdown',
-    name: 'Admin',
-    route: '/base',
-    icon:<CIcon content={freeSet.cilAddressBook} size={'lg'} className="mr-3"/>,
-    // icon: 'cil-puzzle',
-    _children: [
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Health Systems',
-         to: '/healthsystem',
-        icon: <CIcon content={freeSet.cilHeart} size={'lg'} className="mr-3"/>,
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Hospitals',
-        // to: '/base/cards',
-        icon:<CIcon content={freeSet.cilHospital} size={'lg'} className="mr-3"/>,
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Providers',
-        icon: <CIcon content={freeSet.cilBadge} size={'lg'} className="mr-3"/>,
-        // to: '/base/cards',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Specialities',
-        icon: <CIcon content={freeSet.cilStar} size={'lg'} className="mr-3"/>,
-        // to: '/base/cards',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Packages',
-        icon: <CIcon content={freeSet.cilFile} size={'lg'} className="mr-3"/>,
-        // to: '/base/cards',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Patients',
-        icon: <CIcon content={freeSet.cilGroup} size={'lg'} className="mr-3"/>,
-        // to: '/base/cards',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Ancillary Providers',
-        // to: '/base/cards',
-        icon: <CIcon content={freeSet.cilNoteAdd} size={'lg'} className="mr-3"/>,
-      },
-    ]
+    _tag: 'CSidebarNavItem',
+    name: 'Hospitals',
+    // to: '/base/cards',
+    icon:<CIcon content={logoHospital} size={'2xl'} className="m-auto"/>,
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Health Systems',
+     to: '/healthsystem',
+    icon: <CIcon content={logoHealthSystem} size={'2xl'} className="m-auto"/>,
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Providers',
+    icon: <CIcon content={logoProviders} size={'2xl'} className="m-auto"/>,
+    // to: '/base/cards',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Pricing Tools',
+    icon: <CIcon content={pricingTool} size={'2xl'} className="m-auto"/>,
+    // to: '/base/cards',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Orders',
+    icon: <CIcon content={logoOrders} size={'2xl'} className="m-auto"/>,
+    // to: '/base/cards',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Patients',
+    icon: <CIcon content={logoPatients} size={'2xl'} className="m-auto"/>,
+    // to: '/base/cards',
+  },
+ 
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Accounting',
+    // to: '/base/cards',
+    icon: <CIcon content={logoAccounting} size={'2xl'} className="m-auto"/>,
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Profile',
+    icon: <CIcon content={Profile} size={'2xl'} className="m-auto"/>,
+    // to: '/base/cards',
   },
 
   // {

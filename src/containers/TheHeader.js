@@ -44,22 +44,23 @@ const TheHeader = () => {
 
   return (
     <CHeader withSubheader className="box-shadow-bottom  ">
+       <img src={logo} alt="Logo" className="sm-logo-setting-layout"/> 
       <CToggler
         inHeader
         className="ml-md-3 d-lg-none"
         onClick={toggleSidebarMobile}
       />
-      <CToggler
+      {/* <CToggler
         inHeader
         className="ml-3 d-md-down-none"
         onClick={toggleSidebar}
-      />
-      <CHeaderBrand className=" d-lg-none" to="/">
+      /> */}
+      {/* <CHeaderBrand className=" d-lg-none" to="/"> */}
 
-      <img src={logo} alt="Logo" className="sm-logo-setting"/>   
+      {/* <img src={logo} alt="Logo" className="sm-logo-setting"/>    */}
       {/* <Logo classname="sm-logo-setting" /> */}
         {/* <CIcon name="logo" height="60" alt="Logo" /> */}
-      </CHeaderBrand>
+      {/* </CHeaderBrand> */}
 
       <CHeaderNav className="d-md-down-none mr-auto">
         {/* <CHeaderNavItem className="px-3" >

@@ -78,7 +78,7 @@ export const login = (loginDetail,history) => async (dispatch) => {
               });
               
               dispatch(notify('Logged in successfully', 'success'))
-              history.push("/dashboard");
+              history.push("/main");
           }
       ).catch( error=>  dispatch(notify('Invalid Email or Password ', 'error'))
         //  onError(error, dispatch) 

@@ -7,6 +7,7 @@ import TheHeaderDropdownNotif from './TheHeaderDropdownNotif'
 import TheHeaderDropdownTasks from './TheHeaderDropdownTasks'
 import TheLayout from './TheLayout'
 import TheSidebar from './TheSidebar'
+import TheSideNavigation from './TheSideNavigation'
 import TheTittleUser from "./TheTittleUser";
 
 export {
@@ -19,5 +20,6 @@ export {
   TheHeaderDropdownTasks,
   TheLayout,
   TheSidebar,
-  TheTittleUser
+  TheTittleUser,
+  TheSideNavigation
 }

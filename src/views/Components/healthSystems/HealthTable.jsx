@@ -191,7 +191,7 @@ const HealthTable = () => {
         placeholder="Search here.."
         buttonTitle="New Health System"
       />
-      <div className="LatoRegular">
+      <div className="LatoRegular tableCover">
         <table {...getTableProps} className="table table-hover ">
           <thead className="thead-dark LatoBlack">
             {headerGroups.map((headerGroup) => (

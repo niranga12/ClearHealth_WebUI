@@ -10,6 +10,7 @@ import {
   
   CSidebarNavDropdown,
   CSidebarNavItem,
+  CLink,
   
 } from "@coreui/react";
 
@@ -17,6 +18,7 @@ import CIcon from "@coreui/icons-react";
 
 // sidebar nav config
 import navigation from "./_nav";
+import { freeSet } from "@coreui/icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 // import { changeHeadToggle } from "src/actions/changeAction";
@@ -24,6 +26,36 @@ import navigation from "./_nav";
 const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.sidebar.sidebarShow);
+ console.log(navigation) 
+ const navLinks=navigation.map((item,index)=>
+  <li className="CUnavi" key={index} >
+  
+
+  <CLink to={item.to} {...item}>
+ <div  className="p-2 CNradius m-auto">
+    {item.icon} 
+    
+    </div>
+</CLink>
+</li>
+)
+
+// const navLInks=()=>{
+//   debugger;
+// <ul>
+//   {navigation.map((item,index)=>
+//     <li key={index}>
+    
+
+//     <CLink to={item.to} {...item}>
+//    <div  className="p-3 bg-success m-auto"> {item.name} </div>
+// </CLink>
+// </li>
+//   )
+// }
+//   </ul>
+// }
+
 
   return (
     <CSidebar
@@ -56,8 +88,19 @@ const TheSidebar = () => {
             CSidebarNavTitle,
           }}
         />
+<ul className="list-unstyled p-0">
+  {navLinks}
+  </ul>
+      
+        {/* <div  className="p-3 bg-success m-auto">
+        <CIcon content={freeSet.cilLibraryAdd} size={'2xl'} className="m-auto" />
+        </div> */}
+
         {/* </div> */}
       </CSidebarNav>
+
+
+
       <div className="row sidebar-bottom">
         <div className="col-md-12 pb-2">
           <span className="email-sm"></span>

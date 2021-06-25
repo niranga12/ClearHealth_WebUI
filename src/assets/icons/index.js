@@ -1,6 +1,16 @@
 import { sygnet } from './sygnet'
 import { logo } from './logo'
 import { logoNegative } from './logo-negative'
+import {logoHealthSystem } from './logo-healthsystem';
+import { logoHospital } from './logo-hospital';
+import { pricingTool } from "./logo-pricingtool";
+import {logoAccounting  } from "./logo-accounting";
+import {logoOrders  } from "./logo-orders";
+import {logoPatients  } from "./logo-patients";
+import {Profile  } from "./logo-profile";
+import {logoProviders  } from "./logo-provider";
+import {logoMenu  } from "./logo-menu";
+
 
 import {
   cibSkype,
@@ -133,7 +143,17 @@ import {
 export const icons = Object.assign({}, {
   sygnet,
   logo,
-  logoNegative
+  logoNegative, 
+  logoHealthSystem,
+  logoHospital,
+  pricingTool,
+logoAccounting,
+logoOrders,
+logoPatients,
+Profile,
+logoProviders,
+logoMenu
+
 }, {
   cilAlignCenter,
   cilAlignLeft,

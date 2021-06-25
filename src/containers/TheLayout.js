@@ -5,7 +5,8 @@ import {
   TheContent,
   TheSidebar,
   
-  TheHeader
+  TheHeader,
+  TheSideNavigation
 } from './index'
 import NotificationLayout from "../_helpers/notification";
 
@@ -16,10 +17,13 @@ const TheLayout = () => {
 
     <div className="c-app c-default-layout">
     <NotificationLayout />
-      <TheSidebar/>
+    {/* <TheSidebar/> */}
       <div className="c-wrapper">
         <TheHeader/>
-        <div className="c-body">
+        <TheSideNavigation/>
+
+        <div className="c-body CNavi-left">
+
           <TheContent/>
         </div>
         {/* <TheFooter/> */}
