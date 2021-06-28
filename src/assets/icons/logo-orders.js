@@ -1,5 +1,5 @@
 export const logoOrders=['30 30', `
-<title>Health System</title>
+
 <defs>
 <rect id="path-1" x="0" y="0" width="40" height="40"></rect>
 </defs>

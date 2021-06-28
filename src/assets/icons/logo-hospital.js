@@ -1,5 +1,5 @@
 export const logoHospital=['40 40', `
-<title>Health System</title>
+
 
 <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 <g id="2---CHP---Admin-View" transform="translate(-195.000000, -216.000000)" fill-rule="nonzero">

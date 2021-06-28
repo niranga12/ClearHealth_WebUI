@@ -1,5 +1,5 @@
 export const logoProviders=['30 30', `
-<title>Health System</title>
+
 
 
 

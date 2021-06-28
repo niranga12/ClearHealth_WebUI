@@ -1,6 +1,6 @@
 
 export const Profile=['30 30', `
-<title>Health System</title>
+
 
 
 

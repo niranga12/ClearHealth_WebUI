@@ -1,5 +1,5 @@
 export const logoMenu=['30 30', `
-<title>Health System</title>
+
 
 <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 <g id="3---CHP---Hospitals" transform="translate(-35.000000, -155.000000)" fill-rule="nonzero">

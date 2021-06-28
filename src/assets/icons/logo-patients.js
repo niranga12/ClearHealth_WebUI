@@ -1,5 +1,5 @@
 export const logoPatients=['40 40', `
-<title>Health System</title>
+
 <defs>
 <filter color-interpolation-filters="auto" id="filter-1">
     <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.478431 0 0 0 0 0.494118 0 0 0 0 0.513725 0 0 0 1.000000 0"></feColorMatrix>

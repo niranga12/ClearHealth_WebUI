@@ -1,5 +1,5 @@
 export const logoAccounting=['30 30', `
-    <title>Health System</title>
+    
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
     <g id="3---CHP---Hospitals" transform="translate(-20.000000, -700.000000)" fill-rule="nonzero">
         <g id="Group-36" transform="translate(0.000000, 80.000000)">

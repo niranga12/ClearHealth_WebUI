@@ -631,6 +631,11 @@ background-color: rgba(91,77,253,0.1);
 // width: 100%;
 }
 
+.table.table-hover tbody{
+  border-bottom: 1px solid #d8dbe05c;
+
+}
+
 @media (max-width: 768px) {
   .bg-login {
     background-color: #ffffff;
