@@ -163,7 +163,7 @@ const HealthTable = () => {
         Cell: CellContract,
       },
       {
-        Header: "Action",
+        Header: "",
         accessor: "partyRoleId",
         // accessor: '[row identifier to be passed to button]',
         Cell: ({ value }) => (
