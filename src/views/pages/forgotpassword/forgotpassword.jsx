@@ -28,7 +28,7 @@ export default function ForgotPassword() {
     const forgotFormSubmit = (data) => {
         forgotPassword(data).then(
             res=>{
-            dispatch(notify('please check your email.', 'success'));
+            dispatch(notify('Please check your email.', 'success'));
             history.push("/login");
             }
         ).catch((error) => onError(error, dispatch));
