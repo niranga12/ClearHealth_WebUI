@@ -4,7 +4,7 @@ export const logoHealthSystem=['30 30', `
         <rect id="path-1" x="0" y="0" width="40" height="40"></rect>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-    <g id="CHP---Admin-View---Health-Systems" transform="translate(-36.000000, -218.000000)">
+    <g id="CHP---Admin-View---Health-Systems" transform="translate(-35.000000, -215.000000)">
         <g id="healthsystem/selected" transform="translate(30.000000, 211.000000)">
             <mask id="mask-2" fill="white">
                 <use xlink:href="#path-1"></use>

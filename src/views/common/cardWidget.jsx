@@ -31,9 +31,9 @@ const CardWidget = ({ title = "", logoName = "", url = "/main" }) => {
             className="blue-ico"
           />
           <span className="c-avatar-status bg-success"></span>
-        </div>{" "}
+        </div>
         <div className="clearfix"></div>
-        <div className="text-capitalize font-weight-bold h4 pt-5 mt-5 text-left main-dashboard-color">
+        <div className="text-capitalize font-weight-bold h3 pt-5 mt-5 text-left main-dashboard-text">
           {title}
         </div>
       </div>

@@ -29,10 +29,10 @@ const _nav =  [
   // },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Orders',
+    name: 'Main',
      to: '/main',
     // icon: 'cil-drop',
-    icon:<CIcon content={logoMenu} size={'2xl'} className="m-auto"/>,
+    icon:<CIcon content={logoMenu} size={'2xl'}  className="m-auto"/>,
   },
   // {
   //   _tag: 'CSidebarNavItem',

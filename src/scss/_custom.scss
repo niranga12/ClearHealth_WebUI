@@ -551,8 +551,10 @@ label,
   color: #5B4DFD;
 
 }
-.main-dashboard-color{
+.main-dashboard-text{
   color: #222831;
+  line-height: 10px;
+
 }
 
 .border-radius-dashboard{
@@ -562,6 +564,7 @@ label,
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 2rem  !important;
+  cursor: pointer;
 
 }
 .blue-ico{
