@@ -11,7 +11,7 @@ import {
 import {notify} from 'reapop'
 
 
-import history from "../_helpers/history";
+// import history from "../_helpers/history";
 // import onError from "src/_helpers/onerror";
 import {userLogin} from "../service/userService";
 

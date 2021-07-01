@@ -13,6 +13,7 @@ import PaginationTable from "src/views/common/paginationTable";
 // import { getUserList } from "src/service/userService";
 import OnError from "src/_helpers/onerror";
 import PhoneNumberFormater from "src/reusable/PhoneNumberFormater";
+import DataTable from "src/views/common/dataTable";
 
 const initialSearch = {
   itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -179,8 +180,8 @@ const HealthTable = () => {
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+  // const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+  //   useTable({ columns, data });
   return (
     <>
       {/* <HealthSystemHeader  handleSearchChange={searchTextChange } handleAddNew={addNewHeathSystem}/> */}
@@ -190,9 +191,13 @@ const HealthTable = () => {
         handleAddNew={addNewHeathSystem}
         placeholder="Search here.."
         buttonTitle="New Health System"
+        title="Health Systems"
       />
-      <div className="LatoRegular tableCover">
-        <table {...getTableProps} className="table table-hover ">
+
+<DataTable columns={columns} data={data}/>
+
+      {/* <div className="LatoRegular tableCover"> */}
+        {/* <table {...getTableProps} className="table table-hover ">
           <thead className="thead-dark LatoBlack">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -219,7 +224,7 @@ const HealthTable = () => {
               );
             })}
           </tbody>
-        </table>
+        </table> */}
         <div className="row">
           <div className="col-md-12 pl-5 pr-5">
             {count > 0 ? (
@@ -234,7 +239,7 @@ const HealthTable = () => {
             )}
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 };

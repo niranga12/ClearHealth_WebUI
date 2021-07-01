@@ -635,6 +635,18 @@ background-color: rgba(91,77,253,0.1);
   border-bottom: 1px solid #d8dbe05c;
 
 }
+.btn-view-account{
+  border-radius: 10px;
+  background-color: #06C4AB;
+  border-color:#06C4AB; 
+  color: #FAFAFB;
+  box-shadow: 0 2px 15px 0 rgba(6,196,171,0.37);
+}
+.btn-view-account:hover{
+  box-shadow:none;
+  color: white;
+  
+}
 
 @media (max-width: 768px) {
   .bg-login {

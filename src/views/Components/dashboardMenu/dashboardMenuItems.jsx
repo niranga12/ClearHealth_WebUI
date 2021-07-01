@@ -9,7 +9,7 @@ const DashboardMenuItems = () => {
         <div className="container">
         <CRow className="p-3">
           <CCol xs="12" sm="6" lg="3">
-          <CardWidget title="Hospitals" logoName="logoHospital" />
+          <CardWidget title="Hospitals" logoName="logoHospital" url="/hospitals" />
           </CCol>
   
           <CCol sm="6" md="3">
