@@ -10,6 +10,9 @@ import {logoPatients  } from "./logo-patients";
 import {Profile  } from "./logo-profile";
 import {logoProviders  } from "./logo-provider";
 import {logoMenu  } from "./logo-menu";
+import {logoFreeSchedule  } from "./logo-freeschedule";
+import { logoDashboard } from "./logo-dashboard";
+import { logoPayment } from "./logo-payment";
 
 
 import {
@@ -137,7 +140,8 @@ import {
   cilUserUnfollow,
   cilX,
   cilXCircle,
-  cilWarning
+  cilWarning,
+  cilArrowLeft
 } from '@coreui/icons'
 
 export const icons = Object.assign({}, {
@@ -152,7 +156,10 @@ logoOrders,
 logoPatients,
 Profile,
 logoProviders,
-logoMenu
+logoMenu,
+logoFreeSchedule,
+logoDashboard,
+logoPayment
 
 }, {
   cilAlignCenter,
@@ -245,7 +252,9 @@ logoMenu
   cilUserUnfollow,
   cilX,
   cilXCircle,
-  cilWarning
+  cilWarning,
+  cilArrowLeft
+
 }, {
   cifUs,
   cifBr,

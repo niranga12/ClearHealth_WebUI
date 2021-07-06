@@ -15,7 +15,8 @@ const loading = (
 const TheContent = () => {
   return (
     <main className="c-main p-3  ">
-      <CContainer fluid className="card  cover-content  min-height-99 pt-2 pl-0 pr-0">
+      {/* <CContainer fluid className="card  cover-content  min-height-99 pt-2 pl-0 pr-0"> */}
+      <CContainer fluid className=" min-height-99 pt-2 pl-0 pr-0">
         <Suspense fallback={loading}>
           <Switch>
             {routes.map((route, idx) => {

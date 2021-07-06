@@ -1,10 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
 import {PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
 import {useHistory} from 'react-router-dom';
+import {getHealthSystemList} from 'src/service/healthsystemService';
+import OnError from 'src/_helpers/onerror';
+import {InvoiceReceiveMethod} from 'src/_helpers/CommonDataList';
+import {saveHospital, updateHospitalByPartyRoleId} from 'src/service/hospitalsService';
+import {notify} from 'reapop';
 
 const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital Name is required'),
@@ -14,6 +19,7 @@ const schema = yup.object().shape({
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required'),
+	phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
 	businessAddress1: yup.string().required('Business Address line 1 is required'),
 	businessAddress2: yup.string(),
 	businessCity: yup.string().required('City is required'),
@@ -24,17 +30,17 @@ const schema = yup.object().shape({
 	patientContactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
 	consolidatedInvoice: yup.string(),
 	applySAASTax: yup.string(),
-  taxId:yup.string(),
-  invoiceReceiveMethod:yup.string(),
-  accountNumber:yup.string(),
-  routing:yup.string(),
-  bankName:yup.string(),
-  contactEmail:yup.string(),
-  contactPhone:yup.string(),
-  contactName:yup.string()
+	taxId: yup.string().required('City is required'),
+	invoiceReceiveMethod: yup.string().required('Invoice receive method is required'),
+	accountNumber: yup.string().required('Account number is required'),
+	routing: yup.string().required('Routing is required'),
+	bankName: yup.string().required('Bank name is required'),
+	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
+	contactPhone: yup.string().required('Contact Phone is required'),
+	contactName: yup.string().required('Contact name is required'),
 });
 
-const HospitalForm = () => {
+const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 	const {
 		register,
 		handleSubmit,
@@ -50,11 +56,204 @@ const HospitalForm = () => {
 	const dispatch = useDispatch();
 	let history = useHistory();
 
-	const handleBusinessChecked = () => {};
+	const [healthSystems, setHealthSystem] = useState([]);
 
-  // form submit 
+	const handleBusinessChecked = (event) => {
+		if (event.target.checked) {
+			setValue('businessAddress1', getValues('address1'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('businessAddress2', getValues('address2'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('businessCity', getValues('city'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('businessState', getValues('state'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('businessZip', getValues('zip'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+		} else {
+			setValue('businessAddress1', '');
+			setValue('businessAddress2', '');
+			setValue('businessCity', '');
+			setValue('businessState', '');
+			setValue('businessZip', '');
+		}
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const result = await getHealthSystemList({});
+				setHealthSystem(result.data.data);
+			} catch (error) {
+				OnError(error, dispatch);
+			}
+		};
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		reset(defaultValues);
+	}, [ defaultValues ]);
+
+	// form submit
 	const hospitalFormSubmit = (data) => {
-		console.log(data);
+		
+		if (isEdit) {
+			updateHospitalInfo();
+		} else {
+			addHospital(data);
+		}
+	};
+
+	// save hospital
+	const addHospital = async (data) => {
+		const newHospital = {
+			hospital: {
+				healthSystemPartyRoleId: data.healthSystemPartyRoleId,
+				name: data.hospitalName,
+			},
+			postalAddress: [
+				{
+					partyContactTypeId: PartyTypeEnum.primary,
+					address1: data.address1,
+					address2: data.address2,
+					city: data.city,
+					state: data.state,
+					zip: data.zip,
+				},
+				{
+					partyContactTypeId: PartyTypeEnum.shipping,
+					address1: data.businessAddress1,
+					address2: data.businessAddress2,
+					city: data.businessCity,
+					state: data.businessState,
+					zip: data.businessZip,
+				},
+			],
+			telecommunicationsNumber: {
+				partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
+				number: data.phone,
+			},
+			patientAccessContact: {
+				name: data.patientContactName,
+				phone: data.patientContactPhone,
+				email: data.patientContactEmail,
+			},
+			paymentInfo: {
+				name: data.contactName,
+				phone: data.contactPhone,
+				email: data.contactEmail,
+				taxId: data.taxId,
+				bankName: data.bankName,
+				routing: data.routing,
+				accountNumber: data.accountNumber,
+				invoiceReceiveMethod: data.invoiceReceiveMethod,
+				applySAASTax: data.applySAASTax,
+				consolidatedInvoice: data.consolidatedInvoice,
+			},
+		};
+
+		try {
+			if (newHospital) {
+				let result = await saveHospital(newHospital);
+				if (result.data.message === ServiceMsg.OK) {
+					dispatch(notify(`Successfully added`, 'success'));
+					history.push('/hospitals');
+				}
+			}
+		} catch (error) {
+			OnError(error, dispatch);
+		}
+	};
+
+	// update hospital
+	const updateHospitalInfo = async () => {
+		try {
+		const  updateHospital =  {
+				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId) && {healthSystem: {name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId')}}),
+				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.shippingAddress1 || dirtyFields.shippingAddress2 || dirtyFields.shippingCity || dirtyFields.shippingState || dirtyFields.shippingZip) && {
+					postalAddress: [
+						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
+							? [
+									{
+										partyContactTypeId: PartyTypeEnum.primary,
+										address1: getValues('address1'),
+										address2: getValues('address2'),
+										city: getValues('city'),
+										state: getValues('state'),
+										zip: getValues('zip'),
+									},
+							  ]
+							: []),
+
+						...(dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip
+							? [
+									{
+										partyContactTypeId: PartyTypeEnum.shipping,
+										address1: getValues('businessAddress1'),
+										address2: getValues('businessAddress2'),
+										city: getValues('businessCity'),
+										state: getValues('businessState'),
+										zip: getValues('businessZip'),
+									},
+							  ]
+							: []),
+					],
+				}),
+				...((dirtyFields.patientContactName || dirtyFields.patientContactPhone || dirtyFields.patientContactEmail) && {
+					patientAccessContact: {
+						name: getValues('patientContactName'),
+						phone: getValues('patientContactPhone'),
+						email: getValues('patientContactEmail'),
+					},
+				}),
+				...(dirtyFields.phone && {
+					telecommunicationsNumber: {
+						partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
+						number: getValues('phone'),
+					},
+				}),
+				...((dirtyFields.contactName || dirtyFields.contactPhone || dirtyFields.contactEmail || dirtyFields.taxId || dirtyFields.bankName || dirtyFields.routing || dirtyFields.accountNumber || dirtyFields.invoiceReceiveMethod || dirtyFields.applySAASTax || dirtyFields.consolidatedInvoice) && {
+					paymentInfo: {
+						name: getValues('contactName'),
+						phone: getValues('contactPhone'),
+						email: getValues('contactEmail'),
+						taxId: getValues('taxId'),
+						bankName: getValues('bankName'),
+						routing: getValues('routing'),
+						accountNumber: getValues('accountNumber'),
+						invoiceReceiveMethod: getValues('invoiceReceiveMethod'),
+						applySAASTax: getValues('applySAASTax'),
+						consolidatedInvoice: getValues('consolidatedInvoice'),
+					},
+				}),
+			};
+			if (Object.keys(updateHospital).length == 0) {
+				dispatch(notify(`No record to update`, 'error'));
+			} else {
+				try {
+					const result = await updateHospitalByPartyRoleId(partyRoleId, updateHospital);
+					if (result.data.message == ServiceMsg.OK) {
+						dispatch(notify(`Successfully updated`, 'success'));
+						history.push('/hospitals');
+					}
+				} catch (error) {
+					OnError(error, dispatch);
+				}
+			}
+		} catch (error) {
+			OnError(error, dispatch);
+		}
 	};
 
 	return (
@@ -81,7 +280,12 @@ const HospitalForm = () => {
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('healthSystemPartyRoleId')}>
 								<option value=''>Select</option>
-                <option value='test'>test</option>
+								{healthSystems.map((item, index) => (
+									<option key={index} value={item.partyRoleId}>
+										{item.name}
+									</option>
+								))}
+								{/* <option value='test'>test</option> */}
 							</select>
 						</div>
 					</div>
@@ -128,6 +332,16 @@ const HospitalForm = () => {
 							<input type='text' className='form-control-sm' {...register('zip')} />
 							<div className='small text-danger  pb-2   '>{errors.zip?.message}</div>
 						</div>
+
+						<div className='form-group'>
+							<label className='form-text'>
+								Phone <span className='text-danger font-weight-bold '>*</span>
+							</label>
+							<input type='text' className='form-control-sm' {...register('phone')} />
+							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
+						</div>
+
+
 					</div>
 
 					{/* shipping address  */}
@@ -234,7 +448,7 @@ const HospitalForm = () => {
 								Email <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input type='text' className='form-control-sm' {...register('contactEmail')} />
-							<div className='small text-danger  pb-2   '> {errors.ContactEmail?.message} </div>
+							<div className='small text-danger  pb-2   '> {errors.contactEmail?.message} </div>
 						</div>
 					</div>
 
@@ -274,7 +488,11 @@ const HospitalForm = () => {
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('invoiceReceiveMethod')}>
 								<option value=''>Select</option>
-                <option value='test'>test</option>
+								{InvoiceReceiveMethod.map((item) => (
+									<option key={item.id} value={item.name}>
+										{item.name}
+									</option>
+								))}
 							</select>
 
 							<div className='small text-danger  pb-2   '> {errors.invoiceReceiveMethod?.message} </div>
@@ -298,16 +516,21 @@ const HospitalForm = () => {
 						</div>
 					</div>
 				</div>
-		
-        <div className='row'>
+
+				<div className='row'>
 					<div className='col-md-12'>
-						<button type='submit' className='btn btn-primary btn-lg float-right'>	Save	</button>
+						<button type='submit' className='btn btn-primary btn-lg float-right'>
+						{isEdit ? 'Update' : 'Save'}
+
+						</button>
 					</div>
 				</div>
-    
-    	</form>
+			</form>
 		</div>
 	);
 };
+
+
+
 
 export default HospitalForm;

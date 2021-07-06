@@ -26,7 +26,7 @@ import { freeSet } from "@coreui/icons";
 const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.sidebar.sidebarShow);
- console.log(navigation) 
+//  console.log(navigation) 
  const navLinks=navigation.map((item,index)=>
   <li className="CUnavi" key={index} >
   

@@ -3,7 +3,7 @@ import HospitalTable from './HospitalTable';
 
 const HospitalsGrid = () => {
     return (
-        <div>
+        <div className="card  cover-content pt-2 ">
             <HospitalTable/>
             
         </div>

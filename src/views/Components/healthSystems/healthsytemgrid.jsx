@@ -7,7 +7,7 @@ import HealthTable from './HealthTable';
     
 
     return (
-        <div>
+        <div className="card  cover-content  pt-2">
             <HealthTable />
         </div>
     )

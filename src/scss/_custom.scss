@@ -292,6 +292,7 @@ button:focus {
   font-size: 2.5rem;
   letter-spacing: 0.2px;
   line-height: 120%;
+  text-align: center;
 }
 
 .secound-login-final {
@@ -356,6 +357,7 @@ button:focus {
 .c-body {
   // background-color: #f4f5f7;
   background-color: #ffffffc2;
+  // background-color: #eae4e454;
 }
 .cursor-point {
   cursor: pointer;
@@ -626,13 +628,13 @@ background-color: rgba(91,77,253,0.1);
 
 }
 
-.tableCover{
+// .tableCover{
 // overflow-x: scroll;
 // width: 100%;
-}
+// }
 
 .table.table-hover tbody{
-  border-bottom: 1px solid #d8dbe05c;
+  border-bottom: 1px solid #cee0ff5c !important;
 
 }
 .btn-view-account{
@@ -647,6 +649,38 @@ background-color: rgba(91,77,253,0.1);
   color: white;
   
 }
+.nav-item a{
+  color:#383a3d6b
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    color: #5b4dfd;
+    background-color: #eeedff;
+    border-color: #eeedff #eeedff #eeedff;
+    border-bottom: 4px solid #5b4dfd;
+    margin-top: -1px;
+}
+.nav-tabs .nav-item {
+  border-right: 1px solid #928e8e38;
+  border-top: 1px solid #928e8e38;
+  border-radius: 5px;
+}
+.nav-tabs .nav-item:first-child {
+  border-left: 1px solid #928e8e38;
+
+}
+
+.dropdown-toggle::after{
+  display: none;
+}
+.hospital-heading{
+  color: #222831;
+  padding: 20px;
+
+}
+.cursor-pointer{
+  cursor: pointer;
+}
+
 
 @media (max-width: 768px) {
   .bg-login {

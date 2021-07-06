@@ -87,7 +87,7 @@ const HealthSystemProfile = () => {
   }
 
     return (
-        <div>
+        <div className="card  cover-content pt-2 ">
             <AdminTitle title={editProfile? 'Edit Health System': 'Add Health System' }/>
 
             <HealthSystemForm defaultValues={healthSystemData} isEdit={editProfile}  partyRoleId={partyRoleId}/>
