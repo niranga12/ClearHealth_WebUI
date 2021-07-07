@@ -567,7 +567,16 @@ label,
   margin-right: auto;
   margin-bottom: 2rem  !important;
   cursor: pointer;
+   box-shadow: 2px 2px 5px 0px rgba(107, 104, 104, 0.15);
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(107, 104, 104, 0.15);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(107, 104, 104, 0.15);
 
+}
+
+.border-radius-dashboard:hover{
+  box-shadow: none;
+  border: none !important;
+  background-color: rgba(229, 225, 252, 0.911) !important;
 }
 .blue-ico{
   fill:"#5B4DFD"  !important;
@@ -681,6 +690,13 @@ background-color: rgba(91,77,253,0.1);
   cursor: pointer;
 }
 
+.main-menu-card:hover{
+  box-shadow: none !important;
+
+}
+.img-full{
+  width: 100%;
+}
 
 @media (max-width: 768px) {
   .bg-login {

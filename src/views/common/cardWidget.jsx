@@ -11,7 +11,7 @@ const CardWidget = ({ title = "", logoName = "", url = "/main" }) => {
 
   return (
     <div
-      className="card bg-white box-shadow p-2 border-radius-dashboard"
+      className="card bg-white  p-2 border-radius-dashboard"
       onClick={handleRouteUrl}
     >
       <div className="card-body text-center">

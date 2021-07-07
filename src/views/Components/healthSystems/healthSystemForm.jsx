@@ -3,28 +3,32 @@ import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
-import {PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
+import {MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
 import {addHealthSystemNew, updateHealthSystemByPartyRoleId} from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import {notify} from 'reapop';
 import {useHistory} from 'react-router-dom';
+import InputMask from 'react-input-mask';
+import NormalizePhone from 'src/reusable/NormalizePhone';
+
 // import history from "src/_helpers/history";
 
 const schema = yup.object().shape({
-	name: yup.string().required('Name is required'),
+	name: yup.string().required('Name is required').matches(ValidationPatterns.onlyCharacters, 'Name should contain only characters'),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
-	zip: yup.string().required('Zip is required'),
-	phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
+	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
+	phone: yup.string().required('Phone is required'),
+	// phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
 	shippingAddress1: yup.string().required('Shipping Address line 1 is required'),
 	shippingAddress2: yup.string(),
 	shippingCity: yup.string().required('City is required'),
 	shippingState: yup.string().required('State is required'),
-	shippingZip: yup.string().required('Zip is required'),
-	contactName: yup.string().required('Contact name is required'),
-	contactPhone: yup.string().required('Contact phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
+	shippingZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
+	contactName: yup.string().required('Contact name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
+	contactPhone: yup.string().required('Contact phone is required'),
 	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
 });
 
@@ -37,7 +41,8 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 		reset,
 		control,
 		formState: {errors},
-	} = useForm({resolver: yupResolver(schema)});
+	} = useForm({    mode: "all",
+	resolver: yupResolver(schema)});
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const {dirtyFields} = useFormState({control});
@@ -85,13 +90,13 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 				...(dirtyFields.phone && {
 					telecommunicationsNumber: {
 						partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
-						number: getValues('phone'),
+						number: NormalizePhone(getValues('phone')),
 					},
 				}),
 				...((dirtyFields.contactName || dirtyFields.contactPhone || dirtyFields.contactEmail) && {
 					patientAccessContact: {
 						name: getValues('contactName'),
-						phone: getValues('contactPhone'),
+						phone: NormalizePhone(getValues('contactPhone')),
 						email: getValues('contactEmail'),
 					},
 				}),
@@ -154,6 +159,8 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 		}
 	};
 
+	
+
 	const addHealthSystem = async (data) => {
 		const newHealthSystem = {
 			healthSystem: {
@@ -179,14 +186,15 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 			],
 			telecommunicationsNumber: {
 				partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
-				number: data.phone,
+				number: NormalizePhone(data.phone),
 			},
 			patientAccessContact: {
 				name: data.contactName,
-				phone: data.contactPhone,
+				phone: NormalizePhone(data.contactPhone),
 				email: data.contactEmail,
 			},
 		};
+		
 
 		try {
 			if (newHealthSystem) {
@@ -210,7 +218,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('name')} />
+							<input className='form-control-sm' type='text'  {...register('name')}  />
 							<div className='small text-danger  pb-2   '>{errors.name?.message}</div>
 						</div>
 					</div>
@@ -261,7 +269,8 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('phone')} />
+							<InputMask  mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm' {...register('phone')}  />
+							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
 					</div>
@@ -326,7 +335,8 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('contactPhone')} />
+							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm'  />
+							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.contactPhone?.message}</div>
 						</div>
 
@@ -346,22 +356,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							{isEdit ? 'Update' : 'Save'}
 						</button>
 
-						{/* {isEdit ? (
-              <button
-                type="button"
-                onClick={updateHealthInfo}
-                className="btn btn-primary btn-lg float-right"
-              >
-                Update
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="btn btn-primary btn-lg float-right"
-              >
-                Save
-              </button>
-            )} */}
+					
 					</div>
 				</div>
 			</form>

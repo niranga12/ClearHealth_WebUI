@@ -3,30 +3,32 @@ import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
-import {PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
+import {MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
 import {useHistory} from 'react-router-dom';
 import {getHealthSystemList} from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import {InvoiceReceiveMethod} from 'src/_helpers/CommonDataList';
 import {saveHospital, updateHospitalByPartyRoleId} from 'src/service/hospitalsService';
 import {notify} from 'reapop';
+import InputMask from 'react-input-mask';
+import NormalizePhone from 'src/reusable/NormalizePhone';
 
 const schema = yup.object().shape({
-	hospitalName: yup.string().required('Hospital Name is required'),
+	hospitalName: yup.string().required('Hospital Name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital Name should contain only characters'),
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
-	zip: yup.string().required('Zip is required'),
-	phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
+	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
+	phone: yup.string().required('Phone is required'),
 	businessAddress1: yup.string().required('Business Address line 1 is required'),
 	businessAddress2: yup.string(),
 	businessCity: yup.string().required('City is required'),
 	businessState: yup.string().required('State is required'),
-	businessZip: yup.string().required('Zip is required'),
+	businessZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	patientContactName: yup.string().required('Contact name is required'),
-	patientContactPhone: yup.string().required('Contact phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
+	patientContactPhone: yup.string().required('Contact phone is required'),
 	patientContactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
 	consolidatedInvoice: yup.string(),
 	applySAASTax: yup.string(),
@@ -37,7 +39,7 @@ const schema = yup.object().shape({
 	bankName: yup.string().required('Bank name is required'),
 	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
 	contactPhone: yup.string().required('Contact Phone is required'),
-	contactName: yup.string().required('Contact name is required'),
+	contactName: yup.string().required('Contact name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
 });
 
 const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
@@ -49,7 +51,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 		reset,
 		control,
 		formState: {errors},
-	} = useForm({resolver: yupResolver(schema)});
+	} = useForm({resolver: yupResolver(schema),mode: "all",});
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const {dirtyFields} = useFormState({control});
@@ -142,16 +144,16 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 			],
 			telecommunicationsNumber: {
 				partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
-				number: data.phone,
+				number: NormalizePhone(data.phone),
 			},
 			patientAccessContact: {
 				name: data.patientContactName,
-				phone: data.patientContactPhone,
+				phone: NormalizePhone(data.patientContactPhone),
 				email: data.patientContactEmail,
 			},
 			paymentInfo: {
 				name: data.contactName,
-				phone: data.contactPhone,
+				phone: NormalizePhone(data.contactPhone),
 				email: data.contactEmail,
 				taxId: data.taxId,
 				bankName: data.bankName,
@@ -213,20 +215,20 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 				...((dirtyFields.patientContactName || dirtyFields.patientContactPhone || dirtyFields.patientContactEmail) && {
 					patientAccessContact: {
 						name: getValues('patientContactName'),
-						phone: getValues('patientContactPhone'),
+						phone: NormalizePhone(getValues('patientContactPhone')),
 						email: getValues('patientContactEmail'),
 					},
 				}),
 				...(dirtyFields.phone && {
 					telecommunicationsNumber: {
 						partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
-						number: getValues('phone'),
+						number: NormalizePhone(getValues('phone')),
 					},
 				}),
 				...((dirtyFields.contactName || dirtyFields.contactPhone || dirtyFields.contactEmail || dirtyFields.taxId || dirtyFields.bankName || dirtyFields.routing || dirtyFields.accountNumber || dirtyFields.invoiceReceiveMethod || dirtyFields.applySAASTax || dirtyFields.consolidatedInvoice) && {
 					paymentInfo: {
 						name: getValues('contactName'),
-						phone: getValues('contactPhone'),
+						phone: NormalizePhone(getValues('contactPhone')),
 						email: getValues('contactEmail'),
 						taxId: getValues('taxId'),
 						bankName: getValues('bankName'),
@@ -269,6 +271,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								Hospital Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('hospitalName')} />
+							<div className='small text-danger  pb-2   '>{errors.hospitalName?.message}</div>
 						</div>
 					</div>
 
@@ -287,6 +290,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								))}
 								{/* <option value='test'>test</option> */}
 							</select>
+							<div className='small text-danger  pb-2   '>{errors.healthSystemPartyRoleId?.message}</div>
 						</div>
 					</div>
 				</div>
@@ -337,7 +341,8 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('phone')} />
+							<InputMask  mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm' {...register('phone')}  />
+							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
 
@@ -405,7 +410,9 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('patientContactPhone')} />
+							<InputMask  mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm' {...register('patientContactPhone')}  />
+							
+							{/* <input type='text' className='form-control-sm' {...register('patientContactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.patientContactPhone?.message}</div>
 						</div>
 
@@ -438,7 +445,9 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								{' '}
 								Phone <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input type='text' className='form-control-sm' {...register('contactPhone')} />
+							<InputMask  mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm' {...register('contactPhone')}  />
+							
+							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
 							<div className='small text-danger  pb-2   '> {errors.contactPhone?.message} </div>
 						</div>
 
@@ -507,12 +516,13 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 							<div className='small text-danger  pb-2   '> {errors.taxId?.message} </div>
 						</div>
 
-						<div className='form-group'>
-							<input type='checkbox' name='' id='' {...register('applySAASTax')} /> Apply SASS Tax
-						</div>
-						<div className='form-group'>
-							<input type='checkbox' name='' id='' {...register('consolidatedInvoice')} />
-							Consolidated Invoice
+						<div className='form-group pl-4'>
+							<input type='checkbox' name='' id='' {...register('applySAASTax')} className="mr-2 form-check-input" /> 
+							<label className="form-check-label">Apply SASS Tax</label> 	
+						</div> 
+						<div className='form-group pl-4'>
+							<input type='checkbox' name='' id='' {...register('consolidatedInvoice')} className="form-check-input" />
+							<label className="form-check-label">Consolidated Invoice</label> 
 						</div>
 					</div>
 				</div>
