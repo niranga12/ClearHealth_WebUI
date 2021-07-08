@@ -146,6 +146,7 @@ const HospitalTable = () => {
 			{
 				Header: 'Hospital Name',
 				accessor: 'name', // accessor is the "key" in the data
+				Cell: ({value}) => <h5 className='font-weight-normal text-black'> {value} </h5>,
 			},
 
 			{
@@ -154,7 +155,7 @@ const HospitalTable = () => {
 				Cell: CellAddress,
 			},
 			{
-				Header: 'Account Owner',
+				Header: 'Contact',
 				Cell: CellContract,
 			},
 			{

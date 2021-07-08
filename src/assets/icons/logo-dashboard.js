@@ -1,7 +1,7 @@
 export const logoDashboard=['30 30', `
 
 <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-<g id="4---CHP---Hospital-Account---Orders---Outstanding" transform="translate(-165.000000, -470.000000)">
+<g id="4---CHP---Hospital-Account---Orders---Outstanding" transform="translate(-165.000000, -472.000000)">
     <g id="inner-section" transform="translate(130.000000, 205.000000)">
         <g id="Group-6" transform="translate(0.000000, 250.000000)">
             <g id="dashboard/select" transform="translate(30.000000, 10.000000)">

@@ -419,7 +419,7 @@ label,
 .form-control-sm {
   display: block;
   width: 100%;
-  height: calc(1.5em + 1rem + 2px);
+  height: calc(1.4em + 1rem + 1px);
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 400;
@@ -698,6 +698,15 @@ background-color: rgba(91,77,253,0.1);
   width: 100%;
 }
 
+.dropdown-menu{
+  min-width: 7rem !important;
+}
+.btn:focus, .btn.focus{
+  box-shadow: none;
+}
+.max-health-name{
+  max-width: 20rem;
+}
 @media (max-width: 768px) {
   .bg-login {
     background-color: #ffffff;

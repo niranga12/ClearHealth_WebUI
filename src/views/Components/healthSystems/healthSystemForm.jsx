@@ -10,8 +10,10 @@ import {notify} from 'reapop';
 import {useHistory} from 'react-router-dom';
 import InputMask from 'react-input-mask';
 import NormalizePhone from 'src/reusable/NormalizePhone';
+import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 
 // import history from "src/_helpers/history";
+
 
 const schema = yup.object().shape({
 	name: yup.string().required('Name is required').matches(ValidationPatterns.onlyCharacters, 'Name should contain only characters'),
@@ -20,7 +22,7 @@ const schema = yup.object().shape({
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	phone: yup.string().required('Phone is required'),
+	phone: yup.string().required('Phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
 	// phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
 	shippingAddress1: yup.string().required('Shipping Address line 1 is required'),
 	shippingAddress2: yup.string(),
@@ -28,7 +30,7 @@ const schema = yup.object().shape({
 	shippingState: yup.string().required('State is required'),
 	shippingZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	contactName: yup.string().required('Contact name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
-	contactPhone: yup.string().required('Contact phone is required'),
+	contactPhone: yup.string().required('Contact phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
 	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
 });
 
@@ -162,6 +164,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 	
 
 	const addHealthSystem = async (data) => {
+		console.log(data);
 		const newHealthSystem = {
 			healthSystem: {
 				name: data.name,
@@ -269,7 +272,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask  mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm' {...register('phone')}  />
+							<InputMask  {...register('phone')} mask={MaskFormat.phoneNumber}  alwaysShowMask={isEdit?true:false}  className='form-control-sm'   />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
@@ -335,7 +338,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm'  />
+							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit?true:false}  className='form-control-sm'  />
 							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.contactPhone?.message}</div>
 						</div>

@@ -25,31 +25,31 @@ const HospitalSubCategories = () => {
               <CNav variant="tabs" className="h5 font-weight-bold">
                 <CNavItem>
                   <CNavLink >
-                  <CIcon name="logoOrders" size={'2xl'} />
+                  <CIcon name="logoOrders" size={'2xl'}  className="pr-1"/>
                     Orders
                   </CNavLink>
                 </CNavItem>
                 <CNavItem>
                   <CNavLink >
-                  <CIcon name="logoProviders" size={'2xl'} />
+                  <CIcon name="logoProviders" size={'2xl'}  className="pr-1"/>
                     Providers
                   </CNavLink>
                 </CNavItem>
                 <CNavItem>
                   <CNavLink >
-                  <CIcon name="logoFreeSchedule" size={'2xl'} />
-                    Free Schedule
+                  <CIcon name="logoFreeSchedule" size={'2xl'}  className="pr-1"/>
+                    Fee Schedule
                   </CNavLink>
                 </CNavItem>
                 <CNavItem>
                   <CNavLink >
-                  <CIcon name="logoDashboard" size={'2xl'} />
+                  <CIcon name="logoDashboard" size={'2xl'}  className="pr-1"/>
                     Dashboard
                   </CNavLink>
                 </CNavItem>
                 <CNavItem>
                   <CNavLink >
-                  <CIcon name="logoPayment" size={'2xl'} />
+                  <CIcon name="logoPayment" size={'2xl'}  className="pr-1"/>
                     Payment
                   </CNavLink>
                 </CNavItem>
@@ -62,7 +62,7 @@ const HospitalSubCategories = () => {
                   {`2. provider`}
                 </CTabPane>
                 <CTabPane>
-                  {`3.free schedule`}
+                  {`3. schedule`}
                 </CTabPane>
                 <CTabPane>
                   {`4.dashboard`}

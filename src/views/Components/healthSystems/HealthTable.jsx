@@ -45,7 +45,7 @@ function CellAddress({ row }) {
   return (
     <>
       <div className="max-celladdress">
-        {row.original.primaryAddress1} , {row.original.primaryAddress2} ,
+        {row.original.primaryAddress1} , {row.original.primaryAddress2} {row.original.primaryAddress2? ',':''} 
         {row.original.primaryCity} ,{" "}
       </div>
       <div className="max-celladdress">
@@ -151,7 +151,7 @@ const HealthTable = () => {
         Header: "Name",
         accessor: "name", // accessor is the "key" in the data
         Cell: ({ value }) => (
-          <h5 className="font-weight-normal text-black ml-4"> {value} </h5>
+          <h5 className="font-weight-normal text-black ml-4 max-health-name"> {value} </h5>
         ),
       },
       {

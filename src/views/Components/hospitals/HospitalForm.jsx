@@ -12,34 +12,35 @@ import {saveHospital, updateHospitalByPartyRoleId} from 'src/service/hospitalsSe
 import {notify} from 'reapop';
 import InputMask from 'react-input-mask';
 import NormalizePhone from 'src/reusable/NormalizePhone';
+import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 
 const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital Name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital Name should contain only characters'),
-	healthSystemPartyRoleId: yup.string().required('Health system is required'),
-	address1: yup.string().required('Address line1 is required'),
+	healthSystemPartyRoleId: yup.string().required('Health System is required'),
+	address1: yup.string().required('Address Line 1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	phone: yup.string().required('Phone is required'),
-	businessAddress1: yup.string().required('Business Address line 1 is required'),
+	phone: yup.string().required('Phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
+	businessAddress1: yup.string().required('Business Address Line 1 is required'),
 	businessAddress2: yup.string(),
 	businessCity: yup.string().required('City is required'),
 	businessState: yup.string().required('State is required'),
 	businessZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	patientContactName: yup.string().required('Contact name is required'),
-	patientContactPhone: yup.string().required('Contact phone is required'),
-	patientContactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
+	patientContactName: yup.string().required('Contact Name is required'),
+	patientContactPhone: yup.string().required('Contact Phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
+	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 	consolidatedInvoice: yup.string(),
 	applySAASTax: yup.string(),
-	taxId: yup.string().required('City is required'),
-	invoiceReceiveMethod: yup.string().required('Invoice receive method is required'),
+	taxId: yup.string().required('Tax is required'),
+	invoiceReceiveMethod: yup.string().required('Invoice Receive method is required'),
 	accountNumber: yup.string().required('Account number is required'),
 	routing: yup.string().required('Routing is required'),
-	bankName: yup.string().required('Bank name is required'),
-	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
-	contactPhone: yup.string().required('Contact Phone is required'),
-	contactName: yup.string().required('Contact name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
+	bankName: yup.string().required('Bank Name is required'),
+	contactEmail: yup.string().required(' Email is required').email(' Email must be a valid email'),
+	contactPhone: yup.string().required(' Phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
+	contactName: yup.string().required('Contact Name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
 });
 
 const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
@@ -101,11 +102,16 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 			}
 		};
 		fetchData();
+		
 	}, []);
 
 	useEffect(() => {
-		reset(defaultValues);
-	}, [ defaultValues ]);
+		try {
+			reset(defaultValues);
+		} catch (error) {
+			OnError(error, dispatch);
+		}
+	}, [defaultValues]);
 
 	// form submit
 	const hospitalFormSubmit = (data) => {
@@ -279,7 +285,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Heath System <span className='text-danger font-weight-bold '>*</span>{' '}
+								Health System <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('healthSystemPartyRoleId')}>
 								<option value=''>Select</option>
@@ -341,7 +347,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask  mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm' {...register('phone')}  />
+							<InputMask   {...register('phone')} mask={MaskFormat.phoneNumber}   alwaysShowMask={isEdit?true:false}  className='form-control-sm'  />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
@@ -353,7 +359,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 					<div className='col-md-4'>
 						<h5 className='font-weight-bold mt-1'>
-							<span className='pr-5'>Business Address </span> <input type='checkbox' className='form-check-input' onChange={handleBusinessChecked} /> <span className='small'>Same As Address</span>{' '}
+							<span className='pr-5'>Business Address </span> <input type='checkbox' className='form-check-input' onChange={handleBusinessChecked} /> <span className='small'>Same as address</span>{' '}
 						</h5>
 						<div className='form-group'>
 							<label className='form-text'>
@@ -410,7 +416,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask  mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm' {...register('patientContactPhone')}  />
+							<InputMask  {...register('patientContactPhone')}  mask={MaskFormat.phoneNumber}   alwaysShowMask={isEdit?true:false}  className='form-control-sm'   />
 							
 							{/* <input type='text' className='form-control-sm' {...register('patientContactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.patientContactPhone?.message}</div>
@@ -445,7 +451,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								{' '}
 								Phone <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<InputMask  mask={MaskFormat.phoneNumber}  alwaysShowMask='true' className='form-control-sm' {...register('contactPhone')}  />
+							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber}   alwaysShowMask={isEdit?true:false}  className='form-control-sm'   />
 							
 							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
 							<div className='small text-danger  pb-2   '> {errors.contactPhone?.message} </div>

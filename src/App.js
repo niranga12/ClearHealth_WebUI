@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter, HashRouter, Route, Router, Switch } from 'react-router-dom';
-import history from './_helpers/history';
+import {  HashRouter, Route,  Switch } from 'react-router-dom';
+
 
 import './scss/style.scss';
 import AuthRoute from './_helpers/AuthRoute';
