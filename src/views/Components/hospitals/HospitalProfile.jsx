@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
+import { getHealthSystemList } from 'src/service/healthsystemService';
 import {getHospitalByPartyRoleId} from 'src/service/hospitalsService';
 import AdminTitle from 'src/views/common/adminTitle';
 import HospitalForm from './HospitalForm';
@@ -12,7 +13,7 @@ const defalutFormValue = {
 	city: '',
 	state: '',
 	zip: '',
-  phone:'',
+    phone:'',
 	businessAddress1: '',
 	businessAddress2: '',
 	businessCity: '',
@@ -21,8 +22,8 @@ const defalutFormValue = {
 	patientContactName: '',
 	patientContactPhone: '',
 	patientContactEmail: '',
-	consolidatedInvoice: '',
-	applySAASTax: '',
+	consolidatedInvoice: false,
+	applySAASTax: false,
 	taxId: '',
 	invoiceReceiveMethod: '',
 	accountNumber: '',
@@ -39,6 +40,7 @@ const HospitalProfile = () => {
 	const [editProfile, setEditProfile] = useState(false);
 
 	const [hospitalData, setHospitalData] = useState(defalutFormValue);
+	const [healthSystems, setHealthSystem] = useState([]);
 
 	//if this a edit form get the data
 	useEffect(() => {
@@ -48,14 +50,23 @@ const HospitalProfile = () => {
 		id ? setEditProfile(true) : setEditProfile(false);
 
 		const fetchData = async () => {
+			try {
+				const res = await getHealthSystemList({});
+				setHealthSystem(res.data.data);
+				
+			} catch (error) {	}
 			if (id) {
 				try {
+					// const res = await getHealthSystemList({});
+					// setHealthSystem(res.data.data);
 					const result = await getHospitalByPartyRoleId(id);
 					const formatedData = await updateFormFields(result.data.data);
 
 					setHospitalData(formatedData);
 				} catch (error) {}
 			}
+				
+			
 		};
 		fetchData();
 	}, [location]);
@@ -101,7 +112,7 @@ const HospitalProfile = () => {
 		<div className="card  cover-content pt-2 ">
 			<AdminTitle title={editProfile ? 'Edit Hospital' : 'Add Hospital'} />
 
-			<HospitalForm defaultValues={hospitalData} isEdit={editProfile} partyRoleId={partyRoleId} />
+			<HospitalForm defaultValues={hospitalData} isEdit={editProfile} healthSystems={healthSystems} partyRoleId={partyRoleId} />
 		</div>
 	);
 };

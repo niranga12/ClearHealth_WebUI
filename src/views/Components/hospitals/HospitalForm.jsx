@@ -31,8 +31,8 @@ const schema = yup.object().shape({
 	patientContactName: yup.string().required('Contact Name is required'),
 	patientContactPhone: yup.string().required('Contact Phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
 	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
-	consolidatedInvoice: yup.string(),
-	applySAASTax: yup.string(),
+	consolidatedInvoice: yup.bool(),
+	applySAASTax: yup.bool(),
 	taxId: yup.string().required('Tax Id is required'),
 	invoiceReceiveMethod: yup.string().required('Invoice Receive method is required'),
 	accountNumber: yup.string().required('Account number is required'),
@@ -43,7 +43,7 @@ const schema = yup.object().shape({
 	contactName: yup.string().required('Contact Name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
 });
 
-const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
+const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, healthSystems=[]}) => {
 	const {
 		register,
 		handleSubmit,
@@ -61,7 +61,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 	let btnRef = useRef();
 
 
-	const [healthSystems, setHealthSystem] = useState([]);
+	// const [healthSystems, setHealthSystem] = useState([]);
 
 	const handleBusinessChecked = (event) => {
 		if (event.target.checked) {
@@ -94,18 +94,18 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 		}
 	};
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const result = await getHealthSystemList({});
-				setHealthSystem(result.data.data);
-			} catch (error) {
-				OnError(error, dispatch);
-			}
-		};
-		fetchData();
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const result = await getHealthSystemList({});
+	// 			setHealthSystem(result.data.data);
+	// 		} catch (error) {
+	// 			OnError(error, dispatch);
+	// 		}
+	// 	};
+	// 	fetchData();
 		
-	}, []);
+	// }, []);
 
 	useEffect(() => {
 		try {
@@ -129,6 +129,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 	// save hospital
 	const addHospital = async (data) => {
+		
 		const newHospital = {
 			hospital: {
 				healthSystemPartyRoleId: data.healthSystemPartyRoleId,
@@ -174,6 +175,8 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 				consolidatedInvoice: data.consolidatedInvoice,
 			},
 		};
+
+		// console.log(newHospital);
 
 		try {
 			if (newHospital) {
@@ -527,11 +530,11 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 						</div>
 
 						<div className='form-group pl-4'>
-							<input type='checkbox' name='' id='' {...register('applySAASTax')} className="mr-2 form-check-input" /> 
+							<input type='checkbox' name="applySAASTax" {...register('applySAASTax')} className="mr-2 form-check-input" /> 
 							<label className="form-check-label">Apply SASS Tax</label> 	
 						</div> 
 						<div className='form-group pl-4'>
-							<input type='checkbox' name='' id='' {...register('consolidatedInvoice')} className="form-check-input" />
+							<input type='checkbox' name="consolidatedInvoice"  {...register('consolidatedInvoice')} className="form-check-input" />
 							<label className="form-check-label">Consolidated Invoice</label> 
 						</div>
 					</div>
