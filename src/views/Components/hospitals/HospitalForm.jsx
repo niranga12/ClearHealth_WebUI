@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -22,14 +22,14 @@ const schema = yup.object().shape({
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	phone: yup.string().required('Phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
+	phone: yup.string().required('Phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
 	businessAddress1: yup.string().required('Business Address Line 1 is required'),
 	businessAddress2: yup.string(),
 	businessCity: yup.string().required('City is required'),
 	businessState: yup.string().required('State is required'),
 	businessZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	patientContactName: yup.string().required('Contact Name is required'),
-	patientContactPhone: yup.string().required('Contact Phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
+	patientContactPhone: yup.string().required('Contact Phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
 	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 	consolidatedInvoice: yup.string(),
 	applySAASTax: yup.string(),
@@ -39,7 +39,7 @@ const schema = yup.object().shape({
 	routing: yup.string().required('Routing is required'),
 	bankName: yup.string().required('Bank Name is required'),
 	contactEmail: yup.string().required(' Email is required').email(' Email must be a valid email'),
-	contactPhone: yup.string().required(' Phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
+	contactPhone: yup.string().required(' Phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
 	contactName: yup.string().required('Contact Name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
 });
 
@@ -58,6 +58,8 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 	const {dirtyFields} = useFormState({control});
 	const dispatch = useDispatch();
 	let history = useHistory();
+	let btnRef = useRef();
+
 
 	const [healthSystems, setHealthSystem] = useState([]);
 
@@ -115,7 +117,9 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 	// form submit
 	const hospitalFormSubmit = (data) => {
-		
+		if(btnRef.current){
+			btnRef.current.setAttribute("disabled", "disabled");
+		  }
 		if (isEdit) {
 			updateHospitalInfo();
 		} else {
@@ -535,7 +539,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 				<div className='row'>
 					<div className='col-md-12'>
-						<button type='submit' className='btn btn-primary btn-lg float-right'>
+						<button type='submit' ref={btnRef} className='btn btn-primary btn-lg float-right'>
 						{isEdit ? 'Update' : 'Save'}
 
 						</button>

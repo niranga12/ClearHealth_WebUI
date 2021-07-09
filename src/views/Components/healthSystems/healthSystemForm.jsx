@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -22,7 +22,7 @@ const schema = yup.object().shape({
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	phone: yup.string().required('Phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
+	phone: yup.string().required('Phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
 	// phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
 	shippingAddress1: yup.string().required('Shipping Address line 1 is required'),
 	shippingAddress2: yup.string(),
@@ -30,7 +30,7 @@ const schema = yup.object().shape({
 	shippingState: yup.string().required('State is required'),
 	shippingZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	contactName: yup.string().required('Contact name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
-	contactPhone: yup.string().required('Contact phone is required').test("phoneNO",	"Please enter a validate Phone number",(value) => PhoneNumberMaskValidation(value) ),
+	contactPhone: yup.string().required('Contact phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
 	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
 });
 
@@ -48,6 +48,8 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const {dirtyFields} = useFormState({control});
+	let btnRef = useRef();
+
 
 	const dispatch = useDispatch();
 	let history = useHistory();
@@ -154,6 +156,10 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 	};
 
 	const healthSystemFormSubmit = (data) => {
+		if(btnRef.current){
+			btnRef.current.setAttribute("disabled", "disabled");
+		  }
+
 		if (isEdit) {
 			updateHealthInfo();
 		} else {
@@ -355,7 +361,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 
 				<div className='row'>
 					<div className='col-md-12'>
-						<button type='submit' className='btn btn-primary btn-lg float-right'>
+						<button type='submit' ref={btnRef} className='btn btn-primary btn-lg float-right'>
 							{isEdit ? 'Update' : 'Save'}
 						</button>
 
