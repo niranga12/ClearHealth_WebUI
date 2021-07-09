@@ -33,7 +33,7 @@ const schema = yup.object().shape({
 	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 	consolidatedInvoice: yup.string(),
 	applySAASTax: yup.string(),
-	taxId: yup.string().required('Tax is required'),
+	taxId: yup.string().required('Tax Id is required'),
 	invoiceReceiveMethod: yup.string().required('Invoice Receive method is required'),
 	accountNumber: yup.string().required('Account number is required'),
 	routing: yup.string().required('Routing is required'),
