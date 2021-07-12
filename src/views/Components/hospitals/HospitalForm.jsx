@@ -171,8 +171,8 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 				routing: data.routing,
 				accountNumber: data.accountNumber,
 				invoiceReceiveMethod: data.invoiceReceiveMethod,
-				applySAASTax: data.applySAASTax,
-				consolidatedInvoice: data.consolidatedInvoice,
+				applySAASTax: data.applySAASTax? 1:0,
+				consolidatedInvoice: data.consolidatedInvoice? 1:0,
 			},
 		};
 
@@ -248,8 +248,8 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						routing: getValues('routing'),
 						accountNumber: getValues('accountNumber'),
 						invoiceReceiveMethod: getValues('invoiceReceiveMethod'),
-						applySAASTax: getValues('applySAASTax'),
-						consolidatedInvoice: getValues('consolidatedInvoice'),
+						applySAASTax: getValues('applySAASTax')? 1:0,
+						consolidatedInvoice: getValues('consolidatedInvoice')? 1:0,
 					},
 				}),
 			};

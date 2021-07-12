@@ -91,8 +91,8 @@ const HospitalProfile = () => {
 			patientContactName: data.primaryContact.name,
 			patientContactPhone: data.primaryContact.phone,
 			patientContactEmail: data.primaryContact.email,
-			consolidatedInvoice: data.paymentInfo.consolidatedInvoice,
-			applySAASTax: data.paymentInfo.invoiceReceiveMethod ,
+			consolidatedInvoice: data.paymentInfo.consolidatedInvoice ==1 ?true:false,
+			applySAASTax: data.paymentInfo.applySAASTax ==1 ?true:false,
 			taxId: data.paymentInfo.taxId,
 			invoiceReceiveMethod: data.paymentInfo.invoiceReceiveMethod,
 			accountNumber: data.paymentInfo.accountNumber,
@@ -101,9 +101,7 @@ const HospitalProfile = () => {
 			contactEmail: data.paymentInfo.email,
 			contactPhone: data.paymentInfo.phone,
 			contactName: data.paymentInfo.name,
-		};
-
-    
+		};    
 		return hospitalData;
     
 	};
