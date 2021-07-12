@@ -196,7 +196,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 		try {
 		const  updateHospital =  {
 				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId) && {healthSystem: {name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId')}}),
-				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.shippingAddress1 || dirtyFields.shippingAddress2 || dirtyFields.shippingCity || dirtyFields.shippingState || dirtyFields.shippingZip) && {
+				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip) && {
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
 							? [
@@ -255,6 +255,10 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 			};
 			if (Object.keys(updateHospital).length == 0) {
 				dispatch(notify(`No record to update`, 'error'));
+				btnRef.current.removeAttribute("disabled");
+
+				// btnRef.current.remove("disabled", "disabled");
+
 			} else {
 				try {
 					const result = await updateHospitalByPartyRoleId(partyRoleId, updateHospital);
