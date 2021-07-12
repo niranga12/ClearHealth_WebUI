@@ -195,7 +195,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 	const updateHospitalInfo = async () => {
 		try {
 		const  updateHospital =  {
-				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId) && {healthSystem: {name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId')}}),
+				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId) && {hospital: {name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId')}}),
 				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip) && {
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
