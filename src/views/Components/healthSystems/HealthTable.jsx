@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useTable } from "react-table";
 import { TableSettingsEnum } from "src/reusable/enum";
 import {
   getHealthSystemList,
@@ -120,13 +119,14 @@ const HealthTable = () => {
     // setSearchTerm(e.target.value)
     if (e.target.value.length > 3) {
       setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
+    // eslint-disable-next-line eqeqeq
     } else if (e.target.value.length == "") {
       setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
     } else {
     }
   };
   const pageChange = (event, value) => {
-    setPage(value);
+    // setPage(value);
     setSearchQuery({ ...searchQuery, pageNumber: value });
   };
 

@@ -115,16 +115,21 @@ const HospitalTable = () => {
 			}
 		};
 		fetchData();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchQuery]);
+  
+	
+	
 
-	const pageChange = (event, value) => {
-		setPage(value);
+	const pageChange = (event, value) =>{
+		// setPage(value);
 		setSearchQuery({...searchQuery, pageNumber: value});
 	};
 
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+		// eslint-disable-next-line eqeqeq
 		} else if (e.target.value.length == '') {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
 		} else {

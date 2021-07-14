@@ -1,5 +1,4 @@
 import CIcon from "@coreui/icons-react";
-import { CImg } from "@coreui/react";
 import React from "react";
 import { useHistory } from "react-router-dom";
 

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, {useEffect, useRef} from 'react';
 import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -49,6 +50,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const {dirtyFields} = useFormState({control});
 	let btnRef = useRef();
+	
 
 
 	const dispatch = useDispatch();
@@ -106,11 +108,12 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 				}),
 			};
 
-			if (Object.keys(updatHealthSystem).length == 0) {
+			if (Object.keys(updatHealthSystem).length === 0) {
 				dispatch(notify(`No record to update`, 'error'));
 			} else {
 				try {
 					const result = await updateHealthSystemByPartyRoleId(partyRoleId, updatHealthSystem);
+					// eslint-disable-next-line eqeqeq
 					if (result.data.message == ServiceMsg.OK) {
 						dispatch(notify(`Successfully updated`, 'success'));
 						history.push('/healthsystem');

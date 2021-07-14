@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
 import { getHealthSystemList } from 'src/service/healthsystemService';

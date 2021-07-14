@@ -2,7 +2,9 @@ import { FETCHING_USER, LOG_OUT, SET_FETCHING_FALSE, USER_LOGIN } from "src/cons
 
 const initialState = {
   username: null,
-  isLogin:false
+  isLogin:false,
+  keepMeSignIn:false
+
   // isLogin: localStorage.getItem("token")? true: false,
 };
 

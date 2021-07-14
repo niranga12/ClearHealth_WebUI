@@ -71,7 +71,7 @@ export const login = (loginDetail,history) => async (dispatch) => {
               localStorage.setItem("token", token);
               const user = jwt(token);
               // @ts-ignore
-              let loginUser = { ...user, isLogin: true };
+              let loginUser = { ...user, isLogin: true, keepMeSignIn:loginDetail.keepSignIn };
               dispatch({
                 type: USER_LOGIN,
                 payload: loginUser,

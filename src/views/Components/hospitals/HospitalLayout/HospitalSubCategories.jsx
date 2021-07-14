@@ -14,7 +14,7 @@ import {
 import CIcon from '@coreui/icons-react';
 
 const HospitalSubCategories = () => {
-    const [active, setActive] = useState(1);
+    // const [active, setActive] = useState(1);
 
     return (
         <div>

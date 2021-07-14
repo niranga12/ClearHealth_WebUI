@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initPage=(currentPage)=>{
-  let initNumber =currentPage==1? currentPage:( (currentPage-1 )*TableSettingsEnum.ItemPerPage);
+  let initNumber =currentPage===1? currentPage:( (currentPage-1 )*TableSettingsEnum.ItemPerPage);
   return initNumber
 
 }

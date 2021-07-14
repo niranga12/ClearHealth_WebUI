@@ -1,11 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
 import {MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
 import {useHistory} from 'react-router-dom';
-import {getHealthSystemList} from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import {InvoiceReceiveMethod} from 'src/_helpers/CommonDataList';
 import {saveHospital, updateHospitalByPartyRoleId} from 'src/service/hospitalsService';
@@ -113,6 +112,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 		} catch (error) {
 			OnError(error, dispatch);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [defaultValues]);
 
 	// form submit
@@ -253,7 +253,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 					},
 				}),
 			};
-			if (Object.keys(updateHospital).length == 0) {
+			if (Object.keys(updateHospital).length === 0) {
 				dispatch(notify(`No record to update`, 'error'));
 				btnRef.current.removeAttribute("disabled");
 
@@ -262,7 +262,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 			} else {
 				try {
 					const result = await updateHospitalByPartyRoleId(partyRoleId, updateHospital);
-					if (result.data.message == ServiceMsg.OK) {
+					if (result.data.message === ServiceMsg.OK) {
 						dispatch(notify(`Successfully updated`, 'success'));
 						history.push('/hospitals');
 					}

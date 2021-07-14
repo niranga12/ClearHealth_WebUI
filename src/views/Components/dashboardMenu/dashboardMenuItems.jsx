@@ -1,6 +1,5 @@
 import { CCol, CRow } from '@coreui/react'
 import React from 'react'
-import { useHistory } from 'react-router-dom';
 import CardWidget from 'src/views/common/cardWidget'
 
 const DashboardMenuItems = () => {

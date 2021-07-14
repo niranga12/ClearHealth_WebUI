@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 
 const PhoneNumberFormater = (input) => {
     let output = "(";
@@ -6,11 +6,11 @@ const PhoneNumberFormater = (input) => {
         {
           if ( g1.length ) {
             output += g1;
-            if ( g1.length == 3 ) {
+            if ( g1.length === 3 ) {
                 output += ")";
                 if ( g2.length ) {
                     output += " " + g2; 
-                    if ( g2.length == 3 ) {
+                    if ( g2.length === 3 ) {
                         output += " - ";
                         if ( g3.length ) {
                             output += g3;
