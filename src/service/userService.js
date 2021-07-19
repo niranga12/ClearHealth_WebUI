@@ -8,7 +8,7 @@ const axiosBase = axios.create({
 });
 
 
-export const forgotPassword=(userDetail)=> axiosBase.post(`/auth/fogotpassword`, userDetail);
+export const forgotPassword=(userDetail)=> axiosBase.post(`/auth/forgotpassword`, userDetail);
 // export default forgotPassword;
 export const userLogin=(loginDetail)=> axiosBase.post(`/auth/login`, loginDetail);
  
