@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 // import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
 import { getHealthSystemByPartyRoleId } from 'src/service/healthsystemService';
 import AdminTitle from 'src/views/common/adminTitle'
@@ -28,6 +30,7 @@ const HealthSystemProfile = () => {
     const location = useLocation();
     const [partyRoleId, setPartyRoleId] = useState(null)
     const [editProfile, setEditProfile] = useState(false)
+    const dispatch = useDispatch();
 
     
 
@@ -47,10 +50,12 @@ const HealthSystemProfile = () => {
   const fetchData = async () => {
     if (id) {
       try {
+        dispatch(loaderShow());
        const result= await getHealthSystemByPartyRoleId(id);
        const formatedData=  await updateFormFields(result.data.data)
         
         setHealthSystemData(formatedData);
+        dispatch(loaderHide());
       } catch (error) {}
     }
   };

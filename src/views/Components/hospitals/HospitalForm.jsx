@@ -32,14 +32,14 @@ const schema = yup.object().shape({
 	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 	consolidatedInvoice: yup.bool(),
 	applySAASTax: yup.bool(),
-	taxId: yup.string().required('Tax Id is required'),
-	invoiceReceiveMethod: yup.string().required('Invoice Receive method is required'),
-	accountNumber: yup.string().required('Account number is required'),
-	routing: yup.string().required('Routing is required'),
-	bankName: yup.string().required('Bank Name is required'),
-	contactEmail: yup.string().required(' Email is required').email(' Email must be a valid email'),
-	contactPhone: yup.string().required(' Phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
-	contactName: yup.string().required('Contact Name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
+	taxId: yup.string(),
+	invoiceReceiveMethod: yup.string(),
+	accountNumber: yup.string(),
+	routing: yup.string(),
+	bankName: yup.string(),
+	contactEmail: yup.string().email(' Email must be a valid email'),
+	contactPhone: yup.string().test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
+	contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
 });
 
 const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, healthSystems=[]}) => {
@@ -451,7 +451,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Contact Name <span className='text-danger font-weight-bold '>*</span>{' '}
+								Contact Name
 							</label>
 							<input type='text' className='form-control-sm' {...register('contactName')} />
 							<div className='small text-danger  pb-2   '> {errors.contactName?.message} </div>
@@ -460,7 +460,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Phone <span className='text-danger font-weight-bold '>*</span>{' '}
+								Phone
 							</label>
 							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber}   alwaysShowMask={isEdit?true:false}  className='form-control-sm'   />
 							
@@ -471,7 +471,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Email <span className='text-danger font-weight-bold '>*</span>{' '}
+								Email 
 							</label>
 							<input type='text' className='form-control-sm' {...register('contactEmail')} />
 							<div className='small text-danger  pb-2   '> {errors.contactEmail?.message} </div>
@@ -483,7 +483,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Bank Name <span className='text-danger font-weight-bold '>*</span>{' '}
+								Bank Name 
 							</label>
 							<input type='text' className='form-control-sm' {...register('bankName')} />
 							<div className='small text-danger  pb-2   '> {errors.bankName?.message} </div>
@@ -491,7 +491,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Routing <span className='text-danger font-weight-bold '>*</span>{' '}
+								Routing 
 							</label>
 							<input type='text' className='form-control-sm' {...register('routing')} />
 							<div className='small text-danger  pb-2   '> {errors.routing?.message} </div>
@@ -499,7 +499,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Account <span className='text-danger font-weight-bold '>*</span>{' '}
+								Account 
 							</label>
 							<input type='text' className='form-control-sm' {...register('accountNumber')} />
 							<div className='small text-danger  pb-2   '> {errors.accountNumber?.message} </div>
@@ -510,7 +510,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Invoice Receive Method <span className='text-danger font-weight-bold '>*</span>
+								Invoice Receive Method 
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('invoiceReceiveMethod')}>
 								<option value=''>Select</option>
@@ -527,7 +527,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Tax Id <span className='text-danger font-weight-bold '>*</span>{' '}
+								Tax Id 
 							</label>
 							<input type='text' className='form-control-sm' {...register('taxId')} />
 							<div className='small text-danger  pb-2   '> {errors.taxId?.message} </div>

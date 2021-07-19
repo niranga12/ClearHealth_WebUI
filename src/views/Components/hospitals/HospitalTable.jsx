@@ -10,6 +10,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import {useHistory} from 'react-router-dom';
 import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -100,6 +101,8 @@ const HospitalTable = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
+				dispatch(loaderShow());
+
 				const result = await getHospitalsList(searchQuery);
 				setHospitalData(result.data.data);
 			
@@ -110,6 +113,8 @@ const HospitalTable = () => {
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
 				setPage(Math.ceil(pageCount));
 				// console.log(count)
+				dispatch(loaderHide());
+
 			} catch (error) {
 				OnError(error, dispatch);
 			}

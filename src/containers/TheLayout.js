@@ -8,6 +8,7 @@ import {
   TheSideNavigation
 } from './index'
 import NotificationLayout from "../_helpers/notification";
+import TheLoader from './TheLoader';
 
 const TheLayout = () => {
 
@@ -18,6 +19,8 @@ const TheLayout = () => {
     <NotificationLayout />
     {/* <TheSidebar/> */}
       <div className="c-wrapper">
+      <TheLoader/>
+
         <TheHeader/>
         <TheSideNavigation/>
 

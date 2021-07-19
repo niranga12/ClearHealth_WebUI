@@ -1,6 +1,8 @@
 /* eslint-disable eqeqeq */
 import React, {useEffect, useState} from 'react';
+import { useDispatch } from 'react-redux';
 import {useLocation} from 'react-router-dom';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { getHealthSystemList } from 'src/service/healthsystemService';
 import {getHospitalByPartyRoleId} from 'src/service/hospitalsService';
 import AdminTitle from 'src/views/common/adminTitle';
@@ -42,6 +44,8 @@ const HospitalProfile = () => {
 
 	const [hospitalData, setHospitalData] = useState(defalutFormValue);
 	const [healthSystems, setHealthSystem] = useState([]);
+	const dispatch = useDispatch();
+
 
 	//if this a edit form get the data
 	useEffect(() => {
@@ -52,9 +56,9 @@ const HospitalProfile = () => {
 
 		const fetchData = async () => {
 			try {
+				dispatch(loaderShow());
 				const res = await getHealthSystemList({});
 				setHealthSystem(res.data.data);
-				
 			} catch (error) {	}
 			if (id) {
 				try {
@@ -65,8 +69,10 @@ const HospitalProfile = () => {
 
 					setHospitalData(formatedData);
 				} catch (error) {}
+
 			}
-				
+								dispatch(loaderHide());
+	
 			
 		};
 		fetchData();
