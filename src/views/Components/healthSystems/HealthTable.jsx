@@ -100,7 +100,7 @@ const HealthTable = () => {
   }, [searchQuery]);
 
   //  const searchTextChange= (value)=>{
-  //    debugger;
+
   //   //  console.log();
   //   if(value.length>3){
   //     setSearchQuery({...initialSearch,searchTerm:value})
