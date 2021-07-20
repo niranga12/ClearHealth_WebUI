@@ -40,7 +40,7 @@ const TheSidebar = () => {
 )
 
 // const navLInks=()=>{
-//   debugger;
+
 // <ul>
 //   {navigation.map((item,index)=>
 //     <li key={index}>

@@ -109,7 +109,6 @@ export const login = (loginDetail,history) => async (dispatch) => {
 //       type: USER_LOGIN,
 //       payload: loginUser,
 //     });
-//     debugger;
 //     dispatch(notify('Login Success', 'success'))
 //     history.push("/dashboard");
 

@@ -42,6 +42,12 @@ const HealthSystemProfile = React.lazy(() => import('./views/Components/healthSy
 const Hospitals=React.lazy(() => import('./views/Components/hospitals/HospitalsGrid'));
 const HospitalProfile=React.lazy(() => import('./views/Components/hospitals/HospitalProfile'));
 const HospitalSubPage = React.lazy(() => import('./views/Components/hospitals/HospitalLayout/HospitalLayout'));
+const Provider=React.lazy(() => import('./views/Components/providers/ProvidersGrid'));
+const ProviderProfile=React.lazy(() => import('./views/Components/providers/ProviderProfile'));
+
+
+
+
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -90,6 +96,9 @@ const routes = [
   { path: '/hospitals', name: 'Hospitals ', component: Hospitals, exact: true},
   { path: '/hospitals/profile', name: 'Hospitals Profile', component: HospitalProfile },
   { path: '/hospitals/hospital', name: 'Hospital', component: HospitalSubPage },
+//providers
+  { path: '/providers', name: 'Providers', component: Provider, exact: true},
+  { path: '/providers/profile', name: 'Providers Profile', component:ProviderProfile },
   
 
 ];

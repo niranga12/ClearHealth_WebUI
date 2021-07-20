@@ -16,7 +16,7 @@ const DashboardMenuItems = () => {
           </CCol>
           
           <CCol sm="6" md="3">
-            <CardWidget  title="Providers" logoName="logoProviders"/>
+            <CardWidget  title="Providers"  url="/providers" logoName="logoProviders"/>
           </CCol>
   
           
