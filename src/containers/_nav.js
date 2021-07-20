@@ -118,7 +118,7 @@ const _nav =  [
     _tag: 'CSidebarNavItem',
     name: 'Providers',
     icon: <CIcon content={logoProviders} size={'2xl'} className="m-auto"/>,
-    // to: '/base/cards',
+     to: '/providers',
   },
   {
     _tag: 'CSidebarNavItem',

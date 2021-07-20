@@ -11,6 +11,7 @@ import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import {useHistory} from 'react-router-dom';
 import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
 import { getProvidersList, getProvidersListCount } from 'src/service/providerService';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -18,21 +19,6 @@ const initialSearch = {
 	searchTerm: '',
 };
 
-function CellContract({row}) {
-	return (
-		<>
-			<div>{row.original.contactName}</div>
-			<div className='rectangle-intable'>
-				{' '}
-				<span className='fa fa-phone text-health-icon pr-1'></span> {PhoneNumberFormater(row.original.contactNumber)}
-			</div>
-			<div className='rectangle-intable'>
-				{' '}
-				<span className='fa fa-envelope text-health-icon pr-1'></span> {row.original.contactElectronicAddress}
-			</div>
-		</>
-	);
-}
 
 function CellProvider({row}) {
 
@@ -63,13 +49,13 @@ function ActionProvider({row}) {
 		});
 	};
 
-	const redirectAccount = () => {
-		history.push({
-			pathname: `/hospitals/hospital`,
-			search: `?id=${row.original.partyRoleId}&&name=${row.original.name}`,
-			// state: { detail: 'some_value' }
-		});
-	};
+	// const redirectAccount = () => {
+	// 	history.push({
+	// 		pathname: `/providers`,
+	// 		search: `?id=${row.original.partyRoleId}&&name=${row.original.name}`,
+	// 		// state: { detail: 'some_value' }
+	// 	});
+	// };
 
 	return (
 		<>
@@ -81,7 +67,7 @@ function ActionProvider({row}) {
 				</CDropdownToggle>
 				<CDropdownMenu>
 					<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>
-					<CDropdownItem onClick={redirectAccount}>Account</CDropdownItem>
+					{/* <CDropdownItem onClick={redirectAccount}>Account</CDropdownItem> */}
 				</CDropdownMenu>
 			</CDropdown>
 		</>
@@ -103,6 +89,7 @@ const ProviderTable = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
+				dispatch(loaderShow());
 				const result = await getProvidersList(searchQuery);
 				seProviderData(result.data.data);
 			
@@ -112,6 +99,7 @@ const ProviderTable = () => {
 				setCount(resultCount.data.data.totalCount);
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
 				setPage(Math.ceil(pageCount));
+				dispatch(loaderHide());
 				// console.log(count)
 			} catch (error) {
 				OnError(error, dispatch);
@@ -121,7 +109,6 @@ const ProviderTable = () => {
 	}, [searchQuery]);
 
 	const pageChange = (event, value) => {
-		setPage(value);
 		setSearchQuery({...searchQuery, pageNumber: value});
 	};
 
@@ -157,10 +144,6 @@ const ProviderTable = () => {
 				accessor: 'Provider', // accessor is the "key" in the data
 				Cell: CellProvider,
 			},
-			// {
-			// 	Header: 'Account Owner',
-			// 	Cell: CellContract,
-			// },
 			{
 				Header: '',
 				accessor: 'partyRoleId',
