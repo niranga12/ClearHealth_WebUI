@@ -10,6 +10,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import {useHistory} from 'react-router-dom';
 import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -100,6 +101,8 @@ const HospitalTable = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
+				dispatch(loaderShow());
+
 				const result = await getHospitalsList(searchQuery);
 				setHospitalData(result.data.data);
 			
@@ -110,21 +113,28 @@ const HospitalTable = () => {
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
 				setPage(Math.ceil(pageCount));
 				// console.log(count)
+				dispatch(loaderHide());
+
 			} catch (error) {
 				OnError(error, dispatch);
 			}
 		};
 		fetchData();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchQuery]);
+  
+	
+	
 
-	const pageChange = (event, value) => {
-		setPage(value);
+	const pageChange = (event, value) =>{
+		// setPage(value);
 		setSearchQuery({...searchQuery, pageNumber: value});
 	};
 
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+		// eslint-disable-next-line eqeqeq
 		} else if (e.target.value.length == '') {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
 		} else {
@@ -146,6 +156,7 @@ const HospitalTable = () => {
 			{
 				Header: 'Hospital Name',
 				accessor: 'name', // accessor is the "key" in the data
+				Cell: ({value}) => <h5 className='font-weight-normal text-black'> {value} </h5>,
 			},
 
 			{
@@ -154,7 +165,7 @@ const HospitalTable = () => {
 				Cell: CellAddress,
 			},
 			{
-				Header: 'Account Owner',
+				Header: 'Contact',
 				Cell: CellContract,
 			},
 			{

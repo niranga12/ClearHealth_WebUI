@@ -9,6 +9,7 @@ import {reducer as notificationsReducer} from 'reapop'
 import {combineReducers } from 'redux'
 import { persistReducer } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
+import loaderReducer from './loaderReducer';
 
 
 const persistConfig={
@@ -20,6 +21,7 @@ const persistConfig={
 const rootReducer= combineReducers({
    Login: loginReducer,
    sidebar: changeState,
+   Loader:loaderReducer,
    notifications: notificationsReducer(),
 
 })

@@ -1,6 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { freeSet } from '@coreui/icons'
+// import { freeSet } from '@coreui/icons'
 import { logoAccounting } from 'src/assets/icons/logo-accounting'
 import { logoOrders } from 'src/assets/icons/logo-orders'
 import { logoHealthSystem } from 'src/assets/icons/logo-healthsystem'

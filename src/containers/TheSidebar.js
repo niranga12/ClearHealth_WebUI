@@ -18,7 +18,6 @@ import CIcon from "@coreui/icons-react";
 
 // sidebar nav config
 import navigation from "./_nav";
-import { freeSet } from "@coreui/icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 // import { changeHeadToggle } from "src/actions/changeAction";

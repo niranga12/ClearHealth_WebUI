@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+// import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
 import { getHealthSystemByPartyRoleId } from 'src/service/healthsystemService';
 import AdminTitle from 'src/views/common/adminTitle'
 import HealthSystemForm from './healthSystemForm'
@@ -27,6 +30,7 @@ const HealthSystemProfile = () => {
     const location = useLocation();
     const [partyRoleId, setPartyRoleId] = useState(null)
     const [editProfile, setEditProfile] = useState(false)
+    const dispatch = useDispatch();
 
     
 
@@ -46,10 +50,12 @@ const HealthSystemProfile = () => {
   const fetchData = async () => {
     if (id) {
       try {
+        dispatch(loaderShow());
        const result= await getHealthSystemByPartyRoleId(id);
        const formatedData=  await updateFormFields(result.data.data)
         
         setHealthSystemData(formatedData);
+        dispatch(loaderHide());
       } catch (error) {}
     }
   };
@@ -62,6 +68,7 @@ const HealthSystemProfile = () => {
 
 
   const updateFormFields=(data)=>{
+    console.log(data);
       const healthData={
         name:data.name,
         address1:data.primaryAddress1,
@@ -69,14 +76,14 @@ const HealthSystemProfile = () => {
         city: data.primaryCity,
         state: data.primaryState,
         zip: data.primaryZip,
-        phone: data.phoneNumber,
+        phone:data.phoneNumber ,
         shippingAddress1: data.secondaryAddress1,
         shippingAddress2: data.secondaryAddress2,
         shippingCity:data.secondaryCity,
         shippingState: data.secondaryState,
         shippingZip: data.secondaryZip,
         contactName: data.contactName,
-        contactPhone: data.contactNumber,
+        contactPhone:data.contactNumber,
         contactEmail: data.contactElectronicAddress
       }
     

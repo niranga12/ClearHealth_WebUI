@@ -1,22 +1,17 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  CCreateElement,
+  
   CSidebar,
-  CSidebarBrand,
+  
   CSidebarNav,
-  CSidebarNavDivider,
-  CSidebarNavTitle,
-  CSidebarNavDropdown,
-  CSidebarNavItem,
+ 
   CLink,
 } from "@coreui/react";
 
-import CIcon from "@coreui/icons-react";
 
 // sidebar nav config
 import navigation from "./_nav";
-import { freeSet } from "@coreui/icons";
 
 const TheSideNavigation = () => {
   const dispatch = useDispatch();

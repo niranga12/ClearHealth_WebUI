@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   CHeader,
   CToggler,
-  CHeaderBrand,
+  
   CHeaderNav,
   
 } from "@coreui/react";
@@ -21,19 +21,21 @@ import {
   TheTittleUser,
 } from "./index";
 import TheHeaderDropdownImage from "./TheHeaderDropDownImage";
+import { useHistory } from "react-router-dom";
 // import Logo from "src/reusable/Logo";
 // import { changeHeadToggle } from "src/actions/changeAction";
 
 const TheHeader = () => {
   const dispatch = useDispatch();
+  let history=useHistory()
   const sidebarShow = useSelector((state) => state.sidebar.sidebarShow);
 
-  const toggleSidebar = () => {
-    const val = [true, "responsive"].includes(sidebarShow)
-      ? false
-      : "responsive";
-    dispatch({ type: "set", sidebarShow: val });
-  };
+  // const toggleSidebar = () => {
+  //   const val = [true, "responsive"].includes(sidebarShow)
+  //     ? false
+  //     : "responsive";
+  //   dispatch({ type: "set", sidebarShow: val });
+  // };
 
   const toggleSidebarMobile = () => {
     const val = [false, "responsive"].includes(sidebarShow)
@@ -41,10 +43,15 @@ const TheHeader = () => {
       : "responsive";
     dispatch({ type: "set", sidebarShow: val });
   };
+  const routeToDashboard=() =>{
+    history.push('/main');
+
+
+  }
 
   return (
     <CHeader withSubheader className="box-shadow-bottom  ">
-       <img src={logo} alt="Logo" className="sm-logo-setting-layout"/> 
+       <img src={logo} alt="Logo" className="sm-logo-setting-layout" onClick={routeToDashboard}/> 
       <CToggler
         inHeader
         className="ml-md-3 d-lg-none"

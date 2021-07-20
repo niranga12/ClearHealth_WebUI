@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useTable } from "react-table";
 import { TableSettingsEnum } from "src/reusable/enum";
 import {
   getHealthSystemList,
@@ -14,6 +13,8 @@ import PaginationTable from "src/views/common/paginationTable";
 import OnError from "src/_helpers/onerror";
 import PhoneNumberFormater from "src/reusable/PhoneNumberFormater";
 import DataTable from "src/views/common/dataTable";
+import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from "@coreui/react";
+import { loaderHide, loaderShow } from "src/actions/loaderAction";
 
 const initialSearch = {
   itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -45,7 +46,7 @@ function CellAddress({ row }) {
   return (
     <>
       <div className="max-celladdress">
-        {row.original.primaryAddress1} , {row.original.primaryAddress2} ,
+        {row.original.primaryAddress1} , {row.original.primaryAddress2} {row.original.primaryAddress2? ',':''} 
         {row.original.primaryCity} ,{" "}
       </div>
       <div className="max-celladdress">
@@ -61,6 +62,38 @@ function CellAddress({ row }) {
       </div>
     </>
   );
+}
+
+
+
+function ActionHealthSystem({row}) {
+	let history = useHistory();
+
+	const redirectToEdit = () => {
+		history.push({
+      pathname: `/healthsystem/profile`,
+			search: `?id=${row.original.partyRoleId}`,
+		
+		});
+	};
+
+	
+
+	return (
+		<>
+			<CDropdown className='m-1'>
+				<CDropdownToggle>
+					<div className='text-center text-gray font-15re cursor-point  ml-3'>
+						<span className='fa fa-ellipsis-h '></span>
+					</div>
+				</CDropdownToggle>
+				<CDropdownMenu>
+					<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>
+					<CDropdownItem >Delete</CDropdownItem>
+				</CDropdownMenu>
+			</CDropdown>
+		</>
+	);
 }
 
 const HealthTable = () => {
@@ -80,6 +113,8 @@ const HealthTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        dispatch(loaderShow());
+
         const result = await getHealthSystemList(searchQuery);
         setdata(result.data.data);
 
@@ -90,6 +125,7 @@ const HealthTable = () => {
           resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
         //  console.log(pageCount)
         setPage(Math.ceil(pageCount));
+        dispatch(loaderHide());
 
         // console.log(count)
       } catch (error) {
@@ -120,13 +156,14 @@ const HealthTable = () => {
     // setSearchTerm(e.target.value)
     if (e.target.value.length > 3) {
       setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
+    // eslint-disable-next-line eqeqeq
     } else if (e.target.value.length == "") {
       setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
     } else {
     }
   };
   const pageChange = (event, value) => {
-    setPage(value);
+    // setPage(value);
     setSearchQuery({ ...searchQuery, pageNumber: value });
   };
 
@@ -134,15 +171,15 @@ const HealthTable = () => {
     history.push("/healthsystem/profile");
   };
 
-  const redirectToPage = (value) => {
-    // history.push(`/healthsystem/profile/${value}`);
+  // const redirectToPage = (value) => {
+  //   // history.push(`/healthsystem/profile/${value}`);
 
-    history.push({
-      pathname: `/healthsystem/profile`,
-      search: `?id=${value}`,
-      // state: { detail: 'some_value' }
-    });
-  };
+  //   history.push({
+  //     pathname: `/healthsystem/profile`,
+  //     search: `?id=${value}`,
+  //     // state: { detail: 'some_value' }
+  //   });
+  // };
 
   //SETTING COLUMNS NAMES
   const columns = useMemo(
@@ -151,7 +188,7 @@ const HealthTable = () => {
         Header: "Name",
         accessor: "name", // accessor is the "key" in the data
         Cell: ({ value }) => (
-          <h5 className="font-weight-normal text-black ml-4"> {value} </h5>
+          <h5 className="font-weight-normal text-black ml-4 max-health-name"> {value} </h5>
         ),
       },
       {
@@ -167,15 +204,16 @@ const HealthTable = () => {
         Header: "",
         accessor: "partyRoleId",
         // accessor: '[row identifier to be passed to button]',
-        Cell: ({ value }) => (
-          <div
-            className="text-center text-gray font-15re cursor-point"
-            onClick={() => redirectToPage(value)}
-          >
-            <span className="fa fa-ellipsis-h "></span>
-          </div>
-        ),
-      },
+        Cell:ActionHealthSystem
+      //   Cell: ({ value }) => (
+      //     <div
+      //       className="text-center text-gray font-15re cursor-point"
+      //       onClick={() => redirectToPage(value)}
+      //     >
+      //       <span className="fa fa-ellipsis-h "></span>
+      //     </div>
+      //   ),
+       },
     ],
     []
   );

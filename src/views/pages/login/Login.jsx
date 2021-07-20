@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import { Link, useHistory } from "react-router-dom";
 // import "./login.scss";
 // import Logo from "src/reusable/Logo";
@@ -7,7 +7,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {  useDispatch } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import { login } from "src/actions/loginAction";
 // import NotificationLayout from "src/_helpers/notification";
 // import { notify } from "reapop";
@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 const schema = yup.object().shape({
   username: yup.string().required("Email required"),
   password: yup.string().required("Password required"),
+  keepSignIn:yup.bool()
 });
 
 const Login = () => {
@@ -32,10 +33,19 @@ const Login = () => {
   // const User = useSelector((state) => state.Login);
   const disPatch = useDispatch();
   const history = useHistory();
+  let keepMeSignIN = useSelector((state) => state.Login.keepMeSignIn);
+
+  useEffect(() => {
+    if(keepMeSignIN){
+      history.push("/main");
+    }
+    
+  }, [])
+
  
 
   const userLogin = (data) => {
-    // console.log(data);
+     console.log(data);
     disPatch(login(data,history));
     // disPatch(notify('Welcome to the documentation', 'info'))
   };
@@ -93,8 +103,8 @@ const Login = () => {
         />
         <div className="small text-danger pb-2  ">{errors.password?.message}</div>
         <div className="row p-2">
-<div className="col-md-6 pl-2 checkbox">
-  <input type="checkbox" name="KeepSign" id="" /> <span className="label pl-1 pt-1">Keep me signed in</span>
+<div className="col-md-6 pl-4 checkbox">
+  <input type="checkbox" className="form-check-input" name="KeepSign" id=""   {...register("keepSignIn")}/> <div className="label  form-check-label ">Keep me signed in</div>
 </div>
 <div className="col-md-6 text-right">
 <div className=" label  text-right text-loginblue  font-lato-bold cil-cursor cursor-point" onClick={redirectToPage}>

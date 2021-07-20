@@ -1,46 +1,48 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
-import {PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
+import {MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
 import {useHistory} from 'react-router-dom';
-import {getHealthSystemList} from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import {InvoiceReceiveMethod} from 'src/_helpers/CommonDataList';
 import {saveHospital, updateHospitalByPartyRoleId} from 'src/service/hospitalsService';
 import {notify} from 'reapop';
+import InputMask from 'react-input-mask';
+import NormalizePhone from 'src/reusable/NormalizePhone';
+import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 
 const schema = yup.object().shape({
-	hospitalName: yup.string().required('Hospital Name is required'),
-	healthSystemPartyRoleId: yup.string().required('Health system is required'),
-	address1: yup.string().required('Address line1 is required'),
+	hospitalName: yup.string().required('Hospital Name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital Name should contain only characters'),
+	healthSystemPartyRoleId: yup.string().required('Health System is required'),
+	address1: yup.string().required('Address Line 1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
-	zip: yup.string().required('Zip is required'),
-	phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
-	businessAddress1: yup.string().required('Business Address line 1 is required'),
+	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
+	phone: yup.string().required('Phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
+	businessAddress1: yup.string().required('Business Address Line 1 is required'),
 	businessAddress2: yup.string(),
 	businessCity: yup.string().required('City is required'),
 	businessState: yup.string().required('State is required'),
-	businessZip: yup.string().required('Zip is required'),
-	patientContactName: yup.string().required('Contact name is required'),
-	patientContactPhone: yup.string().required('Contact phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
-	patientContactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
-	consolidatedInvoice: yup.string(),
-	applySAASTax: yup.string(),
-	taxId: yup.string().required('City is required'),
-	invoiceReceiveMethod: yup.string().required('Invoice receive method is required'),
-	accountNumber: yup.string().required('Account number is required'),
-	routing: yup.string().required('Routing is required'),
-	bankName: yup.string().required('Bank name is required'),
-	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
-	contactPhone: yup.string().required('Contact Phone is required'),
-	contactName: yup.string().required('Contact name is required'),
+	businessZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
+	patientContactName: yup.string().required('Contact Name is required'),
+	patientContactPhone: yup.string().required('Contact Phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
+	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
+	consolidatedInvoice: yup.bool(),
+	applySAASTax: yup.bool(),
+	taxId: yup.string(),
+	invoiceReceiveMethod: yup.string(),
+	accountNumber: yup.string(),
+	routing: yup.string(),
+	bankName: yup.string(),
+	contactEmail: yup.string().email(' Email must be a valid email'),
+	contactPhone: yup.string().test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
+	contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
 });
 
-const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
+const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, healthSystems=[]}) => {
 	const {
 		register,
 		handleSubmit,
@@ -49,14 +51,16 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 		reset,
 		control,
 		formState: {errors},
-	} = useForm({resolver: yupResolver(schema)});
+	} = useForm({resolver: yupResolver(schema),mode: "all",});
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const {dirtyFields} = useFormState({control});
 	const dispatch = useDispatch();
 	let history = useHistory();
+	let btnRef = useRef();
 
-	const [healthSystems, setHealthSystem] = useState([]);
+
+	// const [healthSystems, setHealthSystem] = useState([]);
 
 	const handleBusinessChecked = (event) => {
 		if (event.target.checked) {
@@ -89,25 +93,33 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 		}
 	};
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const result = await getHealthSystemList({});
-				setHealthSystem(result.data.data);
-			} catch (error) {
-				OnError(error, dispatch);
-			}
-		};
-		fetchData();
-	}, []);
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const result = await getHealthSystemList({});
+	// 			setHealthSystem(result.data.data);
+	// 		} catch (error) {
+	// 			OnError(error, dispatch);
+	// 		}
+	// 	};
+	// 	fetchData();
+		
+	// }, []);
 
 	useEffect(() => {
-		reset(defaultValues);
-	}, [ defaultValues ]);
+		try {
+			reset(defaultValues);
+		} catch (error) {
+			OnError(error, dispatch);
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [defaultValues]);
 
 	// form submit
 	const hospitalFormSubmit = (data) => {
-		
+		if(btnRef.current){
+			btnRef.current.setAttribute("disabled", "disabled");
+		  }
 		if (isEdit) {
 			updateHospitalInfo();
 		} else {
@@ -117,6 +129,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 	// save hospital
 	const addHospital = async (data) => {
+		
 		const newHospital = {
 			hospital: {
 				healthSystemPartyRoleId: data.healthSystemPartyRoleId,
@@ -142,26 +155,28 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 			],
 			telecommunicationsNumber: {
 				partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
-				number: data.phone,
+				number: NormalizePhone(data.phone),
 			},
 			patientAccessContact: {
 				name: data.patientContactName,
-				phone: data.patientContactPhone,
+				phone: NormalizePhone(data.patientContactPhone),
 				email: data.patientContactEmail,
 			},
 			paymentInfo: {
 				name: data.contactName,
-				phone: data.contactPhone,
+				phone: NormalizePhone(data.contactPhone),
 				email: data.contactEmail,
 				taxId: data.taxId,
 				bankName: data.bankName,
 				routing: data.routing,
 				accountNumber: data.accountNumber,
 				invoiceReceiveMethod: data.invoiceReceiveMethod,
-				applySAASTax: data.applySAASTax,
-				consolidatedInvoice: data.consolidatedInvoice,
+				applySAASTax: data.applySAASTax? 1:0,
+				consolidatedInvoice: data.consolidatedInvoice? 1:0,
 			},
 		};
+
+		// console.log(newHospital);
 
 		try {
 			if (newHospital) {
@@ -180,8 +195,8 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 	const updateHospitalInfo = async () => {
 		try {
 		const  updateHospital =  {
-				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId) && {healthSystem: {name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId')}}),
-				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.shippingAddress1 || dirtyFields.shippingAddress2 || dirtyFields.shippingCity || dirtyFields.shippingState || dirtyFields.shippingZip) && {
+				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId) && {hospital: {name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId')}}),
+				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip) && {
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
 							? [
@@ -213,37 +228,41 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 				...((dirtyFields.patientContactName || dirtyFields.patientContactPhone || dirtyFields.patientContactEmail) && {
 					patientAccessContact: {
 						name: getValues('patientContactName'),
-						phone: getValues('patientContactPhone'),
+						phone: NormalizePhone(getValues('patientContactPhone')),
 						email: getValues('patientContactEmail'),
 					},
 				}),
 				...(dirtyFields.phone && {
 					telecommunicationsNumber: {
 						partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
-						number: getValues('phone'),
+						number: NormalizePhone(getValues('phone')),
 					},
 				}),
 				...((dirtyFields.contactName || dirtyFields.contactPhone || dirtyFields.contactEmail || dirtyFields.taxId || dirtyFields.bankName || dirtyFields.routing || dirtyFields.accountNumber || dirtyFields.invoiceReceiveMethod || dirtyFields.applySAASTax || dirtyFields.consolidatedInvoice) && {
 					paymentInfo: {
 						name: getValues('contactName'),
-						phone: getValues('contactPhone'),
+						phone: NormalizePhone(getValues('contactPhone')),
 						email: getValues('contactEmail'),
 						taxId: getValues('taxId'),
 						bankName: getValues('bankName'),
 						routing: getValues('routing'),
 						accountNumber: getValues('accountNumber'),
 						invoiceReceiveMethod: getValues('invoiceReceiveMethod'),
-						applySAASTax: getValues('applySAASTax'),
-						consolidatedInvoice: getValues('consolidatedInvoice'),
+						applySAASTax: getValues('applySAASTax')? 1:0,
+						consolidatedInvoice: getValues('consolidatedInvoice')? 1:0,
 					},
 				}),
 			};
-			if (Object.keys(updateHospital).length == 0) {
+			if (Object.keys(updateHospital).length === 0) {
 				dispatch(notify(`No record to update`, 'error'));
+				btnRef.current.removeAttribute("disabled");
+
+				// btnRef.current.remove("disabled", "disabled");
+
 			} else {
 				try {
 					const result = await updateHospitalByPartyRoleId(partyRoleId, updateHospital);
-					if (result.data.message == ServiceMsg.OK) {
+					if (result.data.message === ServiceMsg.OK) {
 						dispatch(notify(`Successfully updated`, 'success'));
 						history.push('/hospitals');
 					}
@@ -269,6 +288,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								Hospital Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('hospitalName')} />
+							<div className='small text-danger  pb-2   '>{errors.hospitalName?.message}</div>
 						</div>
 					</div>
 
@@ -276,7 +296,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Heath System <span className='text-danger font-weight-bold '>*</span>{' '}
+								Health System <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('healthSystemPartyRoleId')}>
 								<option value=''>Select</option>
@@ -287,6 +307,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								))}
 								{/* <option value='test'>test</option> */}
 							</select>
+							<div className='small text-danger  pb-2   '>{errors.healthSystemPartyRoleId?.message}</div>
 						</div>
 					</div>
 				</div>
@@ -337,7 +358,8 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('phone')} />
+							<InputMask   {...register('phone')} mask={MaskFormat.phoneNumber}   alwaysShowMask={isEdit?true:false}  className='form-control-sm'  />
+							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
 
@@ -348,7 +370,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 					<div className='col-md-4'>
 						<h5 className='font-weight-bold mt-1'>
-							<span className='pr-5'>Business Address </span> <input type='checkbox' className='form-check-input' onChange={handleBusinessChecked} /> <span className='small'>Same As Address</span>{' '}
+							<span className='pr-5'>Business Address </span> <input type='checkbox' className='form-check-input' onChange={handleBusinessChecked} /> <span className='small'>Same as address</span>{' '}
 						</h5>
 						<div className='form-group'>
 							<label className='form-text'>
@@ -405,7 +427,9 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('patientContactPhone')} />
+							<InputMask  {...register('patientContactPhone')}  mask={MaskFormat.phoneNumber}   alwaysShowMask={isEdit?true:false}  className='form-control-sm'   />
+							
+							{/* <input type='text' className='form-control-sm' {...register('patientContactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.patientContactPhone?.message}</div>
 						</div>
 
@@ -427,7 +451,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Contact Name <span className='text-danger font-weight-bold '>*</span>{' '}
+								Contact Name
 							</label>
 							<input type='text' className='form-control-sm' {...register('contactName')} />
 							<div className='small text-danger  pb-2   '> {errors.contactName?.message} </div>
@@ -436,16 +460,18 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Phone <span className='text-danger font-weight-bold '>*</span>{' '}
+								Phone
 							</label>
-							<input type='text' className='form-control-sm' {...register('contactPhone')} />
+							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber}   alwaysShowMask={isEdit?true:false}  className='form-control-sm'   />
+							
+							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
 							<div className='small text-danger  pb-2   '> {errors.contactPhone?.message} </div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Email <span className='text-danger font-weight-bold '>*</span>{' '}
+								Email 
 							</label>
 							<input type='text' className='form-control-sm' {...register('contactEmail')} />
 							<div className='small text-danger  pb-2   '> {errors.contactEmail?.message} </div>
@@ -457,7 +483,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Bank Name <span className='text-danger font-weight-bold '>*</span>{' '}
+								Bank Name 
 							</label>
 							<input type='text' className='form-control-sm' {...register('bankName')} />
 							<div className='small text-danger  pb-2   '> {errors.bankName?.message} </div>
@@ -465,7 +491,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Routing <span className='text-danger font-weight-bold '>*</span>{' '}
+								Routing 
 							</label>
 							<input type='text' className='form-control-sm' {...register('routing')} />
 							<div className='small text-danger  pb-2   '> {errors.routing?.message} </div>
@@ -473,7 +499,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Account <span className='text-danger font-weight-bold '>*</span>{' '}
+								Account 
 							</label>
 							<input type='text' className='form-control-sm' {...register('accountNumber')} />
 							<div className='small text-danger  pb-2   '> {errors.accountNumber?.message} </div>
@@ -484,7 +510,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Invoice Receive Method <span className='text-danger font-weight-bold '>*</span>
+								Invoice Receive Method 
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('invoiceReceiveMethod')}>
 								<option value=''>Select</option>
@@ -501,25 +527,26 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Tax Id <span className='text-danger font-weight-bold '>*</span>{' '}
+								Tax Id 
 							</label>
 							<input type='text' className='form-control-sm' {...register('taxId')} />
 							<div className='small text-danger  pb-2   '> {errors.taxId?.message} </div>
 						</div>
 
-						<div className='form-group'>
-							<input type='checkbox' name='' id='' {...register('applySAASTax')} /> Apply SASS Tax
-						</div>
-						<div className='form-group'>
-							<input type='checkbox' name='' id='' {...register('consolidatedInvoice')} />
-							Consolidated Invoice
+						<div className='form-group pl-4'>
+							<input type='checkbox' name="applySAASTax" {...register('applySAASTax')} className="mr-2 form-check-input" /> 
+							<label className="form-check-label">Apply SASS Tax</label> 	
+						</div> 
+						<div className='form-group pl-4'>
+							<input type='checkbox' name="consolidatedInvoice"  {...register('consolidatedInvoice')} className="form-check-input" />
+							<label className="form-check-label">Consolidated Invoice</label> 
 						</div>
 					</div>
 				</div>
 
 				<div className='row'>
 					<div className='col-md-12'>
-						<button type='submit' className='btn btn-primary btn-lg float-right'>
+						<button type='submit' ref={btnRef} className='btn btn-primary btn-lg float-right'>
 						{isEdit ? 'Update' : 'Save'}
 
 						</button>

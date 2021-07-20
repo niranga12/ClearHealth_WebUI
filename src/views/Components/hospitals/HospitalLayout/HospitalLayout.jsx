@@ -27,7 +27,7 @@ const HospitalLayout = () => {
 		<>
 			<CRow>
 				<CCol xs='12' md='12'  className='h4 font-lato-bold m-0 cursor-pointer' >
-					<CIcon name='cilArrowLeft' size={'2xl'}  onClick={redirectHospital}/>
+					<CIcon name='cilArrowLeft' size={'xl'}  onClick={redirectHospital}/>
 				   <span className="pl-3" onClick={redirectHospital}>Hospitals</span>	
 				</CCol>
 				<CCol xs='12' md='12' className='h2 font-lato-bold hospital-heading'>
