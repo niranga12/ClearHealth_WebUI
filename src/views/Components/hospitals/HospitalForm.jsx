@@ -1,9 +1,9 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
-import {MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
+import {MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
 import {useHistory} from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import {InvoiceReceiveMethod} from 'src/_helpers/CommonDataList';
@@ -12,6 +12,8 @@ import {notify} from 'reapop';
 import InputMask from 'react-input-mask';
 import NormalizePhone from 'src/reusable/NormalizePhone';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
+import useDebounce from 'src/reusable/debounce';
+import { getValidateOrganization } from 'src/service/commonService';
 
 const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital Name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital Name should contain only characters'),
@@ -60,7 +62,47 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 	let btnRef = useRef();
 
 
-	// const [healthSystems, setHealthSystem] = useState([]);
+	// for org name validation 
+	const [hospitalName, setHospitalName] = useState('');
+	const [isSearching, setIsSearching] = useState(false);
+	const [isAlreadyExit, setIsAlreadyExit] = useState(false);
+	// ... so that we aren't hitting our API rapidly.
+	const debouncedName = useDebounce(hospitalName, 1000);
+
+	
+
+
+	// validate organition name 
+	useEffect(() => {
+		const fetchValidate = async () => {
+			try {
+				setIsSearching(true);
+				if (debouncedName) {
+					let data = {
+						roleTypeId: Organizations.Hospital, 
+						organizationName: debouncedName,
+						...(isEdit && {partyRoleId}),
+					};
+
+					const result = await getValidateOrganization(data);
+				
+					if (result.data.data) {
+						btnRef.current.removeAttribute('disabled');
+					} else {	
+					    btnRef.current.setAttribute('disabled', 'disabled');	
+					}
+					setIsSearching(false);
+					setIsAlreadyExit(!result.data.data);
+				} else {
+					setIsSearching(false);
+					setIsAlreadyExit(false);
+				}
+			} catch (error) {}
+		};
+		fetchValidate();
+	}, [debouncedName]);
+
+	
 
 	const handleBusinessChecked = (event) => {
 		if (event.target.checked) {
@@ -287,8 +329,10 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								{' '}
 								Hospital Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('hospitalName')} />
+							<input className='form-control-sm' type='text' {...register('hospitalName')}  onChange={(e) => setHospitalName(e.target.value)} />
 							<div className='small text-danger  pb-2   '>{errors.hospitalName?.message}</div>
+							{isSearching && <div>Searching ...</div>}
+							{isAlreadyExit && <div className='small text-danger pb-2'>Hospital name already taken</div>}
 						</div>
 					</div>
 
