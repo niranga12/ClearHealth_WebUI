@@ -8,11 +8,14 @@ import { useHistory } from 'react-router-dom';
 import { getHealthSystemList } from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
-import { saveProvider, updateProviderByPartyRoleId } from 'src/service/providerService';
+import { getSpecialityList, saveProvider, updateProviderByPartyRoleId } from 'src/service/providerService';
+import { getHospitalsList } from 'src/service/hospitalsService';
+
 
 const schema = yup.object().shape({
-	hospitalName: yup.string().required('Hospital Name is required'),
+
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
+	hospitalName: yup.string().required('Hospital Name is required'),
 	firstName: yup.string().required('First name is required'),
 	middleName: yup.string().required('Middle name is required'),
 	lastName: yup.string().required('Last name is required'),
@@ -21,7 +24,7 @@ const schema = yup.object().shape({
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required'),
-	billingAddress1: yup.string().required('billing Address line 1 is required'),
+	billingAddress1: yup.string().required('Billing Address line 1 is required'),
 	billingAddress2: yup.string(),
 	billingCity: yup.string().required('City is required'),
 	billingState: yup.string().required('State is required'),
@@ -29,7 +32,7 @@ const schema = yup.object().shape({
 	phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
 	speciality: yup.string().required('Speciality is required'),
 	taxId: yup.string().required('Tax Id is required'),
-	nip: yup.string().required('NIP is required'),
+	nip: yup.string().required('NPI is required'),
 	bankName: yup.string().required('Bank name is required'),
 	accountNumber: yup.string().required('Account number is required'),
 	routing: yup.string().required('Routing is required')
@@ -48,6 +51,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const { dirtyFields } = useFormState({ control });
+	const [hospitalData, setHospitalData] = useState([]);
+	const [hsHospitalData, sethsHospitalData] = useState([]);
+	const [specialityData, setSpecialityData] = useState([]);
 	const dispatch = useDispatch();
 	let history = useHistory();
 
@@ -93,6 +99,11 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 		const fetchData = async () => {
 			try {
 				const result = await getHealthSystemList({});
+				const hospitalList = await getHospitalsList();
+				const specialityList= await getSpecialityList();
+				setSpecialityData(specialityList.data.data);
+				setHospitalData(hospitalList.data.data);
+
 				setHealthSystem(result.data.data);
 			} catch (error) {
 				OnError(error, dispatch);
@@ -101,6 +112,46 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 		fetchData();
 	}, []);
 
+
+	const handleHealthSystemChange = (e) => {
+		let result = hospitalData.filter(x => x.healthSystemPartyRoleId == e.target.value);
+		sethsHospitalData(result)
+	}
+
+	const handleHospitalChecked = (event) => {
+
+
+		if (event.target.checked) {
+			let result = hsHospitalData.find(x => x.partyRoleId == getValues('hospitalName'));
+
+			setValue('address1', result.primaryAddress1, {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('address2', result.primaryAddress2, {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('city', result.primaryCity, {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('state', result.primaryState, {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('zip', result.primaryZip, {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+		} else {
+			setValue('address1', '');
+			setValue('address2', '');
+			setValue('city', '');
+			setValue('state', '');
+			setValue('zip', '');
+		}
+	}
 
 
 	// form submit
@@ -114,6 +165,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 		}
 	};
 
+
+
 	// save Provider
 	const addProvider = async (data) => {
 		const newProvider = {
@@ -121,7 +174,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 				firstName: data.firstName,
 				middleName: data.middleName,
 				lastName: data.lastName,
-				hospitalList: data.healthSystemPartyRoleId,
+				hospitalList: data.hospitalName,
 				speciality: data.speciality,
 			},
 
@@ -148,8 +201,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 				number: data.phone,
 			},
 			paymentInfo: {
+				NIP: data.nip,
 				taxId: data.taxId,
-				nip: data.nip,
 				bankName: data.bankName,
 				routing: data.routing,
 				accountNumber: data.accountNumber,
@@ -161,7 +214,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 				let result = await saveProvider(newProvider);
 				if (result.data.message === ServiceMsg.OK) {
 					dispatch(notify(`Successfully added`, 'success'));
-					history.push('/provider');
+					history.push('/providers');
 				}
 			}
 		} catch (error) {
@@ -180,7 +233,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 						firstName: getValues('firstName'),
 						middleName: getValues('middleName'),
 						lastName: getValues('lastName'),
-						hospitalList: getValues('hospitalList'),
+						hospitalList: getValues('hospitalName'),
 						speciality: getValues('speciality'),
 					}
 				}),
@@ -258,7 +311,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 		<div className='p-4'>
 			<form onSubmit={handleSubmit(providerFormSubmit)}>
 				{/* hospital details */}
-				<h5 className='font-weight-bold mt-1'>Hospital Details </h5>
+				{/* <h5 className='font-weight-bold mt-1'>Hospital Details </h5> */}
 				<div className='row mb-3'>
 
 
@@ -266,9 +319,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Heath System <span className='text-danger font-weight-bold '>*</span>{' '}
+								Health System <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<select name='' id='' className='form-control-sm' {...register('healthSystemPartyRoleId')}>
+							<select name='healthSystem' id='healthSystem' className='form-control-sm'  {...register('healthSystemPartyRoleId')} onChange={handleHealthSystemChange}>
 								<option value=''>Select</option>
 								{healthSystems.map((item, index) => (
 									<option key={index} value={item.partyRoleId}>
@@ -277,6 +330,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 								))}
 								{/* <option value='test'>test</option> */}
 							</select>
+							<div className='small text-danger  pb-2   '>{errors.healthSystemPartyRoleId?.message}</div>
 						</div>
 					</div>
 
@@ -284,9 +338,19 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Hospital Name <span className='text-danger font-weight-bold '>*</span>{' '}
+								Hospital<span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('hospitalName')} />
+
+							<select name='' id='' className='form-control-sm' {...register('hospitalName')}>
+								<option value=''>Select</option>
+								{hsHospitalData.map((item, index) => (
+									<option key={index} value={item.partyRoleId}>
+										{item.name}
+									</option>
+								))}
+								{/* <option value='test'>test</option> */}
+							</select>
+							<div className='small text-danger  pb-2   '>{errors.hospitalName?.message}</div>
 						</div>
 					</div>
 				</div>
@@ -300,6 +364,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('firstName')} />
+							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
 						</div>
 					</div>
 
@@ -307,9 +372,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Middle Name <span className='text-danger font-weight-bold '>*</span>{' '}
+								Middle Name <span className='text-danger font-weight-bold '></span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('middleName')} />
+							{/* <div className='small text-danger  pb-2   '>{errors.middleName?.message}</div> */}
 						</div>
 					</div>
 
@@ -320,6 +386,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('lastName')} />
+							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
 						</div>
 					</div>
 				</div>
@@ -327,7 +394,11 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 				<div className='row mb-3'>
 					{/* address */}
 					<div className='col-md-4'>
-						<h5 className='font-weight-bold mt-1'>Address </h5>
+
+						<h5 className='font-weight-bold mt-1'>
+							<span className='pr-5'>Address </span> <input type='checkbox' className='form-check-input' onChange={handleHospitalChecked} /> <span className='small'>Use hospital address</span>{' '}
+						</h5>
+						{/* <h5 className='font-weight-bold mt-1'>Address </h5> */}
 						<div className='form-group'>
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>
@@ -375,7 +446,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 					<div className='col-md-4'>
 						<h5 className='font-weight-bold mt-1'>
-							<span className='pr-5'>Business Address </span> <input type='checkbox' className='form-check-input' onChange={handleBillingChecked} /> <span className='small'>Same As Address</span>{' '}
+							<span className='pr-5'>Billing Address </span> <input type='checkbox' className='form-check-input' onChange={handleBillingChecked} /> <span className='small'>Same As Address</span>{' '}
 						</h5>
 						<div className='form-group'>
 							<label className='form-text'>
@@ -418,7 +489,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 					{/* Patient Access Contact */}
 					<div className='col-md-4'>
-						<h5 className='font-weight-bold mt-1'>More infor</h5>
+						<h5 className='font-weight-bold mt-1'>More info</h5>
 						<div className='form-group'>
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
@@ -432,7 +503,15 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 								{' '}
 								Speciality <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input type='text' className='form-control-sm' {...register('speciality')} />
+							<select name='' id='' className='form-control-sm' {...register('speciality')}>
+								<option value=''>Select</option>
+								{specialityData.map((item, index) => (
+									<option key={index} value={item.ID}>
+										{item.speciality}
+									</option>
+								))}
+							
+							</select>
 							<div className='small text-danger  pb-2   '> {errors.speciality?.message} </div>
 						</div>
 
@@ -449,7 +528,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 						<div className='form-group'>
 							<label className='form-text'>
-								NIP <span className='text-danger font-weight-bold '>*</span>
+								NPI <span className='text-danger font-weight-bold '>*</span>
 							</label>
 							<input type='text' className='form-control-sm' {...register('nip')} />
 							<div className='small text-danger  pb-2   '>{errors.nip?.message}</div>
@@ -468,7 +547,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Bank Name <span className='text-danger font-weight-bold '>*</span>{' '}
+								Bank Name <span className='text-danger font-weight-bold '></span>{' '}
 							</label>
 							<input type='text' className='form-control-sm' {...register('bankName')} />
 							<div className='small text-danger  pb-2   '> {errors.bankName?.message} </div>
@@ -478,7 +557,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Account <span className='text-danger font-weight-bold '>*</span>{' '}
+								Account #<span className='text-danger font-weight-bold '></span>{' '}
 							</label>
 							<input type='text' className='form-control-sm' {...register('accountNumber')} />
 							<div className='small text-danger  pb-2   '> {errors.accountNumber?.message} </div>
@@ -487,7 +566,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
-								Routing <span className='text-danger font-weight-bold '>*</span>{' '}
+								Routing #<span className='text-danger font-weight-bold '></span>{' '}
 							</label>
 							<input type='text' className='form-control-sm' {...register('routing')} />
 							<div className='small text-danger  pb-2   '> {errors.routing?.message} </div>
