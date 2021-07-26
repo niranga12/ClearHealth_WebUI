@@ -1,10 +1,10 @@
 /* eslint-disable eqeqeq */
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useForm, useFormState} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
-import {MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
+import {MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
 import {addHealthSystemNew, updateHealthSystemByPartyRoleId} from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import {notify} from 'reapop';
@@ -12,9 +12,10 @@ import {useHistory} from 'react-router-dom';
 import InputMask from 'react-input-mask';
 import NormalizePhone from 'src/reusable/NormalizePhone';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
+import useDebounce from 'src/reusable/debounce';
+import {getValidateOrganization} from 'src/service/commonService';
 
 // import history from "src/_helpers/history";
-
 
 const schema = yup.object().shape({
 	name: yup.string().required('Name is required').matches(ValidationPatterns.onlyCharacters, 'Name should contain only characters'),
@@ -23,7 +24,10 @@ const schema = yup.object().shape({
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	phone: yup.string().required('Phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
+	phone: yup
+		.string()
+		.required('Phone is required')
+		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	// phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
 	shippingAddress1: yup.string().required('Shipping Address line 1 is required'),
 	shippingAddress2: yup.string(),
@@ -31,7 +35,10 @@ const schema = yup.object().shape({
 	shippingState: yup.string().required('State is required'),
 	shippingZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	contactName: yup.string().required('Contact name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
-	contactPhone: yup.string().required('Contact phone is required').test("phoneNO",	"Please enter a valid Phone Number",(value) => PhoneNumberMaskValidation(value) ),
+	contactPhone: yup
+		.string()
+		.required('Contact phone is required')
+		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
 });
 
@@ -40,18 +47,28 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 		register,
 		handleSubmit,
 		setValue,
+		setError,
 		getValues,
 		reset,
+		clearErrors,
 		control,
 		formState: {errors},
-	} = useForm({    mode: "all",
-	resolver: yupResolver(schema)});
+	} = useForm({mode: 'all', resolver: yupResolver(schema)});
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const {dirtyFields} = useFormState({control});
 	let btnRef = useRef();
-	
 
+	// for org name validation 
+	const [healthSystemName, setHealthSystemName] = useState('');
+	const [isSearching, setIsSearching] = useState(false);
+	const [isAlreadyExit, setIsAlreadyExit] = useState(false);
+	// Debounce search term so that it only gives us latest value ...
+	// ... if searchTerm has not been updated within last 1000ms.
+	// The goal is to only have the API call fire when user stops typing ...
+	// ... so that we aren't hitting our API rapidly.
+	const debouncedName = useDebounce(healthSystemName, 1000);
+	
 
 	const dispatch = useDispatch();
 	let history = useHistory();
@@ -59,6 +76,36 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 	useEffect(() => {
 		reset(defaultValues);
 	}, [defaultValues]);
+
+	// validate organition name 
+	useEffect(() => {
+		const fetchValidate = async () => {
+			try {
+				setIsSearching(true);
+				if (debouncedName) {
+					let data = {
+						roleTypeId: Organizations.HealthSystem, 
+						organizationName: debouncedName,
+						...(isEdit && {partyRoleId}),
+					};
+
+					const result = await getValidateOrganization(data);
+				
+					if (result.data.data) {
+						btnRef.current.removeAttribute('disabled');
+					} else {	
+					    btnRef.current.setAttribute('disabled', 'disabled');	
+					}
+					setIsSearching(false);
+					setIsAlreadyExit(!result.data.data);
+				} else {
+					setIsSearching(false);
+					setIsAlreadyExit(false);
+				}
+			} catch (error) {}
+		};
+		fetchValidate();
+	}, [debouncedName]);
 
 	const updateHealthInfo = async () => {
 		try {
@@ -159,9 +206,9 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 	};
 
 	const healthSystemFormSubmit = (data) => {
-		if(btnRef.current){
-			btnRef.current.setAttribute("disabled", "disabled");
-		  }
+		if (btnRef.current) {
+			btnRef.current.setAttribute('disabled', 'disabled');
+		}
 
 		if (isEdit) {
 			updateHealthInfo();
@@ -169,8 +216,6 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 			addHealthSystem(data);
 		}
 	};
-
-	
 
 	const addHealthSystem = async (data) => {
 		console.log(data);
@@ -206,7 +251,6 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 				email: data.contactEmail,
 			},
 		};
-		
 
 		try {
 			if (newHealthSystem) {
@@ -230,8 +274,10 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text'  {...register('name')}  />
+							<input className='form-control-sm' type='text' {...register('name')} onChange={(e) => setHealthSystemName(e.target.value)} />
 							<div className='small text-danger  pb-2   '>{errors.name?.message}</div>
+							{isSearching && <div>Searching ...</div>}
+							{isAlreadyExit && <div className='small text-danger pb-2'>Health system name already taken</div>}
 						</div>
 					</div>
 				</div>
@@ -281,7 +327,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask  {...register('phone')} mask={MaskFormat.phoneNumber}  alwaysShowMask={isEdit?true:false}  className='form-control-sm'   />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
@@ -347,7 +393,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit?true:false}  className='form-control-sm'  />
+							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.contactPhone?.message}</div>
 						</div>
@@ -367,8 +413,6 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 						<button type='submit' ref={btnRef} className='btn btn-primary btn-lg float-right'>
 							{isEdit ? 'Update' : 'Save'}
 						</button>
-
-					
 					</div>
 				</div>
 			</form>

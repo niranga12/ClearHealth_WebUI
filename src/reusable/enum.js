@@ -31,3 +31,14 @@ export const ServiceMsg={
 export const MaskFormat={
     phoneNumber: "(999) 999 - 9999"
 }
+
+
+export const Organizations={
+	Organization:1,
+	SuperUser:2,
+	HealthSystem:3,
+	PrimaryContact:4,
+	Hospital:5,
+	PaymentContact:6,
+	Provider:7
+}
