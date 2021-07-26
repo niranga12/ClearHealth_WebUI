@@ -557,7 +557,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Account #<span className='text-danger font-weight-bold '></span>{' '}
+								Account<span className='text-danger font-weight-bold '></span>{' '}
 							</label>
 							<input type='text' className='form-control-sm' {...register('accountNumber')} />
 							<div className='small text-danger  pb-2   '> {errors.accountNumber?.message} </div>
@@ -566,7 +566,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
-								Routing #<span className='text-danger font-weight-bold '></span>{' '}
+								Routing<span className='text-danger font-weight-bold '></span>{' '}
 							</label>
 							<input type='text' className='form-control-sm' {...register('routing')} />
 							<div className='small text-danger  pb-2   '> {errors.routing?.message} </div>
