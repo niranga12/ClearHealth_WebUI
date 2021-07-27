@@ -5,3 +5,4 @@ export const getProvidersListCount=(data) => axiosInstance.post(`provider/count`
 export const getProviderByPartyRoleId=(partyRoleId)=>axiosInstance.get(`provider/${partyRoleId}`);
 export const saveProvider=(data)=>axiosInstance.post(`provider`,data);
 export const updateProviderByPartyRoleId=(partyRoleId,data)=>axiosInstance.put(`provider/${partyRoleId}`,data);
+export const getSpecialityList=(data) => axiosInstance.get(`speciality`,data);

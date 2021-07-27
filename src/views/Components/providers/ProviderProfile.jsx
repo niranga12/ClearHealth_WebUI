@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getProviderByPartyRoleId } from 'src/service/providerService';
+import { getHealthSystemList } from 'src/service/healthsystemService';
+import { getProviderByPartyRoleId, getSpecialityList } from 'src/service/providerService';
 import AdminTitle from 'src/views/common/adminTitle';
 import ProviderForm from './ProviderForm';
 
@@ -34,8 +35,9 @@ const ProviderProfile = () => {
 	const location = useLocation();
 	const [partyRoleId, setPartyRoleId] = useState(null);
 	const [editProfile, setEditProfile] = useState(false);
-
+	const [healthSystems, setHealthSystem] = useState([]);
 	const [providerData, setProviderData] = useState(defalutFormValue);
+	const [specialityData, setSpecialityData] = useState([]);
 
 	//if this a edit form get the data
 	useEffect(() => {
@@ -45,45 +47,60 @@ const ProviderProfile = () => {
 		id ? setEditProfile(true) : setEditProfile(false);
 
 		const fetchData = async () => {
+			try {
+				const hsResult = await getHealthSystemList({});
+				setHealthSystem(hsResult.data.data);
+				const specialityList = await getSpecialityList();
+				setSpecialityData(specialityList.data.data);
+			} catch (error) {
+
+			}
+
 			if (id) {
 				try {
+
+
 					const result = await getProviderByPartyRoleId(id);
 					const formatedData = await updateFormFields(result.data.data);
 					setProviderData(formatedData);
+
 				} catch (error) { }
 			}
 		};
 		fetchData();
 	}, [location]);
 
+
+
+
 	//updated form fields
 	const updateFormFields = (data) => {
+
 		const providerDetails = {
-			hospitalName: '',
-			healthSystemPartyRoleId: '',
+			hospitalName: data.hopsitalPartyRoleId,
+			healthSystemPartyRoleId: data.healthsystemPartyRoleId,
 			firstName: data.firstName,
 			middleName: data.middleName,
 			lastName: data.lastName,
 			address1: data.primaryAddress1,
-			address2:data.primaryAddress2,
+			address2: data.primaryAddress2,
 			city: data.primaryCity,
 			state: data.primaryState,
 			zip: data.primaryZip,
 			billingAddress1: data.secondaryAddress1,
-			billingAddress2:data.secondaryAddress2,
+			billingAddress2: data.secondaryAddress2,
 			billingCity: data.secondaryCity,
 			billingState: data.secondaryState,
 			billingZip: data.secondaryZip,
 			phone: data.phone,
-			speciality:data.speciality,
+			speciality: data.speciality,
 			taxId: data.taxId,
-			nip: data.NIP,
+			nip: data.NPI,
 			bankName: data.bankName,
 			accountNumber: data.accountNumber,
 			routing: data.routing
 		};
-
-
+		console.log(providerDetails)
 		return providerDetails;
 
 	};
@@ -92,7 +109,7 @@ const ProviderProfile = () => {
 		<div className="card  cover-content pt-2 ">
 			<AdminTitle title={editProfile ? 'Edit Provider' : 'Add Provider'} />
 
-			<ProviderForm defaultValues={providerData} isEdit={editProfile} partyRoleId={partyRoleId} />
+			<ProviderForm defaultValues={providerData} isEdit={editProfile} partyRoleId={partyRoleId} healthSystemList={healthSystems} specialityData={specialityData} />
 		</div>
 	);
 };
