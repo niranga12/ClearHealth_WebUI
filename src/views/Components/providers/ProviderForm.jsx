@@ -37,7 +37,7 @@ const schema = yup.object().shape({
 	routing: yup.string().required('Routing is required')
 });
 
-const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData=[] }) => {
+const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData = [] }) => {
 	const {
 		register,
 		handleSubmit,
@@ -52,7 +52,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const { dirtyFields } = useFormState({ control });
 	const [hospitalData, setHospitalData] = useState([]);
 	const [hsHospitalData, sethsHospitalData] = useState([]);
-	
+
 	const dispatch = useDispatch();
 	let history = useHistory();
 
@@ -98,15 +98,12 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 		const fetchData = async () => {
 			try {
-		//		const result = await getHealthSystemList({});
+				//		const result = await getHealthSystemList({});
 				const hospitalList = await getHospitalsList();
 				// const specialityList = await getSpecialityList();
 				//  setSpecialityData(specialityList.data.data);
-				 setHospitalData(hospitalList.data.data);
-				debugger;
-			
-
-			//	setHealthSystem(result.data.data);
+				setHospitalData(hospitalList.data.data)
+				//	setHealthSystem(result.data.data);
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -117,18 +114,18 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 	useEffect(() => {
 		const fetchData = async () => {
-			
 
-			if( isEdit && defaultValues.healthSystemPartyRoleId){
-			
+
+			if (isEdit && defaultValues.healthSystemPartyRoleId) {
+
 				// defaultValuese
 				const hospitalList = await getHospitalsList();
 
-				let result =   hospitalList.data.data.filter(x => x.healthSystemPartyRoleId == defaultValues.healthSystemPartyRoleId );
-			
-				 sethsHospitalData(result);
+				let result = hospitalList.data.data.filter(x => x.healthSystemPartyRoleId == defaultValues.healthSystemPartyRoleId);
 
-				 setValue('hospitalName',defaultValues.hospitalName , {
+				sethsHospitalData(result);
+
+				setValue('hospitalName', defaultValues.hospitalName, {
 					shouldValidate: true,
 					shouldDirty: true,
 				});
@@ -136,8 +133,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			}
 		};
 		fetchData();
-		
-	}, [isEdit,defaultValues])
+
+	}, [isEdit, defaultValues])
 
 
 	const handleHealthSystemChange = (e) => {
