@@ -12,16 +12,18 @@ import {
    
   } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
+import HospitalProvider from '../HospitalChildComponents/HospitalProvider/HospitalProvider';
+import HospitalOrderTable from '../HospitalChildComponents/HospitalOrder/HospitalOrderTable';
 
 const HospitalSubCategories = () => {
-    // const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0)
 
     return (
         <div>
               <CRow>
              <CCol xs="12" md="12" className="mb-4 p-4">
        
-            <CTabs>
+            <CTabs activeTab={active} onActiveTabChange={idx => setActive(idx)}>
               <CNav variant="tabs" className="h5 font-weight-bold">
                 <CNavItem>
                   <CNavLink >
@@ -56,19 +58,21 @@ const HospitalSubCategories = () => {
               </CNav>
               <CTabContent>
                 <CTabPane>
-                  {`1. orders`}
+                  {active ===0 ? <HospitalOrderTable />: ''}
+                  
                 </CTabPane>
                 <CTabPane>
-                  {`2. provider`}
+                  {active ===1 ? <HospitalProvider />: ''}
+                 
                 </CTabPane>
                 <CTabPane>
-                  {`3. schedule`}
+                  {`3. schedule ${active}`}
                 </CTabPane>
                 <CTabPane>
-                  {`4.dashboard`}
+                  {`4.dashboard ${active}`}
                 </CTabPane>
                 <CTabPane>
-                  {`5. payment`}
+                  {`5. payment ${active}`}
                 </CTabPane>
               </CTabContent>
             </CTabs>
