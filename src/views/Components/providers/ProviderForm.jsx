@@ -5,10 +5,9 @@ import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
 import { useHistory } from 'react-router-dom';
-import { getHealthSystemList } from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
-import { getSpecialityList, saveProvider, updateProviderByPartyRoleId } from 'src/service/providerService';
+import { saveProvider, updateProviderByPartyRoleId } from 'src/service/providerService';
 import { getHospitalsList } from 'src/service/hospitalsService';
 
 
@@ -38,7 +37,7 @@ const schema = yup.object().shape({
 	routing: yup.string().required('Routing is required')
 });
 
-const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
+const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData=[] }) => {
 	const {
 		register,
 		handleSubmit,
@@ -53,11 +52,11 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 	const { dirtyFields } = useFormState({ control });
 	const [hospitalData, setHospitalData] = useState([]);
 	const [hsHospitalData, sethsHospitalData] = useState([]);
-	const [specialityData, setSpecialityData] = useState([]);
+	
 	const dispatch = useDispatch();
 	let history = useHistory();
 
-	const [healthSystems, setHealthSystem] = useState([]);
+	//const [healthSystems, setHealthSystem] = useState([]);
 
 	const handleBillingChecked = (event) => {
 		if (event.target.checked) {
@@ -96,21 +95,49 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 
 	useEffect(() => {
+
 		const fetchData = async () => {
 			try {
-				const result = await getHealthSystemList({});
+		//		const result = await getHealthSystemList({});
 				const hospitalList = await getHospitalsList();
-				const specialityList= await getSpecialityList();
-				setSpecialityData(specialityList.data.data);
-				setHospitalData(hospitalList.data.data);
+				// const specialityList = await getSpecialityList();
+				//  setSpecialityData(specialityList.data.data);
+				 setHospitalData(hospitalList.data.data);
+				debugger;
+			
 
-				setHealthSystem(result.data.data);
+			//	setHealthSystem(result.data.data);
 			} catch (error) {
 				OnError(error, dispatch);
 			}
 		};
 		fetchData();
 	}, []);
+
+
+	useEffect(() => {
+		const fetchData = async () => {
+			
+
+			if( isEdit && defaultValues.healthSystemPartyRoleId){
+			
+				// defaultValuese
+				const hospitalList = await getHospitalsList();
+
+				let result =   hospitalList.data.data.filter(x => x.healthSystemPartyRoleId == defaultValues.healthSystemPartyRoleId );
+			
+				 sethsHospitalData(result);
+
+				 setValue('hospitalName',defaultValues.hospitalName , {
+					shouldValidate: true,
+					shouldDirty: true,
+				});
+
+			}
+		};
+		fetchData();
+		
+	}, [isEdit,defaultValues])
 
 
 	const handleHealthSystemChange = (e) => {
@@ -228,7 +255,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 			const updateProvider = {
 
 
-				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalList || dirtyFields.speciality) && {
+				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality) && {
 					provider: {
 						firstName: getValues('firstName'),
 						middleName: getValues('middleName'),
@@ -281,7 +308,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 					paymentInfo: {
 
 						taxId: getValues('taxId'),
-						nip: getValues('nip'),
+						NIP: getValues('nip'),
 						bankName: getValues('bankName'),
 						routing: getValues('routing'),
 						accountNumber: getValues('accountNumber'),
@@ -323,7 +350,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 							</label>
 							<select name='healthSystem' id='healthSystem' className='form-control-sm'  {...register('healthSystemPartyRoleId')} onChange={handleHealthSystemChange}>
 								<option value=''>Select</option>
-								{healthSystems.map((item, index) => (
+								{healthSystemList.map((item, index) => (
 									<option key={index} value={item.partyRoleId}>
 										{item.name}
 									</option>
@@ -510,7 +537,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 										{item.speciality}
 									</option>
 								))}
-							
+
 							</select>
 							<div className='small text-danger  pb-2   '> {errors.speciality?.message} </div>
 						</div>
