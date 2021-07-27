@@ -18,7 +18,7 @@ const initialSearch = {
 function ProviderNames({row}) {
 	return (
 		<>
-		<h5 className='font-weight-normal text-black'> {row.original.firstName} {row.original.lastName}</h5> 
+		<h5 className='font-weight-normal text-black ml-4'> {row.original.firstName} {row.original.lastName}</h5> 
 		</>	
 	);
 	

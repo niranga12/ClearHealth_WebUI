@@ -13,5 +13,9 @@ export const getProviderListCountByHospitalId=(hospitalId,data) =>axiosInstance.
 
 
 
+export const getOrderListByHospitalId=(hospitalId,data) =>axiosInstance.post(`hospital/${hospitalId}/orders`,data);
+
+
+
 
 
