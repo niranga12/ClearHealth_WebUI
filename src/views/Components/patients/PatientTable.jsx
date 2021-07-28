@@ -1,17 +1,18 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {TableSettingsEnum} from 'src/reusable/enum';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
-import { getHospitalsListCount} from 'src/service/hospitalsService';
+import { getHospitalsListCount } from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
 import PaginationTable from 'src/views/common/paginationTable';
 import OnError from 'src/_helpers/onerror';
 import 'font-awesome/css/font-awesome.min.css';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
-import {useHistory} from 'react-router-dom';
-import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
+import { useHistory } from 'react-router-dom';
+import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
 import { getProvidersList, getProvidersListCount } from 'src/service/providerService';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+import { getPatientList } from 'src/service/patientService';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -20,26 +21,21 @@ const initialSearch = {
 };
 
 
-function CellProvider({row}) {
+function CellProvider({ row }) {
 
 	return (
 		<>
-			<div className='max-celladdress'>
-				{row.original.firstName} {' '} {row.original.lastName} 
-			</div>
-			<div className='max-celladdress'>
-				{row.original.address1} {' '} {row.original.address2} {', '} {row.original.state} {', '} {row.original.zip}
-			</div>
+		
 			<div className='rectangle-intable'>
 				{' '}
 				<span className='fa fa-phone text-health-icon pr-1'></span> {PhoneNumberFormater(row.original.phone)}
 			</div>
-			
+
 		</>
 	);
 }
 
-function ActionProvider({row}) {
+function ActionProvider({ row }) {
 	let history = useHistory();
 	const redirectToEdit = () => {
 		history.push({
@@ -90,11 +86,11 @@ const ProviderTable = () => {
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
-				const result = await getProvidersList(searchQuery);
+				const result = await getPatientList(searchQuery);
 				seProviderData(result.data.data);
-			
 
-				const countQuery = {searchTerm: searchQuery.searchTerm};
+
+				const countQuery = { searchTerm: searchQuery.searchTerm };
 				const resultCount = await getProvidersListCount(countQuery);
 				setCount(resultCount.data.data.totalCount);
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
@@ -109,14 +105,14 @@ const ProviderTable = () => {
 	}, [searchQuery]);
 
 	const pageChange = (event, value) => {
-		setSearchQuery({...searchQuery, pageNumber: value});
+		setSearchQuery({ ...searchQuery, pageNumber: value });
 	};
 
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
-			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
 		} else if (e.target.value.length === '') {
-			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
 		} else {
 		}
 	};
@@ -130,18 +126,23 @@ const ProviderTable = () => {
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Health System',
-				accessor: 'healthSystem', // accessor is the "key" in the data
-				Cell: ({value}) => <h5 className='font-weight-normal text-black ml-4'> {value} </h5>,
+				Header: 'Patient Name',
+				accessor: 'firstName', // accessor is the "key" in the data
+				Cell: ({ row }) => <h5 className='font-weight-normal text-black ml-4'> {row.original.firstName} {row.original.lastName} </h5>,
 			},
 			{
-				Header: 'Hospital Name',
-				accessor: 'hospital', // accessor is the "key" in the data
+				Header: 'DOB',
+				accessor: 'dateOfBirth', // accessor is the "key" in the data
 			},
 
 			{
-				Header: 'Provider',
-				accessor: 'Provider', // accessor is the "key" in the data
+				Header: 'Address',
+				accessor: 'address1', // accessor is the "key" in the data
+				Cell: ({ row }) => <h5> {row.original.address1} {row.original.address2},  {row.original.city}, {row.original.state}  {row.original.zip}</h5>,
+			},
+			{
+				Header: 'Phone',
+				accessor: 'phone', // accessor is the "key" in the data
 				Cell: CellProvider,
 			},
 			{
@@ -157,7 +158,7 @@ const ProviderTable = () => {
 
 	return (
 		<>
-			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewProvider} placeholder='Search here..' buttonTitle='New P' title='Providers' />
+			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewProvider} placeholder='Search patient name, order no' buttonTitle='New Patient' title='Patients' />
 			<DataTable columns={columns} data={providerData} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>
