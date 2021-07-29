@@ -14,6 +14,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import HospitalProvider from '../HospitalChildComponents/HospitalProvider/HospitalProvider';
 import HospitalOrderTable from '../HospitalChildComponents/HospitalOrder/HospitalOrderTable';
+import HospitalDashboard from '../HospitalChildComponents/HospitalDashboard/HospitalDashboard';
 
 const HospitalSubCategories = () => {
   const [active, setActive] = useState(0)
@@ -69,7 +70,8 @@ const HospitalSubCategories = () => {
                   {`3. schedule ${active}`}
                 </CTabPane>
                 <CTabPane>
-                  {`4.dashboard ${active}`}
+                {active ===3 ?  < HospitalDashboard/>: ''}
+                     
                 </CTabPane>
                 <CTabPane>
                   {`5. payment ${active}`}
