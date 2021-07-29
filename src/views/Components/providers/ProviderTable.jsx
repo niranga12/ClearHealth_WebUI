@@ -28,7 +28,7 @@ function CellProvider({row}) {
 				{row.original.firstName} {' '} {row.original.lastName} 
 			</div>
 			<div className='max-celladdress'>
-				{row.original.address1} {' '} {row.original.address2} {', '} {row.original.state} {', '} {row.original.zip}
+				{row.original.address1} {', '} {row.original.address2} {', '} {row.original.state} {', '} {row.original.zip}
 			</div>
 			<div className='rectangle-intable'>
 				{' '}

@@ -3,34 +3,40 @@ import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
+import { MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
 import { useHistory } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
 import { saveProvider, updateProviderByPartyRoleId } from 'src/service/providerService';
 import { getHospitalsList } from 'src/service/hospitalsService';
-
+import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
+import NormalizePhone from 'src/reusable/NormalizePhone';
+import InputMask from 'react-input-mask';
 
 const schema = yup.object().shape({
 
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
 	hospitalName: yup.string().required('Hospital Name is required'),
 	firstName: yup.string().required('First name is required'),
-	middleName: yup.string().required('Middle name is required'),
+	middleName: yup.string(),
 	lastName: yup.string().required('Last name is required'),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
-	zip: yup.string().required('Zip is required'),
+	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	billingAddress1: yup.string().required('Billing Address line 1 is required'),
 	billingAddress2: yup.string(),
 	billingCity: yup.string().required('City is required'),
 	billingState: yup.string().required('State is required'),
-	billingZip: yup.string().required('Zip is required'),
-	phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
+	billingZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
+	// phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
+	phone: yup
+		.string()
+		.required('Phone is required')
+		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	speciality: yup.string().required('Speciality is required'),
-	taxId: yup.string().required('Tax Id is required'),
+	taxId: yup.string(),
 	nip: yup.string().required('NPI is required'),
 	bankName: yup.string().required('Bank name is required'),
 	accountNumber: yup.string().required('Account number is required'),
@@ -222,10 +228,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			],
 			telecommunicationsNumber: {
 				partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
-				number: data.phone,
+				number: NormalizePhone(data.phone),
 			},
 			paymentInfo: {
-				NIP: data.nip,
+				NPI: data.nip,
 				taxId: data.taxId,
 				bankName: data.bankName,
 				routing: data.routing,
@@ -297,7 +303,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				...(dirtyFields.phone && {
 					telecommunicationsNumber: {
 						partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
-						number: getValues('phone'),
+						number: NormalizePhone(getValues('phone')),
 					},
 				}),
 
@@ -305,7 +311,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					paymentInfo: {
 
 						taxId: getValues('taxId'),
-						NIP: getValues('nip'),
+						NPI: getValues('nip'),
 						bankName: getValues('bankName'),
 						routing: getValues('routing'),
 						accountNumber: getValues('accountNumber'),
@@ -518,7 +524,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('phone')} />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
+							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
 
@@ -542,7 +549,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Tax Id <span className='text-danger font-weight-bold '>*</span>{' '}
+								Tax Id <span className='text-danger font-weight-bold '></span>{' '}
 							</label>
 							<input type='text' className='form-control-sm' {...register('taxId')} />
 							<div className='small text-danger  pb-2   '> {errors.taxId?.message} </div>
