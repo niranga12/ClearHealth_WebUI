@@ -761,8 +761,49 @@ background-color: rgba(91,77,253,0.1);
 .min-150{
   width: 150px;
 }
+.hd-subtitle{
 
+  color: #000000;
+  font-family: "LatoBold";
+  font-size: 20px;
+ 
+  letter-spacing: 0;
+  line-height: 24px;
+}
 
+.hd-boxcover{
+  box-sizing: border-box;
+  
+  border: 1px solid #E8E8E8 !important;
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 20px 0 rgba(135,135,135,0.07);
+
+}
+.list-dashboard-li{
+  padding-bottom: 15px;
+  padding-top: 10px;
+  border-bottom: 1px solid rgb(224, 221, 221);
+}
+
+.list-right-res{
+  min-width: 70px;
+  border-radius: 10.5px;
+  background-color: #E5E4E4;
+  font-size: 0.6rem;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.MuiInput-underline:before{
+  border:none !important;
+}
+.MuiInputBase-root{
+  border:1px solid rgb(201, 199, 199); 
+  padding-left: 10px;
+  border-radius: 5px;
+}
 
 // loader animation
 
