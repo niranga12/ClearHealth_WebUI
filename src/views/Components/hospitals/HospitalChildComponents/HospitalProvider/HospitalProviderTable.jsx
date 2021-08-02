@@ -136,7 +136,7 @@ const HospitalProviderTable = () => {
 				Cell: ({row}) =>( <h5 className='font-weight-normal text-black'> {row.original.speciality} </h5>),
 			},
 			{
-				Header: 'Live Procedure',
+				Header: 'Live Procedures',
 				accessor: '', // accessor is the "key" in the data
 				disableSortBy: true,
 				// Cell: ({row}) =>( <h5 className='font-weight-normal text-black'> {row.original.speciality} </h5>),
@@ -154,7 +154,7 @@ const HospitalProviderTable = () => {
 	return (
 		<>
 		<div className=' pt-2 '>
-		<AdminHeaderWithSearch  handleSearchChange={searchTextChange} handleAddNew={addNewProvider} placeholder='Search here..' buttonTitle='New Provider' title='Provider' />
+		<AdminHeaderWithSearch  handleSearchChange={searchTextChange} handleAddNew={addNewProvider} placeholder='Search here..' buttonTitle='New Provider' title='Providers' />
 		<DataTable columns={columns} data={hospitalProviderData} sortingHandler={sortingHandler} />
 
 		<div className='row'>

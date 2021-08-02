@@ -125,7 +125,7 @@ function HospitalOrderTable() {
 				),
 			},
 			{
-				Header: 'order Number',
+				Header: 'Order Number',
 				accessor: 'orderNumber', // accessor is the "key" in the data
 				Cell: ({value}) => <h5 className='font-weight-normal text-black'> {value} </h5>,
 			},
@@ -144,7 +144,7 @@ function HospitalOrderTable() {
 			// 	// Cell: ({row}) =>( <h5 className='font-weight-normal text-black'> {row.original.speciality} </h5>),
 			// },
 			{
-				Header: 'Attemps',
+				Header: 'Attempts',
 				accessor: 'attempts', // accessor is the "key" in the data
 				Cell: OrderAttempt,
 			},
@@ -165,7 +165,7 @@ function HospitalOrderTable() {
 	return (
 		<>
 			<div className=' pt-2 '>
-				<AdminHeaderWithSearch handleSearchChange={searchTextChange} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown} placeholder='Search here..' title='Order' />
+				<AdminHeaderWithSearch handleSearchChange={searchTextChange} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown} placeholder='Search here..' title='Orders' />
 				<DataTable columns={columns} data={hospitalOrderData} />
 			</div>
 		</>
