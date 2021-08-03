@@ -258,42 +258,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 		<div className='p-4'>
 			<form onSubmit={handleSubmit(providerFormSubmit)}>
 				{/* hospital details */}
-				<h5 className='font-weight-bold mt-1'>Hospital Details </h5>
-				<div className='row mb-3'>
-
-
-					<div className='col-md-6'>
-						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Heath System <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<select name='' id='' className='form-control-sm' {...register('healthSystemPartyRoleId')}>
-								<option value=''>Select</option>
-								{healthSystems.map((item, index) => (
-									<option key={index} value={item.partyRoleId}>
-										{item.name}
-									</option>
-								))}
-								{/* <option value='test'>test</option> */}
-							</select>
-						</div>
-					</div>
-
-					<div className='col-md-6'>
-						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Hospital Name <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<input className='form-control-sm' type='text' {...register('hospitalName')} />
-						</div>
-					</div>
-				</div>
-
+				<h5 className='font-weight-bold mt-1'>Personal Information</h5>
 
 				<div className='row mb-3'>
-					<div className='col-md-4'>
+					<div className='col-md-6'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
@@ -301,33 +269,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 							</label>
 							<input className='form-control-sm' type='text' {...register('firstName')} />
 						</div>
-					</div>
 
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Middle Name <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<input className='form-control-sm' type='text' {...register('middleName')} />
-						</div>
 					</div>
+					<div className='col-md-6'>
 
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<input className='form-control-sm' type='text' {...register('lastName')} />
-						</div>
-					</div>
-				</div>
-
-				<div className='row mb-3'>
-					{/* address */}
-					<div className='col-md-4'>
-						<h5 className='font-weight-bold mt-1'>Address </h5>
 						<div className='form-group'>
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>
@@ -335,12 +280,42 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 							<input type='text' className='form-control-sm' {...register('address1')} />
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
 						</div>
+					</div>
+				</div>
+
+				<div className='row mb-3'>
+					<div className='col-md-6'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							<input className='form-control-sm' type='text' {...register('lastName')} />
+						</div>
+
+					</div>
+					<div className='col-md-6'>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
 							<input type='text' className='form-control-sm' {...register('address2')} />
 						</div>
+					</div>
+				</div>
 
+
+				<div className='row mb-3'>
+					<div className='col-md-6'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								DOB <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							<input className='form-control-sm' type='text' {...register('lastName')} />
+						</div>
+
+					</div>
+					<div className='col-md-6'>
 						<div className='row'>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
@@ -357,6 +332,20 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 								<div className='small text-danger  pb-2   '>{errors.state?.message}</div>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				<div className='row mb-3'>
+					<div className='col-md-6'>
+					<div className='form-group'>
+							<label className='form-text'>
+								Phone <span className='text-danger font-weight-bold '>*</span>
+							</label>
+							<input type='text' className='form-control-sm' {...register('phone')} />
+							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
+						</div>
+					</div>
+					<div className='col-md-6'>
 
 						<div className='form-group'>
 							<label className='form-text'>
@@ -365,137 +354,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 							<input type='text' className='form-control-sm' {...register('zip')} />
 							<div className='small text-danger  pb-2   '>{errors.zip?.message}</div>
 						</div>
-
-
-
-
-					</div>
-
-
-
-					<div className='col-md-4'>
-						<h5 className='font-weight-bold mt-1'>
-							<span className='pr-5'>Business Address </span> <input type='checkbox' className='form-check-input' onChange={handleBillingChecked} /> <span className='small'>Same As Address</span>{' '}
-						</h5>
-						<div className='form-group'>
-							<label className='form-text'>
-								Address Line 1 <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<input type='text' className='form-control-sm' {...register('billingAddress1')} />
-							<div className='small text-danger  pb-2   '>{errors.billingAddress1?.message}</div>
-						</div>
-
-						<div className='form-group'>
-							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('billingAddress2')} />
-						</div>
-
-						<div className='row'>
-							<div className='form-group col-md-6'>
-								<label className='form-text'>
-									City <span className='text-danger font-weight-bold '>*</span>
-								</label>
-								<input type='text' className='form-control-sm' {...register('billingCity')} />
-								<div className='small text-danger  pb-2   '>{errors.billingCity?.message}</div>
-							</div>
-							<div className='form-group col-md-6'>
-								<label className='form-text'>
-									State <span className='text-danger font-weight-bold '>*</span>
-								</label>
-								<input type='text' className='form-control-sm' {...register('billingState')} />
-								<div className='small text-danger  pb-2   '>{errors.billingState?.message}</div>
-							</div>
-						</div>
-
-						<div className='form-group'>
-							<label className='form-text'>
-								Zip <span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<input type='text' className='form-control-sm' {...register('billingZip')} />
-							<div className='small text-danger  pb-2   '>{errors.billingZip?.message}</div>
-						</div>
-					</div>
-
-					{/* Patient Access Contact */}
-					<div className='col-md-4'>
-						<h5 className='font-weight-bold mt-1'>More infor</h5>
-						<div className='form-group'>
-							<label className='form-text'>
-								Phone <span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<input type='text' className='form-control-sm' {...register('phone')} />
-							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
-						</div>
-
-						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Speciality <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<input type='text' className='form-control-sm' {...register('speciality')} />
-							<div className='small text-danger  pb-2   '> {errors.speciality?.message} </div>
-						</div>
-
-						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Tax Id <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<input type='text' className='form-control-sm' {...register('taxId')} />
-							<div className='small text-danger  pb-2   '> {errors.taxId?.message} </div>
-						</div>
-
-
-
-						<div className='form-group'>
-							<label className='form-text'>
-								NIP <span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<input type='text' className='form-control-sm' {...register('nip')} />
-							<div className='small text-danger  pb-2   '>{errors.nip?.message}</div>
-						</div>
 					</div>
 				</div>
 
-				{/* payment info */}
-				<h5 className='font-weight-bold mt-1'>Payment Info </h5>
-
-				<div className='row'>
-
-
-					{/* secound details */}
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Bank Name <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<input type='text' className='form-control-sm' {...register('bankName')} />
-							<div className='small text-danger  pb-2   '> {errors.bankName?.message} </div>
-						</div>
-
-
-
-						<div className='form-group'>
-							<label className='form-text'>
-								Account <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<input type='text' className='form-control-sm' {...register('accountNumber')} />
-							<div className='small text-danger  pb-2   '> {errors.accountNumber?.message} </div>
-						</div>
-					</div>
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								Routing <span className='text-danger font-weight-bold '>*</span>{' '}
-							</label>
-							<input type='text' className='form-control-sm' {...register('routing')} />
-							<div className='small text-danger  pb-2   '> {errors.routing?.message} </div>
-						</div>
-					</div>
-
-
-				</div>
 
 				<div className='row'>
 					<div className='col-md-12'>

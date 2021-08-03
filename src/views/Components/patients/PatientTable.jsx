@@ -10,9 +10,8 @@ import 'font-awesome/css/font-awesome.min.css';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import { useHistory } from 'react-router-dom';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
-import { getProvidersList, getProvidersListCount } from 'src/service/providerService';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
-import { getPatientList } from 'src/service/patientService';
+import { getPatientList, getPatientListCount } from 'src/service/patientService';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -21,7 +20,7 @@ const initialSearch = {
 };
 
 
-function CellProvider({ row }) {
+function CellPatient({ row }) {
 
 	return (
 		<>
@@ -35,23 +34,15 @@ function CellProvider({ row }) {
 	);
 }
 
-function ActionProvider({ row }) {
+function ActionPatient({ row }) {
 	let history = useHistory();
 	const redirectToEdit = () => {
 		history.push({
-			pathname: `/providers/profile`,
+			pathname: `/patients/profile`,
 			search: `?id=${row.original.partyRoleId}`,
 			// state: { detail: 'some_value' }
 		});
 	};
-
-	// const redirectAccount = () => {
-	// 	history.push({
-	// 		pathname: `/providers`,
-	// 		search: `?id=${row.original.partyRoleId}&&name=${row.original.name}`,
-	// 		// state: { detail: 'some_value' }
-	// 	});
-	// };
 
 	return (
 		<>
@@ -70,10 +61,10 @@ function ActionProvider({ row }) {
 	);
 }
 
-const ProviderTable = () => {
+const PatientTable = () => {
 	let history = useHistory();
 
-	const [providerData, seProviderData] = useState([]);
+	const [patientData, sePatientData] = useState([]);
 
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
@@ -87,11 +78,11 @@ const ProviderTable = () => {
 			try {
 				dispatch(loaderShow());
 				const result = await getPatientList(searchQuery);
-				seProviderData(result.data.data);
+				sePatientData(result.data.data);
 
 
 				const countQuery = { searchTerm: searchQuery.searchTerm };
-				const resultCount = await getProvidersListCount(countQuery);
+				const resultCount = await getPatientListCount(countQuery);
 				setCount(resultCount.data.data.totalCount);
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
 				setPage(Math.ceil(pageCount));
@@ -117,9 +108,9 @@ const ProviderTable = () => {
 		}
 	};
 
-	const addNewProvider = () => {
+	const addNewPatient = () => {
 
-		history.push('/providers/profile');
+		history.push('/patients/profile');
 	};
 
 	//SETTING COLUMNS NAMES
@@ -143,13 +134,13 @@ const ProviderTable = () => {
 			{
 				Header: 'Phone',
 				accessor: 'phone', // accessor is the "key" in the data
-				Cell: CellProvider,
+				Cell: CellPatient,
 			},
 			{
 				Header: '',
 				accessor: 'partyRoleId',
 				// accessor: '[row identifier to be passed to button]',
-				Cell: ActionProvider,
+				Cell: ActionPatient,
 				
 			},
 		],
@@ -158,8 +149,8 @@ const ProviderTable = () => {
 
 	return (
 		<>
-			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewProvider} placeholder='Search patient name, order no' buttonTitle='New Patient' title='Patients' />
-			<DataTable columns={columns} data={providerData} />
+			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} placeholder='Search patient name, order no' buttonTitle='New Patient' title='Patients' />
+			<DataTable columns={columns} data={patientData} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>
 			</div>
@@ -167,4 +158,4 @@ const ProviderTable = () => {
 	);
 };
 
-export default ProviderTable;
+export default PatientTable;

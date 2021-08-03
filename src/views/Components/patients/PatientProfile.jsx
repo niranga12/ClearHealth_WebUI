@@ -90,7 +90,7 @@ const ProviderProfile = () => {
 
 	return (
 		<div className="card  cover-content pt-2 ">
-			<AdminTitle title={editProfile ? 'Edit Provider' : 'Add Provider'} />
+			<AdminTitle title={editProfile ? 'Edit Patient' : 'Add Patient'} />
 
 			<PatientForm defaultValues={providerData} isEdit={editProfile} partyRoleId={partyRoleId} />
 		</div>
