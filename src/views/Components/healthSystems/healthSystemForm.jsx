@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable eqeqeq */
 import React, {useEffect, useRef, useState} from 'react';
 import {useForm, useFormState} from 'react-hook-form';
@@ -14,6 +15,7 @@ import NormalizePhone from 'src/reusable/NormalizePhone';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import useDebounce from 'src/reusable/debounce';
 import {getValidateOrganization} from 'src/service/commonService';
+import FormatText from 'src/reusable/FormatText';
 
 // import history from "src/_helpers/history";
 
@@ -274,7 +276,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('name')} onChange={(e) => setHealthSystemName(e.target.value)} />
+							<input className='form-control-sm' type='text' {...register('name')} onChange={(e) => setHealthSystemName(e.target.value)}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
 							<div className='small text-danger  pb-2   '>{errors.name?.message}</div>
 							{isSearching && <div>Searching ...</div>}
 							{isAlreadyExit && <div className='small text-danger pb-2'>Health system name already taken</div>}
@@ -289,13 +291,13 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Address Line 1<span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('address1')} />
+							<input type='text' className='form-control-sm' {...register('address1')}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('address2')} />
+							<input type='text' className='form-control-sm' {...register('address2')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
 						</div>
 
 						<div className='row'>
@@ -303,7 +305,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('city')} />
+								<input type='text' className='form-control-sm' {...register('city')}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
 								<div className='small text-danger  pb-2   '>{errors.city?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
@@ -337,19 +339,19 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 					<div className='col-md-4'>
 						<h5 className='font-weight-bold mt-1'>
 							{' '}
-							<span className='pr-5'>Shipping Address </span> <input type='checkbox' className='form-check-input' onChange={handleShippingChecked} /> <span className='small'>Same As Address</span>{' '}
+							<span className='pr-5'>Shipping Address </span> <input type='checkbox' className='form-check-input' onChange={handleShippingChecked}  /> <span className='small'>Same As Address</span>{' '}
 						</h5>
 						<div className='form-group'>
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input type='text' className='form-control-sm' {...register('shippingAddress1')} />
+							<input type='text' className='form-control-sm' {...register('shippingAddress1')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
 							<div className='small text-danger  pb-2   '>{errors.shippingAddress1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('shippingAddress2')} />
+							<input type='text' className='form-control-sm' {...register('shippingAddress2')} onInput={(e) => e.target.value = FormatText(e.target.value )}/>
 						</div>
 
 						<div className='row'>
@@ -357,7 +359,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('shippingCity')} />
+								<input type='text' className='form-control-sm' {...register('shippingCity')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
 								<div className='small text-danger  pb-2   '>{errors.shippingCity?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
@@ -385,7 +387,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('contactName')} />
+							<input type='text' className='form-control-sm' {...register('contactName')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
 							<div className='small text-danger  pb-2   '>{errors.contactName?.message}</div>
 						</div>
 

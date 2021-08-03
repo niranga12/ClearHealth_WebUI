@@ -14,6 +14,7 @@ import NormalizePhone from 'src/reusable/NormalizePhone';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import useDebounce from 'src/reusable/debounce';
 import { getValidateOrganization } from 'src/service/commonService';
+import FormatText from 'src/reusable/FormatText';
 
 const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital Name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital Name should contain only characters'),
@@ -329,7 +330,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								{' '}
 								Hospital Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('hospitalName')}  onChange={(e) => setHospitalName(e.target.value)} />
+							<input className='form-control-sm' type='text' {...register('hospitalName')}  onChange={(e) => setHospitalName(e.target.value)} onInput={(e) => e.target.value = FormatText(e.target.value )} />
 							<div className='small text-danger  pb-2   '>{errors.hospitalName?.message}</div>
 							{isSearching && <div>Searching ...</div>}
 							{isAlreadyExit && <div className='small text-danger pb-2'>Hospital name already taken</div>}
@@ -364,13 +365,13 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('address1')} />
+							<input type='text' className='form-control-sm' {...register('address1')} onInput={(e) => e.target.value = FormatText(e.target.value )}  />
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('address2')} />
+							<input type='text' className='form-control-sm' {...register('address2')}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
 						</div>
 
 						<div className='row'>
@@ -378,7 +379,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('city')} />
+								<input type='text' className='form-control-sm' {...register('city')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
 								<div className='small text-danger  pb-2   '>{errors.city?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
@@ -420,13 +421,13 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input type='text' className='form-control-sm' {...register('businessAddress1')} />
+							<input type='text' className='form-control-sm' {...register('businessAddress1')}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
 							<div className='small text-danger  pb-2   '>{errors.businessAddress1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('businessAddress2')} />
+							<input type='text' className='form-control-sm' {...register('businessAddress2')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
 						</div>
 
 						<div className='row'>
@@ -434,7 +435,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('businessCity')} />
+								<input type='text' className='form-control-sm' {...register('businessCity')}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
 								<div className='small text-danger  pb-2   '>{errors.businessCity?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
@@ -463,7 +464,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 							<label className='form-text'>
 								Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('patientContactName')} />
+							<input type='text' className='form-control-sm' {...register('patientContactName')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
 							<div className='small text-danger  pb-2   '>{errors.patientContactName?.message}</div>
 						</div>
 
@@ -497,7 +498,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								{' '}
 								Contact Name
 							</label>
-							<input type='text' className='form-control-sm' {...register('contactName')} />
+							<input type='text' className='form-control-sm' {...register('contactName')}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
 							<div className='small text-danger  pb-2   '> {errors.contactName?.message} </div>
 						</div>
 
@@ -529,7 +530,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								{' '}
 								Bank Name 
 							</label>
-							<input type='text' className='form-control-sm' {...register('bankName')} />
+							<input type='text' className='form-control-sm' {...register('bankName')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
 							<div className='small text-danger  pb-2   '> {errors.bankName?.message} </div>
 						</div>
 
