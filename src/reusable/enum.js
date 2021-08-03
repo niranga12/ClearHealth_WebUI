@@ -50,3 +50,7 @@ export const  OrderStatus={
     	Cancelled:4
 }
 
+export const Country={
+    USA:220
+}
+

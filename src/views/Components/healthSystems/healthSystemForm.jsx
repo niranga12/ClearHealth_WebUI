@@ -16,6 +16,8 @@ import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import useDebounce from 'src/reusable/debounce';
 import {getValidateOrganization} from 'src/service/commonService';
 import FormatText from 'src/reusable/FormatText';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 // import history from "src/_helpers/history";
 
@@ -44,7 +46,7 @@ const schema = yup.object().shape({
 	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
 });
 
-const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
+const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, stateList = []}) => {
 	const {
 		register,
 		handleSubmit,
@@ -57,11 +59,14 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 		formState: {errors},
 	} = useForm({mode: 'all', resolver: yupResolver(schema)});
 
+	const [stateOption, setStateOption] = React.useState(defaultValues.state);
+	const [shippingStateOption, setShippingStateOption] = React.useState(defaultValues.shippingState);
+
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const {dirtyFields} = useFormState({control});
 	let btnRef = useRef();
 
-	// for org name validation 
+	// for org name validation
 	const [healthSystemName, setHealthSystemName] = useState('');
 	const [isSearching, setIsSearching] = useState(false);
 	const [isAlreadyExit, setIsAlreadyExit] = useState(false);
@@ -70,33 +75,49 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 	// The goal is to only have the API call fire when user stops typing ...
 	// ... so that we aren't hitting our API rapidly.
 	const debouncedName = useDebounce(healthSystemName, 1000);
-	
 
 	const dispatch = useDispatch();
 	let history = useHistory();
 
+	// set default form values
 	useEffect(() => {
-		reset(defaultValues);
+		try {
+			reset(defaultValues);
+			setStateOption(defaultValues.state); //set state dropdown value
+			setShippingStateOption(defaultValues.shippingState); //set shipping state dropdown value
+		} catch (error) {
+			OnError(error, dispatch);
+		}
 	}, [defaultValues]);
 
-	// validate organition name 
+	// on state change function
+	const stateSelect = (event) => {
+		setValue('state', event.target.innerText, {shouldValidate: true, shouldDirty: true});
+	};
+
+	// on shipping state change function
+	const shippingStateSelect = (event) => {
+		setValue('shippingState', event.target.innerText, {shouldValidate: true, shouldDirty: true});
+	};
+
+	// validate organition name
 	useEffect(() => {
 		const fetchValidate = async () => {
 			try {
 				setIsSearching(true);
 				if (debouncedName) {
 					let data = {
-						roleTypeId: Organizations.HealthSystem, 
+						roleTypeId: Organizations.HealthSystem,
 						organizationName: debouncedName,
 						...(isEdit && {partyRoleId}),
 					};
 
 					const result = await getValidateOrganization(data);
-				
+
 					if (result.data.data) {
 						btnRef.current.removeAttribute('disabled');
-					} else {	
-					    btnRef.current.setAttribute('disabled', 'disabled');	
+					} else {
+						btnRef.current.setAttribute('disabled', 'disabled');
 					}
 					setIsSearching(false);
 					setIsAlreadyExit(!result.data.data);
@@ -198,12 +219,14 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 				shouldValidate: true,
 				shouldDirty: true,
 			});
+			setShippingStateOption(getValues('state'));
 		} else {
 			setValue('shippingAddress1', '');
 			setValue('shippingAddress2', '');
 			setValue('shippingCity', '');
 			setValue('shippingState', '');
 			setValue('shippingZip', '');
+			setShippingStateOption('');
 		}
 	};
 
@@ -220,7 +243,6 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 	};
 
 	const addHealthSystem = async (data) => {
-		console.log(data);
 		const newHealthSystem = {
 			healthSystem: {
 				name: data.name,
@@ -276,7 +298,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('name')} onChange={(e) => setHealthSystemName(e.target.value)}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
+							<input className='form-control-sm' type='text' {...register('name')} onChange={(e) => setHealthSystemName(e.target.value)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.name?.message}</div>
 							{isSearching && <div>Searching ...</div>}
 							{isAlreadyExit && <div className='small text-danger pb-2'>Health system name already taken</div>}
@@ -291,13 +313,13 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Address Line 1<span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('address1')}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
+							<input type='text' className='form-control-sm' {...register('address1')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('address2')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
+							<input type='text' className='form-control-sm' {...register('address2')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 						</div>
 
 						<div className='row'>
@@ -305,14 +327,26 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('city')}  onInput={(e) => e.target.value = FormatText(e.target.value )}/>
+								<input type='text' className='form-control-sm' {...register('city')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 								<div className='small text-danger  pb-2   '>{errors.city?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
 									State <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('state')} />
+								<Autocomplete
+									id='combo-box-demo'
+									options={stateList}
+									//   value={stateOption}
+									inputValue={stateOption}
+									onInputChange={(event, newInputValue) => {
+										setStateOption(newInputValue);
+									}}
+									getOptionLabel={(option) => option.stateName}
+									onChange={stateSelect}
+									renderInput={(params) => <TextField {...params} {...register('state')} className='control-autocomplete' variant='outlined' />}
+								/>
+								{/* <input type='text' className='form-control-sm' {...register('state')} /> */}
 								<div className='small text-danger  pb-2   '>{errors.state?.message}</div>
 							</div>
 						</div>
@@ -339,19 +373,19 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 					<div className='col-md-4'>
 						<h5 className='font-weight-bold mt-1'>
 							{' '}
-							<span className='pr-5'>Shipping Address </span> <input type='checkbox' className='form-check-input' onChange={handleShippingChecked}  /> <span className='small'>Same As Address</span>{' '}
+							<span className='pr-5'>Shipping Address </span> <input type='checkbox' className='form-check-input' onChange={handleShippingChecked} /> <span className='small'>Same As Address</span>{' '}
 						</h5>
 						<div className='form-group'>
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input type='text' className='form-control-sm' {...register('shippingAddress1')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
+							<input type='text' className='form-control-sm' {...register('shippingAddress1')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.shippingAddress1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('shippingAddress2')} onInput={(e) => e.target.value = FormatText(e.target.value )}/>
+							<input type='text' className='form-control-sm' {...register('shippingAddress2')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 						</div>
 
 						<div className='row'>
@@ -359,14 +393,27 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('shippingCity')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
+								<input type='text' className='form-control-sm' {...register('shippingCity')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 								<div className='small text-danger  pb-2   '>{errors.shippingCity?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
 									State <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('shippingState')} />
+
+								<Autocomplete
+									id='business state'
+									options={stateList}
+									//   value={stateOption}
+									inputValue={shippingStateOption}
+									onInputChange={(event, newInputValue) => {
+										setShippingStateOption(newInputValue);
+									}}
+									getOptionLabel={(option) => option.stateName}
+									onChange={shippingStateSelect}
+									renderInput={(params) => <TextField {...params} {...register('shippingState')} className='control-autocomplete' variant='outlined' />}
+								/>
+								{/* <input type='text' className='form-control-sm' {...register('shippingState')} /> */}
 								<div className='small text-danger  pb-2   '>{errors.shippingState?.message}</div>
 							</div>
 						</div>
@@ -387,7 +434,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null}) =
 							<label className='form-text'>
 								Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('contactName')} onInput={(e) => e.target.value = FormatText(e.target.value )} />
+							<input type='text' className='form-control-sm' {...register('contactName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.contactName?.message}</div>
 						</div>
 
