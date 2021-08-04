@@ -42,3 +42,15 @@ export const Organizations={
 	PaymentContact:6,
 	Provider:7
 }
+
+export const  OrderStatus={
+    	Ordered:1,
+    	Pending:2,
+    	Completed:3,
+    	Cancelled:4
+}
+
+export const Country={
+    USA:220
+}
+

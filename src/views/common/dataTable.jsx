@@ -1,8 +1,27 @@
-import React from 'react'
-import { useTable } from 'react-table';
+import CIcon from '@coreui/icons-react';
+import React, { useEffect } from 'react'
+import { useSortBy, useTable } from 'react-table';
 
-const DataTable = ({columns,data}) => {
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
+
+const DataTable = ({columns,data,sortingHandler}) => {
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow,state:{sortBy } } = useTable({
+      columns,
+      data,
+       autoResetSortBy: false, 
+       autoResetPage: false,
+       manualPagination: true,
+
+    },
+    useSortBy);
+
+   
+    useEffect(() => {
+    // console.log(sortBy )
+   if(sortingHandler){sortingHandler(sortBy)}
+    
+    }, [sortBy])
+
+
     return (   
       <div className="LatoRegular tableCover">
         <table {...getTableProps} className="table table-hover ">
@@ -10,9 +29,17 @@ const DataTable = ({columns,data}) => {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
+                  // <th {...column.getHeaderProps()}>
+                  //   {column.render("Header")}
+                  // </th>
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.render("Header")}
+                  <span>
+                  {column.isSorted ? (column.isSortedDesc ? <CIcon name="cilArrowBottom" alt="Settings" /> : <CIcon name="cilArrowTop" alt="Settings" />) : ""}
+                  
+                    {/* {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""} */}
+                  </span>
+                </th>
                 ))}
               </tr>
             ))}

@@ -145,6 +145,23 @@ const HospitalTable = () => {
 		history.push('/hospitals/profile');
 	};
 
+
+	
+	const sortingHandler=(sorting)=>{  
+		if(sorting.length > 0){
+		  let result={...searchQuery,orderBy:sorting[0].id?sorting[0].id :"", sortOrder:sorting[0].desc?'desc':'asc' }
+		  setSearchQuery(result)
+		}
+		else{
+		 // this validation for initial load avoid 2 times call api
+		  if(JSON.stringify(initialSearch) !== JSON.stringify(searchQuery)){
+			let result={...searchQuery, orderBy:"", sortOrder:"" }
+			setSearchQuery(result)
+		  }     
+		}
+	
+	  }
+
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
 		() => [
@@ -171,6 +188,7 @@ const HospitalTable = () => {
 			{
 				Header: '',
 				accessor: 'partyRoleId',
+				disableSortBy: true,
 				// accessor: '[row identifier to be passed to button]',
 				Cell: ActionHospital,
 				
@@ -182,7 +200,7 @@ const HospitalTable = () => {
 	return (
 		<>
 			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewHospital} placeholder='Search here..' buttonTitle='New Hospital' title='Hospitals' />
-			<DataTable columns={columns} data={hospitalData} />
+			<DataTable columns={columns} data={hospitalData} sortingHandler={sortingHandler} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>
 			</div>
