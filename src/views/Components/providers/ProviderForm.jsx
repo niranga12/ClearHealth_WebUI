@@ -38,9 +38,9 @@ const schema = yup.object().shape({
 	speciality: yup.string().required('Speciality is required'),
 	taxId: yup.string(),
 	nip: yup.string().required('NPI is required'),
-	bankName: yup.string().required('Bank name is required'),
-	accountNumber: yup.string().required('Account number is required'),
-	routing: yup.string().required('Routing is required')
+	bankName: yup.string(),
+	accountNumber: yup.string(),
+	routing: yup.string()
 });
 
 const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData = [] }) => {
@@ -104,12 +104,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 		const fetchData = async () => {
 			try {
-				//		const result = await getHealthSystemList({});
 				const hospitalList = await getHospitalsList();
-				// const specialityList = await getSpecialityList();
-				//  setSpecialityData(specialityList.data.data);
 				setHospitalData(hospitalList.data.data)
-				//	setHealthSystem(result.data.data);
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -144,8 +140,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 
 	const handleHealthSystemChange = (e) => {
+		//e.prevent.default()
 		let result = hospitalData.filter(x => x.healthSystemPartyRoleId == e.target.value);
-		sethsHospitalData(result)
+		sethsHospitalData(result);
+		setValue('healthSystemPartyRoleId',e.target.value,{
+			shouldValidate: true,
+			shouldDirty: true,
+		});
 	}
 
 	const handleHospitalChecked = (event) => {
@@ -186,8 +187,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 	// form submit
 	const providerFormSubmit = (data) => {
-		console.log(data)
-		console.log("isEdit", isEdit)
 		if (isEdit) {
 			updateProviderInfo();
 		} else {
@@ -341,7 +340,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		<div className='p-4'>
 			<form onSubmit={handleSubmit(providerFormSubmit)}>
 				{/* hospital details */}
-				{/* <h5 className='font-weight-bold mt-1'>Hospital Details </h5> */}
+		
 				<div className='row mb-3'>
 
 
@@ -351,16 +350,15 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								Health System <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<select name='healthSystem' id='healthSystem' className='form-control-sm'  {...register('healthSystemPartyRoleId')} onChange={handleHealthSystemChange}>
+							<select  {...register('healthSystemPartyRoleId')}  onChange={e => handleHealthSystemChange(e)}  name='healthSystemPartyRoleId' id='healthSystemPartyRoleId' className='form-control-sm'  >
 								<option value=''>Select</option>
 								{healthSystemList.map((item, index) => (
 									<option key={index} value={item.partyRoleId}>
 										{item.name}
 									</option>
 								))}
-								{/* <option value='test'>test</option> */}
 							</select>
-							<div className='small text-danger  pb-2   '>{errors.healthSystemPartyRoleId?.message}</div>
+							<div className='small text-danger  pb-2'>{errors.healthSystemPartyRoleId?.message}</div>
 						</div>
 					</div>
 
