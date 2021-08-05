@@ -298,7 +298,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 							<label className='form-text'>
 								Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('name')} onChange={(e) => setHealthSystemName(e.target.value)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+							<input className='form-control-sm' type='text' {...register('name')} onChange={(e) => setHealthSystemName(e.target.value)}  onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.name?.message}</div>
 							{isSearching && <div>Searching ...</div>}
 							{isAlreadyExit && <div className='small text-danger pb-2'>Health system name already taken</div>}
