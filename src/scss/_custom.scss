@@ -805,6 +805,24 @@ background-color: rgba(91,77,253,0.1);
   border-radius: 5px;
 }
 
+.MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]{
+  padding: 0px !important;
+
+}
+.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]{
+  border: none;
+}
+
+.MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input {
+  font-size: 14px;
+   font-family: LatoRegular, serif !important;
+   font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    
+    color: #768192;
+
+}
 // loader animation
 
 .center {

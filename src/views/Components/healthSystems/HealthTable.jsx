@@ -20,6 +20,8 @@ const initialSearch = {
   itemsPerPage: TableSettingsEnum.ItemPerPage,
   pageNumber: 1,
   searchTerm: "",
+  orderBy: "",
+  sortOrder: ""
 };
 
 
@@ -194,6 +196,7 @@ const HealthTable = () => {
       {
         Header: "Address",
         accessor: "primaryAddress1", // accessor is the "key" in the data
+        disableSortBy: true,
         Cell: CellAddress,
       },
       {
@@ -218,6 +221,21 @@ const HealthTable = () => {
     []
   );
 
+  const sortingHandler=(sorting)=>{  
+    if(sorting.length > 0){
+      let result={...searchQuery,orderBy:sorting[0].id?sorting[0].id :"", sortOrder:sorting[0].desc?'desc':'asc' }
+      setSearchQuery(result)
+    }
+    else{
+     // this validation for initial load avoid 2 times call api
+      if(JSON.stringify(initialSearch) !== JSON.stringify(searchQuery)){
+        let result={...searchQuery, orderBy:"", sortOrder:"" }
+        setSearchQuery(result)
+      }     
+    }
+
+  }
+
   // const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
   //   useTable({ columns, data });
   return (
@@ -232,7 +250,7 @@ const HealthTable = () => {
         title="Health Systems"
       />
 
-<DataTable columns={columns} data={data}/>
+<DataTable columns={columns} data={data}  sortingHandler={sortingHandler}/>
 
       {/* <div className="LatoRegular tableCover"> */}
         {/* <table {...getTableProps} className="table table-hover ">

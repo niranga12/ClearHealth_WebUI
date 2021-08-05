@@ -3,9 +3,12 @@ import React, {useEffect, useState} from 'react';
 import { useDispatch } from 'react-redux';
 import {useLocation} from 'react-router-dom';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+import { Country } from 'src/reusable/enum';
+import { getStateList } from 'src/service/commonService';
 import { getHealthSystemList } from 'src/service/healthsystemService';
 import {getHospitalByPartyRoleId} from 'src/service/hospitalsService';
 import AdminTitle from 'src/views/common/adminTitle';
+import OnError from 'src/_helpers/onerror';
 import HospitalForm from './HospitalForm';
 
 const defalutFormValue = {
@@ -36,11 +39,17 @@ const defalutFormValue = {
 	contactPhone: '',
 	contactName: '',
 };
+const options = [
+    {name: 'Swedish', value: 'sv'},
+    {name: 'English', value: 'en'},
+]
 
 const HospitalProfile = () => {
 	const location = useLocation();
 	const [partyRoleId, setPartyRoleId] = useState(null);
 	const [editProfile, setEditProfile] = useState(false);
+
+	const [stateList, setstateList] = useState([])
 
 	const [hospitalData, setHospitalData] = useState(defalutFormValue);
 	const [healthSystems, setHealthSystem] = useState([]);
@@ -59,7 +68,12 @@ const HospitalProfile = () => {
 				dispatch(loaderShow());
 				const res = await getHealthSystemList({});
 				setHealthSystem(res.data.data);
-			} catch (error) {	}
+               const stateResult=await getStateList(Country.USA);
+			   setstateList(stateResult.data.data)
+
+			} catch (error) {
+				OnError(error, dispatch);
+				}
 			if (id) {
 				try {
 					// const res = await getHealthSystemList({});
@@ -68,7 +82,9 @@ const HospitalProfile = () => {
 					const formatedData = await updateFormFields(result.data.data);
 
 					setHospitalData(formatedData);
-				} catch (error) {}
+				} catch (error) {
+					OnError(error, dispatch);
+				}
 
 			}
 								dispatch(loaderHide());
@@ -117,7 +133,7 @@ const HospitalProfile = () => {
 		<div className="card  cover-content pt-2 ">
 			<AdminTitle title={editProfile ? 'Edit Hospital' : 'Add Hospital'} />
 
-			<HospitalForm defaultValues={hospitalData} isEdit={editProfile} healthSystems={healthSystems} partyRoleId={partyRoleId} />
+			<HospitalForm defaultValues={hospitalData} stateList={stateList} isEdit={editProfile} healthSystems={healthSystems} partyRoleId={partyRoleId} />
 		</div>
 	);
 };
