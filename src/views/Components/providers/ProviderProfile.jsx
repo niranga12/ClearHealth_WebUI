@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Country } from 'src/reusable/enum';
+import { getStateList } from 'src/service/commonService';
 import { getHealthSystemList } from 'src/service/healthsystemService';
 import { getProviderByPartyRoleId, getSpecialityList } from 'src/service/providerService';
 import AdminTitle from 'src/views/common/adminTitle';
@@ -36,6 +38,7 @@ const ProviderProfile = () => {
 	const [partyRoleId, setPartyRoleId] = useState(null);
 	const [editProfile, setEditProfile] = useState(false);
 	const [healthSystems, setHealthSystem] = useState([]);
+	const [stateList, setstateList] = useState([])
 	const [providerData, setProviderData] = useState(defalutFormValue);
 	const [specialityData, setSpecialityData] = useState([]);
 
@@ -52,6 +55,8 @@ const ProviderProfile = () => {
 				setHealthSystem(hsResult.data.data);
 				const specialityList = await getSpecialityList();
 				setSpecialityData(specialityList.data.data);
+				const stateResult=await getStateList(Country.USA);
+			    setstateList(stateResult.data.data)
 			} catch (error) {
 
 			}
@@ -109,7 +114,7 @@ const ProviderProfile = () => {
 		<div className="card  cover-content pt-2 ">
 			<AdminTitle title={editProfile ? 'Edit Provider' : 'Add Provider'} />
 
-			<ProviderForm defaultValues={providerData} isEdit={editProfile} partyRoleId={partyRoleId} healthSystemList={healthSystems} specialityData={specialityData} />
+			<ProviderForm defaultValues={providerData} stateList={stateList} isEdit={editProfile} partyRoleId={partyRoleId} healthSystemList={healthSystems} specialityData={specialityData} />
 		</div>
 	);
 };

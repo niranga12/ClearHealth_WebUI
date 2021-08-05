@@ -12,7 +12,9 @@ import { getHospitalsList } from 'src/service/hospitalsService';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import NormalizePhone from 'src/reusable/NormalizePhone';
 import InputMask from 'react-input-mask';
-
+import FormatText from 'src/reusable/FormatText';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 const schema = yup.object().shape({
 
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
@@ -38,12 +40,12 @@ const schema = yup.object().shape({
 	speciality: yup.string().required('Speciality is required'),
 	taxId: yup.string(),
 	nip: yup.string().required('NPI is required'),
-	bankName: yup.string().required('Bank name is required'),
-	accountNumber: yup.string().required('Account number is required'),
-	routing: yup.string().required('Routing is required')
+	bankName: yup.string(),
+	accountNumber: yup.string(),
+	routing: yup.string()
 });
 
-const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData = [] }) => {
+const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData = [],stateList = [] }) => {
 	const {
 		register,
 		handleSubmit,
@@ -58,7 +60,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const { dirtyFields } = useFormState({ control });
 	const [hospitalData, setHospitalData] = useState([]);
 	const [hsHospitalData, sethsHospitalData] = useState([]);
-
+	const [stateOption, setStateOption] = React.useState(defaultValues.state);
+	const [billingStateOption, setBillingStateOption] = React.useState(defaultValues.billingState);
 	const dispatch = useDispatch();
 	let history = useHistory();
 
@@ -86,17 +89,21 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				shouldValidate: true,
 				shouldDirty: true,
 			});
+			setBillingStateOption( getValues('state'));
 		} else {
 			setValue('billingAddress1', '');
 			setValue('billingAddress2', '');
 			setValue('billingCity', '');
 			setValue('billingState', '');
 			setValue('billingZip', '');
+			setBillingStateOption('');
 		}
 	};
 
 	useEffect(() => {
 		reset(defaultValues);
+		setStateOption(defaultValues.state); //set state dropdown value
+		setBillingStateOption(defaultValues.billingState);
 	}, [defaultValues]);
 
 
@@ -104,12 +111,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 		const fetchData = async () => {
 			try {
-				//		const result = await getHealthSystemList({});
 				const hospitalList = await getHospitalsList();
-				// const specialityList = await getSpecialityList();
-				//  setSpecialityData(specialityList.data.data);
 				setHospitalData(hospitalList.data.data)
-				//	setHealthSystem(result.data.data);
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -144,8 +147,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 
 	const handleHealthSystemChange = (e) => {
+		//e.prevent.default()
 		let result = hospitalData.filter(x => x.healthSystemPartyRoleId == e.target.value);
-		sethsHospitalData(result)
+		sethsHospitalData(result);
+		setValue('healthSystemPartyRoleId',e.target.value,{
+			shouldValidate: true,
+			shouldDirty: true,
+		});
 	}
 
 	const handleHospitalChecked = (event) => {
@@ -186,8 +194,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 	// form submit
 	const providerFormSubmit = (data) => {
-		console.log(data)
-		console.log("isEdit", isEdit)
 		if (isEdit) {
 			updateProviderInfo();
 		} else {
@@ -250,6 +256,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		} catch (error) {
 			OnError(error, dispatch);
 		}
+	};
+	const stateSelect = (event) => {
+		setValue('state', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
+	};
+
+	const billingStateSelect = (event) => {
+		setValue('billingState', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
 	};
 
 	// update Provider
@@ -341,7 +354,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		<div className='p-4'>
 			<form onSubmit={handleSubmit(providerFormSubmit)}>
 				{/* hospital details */}
-				{/* <h5 className='font-weight-bold mt-1'>Hospital Details </h5> */}
+		
 				<div className='row mb-3'>
 
 
@@ -351,16 +364,15 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								Health System <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<select name='healthSystem' id='healthSystem' className='form-control-sm'  {...register('healthSystemPartyRoleId')} onChange={handleHealthSystemChange}>
+							<select  {...register('healthSystemPartyRoleId')}  onChange={e => handleHealthSystemChange(e)}  name='healthSystemPartyRoleId' id='healthSystemPartyRoleId' className='form-control-sm'  >
 								<option value=''>Select</option>
 								{healthSystemList.map((item, index) => (
 									<option key={index} value={item.partyRoleId}>
 										{item.name}
 									</option>
 								))}
-								{/* <option value='test'>test</option> */}
 							</select>
-							<div className='small text-danger  pb-2   '>{errors.healthSystemPartyRoleId?.message}</div>
+							<div className='small text-danger  pb-2'>{errors.healthSystemPartyRoleId?.message}</div>
 						</div>
 					</div>
 
@@ -393,7 +405,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('firstName')} />
+							<input className='form-control-sm' type='text' {...register('firstName')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
 						</div>
 					</div>
@@ -404,7 +416,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								Middle Name <span className='text-danger font-weight-bold '></span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('middleName')} />
+							<input className='form-control-sm' type='text' {...register('middleName')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							{/* <div className='small text-danger  pb-2   '>{errors.middleName?.message}</div> */}
 						</div>
 					</div>
@@ -415,7 +427,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('lastName')} />
+							<input className='form-control-sm' type='text' {...register('lastName')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
 						</div>
 					</div>
@@ -433,13 +445,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('address1')} />
+							<input type='text' className='form-control-sm' {...register('address1')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('address2')} />
+							<input type='text' className='form-control-sm' {...register('address2')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 						</div>
 
 						<div className='row'>
@@ -447,15 +459,26 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('city')} />
+								<input type='text' className='form-control-sm' {...register('city')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 								<div className='small text-danger  pb-2   '>{errors.city?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
 									State <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('state')} />
-								<div className='small text-danger  pb-2   '>{errors.state?.message}</div>
+								<Autocomplete
+									id='combo-box-demo'
+									options={stateList}
+									//   value={stateOption}
+									inputValue={stateOption}
+									onInputChange={(event, newInputValue) => {
+										setStateOption(newInputValue);
+									}}
+									getOptionLabel={(option) => option.stateName}
+									onChange={stateSelect}
+									renderInput={(params) => <TextField {...params} {...register('state')} className='control-autocomplete' variant='outlined' />}
+									/>
+									<div className='small text-danger  pb-2   '>{errors.state?.message}</div>
 							</div>
 						</div>
 
@@ -482,13 +505,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input type='text' className='form-control-sm' {...register('billingAddress1')} />
+							<input type='text' className='form-control-sm' {...register('billingAddress1')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.billingAddress1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('billingAddress2')} />
+							<input type='text' className='form-control-sm' {...register('billingAddress2')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 						</div>
 
 						<div className='row'>
@@ -496,14 +519,25 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('billingCity')} />
+								<input type='text' className='form-control-sm' {...register('billingCity')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 								<div className='small text-danger  pb-2   '>{errors.billingCity?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
 									State <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('billingState')} />
+								<Autocomplete
+									id='combo-box-demo'
+									options={stateList}
+									//   value={stateOption}
+									inputValue={billingStateOption}
+									onInputChange={(event, newInputValue) => {
+										setBillingStateOption(newInputValue);
+									}}
+									getOptionLabel={(option) => option.stateName}
+									onChange={billingStateSelect}
+									renderInput={(params) => <TextField {...params} {...register('billingState')} className='control-autocomplete' variant='outlined' />}
+								/>
 								<div className='small text-danger  pb-2   '>{errors.billingState?.message}</div>
 							</div>
 						</div>
