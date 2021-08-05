@@ -112,6 +112,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 						...(isEdit && {partyRoleId}),
 					};
 
+
 					const result = await getValidateOrganization(data);
 
 					if (result.data.data) {
@@ -121,6 +122,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 					}
 					setIsSearching(false);
 					setIsAlreadyExit(!result.data.data);
+				    setValue('name', debouncedName, {shouldValidate: true, shouldDirty: true});
 				} else {
 					setIsSearching(false);
 					setIsAlreadyExit(false);
@@ -131,6 +133,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 	}, [debouncedName]);
 
 	const updateHealthInfo = async () => {
+		
 		try {
 			let updatHealthSystem = {
 				...(dirtyFields.name && {healthSystem: {name: getValues('name')}}),
@@ -298,7 +301,9 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 							<label className='form-text'>
 								Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('name')} onChange={(e) => setHealthSystemName(e.target.value)}  onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+							
+
+							<input className='form-control-sm' type='text' {...register('name')}   onInput={(e) => (e.target.value = FormatText(e.target.value))} onChange={(e) => setHealthSystemName(e.target.value)} />
 							<div className='small text-danger  pb-2   '>{errors.name?.message}</div>
 							{isSearching && <div>Searching ...</div>}
 							{isAlreadyExit && <div className='small text-danger pb-2'>Health system name already taken</div>}

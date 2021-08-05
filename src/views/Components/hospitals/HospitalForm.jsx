@@ -102,6 +102,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 					}
 					setIsSearching(false);
 					setIsAlreadyExit(!result.data.data);
+					setValue('hospitalName', debouncedName, {shouldValidate: true, shouldDirty: true});
 				} else {
 					setIsSearching(false);
 					setIsAlreadyExit(false);

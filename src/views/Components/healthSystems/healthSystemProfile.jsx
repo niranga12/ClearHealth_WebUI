@@ -71,7 +71,7 @@ const HealthSystemProfile = () => {
 	}, [location]);
 
 	const updateFormFields = (data) => {
-		console.log(data);
+		
 		const healthData = {
 			name: data.name,
 			address1: data.primaryAddress1,
