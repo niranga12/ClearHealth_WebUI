@@ -8,34 +8,22 @@ import { useHistory } from 'react-router-dom';
 import { getHealthSystemList } from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
-import { saveProvider, updateProviderByPartyRoleId } from 'src/service/providerService';
+import { savePatient, updatePatientByPartyRoleId } from 'src/service/patientService';
 
 const schema = yup.object().shape({
-	hospitalName: yup.string().required('Hospital Name is required'),
-	healthSystemPartyRoleId: yup.string().required('Health system is required'),
 	firstName: yup.string().required('First name is required'),
-	middleName: yup.string().required('Middle name is required'),
 	lastName: yup.string().required('Last name is required'),
+	email: yup.string(),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required'),
-	billingAddress1: yup.string().required('billing Address line 1 is required'),
-	billingAddress2: yup.string(),
-	billingCity: yup.string().required('City is required'),
-	billingState: yup.string().required('State is required'),
-	billingZip: yup.string().required('Zip is required'),
 	phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
-	speciality: yup.string().required('Speciality is required'),
-	taxId: yup.string().required('Tax Id is required'),
-	nip: yup.string().required('NIP is required'),
-	bankName: yup.string().required('Bank name is required'),
-	accountNumber: yup.string().required('Account number is required'),
-	routing: yup.string().required('Routing is required')
+
 });
 
-const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
+const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 	const {
 		register,
 		handleSubmit,
@@ -104,25 +92,24 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 
 	// form submit
-	const providerFormSubmit = (data) => {
+	const patientFormSubmit = (data) => {
 		console.log(data)
 		console.log("isEdit", isEdit)
 		if (isEdit) {
-			updateProviderInfo();
+			updatePatientInfo();
 		} else {
-			addProvider(data);
+			addPatient(data);
 		}
 	};
 
-	// save Provider
-	const addProvider = async (data) => {
-		const newProvider = {
-			provider: {
+	// save Patient
+	const addPatient = async (data) => {
+		const newPatient = {
+			patient: {
 				firstName: data.firstName,
-				middleName: data.middleName,
 				lastName: data.lastName,
-				hospitalList: data.healthSystemPartyRoleId,
-				speciality: data.speciality,
+				email: data.email,
+				dateOfBirth: data.dateOfBirth,
 			},
 
 			postalAddress: [
@@ -134,34 +121,18 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 					state: data.state,
 					zip: data.zip,
 				},
-				{
-					partyContactTypeId: PartyTypeEnum.shipping,
-					address1: data.billingAddress1,
-					address2: data.billingAddress2,
-					city: data.billingCity,
-					state: data.billingState,
-					zip: data.billingZip,
-				},
 			],
 			telecommunicationsNumber: {
 				partyContactTypeId: PartyTypeEnum.telecommunicationsNumber,
 				number: data.phone,
 			},
-			paymentInfo: {
-				taxId: data.taxId,
-				nip: data.nip,
-				bankName: data.bankName,
-				routing: data.routing,
-				accountNumber: data.accountNumber,
-
-			},
 		};
 		try {
-			if (newProvider) {
-				let result = await saveProvider(newProvider);
+			if (newPatient) {
+				let result = await savePatient(newPatient);
 				if (result.data.message === ServiceMsg.OK) {
 					dispatch(notify(`Successfully added`, 'success'));
-					history.push('/provider');
+					history.push('/patients');
 				}
 			}
 		} catch (error) {
@@ -169,25 +140,24 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 		}
 	};
 
-	// update Provider
-	const updateProviderInfo = async () => {
+	// update Patient
+	const updatePatientInfo = async () => {
 		try {
-			const updateProvider = {
+			const updatePatient = {
 
 
-				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalList || dirtyFields.speciality) && {
-					provider: {
+				...((dirtyFields.firstName || dirtyFields.lastName || dirtyFields.email || dirtyFields.dateOfBirth) && {
+					patient: {
 						firstName: getValues('firstName'),
-						middleName: getValues('middleName'),
 						lastName: getValues('lastName'),
-						hospitalList: getValues('hospitalList'),
-						speciality: getValues('speciality'),
+						email: '',
+						dateOfBirth: getValues('dateOfBirth'),
 					}
 				}),
 
 
 
-				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.billingAddress1 || dirtyFields.billingAddress2 || dirtyFields.billingCity || dirtyFields.billingState || dirtyFields.billingZip) && {
+				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip ) && {
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
 							? [
@@ -202,18 +172,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 							]
 							: []),
 
-						...(dirtyFields.billingAddress1 || dirtyFields.billingAddress2 || dirtyFields.billingCity || dirtyFields.billingState || dirtyFields.billingZip
-							? [
-								{
-									partyContactTypeId: PartyTypeEnum.shipping,
-									address1: getValues('billingAddress1'),
-									address2: getValues('billingAddress2'),
-									city: getValues('billingCity'),
-									state: getValues('billingState'),
-									zip: getValues('billingZip'),
-								},
-							]
-							: []),
 					],
 				}),
 
@@ -224,26 +182,17 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 					},
 				}),
 
-				...((dirtyFields.taxId || dirtyFields.nip || dirtyFields.bankName || dirtyFields.routing || dirtyFields.accountNumber) && {
-					paymentInfo: {
-
-						taxId: getValues('taxId'),
-						nip: getValues('nip'),
-						bankName: getValues('bankName'),
-						routing: getValues('routing'),
-						accountNumber: getValues('accountNumber'),
-
-					},
-				}),
+			
 			};
-			if (Object.keys(updateProvider).length == 0) {
+			debugger;
+			if (Object.keys(updatePatient).length == 0) {
 				dispatch(notify(`No record to update`, 'error'));
 			} else {
 				try {
-					const result = await updateProviderByPartyRoleId(partyRoleId, updateProvider);
+					const result = await updatePatientByPartyRoleId(partyRoleId, updatePatient);
 					if (result.data.message == ServiceMsg.OK) {
 						dispatch(notify(`Successfully updated`, 'success'));
-						history.push('/providers');
+						history.push('/patients');
 					}
 				} catch (error) {
 					OnError(error, dispatch);
@@ -256,7 +205,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 	return (
 		<div className='p-4'>
-			<form onSubmit={handleSubmit(providerFormSubmit)}>
+			<form onSubmit={handleSubmit(patientFormSubmit)}>
 				{/* hospital details */}
 				<h5 className='font-weight-bold mt-1'>Personal Information</h5>
 
@@ -311,7 +260,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 								{' '}
 								DOB <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('lastName')} />
+							<input className='form-control-sm' type='text' {...register('dateOfBirth')} />
 						</div>
 
 					</div>
@@ -374,4 +323,4 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => 
 
 
 
-export default ProviderForm;
+export default PatientForm;

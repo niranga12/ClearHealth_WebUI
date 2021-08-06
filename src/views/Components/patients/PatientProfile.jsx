@@ -1,41 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getProviderByPartyRoleId } from 'src/service/providerService';
+import { getPatientByPartyRoleId } from 'src/service/patientService';
+
 import AdminTitle from 'src/views/common/adminTitle';
 import PatientForm from './PatientForm';
 
 
 const defalutFormValue = {
-	hospitalName: '',
-	healthSystemPartyRoleId: '',
 	firstName: '',
-	middleName: '',
 	lastName: '',
+	email: '',
+	dateOfBirth: '',
 	address1: '',
 	address2: '',
 	city: '',
 	state: '',
 	zip: '',
-	billingAddress1: '',
-	billingAddress2: '',
-	billingCity: '',
-	billingState: '',
-	billingZip: '',
 	phone: '',
-	speciality: '',
-	taxId: '',
-	nip: '',
-	bankName: '',
-	accountNumber: '',
-	routing: '',
+	
 };
 
-const ProviderProfile = () => {
+const PatientProfile = () => {
 	const location = useLocation();
 	const [partyRoleId, setPartyRoleId] = useState(null);
 	const [editProfile, setEditProfile] = useState(false);
 
-	const [providerData, setProviderData] = useState(defalutFormValue);
+	const [patientData, setPatientData] = useState(defalutFormValue);
 
 	//if this a edit form get the data
 	useEffect(() => {
@@ -47,9 +37,9 @@ const ProviderProfile = () => {
 		const fetchData = async () => {
 			if (id) {
 				try {
-					const result = await getProviderByPartyRoleId(id);
+					const result = await getPatientByPartyRoleId(id);
 					const formatedData = await updateFormFields(result.data.data);
-					setProviderData(formatedData);
+					setPatientData(formatedData);
 				} catch (error) { }
 			}
 		};
@@ -58,33 +48,21 @@ const ProviderProfile = () => {
 
 	//updated form fields
 	const updateFormFields = (data) => {
-		const providerDetails = {
-			hospitalName: '',
-			healthSystemPartyRoleId: '',
+		debugger;
+		const patientDetails = {
 			firstName: data.firstName,
-			middleName: data.middleName,
 			lastName: data.lastName,
-			address1: data.primaryAddress1,
-			address2:data.primaryAddress2,
-			city: data.primaryCity,
-			state: data.primaryState,
-			zip: data.primaryZip,
-			billingAddress1: data.secondaryAddress1,
-			billingAddress2:data.secondaryAddress2,
-			billingCity: data.secondaryCity,
-			billingState: data.secondaryState,
-			billingZip: data.secondaryZip,
+			address1: data.address1,
+			address2:data.address2,
+			city: data.city,
+			state: data.state,
+			zip: data.zip,
 			phone: data.phone,
-			speciality:data.speciality,
-			taxId: data.taxId,
-			nip: data.NIP,
-			bankName: data.bankName,
-			accountNumber: data.accountNumber,
-			routing: data.routing
+			
 		};
 
 
-		return providerDetails;
+		return patientDetails;
 
 	};
 
@@ -92,9 +70,9 @@ const ProviderProfile = () => {
 		<div className="card  cover-content pt-2 ">
 			<AdminTitle title={editProfile ? 'Edit Patient' : 'Add Patient'} />
 
-			<PatientForm defaultValues={providerData} isEdit={editProfile} partyRoleId={partyRoleId} />
+			<PatientForm defaultValues={patientData} isEdit={editProfile} partyRoleId={partyRoleId} />
 		</div>
 	);
 };
 
-export default ProviderProfile;
+export default PatientProfile;

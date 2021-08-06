@@ -157,11 +157,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	}
 
 	const handleHospitalChecked = (event) => {
-
-
 		if (event.target.checked) {
 			let result = hsHospitalData.find(x => x.partyRoleId == getValues('hospitalName'));
-
+debugger;
 			setValue('address1', result.primaryAddress1, {
 				shouldValidate: true,
 				shouldDirty: true,
@@ -614,7 +612,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								Bank Name <span className='text-danger font-weight-bold '></span>{' '}
 							</label>
-							<input type='text' className='form-control-sm' {...register('bankName')} />
+							<input type='text' className='form-control-sm' {...register('bankName')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '> {errors.bankName?.message} </div>
 						</div>
 

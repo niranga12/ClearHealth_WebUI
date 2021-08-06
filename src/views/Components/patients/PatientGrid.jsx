@@ -1,13 +1,14 @@
 import React from 'react'
-import ProviderTable from './PatientTable';
+import PatientTable from './PatientTable';
 
-const ProviderGrid = () => {
+
+const PatientGrid = () => {
     return (
         <div className="card  cover-content pt-2 ">
-            <ProviderTable/>
+            <PatientTable/>
             
         </div>
     )
 }
 
-export default ProviderGrid;
+export default PatientGrid;
