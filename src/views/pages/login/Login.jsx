@@ -45,7 +45,7 @@ const Login = () => {
  
 
   const userLogin = (data) => {
-     console.log(data);
+     
     disPatch(login(data,history));
     // disPatch(notify('Welcome to the documentation', 'info'))
   };
