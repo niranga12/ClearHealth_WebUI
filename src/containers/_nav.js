@@ -136,7 +136,7 @@ const _nav =  [
     _tag: 'CSidebarNavItem',
     name: 'Patients',
     icon: <CIcon content={logoPatients} size={'2xl'} className="m-auto"/>,
-    // to: '/base/cards',
+     to: '/patients',
   },
  
   {

@@ -1,7 +1,7 @@
 import React from 'react'
 import ProviderTable from './ProviderTable';
 
-const ProvidersGrid = () => {
+const ProviderGrid = () => {
     return (
         <div className="card  cover-content pt-2 ">
             <ProviderTable/>
@@ -10,4 +10,4 @@ const ProvidersGrid = () => {
     )
 }
 
-export default ProvidersGrid;
+export default ProviderGrid;
