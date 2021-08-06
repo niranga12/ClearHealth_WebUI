@@ -100,7 +100,7 @@ const ProviderTable = () => {
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
 				setPage(Math.ceil(pageCount));
 				dispatch(loaderHide());
-				// console.log(count)
+				
 			} catch (error) {
 				OnError(error, dispatch);
 			}

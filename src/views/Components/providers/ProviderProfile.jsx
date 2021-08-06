@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Country } from 'src/reusable/enum';
 import { getStateList } from 'src/service/commonService';
 import { getHealthSystemList } from 'src/service/healthsystemService';
+import { getHospitalByPartyRoleId } from 'src/service/hospitalsService';
 import { getProviderByPartyRoleId, getSpecialityList } from 'src/service/providerService';
 import AdminTitle from 'src/views/common/adminTitle';
 import ProviderForm from './ProviderForm';
@@ -46,6 +47,7 @@ const ProviderProfile = () => {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
+		const hospitalId=params.get('hospitalId');
 		setPartyRoleId(id);
 		id ? setEditProfile(true) : setEditProfile(false);
 
@@ -61,16 +63,24 @@ const ProviderProfile = () => {
 
 			}
 
-			if (id) {
+
 				try {
-
-
-					const result = await getProviderByPartyRoleId(id);
-					const formatedData = await updateFormFields(result.data.data);
-					setProviderData(formatedData);
+					if(id){
+						const result = await getProviderByPartyRoleId(id);
+						const formatedData = await updateFormFields(result.data.data);
+						setProviderData(formatedData);
+					}
+					else if(hospitalId){
+						const hsDetatil=await getHospitalByPartyRoleId(hospitalId);
+			
+						let defautlSet ={...providerData,hospitalName:hospitalId,healthSystemPartyRoleId: hsDetatil.data.data.hospital.healthSystemPartyRoleId}
+						setProviderData(defautlSet);
+					}
+					
 
 				} catch (error) { }
-			}
+			
+			
 		};
 		fetchData();
 	}, [location]);
@@ -105,7 +115,7 @@ const ProviderProfile = () => {
 			accountNumber: data.accountNumber,
 			routing: data.routing
 		};
-		console.log(providerDetails)
+	
 		return providerDetails;
 
 	};
