@@ -9,6 +9,7 @@ import { getHealthSystemList } from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
 import { savePatient, updatePatientByPartyRoleId } from 'src/service/patientService';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
@@ -39,55 +40,14 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 	const dispatch = useDispatch();
 	let history = useHistory();
 
-	const [healthSystems, setHealthSystem] = useState([]);
 
-	const handleBillingChecked = (event) => {
-		if (event.target.checked) {
-			setValue('billingAddress1', getValues('address1'), {
-				shouldValidate: true,
-				shouldDirty: true,
-			});
-			setValue('billingAddress2', getValues('address2'), {
-				shouldValidate: true,
-				shouldDirty: true,
-			});
-			setValue('billingCity', getValues('city'), {
-				shouldValidate: true,
-				shouldDirty: true,
-			});
-			setValue('billingState', getValues('state'), {
-				shouldValidate: true,
-				shouldDirty: true,
-			});
-			setValue('billingZip', getValues('zip'), {
-				shouldValidate: true,
-				shouldDirty: true,
-			});
-		} else {
-			setValue('billingAddress1', '');
-			setValue('billingAddress2', '');
-			setValue('billingCity', '');
-			setValue('billingState', '');
-			setValue('billingZip', '');
-		}
-	};
+
 
 	useEffect(() => {
+		dispatch(loaderShow());
 		reset(defaultValues);
+		dispatch(loaderHide());
 	}, [defaultValues]);
-
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const result = await getHealthSystemList({});
-				setHealthSystem(result.data.data);
-			} catch (error) {
-				OnError(error, dispatch);
-			}
-		};
-		fetchData();
-	}, []);
 
 
 
@@ -150,7 +110,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 					patient: {
 						firstName: getValues('firstName'),
 						lastName: getValues('lastName'),
-						email: '',
+						email: getValues('email'),
 						dateOfBirth: getValues('dateOfBirth'),
 					}
 				}),
@@ -184,7 +144,6 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 
 			
 			};
-			debugger;
 			if (Object.keys(updatePatient).length == 0) {
 				dispatch(notify(`No record to update`, 'error'));
 			} else {
@@ -217,6 +176,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('firstName')} />
+							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
 						</div>
 
 					</div>
@@ -228,6 +188,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 							</label>
 							<input type='text' className='form-control-sm' {...register('address1')} />
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
+							
 						</div>
 					</div>
 				</div>
@@ -240,6 +201,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('lastName')} />
+							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
 						</div>
 
 					</div>
@@ -248,6 +210,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
 							<input type='text' className='form-control-sm' {...register('address2')} />
+							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
 						</div>
 					</div>
 				</div>
@@ -261,6 +224,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								DOB <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('dateOfBirth')} />
+							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
 						</div>
 
 					</div>
@@ -304,6 +268,19 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 							<div className='small text-danger  pb-2   '>{errors.zip?.message}</div>
 						</div>
 					</div>
+				</div>
+
+				<div className='row mb-3'>
+					<div className='col-md-6'>
+					<div className='form-group'>
+							<label className='form-text'>
+								Email <span className='text-danger font-weight-bold '>*</span>
+							</label>
+							<input type='text' className='form-control-sm' {...register('email')} />
+							<div className='small text-danger  pb-2   '>{errors.email?.message}</div>
+						</div>
+					</div>
+					
 				</div>
 
 

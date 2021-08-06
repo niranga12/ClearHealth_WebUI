@@ -15,6 +15,7 @@ import InputMask from 'react-input-mask';
 import FormatText from 'src/reusable/FormatText';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 const schema = yup.object().shape({
 
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
@@ -45,7 +46,7 @@ const schema = yup.object().shape({
 	routing: yup.string()
 });
 
-const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData = [],stateList = [] }) => {
+const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData = [], stateList = [] }) => {
 	const {
 		register,
 		handleSubmit,
@@ -89,7 +90,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				shouldValidate: true,
 				shouldDirty: true,
 			});
-			setBillingStateOption( getValues('state'));
+			setBillingStateOption(getValues('state'));
 		} else {
 			setValue('billingAddress1', '');
 			setValue('billingAddress2', '');
@@ -101,9 +102,12 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	};
 
 	useEffect(() => {
+		dispatch(loaderShow());
 		reset(defaultValues);
 		setStateOption(defaultValues.state); //set state dropdown value
 		setBillingStateOption(defaultValues.billingState);
+		dispatch(loaderHide());
+
 	}, [defaultValues]);
 
 
@@ -111,8 +115,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 		const fetchData = async () => {
 			try {
+				
 				const hospitalList = await getHospitalsList();
-				setHospitalData(hospitalList.data.data)
+				setHospitalData(hospitalList.data.data);
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -122,11 +127,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 
 	useEffect(() => {
+		dispatch(loaderShow());
 		const fetchData = async () => {
-
-
 			if (isEdit && defaultValues.healthSystemPartyRoleId) {
-
+			
 				// defaultValuese
 				const hospitalList = await getHospitalsList();
 
@@ -138,6 +142,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					shouldValidate: true,
 					shouldDirty: true,
 				});
+				dispatch(loaderHide());
 
 			}
 		};
@@ -150,7 +155,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		//e.prevent.default()
 		let result = hospitalData.filter(x => x.healthSystemPartyRoleId == e.target.value);
 		sethsHospitalData(result);
-		setValue('healthSystemPartyRoleId',e.target.value,{
+		setValue('healthSystemPartyRoleId', e.target.value, {
 			shouldValidate: true,
 			shouldDirty: true,
 		});
@@ -159,7 +164,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const handleHospitalChecked = (event) => {
 		if (event.target.checked) {
 			let result = hsHospitalData.find(x => x.partyRoleId == getValues('hospitalName'));
-debugger;
 			setValue('address1', result.primaryAddress1, {
 				shouldValidate: true,
 				shouldDirty: true,
@@ -180,12 +184,14 @@ debugger;
 				shouldValidate: true,
 				shouldDirty: true,
 			});
+			setStateOption(getValues('state'));
 		} else {
 			setValue('address1', '');
 			setValue('address2', '');
 			setValue('city', '');
 			setValue('state', '');
 			setValue('zip', '');
+			setStateOption('');
 		}
 	}
 
@@ -256,11 +262,11 @@ debugger;
 		}
 	};
 	const stateSelect = (event) => {
-		setValue('state', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
+		setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
 
 	const billingStateSelect = (event) => {
-		setValue('billingState', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
+		setValue('billingState', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
 
 	// update Provider
@@ -352,7 +358,7 @@ debugger;
 		<div className='p-4'>
 			<form onSubmit={handleSubmit(providerFormSubmit)}>
 				{/* hospital details */}
-		
+
 				<div className='row mb-3'>
 
 
@@ -362,7 +368,7 @@ debugger;
 								{' '}
 								Health System <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<select  {...register('healthSystemPartyRoleId')}  onChange={e => handleHealthSystemChange(e)}  name='healthSystemPartyRoleId' id='healthSystemPartyRoleId' className='form-control-sm'  >
+							<select  {...register('healthSystemPartyRoleId')} onChange={e => handleHealthSystemChange(e)} name='healthSystemPartyRoleId' id='healthSystemPartyRoleId' className='form-control-sm'  >
 								<option value=''>Select</option>
 								{healthSystemList.map((item, index) => (
 									<option key={index} value={item.partyRoleId}>
@@ -403,7 +409,7 @@ debugger;
 								{' '}
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('firstName')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
 						</div>
 					</div>
@@ -414,7 +420,7 @@ debugger;
 								{' '}
 								Middle Name <span className='text-danger font-weight-bold '></span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('middleName')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('middleName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							{/* <div className='small text-danger  pb-2   '>{errors.middleName?.message}</div> */}
 						</div>
 					</div>
@@ -425,7 +431,7 @@ debugger;
 								{' '}
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('lastName')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
 						</div>
 					</div>
@@ -443,13 +449,13 @@ debugger;
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('address1')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input type='text' className='form-control-sm' {...register('address1')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('address2')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input type='text' className='form-control-sm' {...register('address2')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 						</div>
 
 						<div className='row'>
@@ -457,7 +463,7 @@ debugger;
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('city')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+								<input type='text' className='form-control-sm' {...register('city')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 								<div className='small text-danger  pb-2   '>{errors.city?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
@@ -475,8 +481,8 @@ debugger;
 									getOptionLabel={(option) => option.stateName}
 									onChange={stateSelect}
 									renderInput={(params) => <TextField {...params} {...register('state')} className='control-autocomplete' variant='outlined' />}
-									/>
-									<div className='small text-danger  pb-2   '>{errors.state?.message}</div>
+								/>
+								<div className='small text-danger  pb-2   '>{errors.state?.message}</div>
 							</div>
 						</div>
 
@@ -503,13 +509,13 @@ debugger;
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input type='text' className='form-control-sm' {...register('billingAddress1')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input type='text' className='form-control-sm' {...register('billingAddress1')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.billingAddress1?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('billingAddress2')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input type='text' className='form-control-sm' {...register('billingAddress2')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 						</div>
 
 						<div className='row'>
@@ -517,7 +523,7 @@ debugger;
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('billingCity')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+								<input type='text' className='form-control-sm' {...register('billingCity')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 								<div className='small text-danger  pb-2   '>{errors.billingCity?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
@@ -612,7 +618,7 @@ debugger;
 								{' '}
 								Bank Name <span className='text-danger font-weight-bold '></span>{' '}
 							</label>
-							<input type='text' className='form-control-sm' {...register('bankName')}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input type='text' className='form-control-sm' {...register('bankName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '> {errors.bankName?.message} </div>
 						</div>
 

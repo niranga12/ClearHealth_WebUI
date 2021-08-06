@@ -48,10 +48,11 @@ const PatientProfile = () => {
 
 	//updated form fields
 	const updateFormFields = (data) => {
-		debugger;
 		const patientDetails = {
 			firstName: data.firstName,
 			lastName: data.lastName,
+			dateOfBirth: data.dateOfBirth,
+			email: data.email,
 			address1: data.address1,
 			address2:data.address2,
 			city: data.city,
