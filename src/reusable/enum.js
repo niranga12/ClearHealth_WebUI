@@ -54,3 +54,6 @@ export const Country={
     USA:220
 }
 
+export const CurrencyDetail={
+    USA:"$"
+}

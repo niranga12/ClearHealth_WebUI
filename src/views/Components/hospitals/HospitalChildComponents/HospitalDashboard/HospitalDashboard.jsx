@@ -14,6 +14,10 @@ import {getHospitalDashboard} from 'src/service/hospitalsService';
 import OnError from 'src/_helpers/onerror';
 import {useDispatch} from 'react-redux';
 import HDwidget from './HDwidget';
+import CurrencyFormat from '../../../../../reusable/CurrencyFormat';
+import CurrencyConvertorInt from 'src/reusable/CurrencyConvertorInt';
+
+
 
 // const initialSearch={
 // 	toDate: '2020-02-02',
@@ -64,26 +68,26 @@ const HospitalDashboard = () => {
 			<HDheader title='Dashboard' handleFromChange={handleFromChange} handleToChange={handleToChange} />
 			<div className='row'>
 				<div className='col-md-3'>
-					<HDwidget title='Packages Sent' image={packagesent} price={dashboardItems?.packagesSent} />
+					<HDwidget title='Packages Sent' image={packagesent} price={CurrencyFormat(dashboardItems?.packagesSent)} />
 				</div>
 
 				<div className='col-md-3'>
-					<HDwidget title='Packages Accepted' image={packageAccepted} price={dashboardItems?.packagesAccepted} />
+					<HDwidget title='Packages Accepted' image={packageAccepted} price={CurrencyFormat(dashboardItems?.packagesAccepted)} />
 				</div>
 
 				<div className='col-md-3'>
-					<HDwidget title='Average Price Per Package' image={average} price={dashboardItems?.avaragePricePerPackage} />
+					<HDwidget title='Average Price Per Package' image={average} price={CurrencyFormat(dashboardItems?.avaragePricePerPackage,true)} />
 				</div>
 
 				<div className='col-md-3'>
-					<HDwidget title='Conversion Rate' image={conversion} price={dashboardItems?.conversionRate} />
+					<HDwidget title='Conversion Rate' image={conversion} price={dashboardItems?.conversionRate+'%'} />
 				</div>
 				<div className='col-md-3'>
-					<HDwidget title='Incremental Revenue ' image={increment} price={dashboardItems?.incrementalRevenue} />
+					<HDwidget title='Incremental Revenue ' image={increment} price={CurrencyConvertorInt(dashboardItems?.incrementalRevenue, true)} />
 				</div>
 
 				<div className='col-md-3'>
-					<HDwidget title='Revenue Collected ' image={revenue} price={dashboardItems?.revenueCollected} />
+					<HDwidget title='Revenue Collected ' image={revenue} price={CurrencyConvertorInt(dashboardItems?.revenueCollected, true)} />
 				</div>
 
 				<div className='col-md-3'>
