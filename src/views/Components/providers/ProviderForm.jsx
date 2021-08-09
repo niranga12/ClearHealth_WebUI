@@ -115,9 +115,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 		const fetchData = async () => {
 			try {
-				
+
 				const hospitalList = await getHospitalsList();
 				setHospitalData(hospitalList.data.data);
+				dispatch(loaderHide());
 			} catch (error) {
 				OnError(error, dispatch);
 			}
