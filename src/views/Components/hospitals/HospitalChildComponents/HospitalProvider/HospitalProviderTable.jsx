@@ -41,11 +41,12 @@ function ProviderActions({row}) {
 const HospitalProviderTable = () => {
 
 
+	
 	const location = useLocation();
 
-	// let history = useHistory();
+	 let history = useHistory();
 	const [hospitalProviderData, setHospitalProviderData] = useState([]);
-
+	const [hospitalId, setHospitalId] = useState(null);
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
 
@@ -53,10 +54,15 @@ const HospitalProviderTable = () => {
 	const dispatch = useDispatch();
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 	// const [selectedHospitalId, setSelectedHospitalId] = useState(null);
+    
+	
+
+
 
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
+		setHospitalId(id);
 		// setSelectedHospitalId(id);
 		const fetchData = async () => {
 			try {
@@ -83,7 +89,11 @@ const HospitalProviderTable = () => {
 
 	// want to implement add new provider 
 	const addNewProvider=()=>{
-
+	
+		history.push({
+			pathname: `/providers/profile`,
+				  search: `?hospitalId=${hospitalId}`,  
+			  });
 	}
 
 	

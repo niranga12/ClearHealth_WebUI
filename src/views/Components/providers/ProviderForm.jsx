@@ -106,6 +106,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		reset(defaultValues);
 		setStateOption(defaultValues.state); //set state dropdown value
 		setBillingStateOption(defaultValues.billingState);
+	
 		dispatch(loaderHide());
 
 	}, [defaultValues]);
@@ -130,8 +131,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	useEffect(() => {
 		dispatch(loaderShow());
 		const fetchData = async () => {
-			if (isEdit && defaultValues.healthSystemPartyRoleId) {
-			
+
+
+			if (isEdit || defaultValues.healthSystemPartyRoleId) {
+
 				// defaultValuese
 				const hospitalList = await getHospitalsList();
 
