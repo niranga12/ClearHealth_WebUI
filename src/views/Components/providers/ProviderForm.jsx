@@ -143,8 +143,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				sethsHospitalData(result);
 
 				setValue('hospitalName', defaultValues.hospitalName, {
-					shouldValidate: true,
-					shouldDirty: true,
+					shouldValidate: false,
+					shouldDirty: false,
 				});
 				dispatch(loaderHide());
 
