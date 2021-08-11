@@ -156,6 +156,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			shouldValidate: true,
 			shouldDirty: true,
 		});
+		setValue('hospitalName', '', {
+			shouldValidate: false,
+			shouldDirty: true,
+		});
 	}
 
 	const handleHospitalChecked = (event) => {
@@ -384,14 +388,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								Hospital<span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 
-							<select name='' id='' className='form-control-sm' {...register('hospitalName')}>
+							<select name='hospitalName' id='hospitalName' className='form-control-sm' {...register('hospitalName')}>
 								<option value=''>Select</option>
 								{hsHospitalData.map((item, index) => (
 									<option key={index} value={item.partyRoleId}>
 										{item.name}
 									</option>
 								))}
-								{/* <option value='test'>test</option> */}
 							</select>
 							<div className='small text-danger  pb-2   '>{errors.hospitalName?.message}</div>
 						</div>
