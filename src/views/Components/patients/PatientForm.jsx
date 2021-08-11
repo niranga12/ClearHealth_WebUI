@@ -3,29 +3,34 @@ import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
+import { MaskFormat, PartyTypeEnum, ServiceMsg } from 'src/reusable/enum';
 import { useHistory } from 'react-router-dom';
-import { getHealthSystemList } from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
 import { savePatient, updatePatientByPartyRoleId } from 'src/service/patientService';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
-
+import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
+import InputMask from 'react-input-mask';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { TextField } from '@material-ui/core';
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
 	lastName: yup.string().required('Last name is required'),
-	email: yup.string().required('Email is required').email('Contact Email must be a valid email'),
+	email: yup.string().required('Email is required').email('Email must be a valid email'),
 	dateOfBirth: yup.string().required('Date of birth is required'),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required'),
-	phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
+	phone: yup
+		.string()
+		.required('Phone is required')
+		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 
 });
 
-const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
+const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateList = []  }) => {
 	const {
 		register,
 		handleSubmit,
@@ -40,14 +45,15 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 	const { dirtyFields } = useFormState({ control });
 	const dispatch = useDispatch();
 	let history = useHistory();
-
-
+	const [stateOption, setStateOption] = React.useState(defaultValues.state);
 
 
 	useEffect(() => {
+		
 		dispatch(loaderShow());
 		reset(defaultValues);
 		dispatch(loaderHide());
+		setStateOption(getValues('state'));
 	}, [defaultValues]);
 
 
@@ -100,6 +106,11 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 			OnError(error, dispatch);
 		}
 	};
+
+	const stateSelect = (event) => {
+		setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
+	};
+
 
 	// update Patient
 	const updatePatientInfo = async () => {
@@ -242,7 +253,18 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								<label className='form-text'>
 									State <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('state')} />
+								<Autocomplete
+									id='combo-box-demo'
+									options={stateList}
+									inputValue={stateOption}
+									onInputChange={(event, newInputValue) => {
+										setStateOption(newInputValue);
+									}}
+									getOptionLabel={(option) => option.stateName}
+									onChange={stateSelect}
+									renderInput={(params) => <TextField {...params} {...register('state')} className='control-autocomplete' variant='outlined' />}
+								/>
+								{/* <input type='text' className='form-control-sm' {...register('state')} /> */}
 								<div className='small text-danger  pb-2   '>{errors.state?.message}</div>
 							</div>
 						</div>
@@ -255,7 +277,8 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('phone')} />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
+							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
 					</div>

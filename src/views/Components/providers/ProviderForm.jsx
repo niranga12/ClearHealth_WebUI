@@ -15,7 +15,7 @@ import InputMask from 'react-input-mask';
 import FormatText from 'src/reusable/FormatText';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+
 const schema = yup.object().shape({
 
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
@@ -138,7 +138,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 				setValue('hospitalName', defaultValues.hospitalName, {
 					shouldValidate: false,
-					shouldDirty: false,
+					shouldDirty: true,
 				});
 
 			}
