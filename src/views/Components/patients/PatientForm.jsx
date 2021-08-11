@@ -14,7 +14,8 @@ import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
 	lastName: yup.string().required('Last name is required'),
-	email: yup.string(),
+	email: yup.string().required('Email is required').email('Contact Email must be a valid email'),
+	dateOfBirth: yup.string().required('Date of birth is required'),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),

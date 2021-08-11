@@ -102,24 +102,19 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	};
 
 	useEffect(() => {
-		dispatch(loaderShow());
 		reset(defaultValues);
 		setStateOption(defaultValues.state); //set state dropdown value
 		setBillingStateOption(defaultValues.billingState);
-	
-		dispatch(loaderHide());
 
 	}, [defaultValues]);
 
 
 	useEffect(() => {
-
 		const fetchData = async () => {
 			try {
 
 				const hospitalList = await getHospitalsList();
 				setHospitalData(hospitalList.data.data);
-				dispatch(loaderHide());
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -129,7 +124,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 
 	useEffect(() => {
-		dispatch(loaderShow());
 		const fetchData = async () => {
 
 
@@ -146,7 +140,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					shouldValidate: false,
 					shouldDirty: false,
 				});
-				dispatch(loaderHide());
 
 			}
 		};
