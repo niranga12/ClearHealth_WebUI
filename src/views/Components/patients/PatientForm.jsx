@@ -13,6 +13,7 @@ import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import InputMask from 'react-input-mask';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { TextField } from '@material-ui/core';
+import DateSelector from 'src/views/common/dateSelector';
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
 	lastName: yup.string().required('Last name is required'),
@@ -30,7 +31,7 @@ const schema = yup.object().shape({
 
 });
 
-const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateList = []  }) => {
+const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateList = [] }) => {
 	const {
 		register,
 		handleSubmit,
@@ -40,20 +41,24 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 		control,
 		formState: { errors },
 	} = useForm({ resolver: yupResolver(schema) });
-
+	var initMonth = new Date();
+	initMonth.setMonth(initMonth.getMonth() - 3);
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const { dirtyFields } = useFormState({ control });
 	const dispatch = useDispatch();
 	let history = useHistory();
 	const [stateOption, setStateOption] = React.useState(defaultValues.state);
-
+	const [fromDate, handlefromDateChange] = useState(initMonth);
 
 	useEffect(() => {
-		
 		dispatch(loaderShow());
 		reset(defaultValues);
 		dispatch(loaderHide());
 		setStateOption(getValues('state'));
+		if (getValues('dateOfBirth') != '') {
+			handlefromDateChange(getValues('dateOfBirth'));
+		}
+
 	}, [defaultValues]);
 
 
@@ -129,7 +134,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 
 
 
-				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip ) && {
+				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip) && {
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
 							? [
@@ -154,7 +159,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 					},
 				}),
 
-			
+
 			};
 			if (Object.keys(updatePatient).length == 0) {
 				dispatch(notify(`No record to update`, 'error'));
@@ -200,7 +205,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 							</label>
 							<input type='text' className='form-control-sm' {...register('address1')} />
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
-							
+
 						</div>
 					</div>
 				</div>
@@ -235,7 +240,8 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 								{' '}
 								DOB <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('dateOfBirth')} />
+							{/* <input className='form-control-sm' type='text' {...register('dateOfBirth')} /> */}
+							<DateSelector className='form-control-sm' selectedDate={fromDate} handleDateChange={handlefromDateChange} />
 							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
 						</div>
 
@@ -273,7 +279,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 
 				<div className='row mb-3'>
 					<div className='col-md-6'>
-					<div className='form-group'>
+						<div className='form-group'>
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
@@ -296,7 +302,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 
 				<div className='row mb-3'>
 					<div className='col-md-6'>
-					<div className='form-group'>
+						<div className='form-group'>
 							<label className='form-text'>
 								Email <span className='text-danger font-weight-bold '>*</span>
 							</label>
@@ -304,7 +310,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 							<div className='small text-danger  pb-2   '>{errors.email?.message}</div>
 						</div>
 					</div>
-					
+
 				</div>
 
 

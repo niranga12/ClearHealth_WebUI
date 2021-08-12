@@ -34,8 +34,7 @@ const schema = yup.object().shape({
 	billingState: yup.string().required('State is required'),
 	billingZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	// phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
-	phone: yup
-		.string()
+	phone: yup.string()
 		.required('Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	speciality: yup.string().required('Speciality is required'),
@@ -560,8 +559,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
 							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
-							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
-							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
+							<div className='small text-danger  pb-2'>{errors.phone?.message}</div>
 						</div>
 
 						<div className='form-group'>
