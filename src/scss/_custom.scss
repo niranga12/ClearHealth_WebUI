@@ -362,6 +362,33 @@ button:focus {
 .cursor-point {
   cursor: pointer;
 }
+.sub-title{
+  font-size: 0.9rem;
+}
+
+.list-cat-pricing{
+ 
+  height: 43px;
+  width: 143px;
+  text-align: center;
+  margin-right: 20px;
+  line-height: 2.5rem;
+  border-radius: 25px;
+  background-color: #EEEEEE;
+  color: #616161;
+  font-family: LatoRegular, serif !important;
+  font-size: 16px;
+
+  
+
+}
+
+.list-cat-pricing.active{
+  background-color: #5b4dfd;
+  color: white;
+
+}
+
 // .checkbox > input:checked + span::before {
 //   content: '\2713';
 //   display: block;
@@ -823,6 +850,45 @@ background-color: rgba(91,77,253,0.1);
     color: #768192;
 
 }
+.divider{
+  border-bottom: 1px solid #e5e5e5;
+}
+.divder-left{
+  border-left:1px solid #e5e5e5; 
+}
+.procedure-add-title{
+text-decoration: underline;
+font-weight: bold;
+}
+
+.currency-sign{
+  width: 30px;
+    height: 36px;
+    line-height: 2.5em;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    text-align: center;
+    color: #3d3a3a;
+    background-color: #c9c7c7;
+    position: absolute;
+}
+.currecy-input{
+  padding-left: 37px;
+
+}
+.currecy-input:focus-visible{
+  // border: none !important;
+  // background: transparent  !important;
+  outline: -webkit-focus-ring-color auto 0px;
+
+
+}
+.min-width-70p{
+  min-width: 70px;
+}
+
+
+
 // loader animation
 
 .center {

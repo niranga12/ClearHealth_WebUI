@@ -64,8 +64,8 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 		formState: {errors},
 	} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
-	const [stateOption, setStateOption] = React.useState(defaultValues.state);
-	const [businessStateOption, setBusinessStateOption] = React.useState(defaultValues.businessState);
+	const [stateOption, setStateOption] = useState(defaultValues.state);
+	const [businessStateOption, setBusinessStateOption] = useState(defaultValues.businessState);
 
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
@@ -422,7 +422,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit? true : false} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
@@ -501,7 +501,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('patientContactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
+							<InputMask {...register('patientContactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit  ? true : false} className='form-control-sm' />
 
 							{/* <input type='text' className='form-control-sm' {...register('patientContactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.patientContactPhone?.message}</div>

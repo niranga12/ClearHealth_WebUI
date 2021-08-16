@@ -5,6 +5,8 @@ import PhoneNumberMaskValidation from "../PhoneNumberMaskValidation";
 import { shallow } from 'enzyme/build'
 import DocsLink from "../DocsLink";
 import React from "react";
+import CurrencyConvertorInt from "../CurrencyConvertorInt";
+import CurrencyFormat from "../CurrencyFormat";
 
 
 describe('Reusable Methods Test ', () => {
@@ -38,8 +40,19 @@ describe('Reusable Methods Test ', () => {
         wrapper.unmount()
     });
 
+    it('should return with Million format', () => {
+        const InputNumber ="6000000";
+        expect(CurrencyConvertorInt(InputNumber)).toEqual("6.00M");
+    });
+    it('should return with Million with Currency  format', () => {
+        const InputNumber ="6000000";
+        expect(CurrencyConvertorInt(InputNumber,true)).toEqual("$6.00M");
+    });
+    it('should return with currency format ', () => {
+        const InputNumber =6000;
+        expect(CurrencyFormat(InputNumber,true)).toEqual("$6,000");    
+    });
     
-
 
 
   });

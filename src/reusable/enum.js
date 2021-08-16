@@ -1,59 +1,76 @@
- export const PartyTypeEnum={
-    primary : 1,
-    shipping :2,
-    telecommunicationsNumber:3,
-}
+export const PartyTypeEnum = {
+	primary: 1,
+	shipping: 2,
+	telecommunicationsNumber: 3,
+};
 
+export const TableSettingsEnum = {
+	ItemPerPage: 5,
+};
 
-export const TableSettingsEnum={
-    ItemPerPage:5
-}
+export const ValidationPatterns = {
+	phoneRegExp: /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+	onlyCharacters: /^[a-zA-Z ]*$/,
+	zip: /^[0-9]{5}(?:-[0-9]{4})?$/,
+	phoneFormatReg: /^\D*(\{0,3})\D*(\d{0,3})\D*(\d{0,4})/,
+	// phoneFormatReg: /^[1-9]*$/
+};
 
-export const ValidationPatterns={
-     phoneRegExp : /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-     onlyCharacters : /^[a-zA-Z ]*$/,
-     zip : /^[0-9]{5}(?:-[0-9]{4})?$/,
-     phoneFormatReg:/^\D*(\{0,3})\D*(\d{0,3})\D*(\d{0,4})/
-    // phoneFormatReg: /^[1-9]*$/
-}
+export const ServiceMsg = {
+	Added: 'Added',
+	Updated: 'Updated',
+	Deleted: 'Deleted',
+	OK: 'OK',
+	AuthFailed: 'AuthFailed',
+	ServerError: 'ServerError',
+	InvalidRequest: 'InvalidRequest',
+};
+export const MaskFormat = {
+	phoneNumber: '(999) 999 - 9999',
+};
 
-export const ServiceMsg={
-        Added: "Added",
-        Updated: "Updated",
-        Deleted: "Deleted",
-        OK: "OK",
-        AuthFailed: "AuthFailed",
-        ServerError: "ServerError",
-        InvalidRequest: "InvalidRequest",
-    
-  
-}
-export const MaskFormat={
-    phoneNumber: "(999) 999 - 9999"
-}
+export const Organizations = {
+	Organization: 1,
+	SuperUser: 2,
+	HealthSystem: 3,
+	PrimaryContact: 4,
+	Hospital: 5,
+	PaymentContact: 6,
+	Provider: 7,
+};
 
+export const OrderStatus = {
+	Ordered: 1,
+	Pending: 2,
+	Completed: 3,
+	Cancelled: 4,
+};
 
-export const Organizations={
-	Organization:1,
-	SuperUser:2,
-	HealthSystem:3,
-	PrimaryContact:4,
-	Hospital:5,
-	PaymentContact:6,
-	Provider:7
-}
+export const Country = {
+	USA: 220,
+};
 
-export const  OrderStatus={
-    	Ordered:1,
-    	Pending:2,
-    	Completed:3,
-    	Cancelled:4
-}
+export const CurrencyDetail = {
+	USA: '$',
+};
 
-export const Country={
-    USA:220
-}
+export const ServiceType = {
+	Types: [
+		{value: '', text: 'Select'},
+		{value: 1, text: 'Radiology'},
+		{value: 2, text: 'OB/GYN'},
+		{value: 3, text: 'Labs'},
+		{value: 4, text: 'General Surgery'},
+		{value: 5, text: 'Gastroenterology'},
+		{value: 6, text: 'Cardiac Imaging'},
+	],
+};
 
-export const CurrencyDetail={
-    USA:"$"
-}
+export const ServiceTypeEnum = {
+	Radiology: 1,
+	OBGYN: 2,
+	Labs: 3,
+	GeneralSurgery: 4,
+	Gastroenterology: 5,
+	CardiacImaging: 6,
+};

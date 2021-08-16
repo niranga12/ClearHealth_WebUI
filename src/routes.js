@@ -46,8 +46,8 @@ const Provider=React.lazy(() => import('./views/Components/providers/ProviderGri
 const ProviderProfile=React.lazy(() => import('./views/Components/providers/ProviderProfile'));
 const Patient=React.lazy(() => import('./views/Components/patients/PatientGrid'));
 const PatientProfile=React.lazy(() => import('./views/Components/patients/PatientProfile'));
-
-
+const ProcedureProfile =React.lazy(() => import('./views/Components/Procedure/ProcedureProfile'));
+const PricingTool =React.lazy(() => import('./views/Components/pricingTool/PricingToolGrid'));
 
 
 const routes = [
@@ -103,7 +103,10 @@ const routes = [
   //Patients
   { path: '/patients', name: 'Patients', component: Patient, exact: true},
   { path: '/patients/profile', name: 'Patients Profile', component:PatientProfile },
-
+  // procedure
+  { path: '/procedure', name: 'Procedure', component:ProcedureProfile, exact: true },
+  // PricingTool
+  { path: '/pricing', name: 'PricingTool', component:PricingTool ,exact: true},
 ];
 
 export default routes;

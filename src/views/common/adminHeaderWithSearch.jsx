@@ -4,7 +4,7 @@ import {freeSet} from '@coreui/icons';
 import 'font-awesome/css/font-awesome.min.css';
 import PropTypes from 'prop-types';
 
-const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDownChange, title = '', selectionList=[], placeholder = '&#xF002;', buttonTitle = null, showCount = 0}) => {
+const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDownChange, title = '', selectionList=[], placeholder = '&#xF002;', buttonTitle = null, showCount = 0, selectionTitle="",subHeader=""}) => {
 
 
 	//add new button 
@@ -16,11 +16,21 @@ const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDown
 			</button>
 		);
 	};
+  
+	const  dropDownLabel=()=>{
+		return(
+			<>
+			<div  className='float-right h4 mr-2 p-1'>{selectionTitle}</div>
+			</>
+		)
+	}
 
 	// dropdown select
 	const dropDownSelect=()=>{
+		
 		return (
 			<>
+			
 				<select name='' id='' className='form-control-sm float-right  w-25 mr-2' onChange={handleDropDownChange} >
 								
 								{selectionList.map((item, index) => (
@@ -29,6 +39,7 @@ const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDown
 									</option>
 								))}
 							</select>
+						{selectionTitle? dropDownLabel():'' }	
 			</>
 		)
 	}
@@ -40,14 +51,16 @@ const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDown
 			<div className='row mb-2 LatoRegular mt-4 mb-3 pl-3 pr-3'>
 				<div className='col-md-6'>
 
-               
+			
 
-					<div className='component-header'>
-						{title} {showCount > 0 ? <span className='count-box'>{showCount}</span> : ''}{' '}
+					<div className='component-header '>
+					{subHeader? <div className="small mb-2 sub-title">{subHeader}</div> : ""}	
+						<div>{title} {showCount > 0 ? <span className='count-box'>{showCount}</span> : ''}{' '} </div>
 
 					</div>
 				</div>
-				<div className='col-md-6'>
+				{/* css condition  */}
+				<div className={`col-md-6 ${subHeader ? "mt-3" : ""}`} > 
 
 				    {buttonTitle ? addNewButton() :''}
 					<div className='float-right w-50'>
@@ -71,6 +84,8 @@ AdminHeaderWithSearch.propTypes = {
 	buttonTitle: PropTypes.string,
 	showCount: PropTypes.any,
 	selectionList:PropTypes.any,
+	selectionTitle:PropTypes.any,
+	subHeader:PropTypes.any
 
 };
 
