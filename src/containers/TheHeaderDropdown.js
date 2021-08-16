@@ -12,14 +12,17 @@ import { logout } from 'src/actions/loginAction'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortDown } from "@fortawesome/free-solid-svg-icons";
+import { useHistory } from 'react-router-dom'
 
 const TheHeaderDropdown = () => {
   let  dispatch = useDispatch()
-
+  let history = useHistory();
   const logOut=()=>{
     dispatch(logout())
-   
+  }
 
+  const onClickUser=()=>{
+    history.push('/users');
   }
   return (
     <CDropdown
@@ -92,6 +95,11 @@ const TheHeaderDropdown = () => {
           <CIcon name="cil-file" className="mfe-2" />
           Messages
           <CBadge color="primary" className="mfs-auto">42</CBadge>
+        </CDropdownItem>
+        <CDropdownItem divider />
+        <CDropdownItem onClick={onClickUser}>
+          <CIcon name="cil-lock-locked" className="mfe-2" />
+          User Management
         </CDropdownItem>
         <CDropdownItem divider />
         <CDropdownItem onClick={logOut}>

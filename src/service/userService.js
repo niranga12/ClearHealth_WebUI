@@ -22,16 +22,3 @@ export const resetPasswordService=(data) =>axiosInstance.post(`/auth/resetpasswo
 
 
 
-// export default {
-//     userAuthentication() {
-//         return {
-//             forgotPassword:(userName)=> axiosBase.post(`auth/forgotPassword`,userName),
-//             userLogin:(loginDetail)=> axiosBase.post(`/auth/login`, loginDetail)
-//         //   getOne: ({ id }) => axiosBase.get(`${url}/${id}`),
-//         //   getAll: () => axiosBase.get(url),
-//         //   update: (toUpdate) =>  axiosBase.put(url,toUpdate),
-//         //   create: (toCreate) =>  axiosBase.put(url,toCreate),
-//         //   delete: ({ id }) =>  axiosBase.delete(`${url}/${id}`)
-//         }
-//       } 
-//     }

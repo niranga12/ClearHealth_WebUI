@@ -39,13 +39,15 @@ import React from 'react';
 // const User = React.lazy(() => import('./views/users/User'));
 const HealthSystem = React.lazy(() => import('./views/Components/healthSystems/healthsytemgrid'));
 const HealthSystemProfile = React.lazy(() => import('./views/Components/healthSystems/healthSystemProfile'));
-const Hospitals=React.lazy(() => import('./views/Components/hospitals/HospitalsGrid'));
-const HospitalProfile=React.lazy(() => import('./views/Components/hospitals/HospitalProfile'));
+const Hospitals = React.lazy(() => import('./views/Components/hospitals/HospitalsGrid'));
+const HospitalProfile = React.lazy(() => import('./views/Components/hospitals/HospitalProfile'));
 const HospitalSubPage = React.lazy(() => import('./views/Components/hospitals/HospitalLayout/HospitalLayout'));
-const Provider=React.lazy(() => import('./views/Components/providers/ProviderGrid'));
-const ProviderProfile=React.lazy(() => import('./views/Components/providers/ProviderProfile'));
-const Patient=React.lazy(() => import('./views/Components/patients/PatientGrid'));
-const PatientProfile=React.lazy(() => import('./views/Components/patients/PatientProfile'));
+const Provider = React.lazy(() => import('./views/Components/providers/ProviderGrid'));
+const ProviderProfile = React.lazy(() => import('./views/Components/providers/ProviderProfile'));
+const Patient = React.lazy(() => import('./views/Components/patients/PatientGrid'));
+const PatientProfile = React.lazy(() => import('./views/Components/patients/PatientProfile'));
+const User = React.lazy(() => import('./views/Components/users/UserGrid'));
+const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'));
 
 
 
@@ -91,18 +93,21 @@ const routes = [
   // { path: '/widgets', name: 'Widgets', component: Widgets },
   // { path: '/users', exact: true,  name: 'Users', component: Users },
   // { path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/healthsystem', name: 'Health System', component: HealthSystem, exact: true},
+  { path: '/healthsystem', name: 'Health System', component: HealthSystem, exact: true },
   { path: '/healthsystem/profile', name: 'Health system Profile', component: HealthSystemProfile },
   // { path: '/healthsystem/profile/:id', name: 'Health system Profile', component: HealthSystemProfile }
-  { path: '/hospitals', name: 'Hospitals ', component: Hospitals, exact: true},
+  { path: '/hospitals', name: 'Hospitals ', component: Hospitals, exact: true },
   { path: '/hospitals/profile', name: 'Hospitals Profile', component: HospitalProfile },
   { path: '/hospitals/hospital', name: 'Hospital', component: HospitalSubPage },
-//providers
-  { path: '/providers', name: 'Providers', component: Provider, exact: true},
-  { path: '/providers/profile', name: 'Providers Profile', component:ProviderProfile },
+  //providers
+  { path: '/providers', name: 'Providers', component: Provider, exact: true },
+  { path: '/providers/profile', name: 'Providers Profile', component: ProviderProfile },
   //Patients
-  { path: '/patients', name: 'Patients', component: Patient, exact: true},
-  { path: '/patients/profile', name: 'Patients Profile', component:PatientProfile },
+  { path: '/patients', name: 'Patients', component: Patient, exact: true },
+  { path: '/patients/profile', name: 'Patients Profile', component: PatientProfile },
+   //Patients
+   { path: '/users', name: 'Users', component: User, exact: true },
+   { path: '/users/profile', name: 'Users Profile', component: UserProfile },
 
 ];
 

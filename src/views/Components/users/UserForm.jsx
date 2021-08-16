@@ -14,13 +14,11 @@ import InputMask from 'react-input-mask';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { TextField } from '@material-ui/core';
 import DateSelector from 'src/views/common/dateSelector';
-import FormatText from 'src/reusable/FormatText';
-
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
 	lastName: yup.string().required('Last name is required'),
 	email: yup.string().required('Email is required').email('Email must be a valid email'),
-	dateOfBirth: yup.string().required('Date of birth is required').nullable(),
+	dateOfBirth: yup.string().required('Date of birth is required'),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
@@ -50,7 +48,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 	const dispatch = useDispatch();
 	let history = useHistory();
 	const [stateOption, setStateOption] = React.useState(defaultValues.state);
-	const [fromDate, handlefromDateChange] = useState(null);
+	const [fromDate,setFromDate] = useState(initMonth);
 
 	useEffect(() => {
 		dispatch(loaderShow());
@@ -58,20 +56,11 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 		dispatch(loaderHide());
 		setStateOption(getValues('state'));
 		if (getValues('dateOfBirth') != '') {
-			handlefromDateChange(getValues('dateOfBirth'));
+			setFromDate(getValues('dateOfBirth'));
 		}
 
 	}, [defaultValues]);
 
-	useEffect(() => {
-		let val =getValues('dateOfBirth');
-		if(val==""){
-			setValue('dateOfBirth', fromDate, { shouldValidate: false, shouldDirty: false, });
-		}else{
-			setValue('dateOfBirth', fromDate, { shouldValidate: true, shouldDirty: true, });
-		}
-		
-	}, [fromDate]);
 
 
 
@@ -204,7 +193,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 								{' '}
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('firstName')} />
 							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
 						</div>
 
@@ -229,7 +218,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 								{' '}
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('lastName')} />
 							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
 						</div>
 
@@ -239,7 +228,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
 							<input type='text' className='form-control-sm' {...register('address2')} />
-							<div className='small text-danger  pb-2   '>{errors.address2?.message}</div>
+							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
 						</div>
 					</div>
 				</div>
@@ -253,7 +242,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 								DOB <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							{/* <input className='form-control-sm' type='text' {...register('dateOfBirth')} /> */}
-							<DateSelector className='form-control-sm' selectedDate={fromDate} handleDateChange={handlefromDateChange} />
+							<DateSelector className='form-control-sm' selectedDate={fromDate} handleDateChange={setFromDate} />
 							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
 						</div>
 
@@ -264,7 +253,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('city')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+								<input type='text' className='form-control-sm' {...register('city')} />
 								<div className='small text-danger  pb-2   '>{errors.city?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
