@@ -15,6 +15,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { TextField } from '@material-ui/core';
 import DateSelector from 'src/views/common/dateSelector';
 import FormatText from 'src/reusable/FormatText';
+import moment from 'moment';
 
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
@@ -93,7 +94,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 				firstName: data.firstName,
 				lastName: data.lastName,
 				email: data.email,
-				dateOfBirth: data.dateOfBirth,
+				dateOfBirth: moment(data.dateOfBirth).format('MM-DD-YYYY'),
 			},
 
 			postalAddress: [
@@ -140,7 +141,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 						firstName: getValues('firstName'),
 						lastName: getValues('lastName'),
 						email: getValues('email'),
-						dateOfBirth: getValues('dateOfBirth'),
+						dateOfBirth: moment(getValues('dateOfBirth')).format('MM-DD-YYYY'),
 					}
 				}),
 
