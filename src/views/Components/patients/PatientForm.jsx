@@ -3,7 +3,7 @@ import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { MaskFormat, PartyTypeEnum, ServiceMsg } from 'src/reusable/enum';
+import { MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
 import { useHistory } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
@@ -26,7 +26,7 @@ const schema = yup.object().shape({
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
-	zip: yup.string().required('Zip is required'),
+	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	phone: yup
 		.string()
 		.required('Phone is required')
