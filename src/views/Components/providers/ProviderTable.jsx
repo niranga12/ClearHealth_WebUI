@@ -49,13 +49,6 @@ function ActionProvider({row}) {
 		});
 	};
 
-	// const redirectAccount = () => {
-	// 	history.push({
-	// 		pathname: `/providers`,
-	// 		search: `?id=${row.original.partyRoleId}&&name=${row.original.name}`,
-	// 		// state: { detail: 'some_value' }
-	// 	});
-	// };
 
 	return (
 		<>
@@ -115,7 +108,7 @@ const ProviderTable = () => {
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
-		} else if (e.target.value.length === '') {
+		} else if (e.target.value.length == '') {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
 		} else {
 		}

@@ -3,28 +3,38 @@ import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
+import { MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
 import { useHistory } from 'react-router-dom';
-import { getHealthSystemList } from 'src/service/healthsystemService';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
 import { savePatient, updatePatientByPartyRoleId } from 'src/service/patientService';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
+import InputMask from 'react-input-mask';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { TextField } from '@material-ui/core';
+import DateSelector from 'src/views/common/dateSelector';
+import FormatText from 'src/reusable/FormatText';
+import moment from 'moment';
 
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
 	lastName: yup.string().required('Last name is required'),
-	email: yup.string(),
+	email: yup.string().required('Email is required').email('Email must be a valid email'),
+	dateOfBirth: yup.string().required('Date of birth is required').nullable(),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
-	zip: yup.string().required('Zip is required'),
-	phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
+	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
+	phone: yup
+		.string()
+		.required('Phone is required')
+		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 
 });
 
-const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
+const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateList = [] }) => {
 	const {
 		register,
 		handleSubmit,
@@ -34,27 +44,42 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 		control,
 		formState: { errors },
 	} = useForm({ resolver: yupResolver(schema) });
-
+	var initMonth = new Date();
+	initMonth.setMonth(initMonth.getMonth() - 3);
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const { dirtyFields } = useFormState({ control });
 	const dispatch = useDispatch();
 	let history = useHistory();
-
-
-
+	const [stateOption, setStateOption] = React.useState(defaultValues.state);
+	const [fromDate, handlefromDateChange] = useState(null);
 
 	useEffect(() => {
 		dispatch(loaderShow());
 		reset(defaultValues);
 		dispatch(loaderHide());
+		setStateOption(getValues('state'));
+		if (getValues('dateOfBirth') != '') {
+			handlefromDateChange(getValues('dateOfBirth'));
+		}
+
 	}, [defaultValues]);
+
+	useEffect(() => {
+		let val =getValues('dateOfBirth');
+		if(val==""){
+			setValue('dateOfBirth', fromDate, { shouldValidate: false, shouldDirty: false, });
+		}else{
+			setValue('dateOfBirth', fromDate, { shouldValidate: true, shouldDirty: true, });
+		}
+		
+	}, [fromDate]);
 
 
 
 	// form submit
 	const patientFormSubmit = (data) => {
-		console.log(data)
-		console.log("isEdit", isEdit)
+		// console.log(data)
+		// console.log("isEdit", isEdit)
 		if (isEdit) {
 			updatePatientInfo();
 		} else {
@@ -69,7 +94,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 				firstName: data.firstName,
 				lastName: data.lastName,
 				email: data.email,
-				dateOfBirth: data.dateOfBirth,
+				dateOfBirth: moment(data.dateOfBirth).format('MM-DD-YYYY'),
 			},
 
 			postalAddress: [
@@ -100,6 +125,11 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 		}
 	};
 
+	const stateSelect = (event) => {
+		setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
+	};
+
+
 	// update Patient
 	const updatePatientInfo = async () => {
 		try {
@@ -111,13 +141,13 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 						firstName: getValues('firstName'),
 						lastName: getValues('lastName'),
 						email: getValues('email'),
-						dateOfBirth: getValues('dateOfBirth'),
+						dateOfBirth: moment(getValues('dateOfBirth')).format('MM-DD-YYYY'),
 					}
 				}),
 
 
 
-				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip ) && {
+				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip) && {
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
 							? [
@@ -142,7 +172,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 					},
 				}),
 
-			
+
 			};
 			if (Object.keys(updatePatient).length == 0) {
 				dispatch(notify(`No record to update`, 'error'));
@@ -175,7 +205,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								{' '}
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('firstName')} />
+							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
 						</div>
 
@@ -186,9 +216,9 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('address1')} />
+							<input type='text' className='form-control-sm' {...register('address1')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
-							
+
 						</div>
 					</div>
 				</div>
@@ -200,7 +230,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								{' '}
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('lastName')} />
+							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
 						</div>
 
@@ -209,8 +239,8 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('address2')} />
-							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
+							<input type='text' className='form-control-sm' {...register('address2')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<div className='small text-danger  pb-2   '>{errors.address2?.message}</div>
 						</div>
 					</div>
 				</div>
@@ -223,7 +253,8 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								{' '}
 								DOB <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('dateOfBirth')} />
+							{/* <input className='form-control-sm' type='text' {...register('dateOfBirth')} /> */}
+							<DateSelector className='form-control-sm' selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true}/>
 							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
 						</div>
 
@@ -234,14 +265,25 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								<label className='form-text'>
 									City <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('city')} />
+								<input type='text' className='form-control-sm' {...register('city')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 								<div className='small text-danger  pb-2   '>{errors.city?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
 									State <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input type='text' className='form-control-sm' {...register('state')} />
+								<Autocomplete
+									id='combo-box-demo'
+									options={stateList}
+									inputValue={stateOption}
+									onInputChange={(event, newInputValue) => {
+										setStateOption(newInputValue);
+									}}
+									getOptionLabel={(option) => option.stateName}
+									onChange={stateSelect}
+									renderInput={(params) => <TextField {...params} {...register('state')} className='control-autocomplete' variant='outlined' />}
+								/>
+								{/* <input type='text' className='form-control-sm' {...register('state')} /> */}
 								<div className='small text-danger  pb-2   '>{errors.state?.message}</div>
 							</div>
 						</div>
@@ -250,11 +292,12 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 
 				<div className='row mb-3'>
 					<div className='col-md-6'>
-					<div className='form-group'>
+						<div className='form-group'>
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('phone')} />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
+							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
 					</div>
@@ -272,7 +315,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 
 				<div className='row mb-3'>
 					<div className='col-md-6'>
-					<div className='form-group'>
+						<div className='form-group'>
 							<label className='form-text'>
 								Email <span className='text-danger font-weight-bold '>*</span>
 							</label>
@@ -280,7 +323,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 							<div className='small text-danger  pb-2   '>{errors.email?.message}</div>
 						</div>
 					</div>
-					
+
 				</div>
 
 

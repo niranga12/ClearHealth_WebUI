@@ -109,7 +109,7 @@ function HospitalOrderTable() {
 	};
 
 	const dropDownChange = (e) => {
-		console.log(e.target.value);
+		// console.log(e.target.value);
 	};
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(

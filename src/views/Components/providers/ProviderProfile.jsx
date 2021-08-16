@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { Country } from 'src/reusable/enum';
 import { getStateList } from 'src/service/commonService';
 import { getHealthSystemList } from 'src/service/healthsystemService';
 import { getHospitalByPartyRoleId } from 'src/service/hospitalsService';
 import { getProviderByPartyRoleId, getSpecialityList } from 'src/service/providerService';
 import AdminTitle from 'src/views/common/adminTitle';
+import OnError from 'src/_helpers/onerror';
 import ProviderForm from './ProviderForm';
 
 
@@ -42,45 +45,50 @@ const ProviderProfile = () => {
 	const [stateList, setstateList] = useState([])
 	const [providerData, setProviderData] = useState(defalutFormValue);
 	const [specialityData, setSpecialityData] = useState([]);
-
+	const dispatch = useDispatch();
 	//if this a edit form get the data
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
-		const hospitalId=params.get('hospitalId');
+		const hospitalId = params.get('hospitalId');
 		setPartyRoleId(id);
 		id ? setEditProfile(true) : setEditProfile(false);
 
 		const fetchData = async () => {
+			
 			try {
+				dispatch(loaderShow());
 				const hsResult = await getHealthSystemList({});
 				setHealthSystem(hsResult.data.data);
 				const specialityList = await getSpecialityList();
 				setSpecialityData(specialityList.data.data);
-				const stateResult=await getStateList(Country.USA);
-			    setstateList(stateResult.data.data)
+				const stateResult = await getStateList(Country.USA);
+				setstateList(stateResult.data.data)
 			} catch (error) {
-
+				OnError(error, dispatch);
 			}
 
 
-				try {
-					if(id){
-						const result = await getProviderByPartyRoleId(id);
-						const formatedData = await updateFormFields(result.data.data);
-						setProviderData(formatedData);
-					}
-					else if(hospitalId){
-						const hsDetatil=await getHospitalByPartyRoleId(hospitalId);
-			
-						let defautlSet ={...providerData,hospitalName:hospitalId,healthSystemPartyRoleId: hsDetatil.data.data.hospital.healthSystemPartyRoleId}
-						setProviderData(defautlSet);
-					}
-					
+			try {
+				
+				if (id) {
+					const result = await getProviderByPartyRoleId(id);
+					const formatedData = await updateFormFields(result.data.data);
+					setProviderData(formatedData);
+				}
+				else if (hospitalId) {
+					const hsDetatil = await getHospitalByPartyRoleId(hospitalId);
 
-				} catch (error) { }
-			
-			
+					let defautlSet = { ...providerData, hospitalName: hospitalId, healthSystemPartyRoleId: hsDetatil.data.data.hospital.healthSystemPartyRoleId }
+					setProviderData(defautlSet);
+				}
+
+				
+			} catch (error) {
+				OnError(error, dispatch);
+			}
+			dispatch(loaderHide());
+
 		};
 		fetchData();
 	}, [location]);
@@ -115,7 +123,7 @@ const ProviderProfile = () => {
 			accountNumber: data.accountNumber,
 			routing: data.routing
 		};
-	
+
 		return providerDetails;
 
 	};

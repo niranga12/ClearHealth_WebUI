@@ -124,12 +124,13 @@ const PatientTable = () => {
 			{
 				Header: 'DOB',
 				accessor: 'dateOfBirth', // accessor is the "key" in the data
+				Cell: ({ row }) => <h5 className='font-weight-normal text-black'> {row.original.dateOfBirth}</h5>,
 			},
 
 			{
 				Header: 'Address',
 				accessor: 'address1', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5> {row.original.address1} {row.original.address2},  {row.original.city}, {row.original.state}  {row.original.zip}</h5>,
+				Cell: ({ row }) => <h5 > {row.original.address1} {row.original.address2},  {row.original.city}, {row.original.state}  {row.original.zip}</h5>,
 			},
 			{
 				Header: 'Phone',
@@ -149,7 +150,7 @@ const PatientTable = () => {
 
 	return (
 		<>
-			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} placeholder='Search patient name, order no' buttonTitle='New Patient' title='Patients' />
+			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} placeholder='Search here..' buttonTitle='New Patient' title='Patients' />
 			<DataTable columns={columns} data={patientData} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>

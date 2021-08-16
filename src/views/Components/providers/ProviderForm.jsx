@@ -15,7 +15,7 @@ import InputMask from 'react-input-mask';
 import FormatText from 'src/reusable/FormatText';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+
 const schema = yup.object().shape({
 
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
@@ -34,8 +34,7 @@ const schema = yup.object().shape({
 	billingState: yup.string().required('State is required'),
 	billingZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	// phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
-	phone: yup
-		.string()
+	phone: yup.string()
 		.required('Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	speciality: yup.string().required('Speciality is required'),
@@ -102,24 +101,19 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	};
 
 	useEffect(() => {
-		dispatch(loaderShow());
 		reset(defaultValues);
 		setStateOption(defaultValues.state); //set state dropdown value
 		setBillingStateOption(defaultValues.billingState);
-	
-		dispatch(loaderHide());
 
 	}, [defaultValues]);
 
 
 	useEffect(() => {
-
 		const fetchData = async () => {
 			try {
 
 				const hospitalList = await getHospitalsList();
 				setHospitalData(hospitalList.data.data);
-				dispatch(loaderHide());
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -129,7 +123,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 
 	useEffect(() => {
-		dispatch(loaderShow());
 		const fetchData = async () => {
 
 
@@ -143,10 +136,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				sethsHospitalData(result);
 
 				setValue('hospitalName', defaultValues.hospitalName, {
-					shouldValidate: true,
+					shouldValidate: false,
 					shouldDirty: true,
 				});
-				dispatch(loaderHide());
 
 			}
 		};
@@ -161,6 +153,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		sethsHospitalData(result);
 		setValue('healthSystemPartyRoleId', e.target.value, {
 			shouldValidate: true,
+			shouldDirty: true,
+		});
+		setValue('hospitalName', '', {
+			shouldValidate: false,
 			shouldDirty: true,
 		});
 	}
@@ -391,14 +387,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								Hospital<span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 
-							<select name='' id='' className='form-control-sm' {...register('hospitalName')}>
+							<select name='hospitalName' id='hospitalName' className='form-control-sm' {...register('hospitalName')}>
 								<option value=''>Select</option>
 								{hsHospitalData.map((item, index) => (
 									<option key={index} value={item.partyRoleId}>
 										{item.name}
 									</option>
 								))}
-								{/* <option value='test'>test</option> */}
 							</select>
 							<div className='small text-danger  pb-2   '>{errors.hospitalName?.message}</div>
 						</div>
@@ -567,8 +562,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
 							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
-							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
-							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
+							<div className='small text-danger  pb-2'>{errors.phone?.message}</div>
 						</div>
 
 						<div className='form-group'>
