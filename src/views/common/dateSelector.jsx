@@ -2,12 +2,13 @@ import React from "react";
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import PropTypes from 'prop-types';
-const DateSelector = ({handleDateChange,selectedDate,className}) => {
+const DateSelector = ({handleDateChange,selectedDate,className,disableFuture=false}) => {
     
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
        <DatePicker
+        disableFuture={disableFuture}
         openTo="date"
         format="dd/MM/yyyy"
         value={selectedDate}
@@ -23,7 +24,8 @@ const DateSelector = ({handleDateChange,selectedDate,className}) => {
 DateSelector.propTypes = {
 	handleDateChange: PropTypes.func,
 	selectedDate: PropTypes.any,
-	className:PropTypes.any
+	className:PropTypes.any,
+  disableFuture:PropTypes.bool
 };
 
 export default DateSelector;

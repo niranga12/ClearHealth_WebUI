@@ -216,7 +216,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('address1')} />
+							<input type='text' className='form-control-sm' {...register('address1')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.address1?.message}</div>
 
 						</div>
@@ -239,7 +239,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 
 						<div className='form-group'>
 							<label className='form-text'>Address Line 2 </label>
-							<input type='text' className='form-control-sm' {...register('address2')} />
+							<input type='text' className='form-control-sm' {...register('address2')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.address2?.message}</div>
 						</div>
 					</div>
@@ -254,7 +254,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 								DOB <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							{/* <input className='form-control-sm' type='text' {...register('dateOfBirth')} /> */}
-							<DateSelector className='form-control-sm' selectedDate={fromDate} handleDateChange={handlefromDateChange} />
+							<DateSelector className='form-control-sm' selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true}/>
 							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
 						</div>
 
