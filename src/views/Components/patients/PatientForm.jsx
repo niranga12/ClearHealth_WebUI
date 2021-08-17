@@ -16,6 +16,7 @@ import { TextField } from '@material-ui/core';
 import DateSelector from 'src/views/common/dateSelector';
 import FormatText from 'src/reusable/FormatText';
 import moment from 'moment';
+import { EnableMaskPhone } from 'src/reusable';
 
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
@@ -296,7 +297,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('phone'))} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>

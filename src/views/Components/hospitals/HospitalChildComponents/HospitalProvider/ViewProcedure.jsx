@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import OnError from 'src/_helpers/onerror';
+import { CurrencyFormat } from 'src/reusable';
 
 
 const ViewProcedure = ({providerId}) => {
@@ -36,7 +37,8 @@ const ViewProcedure = ({providerId}) => {
 		() => [
 			{
 				Header: 'Procedure',
-				accessor: 'description', // accessor is the "key" in the data				
+				accessor: 'description', // accessor is the "key" in the data	
+
 			},
 			{
 				Header: 'Primary CPT',
@@ -45,30 +47,36 @@ const ViewProcedure = ({providerId}) => {
 			
 			{
 				Header: 'Optimized Facility Rate',
-				accessor: 'facility', // accessor is the "key" in the data				
+				accessor: 'facility', // accessor is the "key" in the data	
+				Cell: ({row}) =>( <div className=' text-black'> {CurrencyFormat(Number(row.original.facility),true)} </div>),			
 			},
 			{
 				Header: 'Optimized Physician Rate',
-				accessor: 'physician', // accessor is the "key" in the data				
+				accessor: 'physician', // accessor is the "key" in the data		
+				Cell: ({row}) =>( <div className=' text-black'> {CurrencyFormat(Number(row.original.physician),true)} </div>),			
 			},
 			{
 				Header: 'Anesthesia Rate',
-				accessor: 'anesthesia', // accessor is the "key" in the data				
+				accessor: 'anesthesia', // accessor is the "key" in the data	
+				Cell: ({row}) =>( <div className=' text-black'> {CurrencyFormat(Number(row.original.anesthesia),true)} </div>),				
 			},
           
             {
 				Header: 'Pathology Rate',
-				accessor: 'pathology', // accessor is the "key" in the data				
+				accessor: 'pathology', // accessor is the "key" in the data	
+				Cell: ({row}) =>( <div className=' text-black'> {CurrencyFormat(Number(row.original.pathology),true)} </div>),				
 			},
 
            
             {
 				Header: 'Clear Transactional Fee',
-				accessor: 'clearFee', // accessor is the "key" in the data				
+				accessor: 'clearFee', // accessor is the "key" in the data	
+				Cell: ({row}) =>( <div className=' text-black'> {CurrencyFormat(Number(row.original.clearFee),true)} </div>),				
 			},
             {
 				Header: 'Package Price',
-				accessor: 'total', // accessor is the "key" in the data				
+				accessor: 'total', // accessor is the "key" in the data	
+				Cell: ({row}) =>( <div className=' text-black'> {CurrencyFormat(Number(row.original.total),true)} </div>),				
 			}
 
 

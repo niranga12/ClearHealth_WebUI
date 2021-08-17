@@ -50,7 +50,7 @@ describe('Reusable Methods Test ', () => {
     });
     it('should return with currency format ', () => {
         const InputNumber =6000;
-        expect(CurrencyFormat(InputNumber,true)).toEqual("$6,000");    
+        expect(CurrencyFormat(InputNumber,true)).toEqual("$6,000.00");    
     });
     
 
