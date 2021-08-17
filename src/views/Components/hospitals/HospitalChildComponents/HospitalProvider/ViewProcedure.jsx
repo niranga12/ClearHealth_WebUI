@@ -35,37 +35,39 @@ const ViewProcedure = ({providerId}) => {
     const subColumns = useMemo(
 		() => [
 			{
-				Header: 'Code',
-				accessor: 'code', // accessor is the "key" in the data				
-			},
-			{
-				Header: 'Description',
+				Header: 'Procedure',
 				accessor: 'description', // accessor is the "key" in the data				
 			},
 			{
-				Header: 'Facility',
+				Header: 'Primary CPT',
+				accessor: 'code', // accessor is the "key" in the data				
+			},
+			
+			{
+				Header: 'Optimized Facility Rate',
 				accessor: 'facility', // accessor is the "key" in the data				
 			},
 			{
-				Header: 'Anesthesia',
+				Header: 'Optimized Physician Rate',
+				accessor: 'physician', // accessor is the "key" in the data				
+			},
+			{
+				Header: 'Anesthesia Rate',
 				accessor: 'anesthesia', // accessor is the "key" in the data				
 			},
           
             {
-				Header: 'Pathology',
+				Header: 'Pathology Rate',
 				accessor: 'pathology', // accessor is the "key" in the data				
 			},
 
+           
             {
-				Header: 'Physician',
-				accessor: 'physician', // accessor is the "key" in the data				
-			},
-            {
-				Header: 'Clear Fee',
+				Header: 'Clear Transactional Fee',
 				accessor: 'clearFee', // accessor is the "key" in the data				
 			},
             {
-				Header: 'Total',
+				Header: 'Package Price',
 				accessor: 'total', // accessor is the "key" in the data				
 			}
 

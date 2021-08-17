@@ -172,7 +172,7 @@ const ProcedureProfile = () => {
 				<div className='col-md-8 divder-left '>
 					<div className="row">
 						<div className="col-md-12">
-						<button className="btn btn-primary float-right mr-3 mb-2" onClick={save}> Save</button>
+						<button className="btn btn-primary float-right mr-3 mb-2 mt-2 col-md-3" onClick={save}> Save</button>
 						</div>
 					</div>
 					
