@@ -38,7 +38,7 @@ const schema = yup.object().shape({
 	shippingCity: yup.string().required('City is required'),
 	shippingState: yup.string().required('State is required'),
 	shippingZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	contactName: yup.string().required('Contact name is required').matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
+	contactName: yup.string().required('Contact name is required').matches(ValidationPatterns.onlyCharacters, 'Contact name should contain only characters'),
 	contactPhone: yup
 		.string()
 		.required('Contact phone is required')

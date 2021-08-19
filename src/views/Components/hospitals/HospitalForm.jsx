@@ -19,7 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const schema = yup.object().shape({
-	hospitalName: yup.string().required('Hospital Name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital Name should contain only characters'),
+	hospitalName: yup.string().required('Hospital name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital name should contain only characters'),
 	healthSystemPartyRoleId: yup.string().required('Health System is required'),
 	address1: yup.string().required('Address Line 1 is required'),
 	address2: yup.string(),
@@ -35,7 +35,7 @@ const schema = yup.object().shape({
 	businessCity: yup.string().required('City is required'),
 	businessState: yup.string().required('State is required'),
 	businessZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	patientContactName: yup.string().required('Contact Name is required'),
+	patientContactName: yup.string().required('Contact name is required'),
 	patientContactPhone: yup
 		.string()
 		.required('Contact Phone is required')
@@ -50,7 +50,7 @@ const schema = yup.object().shape({
 	bankName: yup.string(),
 	contactEmail: yup.string().email(' Email must be a valid email'),
 	contactPhone: yup.string().test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact Name should contain only characters'),
+	contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact name should contain only characters'),
 });
 
 const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = []}) => {

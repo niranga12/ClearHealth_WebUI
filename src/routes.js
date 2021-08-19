@@ -46,8 +46,8 @@ const Provider = React.lazy(() => import('./views/Components/providers/ProviderG
 const ProviderProfile = React.lazy(() => import('./views/Components/providers/ProviderProfile'));
 const Patient = React.lazy(() => import('./views/Components/patients/PatientGrid'));
 const PatientProfile = React.lazy(() => import('./views/Components/patients/PatientProfile'));
-// const User = React.lazy(() => import('./views/Components/users/UserGrid'));
-// const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'));
+const User = React.lazy(() => import('./views/Components/users/UserGrid'));
+const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'));
 
 
 
@@ -105,9 +105,9 @@ const routes = [
   //Patients
   { path: '/patients', name: 'Patients', component: Patient, exact: true },
   { path: '/patients/profile', name: 'Patients Profile', component: PatientProfile },
-  //  //User
-  //  { path: '/users', name: 'Users', component: User, exact: true },
-  //  { path: '/users/profile', name: 'Users Profile', component: UserProfile },
+   //User
+   { path: '/users', name: 'Users', component: User, exact: true },
+   { path: '/users/profile', name: 'Users Profile', component: UserProfile },
 
 ];
 

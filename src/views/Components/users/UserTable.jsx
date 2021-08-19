@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
-import { getHospitalsListCount } from 'src/service/hospitalsService';
+
 import DataTable from 'src/views/common/dataTable';
 import PaginationTable from 'src/views/common/paginationTable';
 import OnError from 'src/_helpers/onerror';
@@ -11,7 +11,7 @@ import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import { useHistory } from 'react-router-dom';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
-import { getPatientList, getPatientListCount } from 'src/service/patientService';
+import { getUserList } from 'src/service/userService';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -20,25 +20,11 @@ const initialSearch = {
 };
 
 
-function CellPatient({ row }) {
-
-	return (
-		<>
-		
-			<div className='rectangle-intable'>
-				{' '}
-				<span className='fa fa-phone text-health-icon pr-1'></span> {PhoneNumberFormater(row.original.phone)}
-			</div>
-
-		</>
-	);
-}
-
-function ActionPatient({ row }) {
+function ActionUser({ row }) {
 	let history = useHistory();
 	const redirectToEdit = () => {
 		history.push({
-			pathname: `/patients/profile`,
+			pathname: `/users/profile`,
 			search: `?id=${row.original.partyRoleId}`,
 			// state: { detail: 'some_value' }
 		});
@@ -61,10 +47,10 @@ function ActionPatient({ row }) {
 	);
 }
 
-const PatientTable = () => {
+const UserTable = () => {
 	let history = useHistory();
 
-	const [patientData, sePatientData] = useState([]);
+	const [userData, setUserData] = useState([]);
 
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
@@ -77,17 +63,16 @@ const PatientTable = () => {
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
-				const result = await getPatientList(searchQuery);
-				sePatientData(result.data.data);
+				const result = await getUserList();
+				setUserData(result.data.data);
 
 
-				const countQuery = { searchTerm: searchQuery.searchTerm };
-				const resultCount = await getPatientListCount(countQuery);
-				setCount(resultCount.data.data.totalCount);
-				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
-				setPage(Math.ceil(pageCount));
+				// const countQuery = { searchTerm: searchQuery.searchTerm };
+				// const resultCount = await getPatientListCount(countQuery);
+				// setCount(resultCount.data.data.totalCount);
+				// let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
+				// setPage(Math.ceil(pageCount));
 				dispatch(loaderHide());
-				// console.log(count)
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -102,46 +87,46 @@ const PatientTable = () => {
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
 			setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
-		} else if (e.target.value.length == '') {
+		} else if (e.target.value.length === '') {
 			setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
 		} else {
 		}
 	};
 
-	const addNewPatient = () => {
+	const addNewUser = () => {
 
-		history.push('/patients/profile');
+		history.push('/users/profile');
 	};
 
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'Patient Name',
+				Header: 'Name',
 				accessor: 'firstName', // accessor is the "key" in the data
 				Cell: ({ row }) => <h5 className='font-weight-normal text-black ml-4'> {row.original.firstName} {row.original.lastName} </h5>,
 			},
 			{
-				Header: 'DOB',
-				accessor: 'dateOfBirth', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 className='font-weight-normal text-black'> {row.original.dateOfBirth}</h5>,
+				Header: 'Email',
+				accessor: 'email', // accessor is the "key" in the data
+				Cell: ({ row }) => <h5 className='font-weight-normal text-black'> {row.original.email}</h5>,
 			},
 
 			{
-				Header: 'Address',
-				accessor: 'address1', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 > {row.original.address1}, {row.original.address2},  {row.original.city}, {row.original.state}  {row.original.zip}</h5>,
+				Header: 'Role Type',
+				accessor: 'roleTypeId', // accessor is the "key" in the data
+				Cell: ({ row }) => <h5 > {row.original.roleTypeId}</h5>,
 			},
 			{
-				Header: 'Phone',
-				accessor: 'phone', // accessor is the "key" in the data
-				Cell: CellPatient,
+				Header: 'Status',
+				accessor: 'status', // accessor is the "key" in the data
+				Cell: ({ row }) => <h5 > {row.original.status}</h5>,
 			},
 			{
 				Header: '',
 				accessor: 'partyRoleId',
 				// accessor: '[row identifier to be passed to button]',
-				Cell: ActionPatient,
+				Cell: ActionUser,
 				
 			},
 		],
@@ -150,8 +135,8 @@ const PatientTable = () => {
 
 	return (
 		<>
-			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} placeholder='Search here..' buttonTitle='New Patient' title='Patients' />
-			<DataTable columns={columns} data={patientData} />
+			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewUser} placeholder='Search here..' buttonTitle='New User' title='Users' />
+			<DataTable columns={columns} data={userData} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>
 			</div>
@@ -159,4 +144,4 @@ const PatientTable = () => {
 	);
 };
 
-export default PatientTable;
+export default UserTable;
