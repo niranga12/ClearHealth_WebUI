@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,6 +16,7 @@ import InputMask from 'react-input-mask';
 import FormatText from 'src/reusable/FormatText';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import { EnableMaskPhone } from 'src/reusable';
 
 const schema = yup.object().shape({
 
@@ -557,7 +559,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('phone'))} className='form-control-sm' />
 							<div className='small text-danger  pb-2'>{errors.phone?.message}</div>
 						</div>
 

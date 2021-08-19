@@ -42,10 +42,12 @@ const HealthSystemProfile = React.lazy(() => import('./views/Components/healthSy
 const Hospitals = React.lazy(() => import('./views/Components/hospitals/HospitalsGrid'));
 const HospitalProfile = React.lazy(() => import('./views/Components/hospitals/HospitalProfile'));
 const HospitalSubPage = React.lazy(() => import('./views/Components/hospitals/HospitalLayout/HospitalLayout'));
-const Provider = React.lazy(() => import('./views/Components/providers/ProviderGrid'));
-const ProviderProfile = React.lazy(() => import('./views/Components/providers/ProviderProfile'));
-const Patient = React.lazy(() => import('./views/Components/patients/PatientGrid'));
-const PatientProfile = React.lazy(() => import('./views/Components/patients/PatientProfile'));
+const Provider=React.lazy(() => import('./views/Components/providers/ProviderGrid'));
+const ProviderProfile=React.lazy(() => import('./views/Components/providers/ProviderProfile'));
+const Patient=React.lazy(() => import('./views/Components/patients/PatientGrid'));
+const PatientProfile=React.lazy(() => import('./views/Components/patients/PatientProfile'));
+const ProcedureProfile =React.lazy(() => import('./views/Components/Procedure/ProcedureProfile'));
+const PricingTool =React.lazy(() => import('./views/Components/pricingTool/PricingToolGrid'));
 const User = React.lazy(() => import('./views/Components/users/UserGrid'));
 const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'));
 
@@ -103,8 +105,12 @@ const routes = [
   { path: '/providers', name: 'Providers', component: Provider, exact: true },
   { path: '/providers/profile', name: 'Providers Profile', component: ProviderProfile },
   //Patients
-  { path: '/patients', name: 'Patients', component: Patient, exact: true },
-  { path: '/patients/profile', name: 'Patients Profile', component: PatientProfile },
+  { path: '/patients', name: 'Patients', component: Patient, exact: true},
+  { path: '/patients/profile', name: 'Patients Profile', component:PatientProfile },
+  // procedure
+  { path: '/procedure', name: 'Procedure', component:ProcedureProfile, exact: true },
+  // PricingTool
+  { path: '/pricing', name: 'PricingTool', component:PricingTool ,exact: true},
    //User
    { path: '/users', name: 'Users', component: User, exact: true },
    { path: '/users/profile', name: 'Users Profile', component: UserProfile },

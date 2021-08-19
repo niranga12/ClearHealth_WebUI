@@ -15,6 +15,7 @@ import CIcon from '@coreui/icons-react';
 import HospitalProvider from '../HospitalChildComponents/HospitalProvider/HospitalProvider';
 import HospitalOrderTable from '../HospitalChildComponents/HospitalOrder/HospitalOrderTable';
 import HospitalDashboard from '../HospitalChildComponents/HospitalDashboard/HospitalDashboard';
+import PricingToolGrid from '../../pricingTool/PricingToolGrid';
 
 const HospitalSubCategories = () => {
   const [active, setActive] = useState(0)
@@ -67,7 +68,9 @@ const HospitalSubCategories = () => {
                  
                 </CTabPane>
                 <CTabPane>
-                  {`3. schedule ${active}`}
+                
+                {active ===2 ? <PricingToolGrid />: ''}
+                 
                 </CTabPane>
                 <CTabPane>
                 {active ===3 ?  < HospitalDashboard/>: ''}

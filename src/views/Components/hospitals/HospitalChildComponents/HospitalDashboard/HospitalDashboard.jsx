@@ -68,11 +68,11 @@ const HospitalDashboard = () => {
 			<HDheader title='Dashboard' handleFromChange={handleFromChange} handleToChange={handleToChange} />
 			<div className='row'>
 				<div className='col-md-3'>
-					<HDwidget title='Packages Sent' image={packagesent} price={CurrencyFormat(dashboardItems?.packagesSent)} />
+					<HDwidget title='Packages Sent' image={packagesent} price={CurrencyFormat(dashboardItems?.packagesSent,false,0)} />
 				</div>
 
 				<div className='col-md-3'>
-					<HDwidget title='Packages Accepted' image={packageAccepted} price={CurrencyFormat(dashboardItems?.packagesAccepted)} />
+					<HDwidget title='Packages Accepted' image={packageAccepted} price={CurrencyFormat(dashboardItems?.packagesAccepted,false,0)} />
 				</div>
 
 				<div className='col-md-3'>

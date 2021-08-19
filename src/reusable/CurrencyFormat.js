@@ -2,12 +2,12 @@
 import PropTypes from 'prop-types';
 import { CurrencyDetail } from './enum';
 
-const CurrencyFormat = (number ,isCurrencyType=false) => {
+const CurrencyFormat = (number ,isCurrencyType=false,doublePoint=2) => {
   
     try {
         if(number){
             const currency=isCurrencyType?CurrencyDetail.USA:'';
-            return currency + number.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            return currency + number.toFixed(doublePoint).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         }
        
     } catch (error) {
@@ -20,7 +20,8 @@ const CurrencyFormat = (number ,isCurrencyType=false) => {
 }
 CurrencyFormat.propTypes = {
 	number:PropTypes.number,
-    isCurrencyType:PropTypes.bool
+    isCurrencyType:PropTypes.bool,
+    doublePoint:PropTypes.number
 
 };
 

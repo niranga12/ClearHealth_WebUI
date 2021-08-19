@@ -1,10 +1,11 @@
 import CIcon from '@coreui/icons-react';
 import React, { useEffect } from 'react'
-import { useSortBy, useTable } from 'react-table';
+import { useExpanded, useSortBy, useTable } from 'react-table';
+import PropTypes from 'prop-types';
 
 
-const DataTable = ({columns,data,sortingHandler}) => {
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow,state:{sortBy } } = useTable({
+const DataTable = ({columns,data,sortingHandler,renderRowSubComponent}) => {
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow,    visibleColumns,      state:{sortBy ,expanded} } = useTable({
       columns,
       data,
        autoResetSortBy: false, 
@@ -12,7 +13,7 @@ const DataTable = ({columns,data,sortingHandler}) => {
        manualPagination: true,
 
     },
-    useSortBy);
+    useSortBy,useExpanded );
 
    
     useEffect(() => {
@@ -49,6 +50,8 @@ const DataTable = ({columns,data,sortingHandler}) => {
             {rows.map((row) => {
               prepareRow(row);
               return (
+                // {...row.getRowProps()}
+                <React.Fragment key={row.getRowProps().key} >
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
@@ -56,6 +59,26 @@ const DataTable = ({columns,data,sortingHandler}) => {
                     );
                   })}
                 </tr>
+
+ {/*
+                    If the row is in an expanded state, render a row with a
+                    column that fills the entire length of the table.
+                  */}
+                  {row.isExpanded ? (
+                    <tr>
+                      <td colSpan={visibleColumns.length}>
+                        {/*
+                            Inside it, call our renderRowSubComponent function. In reality,
+                            you could pass whatever you want as props to
+                            a component like this, including the entire
+                            table instance. But for this example, we'll just
+                            pass the row
+                          */}
+                        {renderRowSubComponent({ row })}
+                      </td>
+                    </tr>
+                  ) : null}
+ </React.Fragment>
               );
             })}
           </tbody>
@@ -64,5 +87,14 @@ const DataTable = ({columns,data,sortingHandler}) => {
         </div>
     )
 }
+
+
+DataTable.propTypes = {
+  columns:PropTypes.any.isRequired,
+  data:PropTypes.any.isRequired,
+  sortingHandler:PropTypes.func,
+  renderRowSubComponent:PropTypes.func
+
+};
 
 export default DataTable;

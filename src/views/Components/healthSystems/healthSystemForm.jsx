@@ -18,6 +18,7 @@ import {getValidateOrganization} from 'src/service/commonService';
 import FormatText from 'src/reusable/FormatText';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { EnableMaskPhone } from 'src/reusable';
 
 // import history from "src/_helpers/history";
 
@@ -79,6 +80,8 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 	const dispatch = useDispatch();
 	let history = useHistory();
 
+
+
 	// set default form values
 	useEffect(() => {
 		try {
@@ -99,6 +102,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 	const shippingStateSelect = (event) => {
 		setValue('shippingState', event.target.innerText, {shouldValidate: true, shouldDirty: true});
 	};
+	
 
 	// validate organition name
 	useEffect(() => {
@@ -368,7 +372,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('phone'))} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
@@ -447,7 +451,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
+							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('contactPhone'))} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.contactPhone?.message}</div>
 						</div>

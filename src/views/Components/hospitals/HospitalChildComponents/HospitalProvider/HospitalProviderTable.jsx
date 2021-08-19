@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import DataTable from 'src/views/common/dataTable';
 import {useDispatch} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
@@ -8,6 +8,7 @@ import {getProviderListByHospitalId, getProviderListCountByHospitalId} from 'src
 import OnError from 'src/_helpers/onerror';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import PaginationTable from 'src/views/common/paginationTable';
+import ViewProcedure from './ViewProcedure';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -24,16 +25,6 @@ function ProviderNames({row}) {
 	
 }
 
-function ProviderActions({row}) {
-	return(
-		<>
-			<div className="btn btn-outline-secondary text-black-50 ml-3 float-right">Add Procedures</div>
-		<div className="btn btn-outline-secondary text-black-50 ml-3 float-right">View Procedures</div>
-	
-		</>
-	);
-	
-}
 
 
 
@@ -49,11 +40,12 @@ const HospitalProviderTable = () => {
 	const [hospitalId, setHospitalId] = useState(null);
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
+	
 
 
 	const dispatch = useDispatch();
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
-	// const [selectedHospitalId, setSelectedHospitalId] = useState(null);
+	
     
 	
 
@@ -63,7 +55,6 @@ const HospitalProviderTable = () => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
 		setHospitalId(id);
-		// setSelectedHospitalId(id);
 		const fetchData = async () => {
 			try {
 				if (id) {
@@ -130,11 +121,51 @@ const HospitalProviderTable = () => {
 	
 	  }
 
+	const  ProviderActions=({row})=> {
+		
+		const addProcedure=()=>{
+			history.push({
+				pathname: `/procedure`,
+				search: `?providerId=${row.original.partyRoleId}&providerName=${row.original.firstName}`,
+				
+			});
+		}
+		return(
+			<>
+			
+				<div className="btn btn-outline-secondary text-black-50 ml-3 float-right" onClick={addProcedure} >Add Procedures</div>
+				<div className="btn btn-outline-secondary text-black-50 ml-3 float-right"  {...row.getToggleRowExpandedProps()}>
+					{row.isExpanded ? 'Hide Procedures' : 'View Procedures'}
+				  </div>
+			  
+			
+			</>
+		);
+		
+	}
 
+	
+
+	 // Create a function that will render our row sub components
+	 const renderRowSubComponent = useCallback(
+		({ row }) => (
+			
+		  <pre
+			style={{
+			  fontSize: '10px',
+			}}
+		  >
+			  <ViewProcedure providerId={ row.original.partyRoleId}/>
+
+		  </pre>
+		),
+		[]
+	  )
 
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
 		() => [
+			
 			{
 				Header: 'Provider Name',
 				accessor: 'firstName', // accessor is the "key" in the data
@@ -147,15 +178,15 @@ const HospitalProviderTable = () => {
 			},
 			{
 				Header: 'Live Procedures',
-				accessor: '', // accessor is the "key" in the data
-				disableSortBy: true,
-				// Cell: ({row}) =>( <h5 className='font-weight-normal text-black'> {row.original.speciality} </h5>),
+				accessor: 'livecount', // accessor is the "key" in the data
+				
 			},
 			{
 				Header:'',
 				accessor:'lastName', // accessor is the "key" in the data
 				disableSortBy: true,
-				Cell: ProviderActions,
+				id: 'expander', // It needs an ID
+				Cell:ProviderActions,
 			},
 		],
 		[]
@@ -165,7 +196,7 @@ const HospitalProviderTable = () => {
 		<>
 		<div className=' pt-2 '>
 		<AdminHeaderWithSearch  handleSearchChange={searchTextChange} handleAddNew={addNewProvider} placeholder='Search here..' buttonTitle='New Provider' title='Providers' />
-		<DataTable columns={columns} data={hospitalProviderData} sortingHandler={sortingHandler} />
+		<DataTable columns={columns} data={hospitalProviderData} sortingHandler={sortingHandler}  renderRowSubComponent={renderRowSubComponent} />
 
 		<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>
