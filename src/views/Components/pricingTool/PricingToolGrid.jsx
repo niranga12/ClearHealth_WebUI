@@ -65,6 +65,7 @@ const PricingToolGrid = () => {
 	};
 
 	const saveChange = (data) => {
+		
 		switch (selectedPackage) {
 			case PackageItems.Facility:
 				updateFacility(data);
@@ -84,7 +85,8 @@ const PricingToolGrid = () => {
 	const updateFacility = async (value) => {
 		// value.hospitalSearch
 		try {
-			let data = {enhancementRate: value.enhancementRate, enhancementOn: value.enhancement};
+
+			let data = {enhancementRate: value.enhancementRate, enhancementOn: value.enhancementOn};
 			let result = await updateFacilityPackage(value.hospitalSearch, data);
 			if (result.data.message === ServiceMsg.OK) {
 				dispatch(notify(`Successfully Updated`, 'success'));
@@ -96,7 +98,7 @@ const PricingToolGrid = () => {
 
 	const updatePhysician = async (value) => {
 		try {
-			let data = {enhancementRate: value.enhancementRate, enhancementOn: value.enhancement};
+			let data = {enhancementRate: value.enhancementRate, enhancementOn: value.enhancementOn};
 			let result = await updatePhysicianPackage(value.hospitalSearch, data);
 			if (result.data.message === ServiceMsg.OK) {
 				dispatch(notify(`Successfully Updated`, 'success'));
