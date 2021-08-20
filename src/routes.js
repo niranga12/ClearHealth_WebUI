@@ -48,8 +48,8 @@ const Patient=React.lazy(() => import('./views/Components/patients/PatientGrid')
 const PatientProfile=React.lazy(() => import('./views/Components/patients/PatientProfile'));
 const ProcedureProfile =React.lazy(() => import('./views/Components/Procedure/ProcedureProfile'));
 const PricingTool =React.lazy(() => import('./views/Components/pricingTool/PricingToolGrid'));
-// const User = React.lazy(() => import('./views/Components/users/UserGrid'));
-// const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'));
+const User = React.lazy(() => import('./views/Components/users/UserGrid'));
+const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'));
 
 
 
@@ -111,11 +111,9 @@ const routes = [
   { path: '/procedure', name: 'Procedure', component:ProcedureProfile, exact: true },
   // PricingTool
   { path: '/pricing', name: 'PricingTool', component:PricingTool ,exact: true},
-
-  
-  //  //User
-  //  { path: '/users', name: 'Users', component: User, exact: true },
-  //  { path: '/users/profile', name: 'Users Profile', component: UserProfile },
+   //User
+   { path: '/users', name: 'Users', component: User, exact: true },
+   { path: '/users/profile', name: 'Users Profile', component: UserProfile },
 
 ];
 

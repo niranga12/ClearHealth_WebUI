@@ -21,7 +21,7 @@ import { EnableMaskPhone } from 'src/reusable';
 const schema = yup.object().shape({
 
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
-	hospitalName: yup.string().required('Hospital Name is required'),
+	hospitalName: yup.string().required('Hospital name is required'),
 	firstName: yup.string().required('First name is required'),
 	middleName: yup.string(),
 	lastName: yup.string().required('Last name is required'),
@@ -494,10 +494,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<input type='text' className='form-control-sm' {...register('zip')} />
 							<div className='small text-danger  pb-2   '>{errors.zip?.message}</div>
 						</div>
-
-
-
-
 					</div>
 
 
