@@ -125,7 +125,10 @@ const PricingToolGrid = () => {
 		  <div className={`${hospitalId ? "" : "card  cover-content pt-2 "}`}    >
 			<PricingToolFilter isNotGlobal={isNotGlobal} fieldsList={fieldsList} handleFilterChange={handleFilterChange} saveChange={saveChange} selectedPackage={selectedPackage} />
 			<PricingToolCategories handlePackageChange={handlePackageChange} />
+			<div className="font-size-8"> 
 			{loadSelectedTable()}
+			</div>
+			
 
 			</div>
 		</>

@@ -144,9 +144,9 @@ const EnhancementPercentageSelect=()=>{
 
 const CollectionEnhancementOn=()=>{
 	return (
-		<div className='col-md-2'>
+		<div className='col-md-3'>
 					<div className='form-group'>
-						<label className='form-text font-lato-bold '> Collection Enhancement On </label>
+						<label className='form-text font-lato-bold oneline-th '> Collection Enhancement On </label>
 						<select name='enhancementOn' id='enhancementOn'  className='form-control-sm' {...register('filterTool.enhancementOn')} onBlur={()=>setstateChange(!stateChange)} >
 						<option value="">Select</option>
 							{fieldsList.map((item, index) => (
@@ -204,7 +204,7 @@ const CollectionEnhancementOn=()=>{
 
 				<div className='col-md-2'>
 					<div className='form-group'>
-						<label className='form-text font-lato-bold '> Collection Enhancement </label>
+						<label className='form-text font-lato-bold oneline-th'> Collection Enhancement </label>
 						{/* <input type='text' className='form-control-sm' {...register('filterTool.collectionEnhancement')} onBlur={()=>setstateChange(!stateChange)}/> */}
 						{isNotGlobal ? EnhancementPercentageInput():EnhancementPercentageSelect()}
 					</div>
@@ -212,7 +212,7 @@ const CollectionEnhancementOn=()=>{
 				
 				{isNotGlobal && CollectionEnhancementOn()}
 
-				<div className="col-md-2 pt-2">
+				<div className="col-md-1 pt-2">
 					<button className="btn btn-primary mt-4" disabled={!isValid} >Save</button>
 
 				</div>

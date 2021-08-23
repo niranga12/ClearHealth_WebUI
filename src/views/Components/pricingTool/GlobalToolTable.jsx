@@ -58,49 +58,49 @@ const GlobalToolTable = ({filterDetail}) => {
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'procedure',
+				Header: 'Procedure',
 				accessor: 'description', // accessor is the "key" in the data
 				Cell: ({value}) => <h5 className='font-weight-normal text-black ml-4'> {value} </h5>,
 			},
 			{
-				Header: 'primaryCPT',
+				Header: 'Primary CPT',
 				accessor: 'code', // accessor is the "key" in the data
 				
 			},
 			{
 				
-				Header: () => (<div className="text-right">Optimized Facility Rate</div>),
+				Header: () => (<div className="text-right oneline-th">Optimized Facility Rate</div>),
 				accessor: 'optimizedFacilityRate', // accessor is the "key" in the data
 				Cell: ({row}) =>( <div className="text-right " > {CurrencyFormat(Number(row.original.optimizedFacilityRate),true)} </div>),	
 			},
 			{
 				
-				Header: () => (<div className="text-right">Optimized Physician Rate</div>),
+				Header: () => (<div className="text-right oneline-th">Optimized Physician Rate</div>),
 				accessor: 'optimizedPhysicianRate', // accessor is the "key" in the data
 				Cell: ({row}) =>( <div  className="text-right " > {CurrencyFormat(Number(row.original.optimizedPhysicianRate),true)} </div>),
 			},
 			{
 				
-				Header: () => (<div className="text-right">Anesthesia Rate</div>),
+				Header: () => (<div className="text-right oneline-th">Anesthesia Rate</div>),
 				accessor: 'anesthesiaRate', // accessor is the "key" in the data
 				Cell: ({row}) =>( <div  className="text-right " > {CurrencyFormat(Number(row.original.anesthesiaRate),true)} </div>),
 			},
 			{
 				
-				Header: () => (<div className="text-right">Pathology Rate</div>),
+				Header: () => (<div className="text-right oneline-th">Pathology Rate</div>),
 				accessor: 'pathologyRate', // accessor is the "key" in the data
 				Cell: ({row}) =>( <div  className="text-right "> {CurrencyFormat(Number(row.original.pathologyRate),true)} </div>),
 			},
 			{
 			
-				Header: () => (<div className="text-right">Clear Transactional Fee</div>),
+				Header: () => (<div className="text-right oneline-th">Clear Transactional Fee</div>),
 				
 				accessor: 'clearTransactionalFee', // accessor is the "key" in the data
 				Cell: ({row}) =>( <div  className="text-right " > {CurrencyFormat(Number(row.original.clearTransactionalFee),true)} </div>),
 			},
 			{
 				
-				Header: () => (<div className="text-right">Package Price</div>),
+				Header: () => (<div className="text-right oneline-th">Package Price</div>),
 				accessor: 'packagePrice', // accessor is the "key" in the data
 				Cell: ({row}) =>( <div  className="text-right " > {CurrencyFormat(Number(row.original.packagePrice),true)} </div>),
 			},
