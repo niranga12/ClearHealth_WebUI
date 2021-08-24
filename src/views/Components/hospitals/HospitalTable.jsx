@@ -78,8 +78,8 @@ function ActionHospital({row}) {
 					</div>
 				</CDropdownToggle>
 				<CDropdownMenu>
-					<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>
-					<CDropdownItem onClick={redirectAccount}>Account</CDropdownItem>
+					<CDropdownItem onClick={redirectToEdit}>Edit Details</CDropdownItem>
+					<CDropdownItem onClick={redirectAccount}>View Account</CDropdownItem>
 				</CDropdownMenu>
 			</CDropdown>
 		</>
@@ -179,6 +179,7 @@ const HospitalTable = () => {
 			{
 				Header: 'Address',
 				accessor: 'primaryAddress1', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: CellAddress,
 			},
 			{

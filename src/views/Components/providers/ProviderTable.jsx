@@ -135,6 +135,7 @@ const ProviderTable = () => {
 			{
 				Header: 'Provider',
 				accessor: 'Provider', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: CellProvider,
 			},
 			{

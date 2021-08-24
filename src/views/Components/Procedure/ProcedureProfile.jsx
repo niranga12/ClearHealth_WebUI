@@ -136,11 +136,13 @@ const ProcedureProfile = () => {
 			{
 				Header: 'CPT',
 				accessor: 'code', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({value}) => <h5 className='font-weight-normal text-black ml-4'> {value} </h5>,
 			},
 			{
 				Header: 'Procedure',
 				accessor: 'description', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({value}) => <h5 className='font-weight-normal text-black'> {value} </h5>,
 			},
 

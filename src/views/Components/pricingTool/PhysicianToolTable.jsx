@@ -63,15 +63,18 @@ const columns = useMemo(
         {
             Header: 'Procedure',
             accessor: 'description', // accessor is the "key" in the data
+            disableSortBy: true,
             Cell: ({value}) => <h5 className='font-weight-normal text-black ml-4'> {value} </h5>,
         },
         {
             Header: 'Primary CPT',
             accessor: 'code', // accessor is the "key" in the data   
+            disableSortBy: true,
         },
         {  
             Header: () => (<div className="text-right oneline-th">Medicare Rate</div>),
             accessor: 'medicareRate', // accessor is the "key" in the data
+            disableSortBy: true,
             Cell: ({row}) =>( <div  className="text-right" > {CurrencyFormat(Number(row.original.medicareRate),true)} </div>),
             
            
@@ -80,6 +83,7 @@ const columns = useMemo(
            
             Header: () => (<div className="text-right oneline-th">Physician Collection</div>),
             accessor: 'physicianCollectionFee', // accessor is the "key" in the data
+            disableSortBy: true,
             Cell: ({row}) =>( <div  className="text-right " > {CurrencyFormat(Number(row.original.physicianCollectionFee),true)} </div>),
            
            
@@ -88,6 +92,7 @@ const columns = useMemo(
           
             Header: () => (<div className="text-right oneline-th">Clear Optimized Price</div>),
             accessor: 'clearOptimizedFee', // accessor is the "key" in the data
+            disableSortBy: true,
             Cell: ({row}) =>( <div  className="text-right pr-3" > {CurrencyFormat(Number(row.original.clearOptimizedFee),true)} </div>),
             
            

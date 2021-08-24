@@ -60,10 +60,12 @@ const GlobalToolTable = ({filterDetail}) => {
 			{
 				Header: 'Procedure',
 				accessor: 'description', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({value}) => <h5 className='font-weight-normal text-black ml-4'> {value} </h5>,
 			},
 			{
 				Header: 'Primary CPT',
+				disableSortBy: true,
 				accessor: 'code', // accessor is the "key" in the data
 				
 			},
@@ -71,24 +73,28 @@ const GlobalToolTable = ({filterDetail}) => {
 				
 				Header: () => (<div className="text-right oneline-th">Optimized Facility Rate</div>),
 				accessor: 'optimizedFacilityRate', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({row}) =>( <div className="text-right " > {CurrencyFormat(Number(row.original.optimizedFacilityRate),true)} </div>),	
 			},
 			{
 				
 				Header: () => (<div className="text-right oneline-th">Optimized Physician Rate</div>),
 				accessor: 'optimizedPhysicianRate', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({row}) =>( <div  className="text-right " > {CurrencyFormat(Number(row.original.optimizedPhysicianRate),true)} </div>),
 			},
 			{
 				
 				Header: () => (<div className="text-right oneline-th">Anesthesia Rate</div>),
 				accessor: 'anesthesiaRate', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({row}) =>( <div  className="text-right " > {CurrencyFormat(Number(row.original.anesthesiaRate),true)} </div>),
 			},
 			{
 				
 				Header: () => (<div className="text-right oneline-th">Pathology Rate</div>),
 				accessor: 'pathologyRate', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({row}) =>( <div  className="text-right "> {CurrencyFormat(Number(row.original.pathologyRate),true)} </div>),
 			},
 			{
@@ -96,12 +102,14 @@ const GlobalToolTable = ({filterDetail}) => {
 				Header: () => (<div className="text-right oneline-th">Clear Transactional Fee</div>),
 				
 				accessor: 'clearTransactionalFee', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({row}) =>( <div  className="text-right " > {CurrencyFormat(Number(row.original.clearTransactionalFee),true)} </div>),
 			},
 			{
 				
 				Header: () => (<div className="text-right oneline-th">Package Price</div>),
 				accessor: 'packagePrice', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({row}) =>( <div  className="text-right " > {CurrencyFormat(Number(row.original.packagePrice),true)} </div>),
 			},
 		],
