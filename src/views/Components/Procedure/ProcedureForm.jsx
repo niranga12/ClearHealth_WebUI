@@ -128,7 +128,7 @@ const handleTakeLive=()=>{
 					<div className='form-group'>
 						<label className='form-text font-lato-bold '>Clear Fee </label>
                         <span className="currency-sign">$</span>
-						<input className='form-control-sm currecy-input' type='number' {...register('procedure.clearFee')} />
+						<input className='form-control-sm currecy-input disable-field' type='number' {...register('procedure.clearFee')}  />
 					</div>
 				</div>
 
@@ -137,7 +137,7 @@ const handleTakeLive=()=>{
 					<div className='form-group'>
 						<label className='form-text font-lato-bold '> Total </label>
                         <span className="currency-sign">$</span>
-						<input className='form-control-sm currecy-input' type='number' {...register('procedure.total')} />
+						<input className='form-control-sm currecy-input disable-field' type='number' {...register('procedure.total')}  />
 					</div>
 				</div>
 

@@ -109,6 +109,7 @@ const ProcedureProfile = () => {
 	//  add api to save save
 	const save = async () => {
 		let checkEmptyData = savePrcoedureData;
+		
 		let emptyData = checkEmptyData.filter((x) => {
 			return !x.facility && !x.physician ? true : false;
 		}); // this following conditon for radiology
@@ -163,7 +164,8 @@ const ProcedureProfile = () => {
 			<div className='divider m-1'></div>
 			<div className='row'>
 				<div className='col-md-4 '>
-					<DataTable columns={columns} data={procedureData} />
+					{procedureData &&  <DataTable columns={columns} data={procedureData} />}
+					
 				</div>
 				<div className='col-md-8 divder-left '>
 					<div className='row'>

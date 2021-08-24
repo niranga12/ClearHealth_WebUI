@@ -898,7 +898,11 @@ font-weight: bold;
 .oneline-th{
   white-space: nowrap;
 }
+.disable-field{
+  pointer-events: none;
+  background-color:#eeeaea;
 
+}
 // loader animation
 
 .center {
