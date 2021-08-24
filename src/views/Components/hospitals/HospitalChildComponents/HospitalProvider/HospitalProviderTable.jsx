@@ -179,6 +179,7 @@ const HospitalProviderTable = () => {
 			{
 				Header: 'Live Procedures',
 				accessor: 'livecount', // accessor is the "key" in the data
+				disableSortBy: true,
 				
 			},
 			{

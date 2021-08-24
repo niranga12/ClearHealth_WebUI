@@ -75,6 +75,8 @@ useEffect(() => {
 		setValue('procedure.total',total.toFixed(2));
 		saveData={...data,...formValue,clearFee:clearFees.toFixed(2),total:total.toFixed(2),status:liveStatus};
 		handleSave(saveData);
+		
+		
 	}
 }, [state])
 
