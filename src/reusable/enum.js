@@ -56,15 +56,23 @@ export const CurrencyDetail = {
 
 export const ServiceType = {
 	Types: [
-		{value: '', text: 'Select'},
-		{value: 1, text: 'Radiology'},
-		{value: 2, text: 'OB/GYN'},
-		{value: 3, text: 'Labs'},
-		{value: 4, text: 'General Surgery'},
-		{value: 5, text: 'Gastroenterology'},
-		{value: 6, text: 'Cardiac Imaging'},
+		{ value: '', text: 'Select' },
+		{ value: 1, text: 'Radiology' },
+		{ value: 2, text: 'OB/GYN' },
+		{ value: 3, text: 'Labs' },
+		{ value: 4, text: 'General Surgery' },
+		{ value: 5, text: 'Gastroenterology' },
+		{ value: 6, text: 'Cardiac Imaging' },
 	],
 };
+
+export const selectionListDropDown = [
+		{ text: 'Select', value: '' },
+		{ text: 'Most Recent', value: 'recent' },
+		{ text: 'All', value: 'all' },
+		{ text: 'Delete', value: 'deleted' },
+	]
+
 
 export const ServiceTypeEnum = {
 	Radiology: 1,
