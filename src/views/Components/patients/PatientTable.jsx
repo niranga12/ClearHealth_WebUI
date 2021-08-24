@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { TableSettingsEnum } from 'src/reusable/enum';
+import { selectionListDropDown, TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
 import { getHospitalsListCount } from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
@@ -17,14 +17,13 @@ const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
 	searchTerm: '',
+	filter: 'all'
 };
 
 
 function CellPatient({ row }) {
-
 	return (
 		<>
-		
 			<div className='rectangle-intable'>
 				{' '}
 				<span className='fa fa-phone text-health-icon pr-1'></span> {PhoneNumberFormater(row.original.phone)}
@@ -113,6 +112,10 @@ const PatientTable = () => {
 		history.push('/patients/profile');
 	};
 
+	const dropDownChange = (e) => {
+		setSearchQuery({ ...initialSearch, filter: e.target.value });
+	};
+
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
 		() => [
@@ -150,7 +153,7 @@ const PatientTable = () => {
 
 	return (
 		<>
-			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} placeholder='Search here..' buttonTitle='New Patient' title='Patients' />
+			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown} placeholder='Search here..' buttonTitle='New Patient' title='Patients' />
 			<DataTable columns={columns} data={patientData} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>
