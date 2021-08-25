@@ -64,7 +64,8 @@ const GlobalToolTable = ({filterDetail}) => {
 				Cell: ({value}) => <h5 className='font-weight-normal text-black ml-4'> {value} </h5>,
 			},
 			{
-				Header: 'Primary CPT',
+				
+				Header: () => (<div className=" oneline-th">Primary CPT</div>),
 				disableSortBy: true,
 				accessor: 'code', // accessor is the "key" in the data
 				
