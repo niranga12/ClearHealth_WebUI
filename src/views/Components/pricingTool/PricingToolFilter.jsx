@@ -73,7 +73,7 @@ useEffect(() => {
 		if(id){
 			let data=hospitals.filter(x=>x.partyRoleId==id);
 			setHospitalList(data);
-           setValue("filterTool.hospitalSearch", Number(id))
+            setValue("filterTool.hospitalSearch", Number(id))
 	    }else{
 			setHospitalList(hospitals);
 		}
@@ -90,8 +90,9 @@ useEffect(() => {
 
 
 useEffect(() => {
-	
+
 	const formValue=getValues("filterTool");
+
 	handleFilterChange(formValue)
 	
 }, [stateChange])
@@ -128,7 +129,7 @@ const EnhancementPercentageInput=()=>{
 
 const EnhancementPercentageSelect=()=>{
 	return (
-		<select name='collectionEnhancement'  id='collectionEnhancement' className='form-control-sm' {...register('filterTool.enhancementRate')} onBlur={()=>setstateChange(!stateChange)}>
+		<select name='collectionEnhancement'  id='collectionEnhancement' className='form-control-sm' {...register('filterTool.enhancementRate')} onClick={()=>setstateChange(!stateChange)}>
 							<option value=''> Select</option>
 
 							{EnhancementPercentage.map((item, index) => (
@@ -147,7 +148,7 @@ const CollectionEnhancementOn=()=>{
 		<div className='col-md-3'>
 					<div className='form-group'>
 						<label className='form-text font-lato-bold oneline-th '> Collection Enhancement On </label>
-						<select name='enhancementOn' id='enhancementOn'  className='form-control-sm' {...register('filterTool.enhancementOn')} onBlur={()=>setstateChange(!stateChange)} >
+						<select name='enhancementOn' id='enhancementOn'  className='form-control-sm' {...register('filterTool.enhancementOn')} onClick={()=>setstateChange(!stateChange)} >
 						<option value="">Select</option>
 							{fieldsList.map((item, index) => (
 									<option key={index} value={item.id}>
@@ -174,7 +175,7 @@ const CollectionEnhancementOn=()=>{
 				<div className='col-md-3'>
 					<div className='form-group'>
 						<label className='form-text font-lato-bold '> Service Type </label>
-						<select name='serviceType' id='serviceType' className='form-control-sm' {...register('filterTool.serviceType')}  onBlur={()=>setstateChange(!stateChange)}>
+						<select name='serviceType' id='serviceType' className='form-control-sm' {...register('filterTool.serviceType')}  onClick={()=>setstateChange(!stateChange)} >
 							{serviceList.map((item, index) => (
 									<option key={index} value={item.value}>
 										{item.text}
@@ -189,7 +190,7 @@ const CollectionEnhancementOn=()=>{
 				<div className='col-md-3'>
 					<div className='form-group'>
 						<label className='form-text font-lato-bold '> Hospital Search </label>
-						<select name='hospitalSearch'   id='hospitalSearch' className='form-control-sm' {...register('filterTool.hospitalSearch')} onBlur={()=>setstateChange(!stateChange)} >
+						<select name='hospitalSearch'   id='hospitalSearch' className='form-control-sm' {...register('filterTool.hospitalSearch')} onClick={()=>setstateChange(!stateChange)} >
 							<option value=''> Select</option>
 
 							{hospitalList.map((item, index) => (

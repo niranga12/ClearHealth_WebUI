@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {useLocation} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import {OrderStatus, TableSettingsEnum} from 'src/reusable/enum';
 import {getOrderListByHospitalId} from 'src/service/hospitalsService';
@@ -63,9 +63,9 @@ function OrderStatusValue({row}) {
 function HospitalOrderTable() {
 	const location = useLocation();
 
-	// let history = useHistory();
+   let history = useHistory();
 	const [hospitalOrderData, setHospitalOrderData] = useState([]);
-
+     const [hospitalId, setHospitalId] = useState(null);
 	// const [page, setPage] = useState(1);
 	// const [count, setCount] = useState(0);
 
@@ -75,7 +75,7 @@ function HospitalOrderTable() {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
-		// setSelectedHospitalId(id);
+		setHospitalId(id);
 		const fetchData = async () => {
 			try {
 				if (id) {
@@ -111,6 +111,19 @@ function HospitalOrderTable() {
 	const dropDownChange = (e) => {
 		// console.log(e.target.value);
 	};
+
+
+const handleAddOrder=(e)=>{
+	// console.log(e);
+	history.push('/order')
+	history.push({
+		pathname: `/order`,
+		search: `?hospitalId=${hospitalId}`,
+		
+	});
+
+}
+
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
 		() => [
@@ -165,7 +178,7 @@ function HospitalOrderTable() {
 	return (
 		<>
 			<div className=' pt-2 '>
-				<AdminHeaderWithSearch handleSearchChange={searchTextChange} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown} placeholder='Search here..' title='Orders' />
+				<AdminHeaderWithSearch handleAddNew={handleAddOrder} handleSearchChange={searchTextChange} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown} buttonTitle="Add Order" placeholder='Search here..' title='Orders' />
 				<DataTable columns={columns} data={hospitalOrderData} />
 			</div>
 		</>

@@ -24,6 +24,8 @@ const ProcedureProfile = () => {
 
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 	const [procedureData, setProcedureData] = useState([]);
+	const [tempProcedureData, setTempProcedureData]= useState([]);
+
 	const [deleteProcedureList, setDeleteProcedureList] = useState([]);
 	const [addProcedureList, setAddProcedureList] = useState([]);
 	const [savePrcoedureData, setSavePrcoedureData] = useState([]);
@@ -32,7 +34,12 @@ const ProcedureProfile = () => {
 	let history = useHistory();
 
 	// AdminHeaderWithSearch
-	const searchTextChange = (e) => {};
+	const searchTextChange = (e) => {
+	    let searchText=String(e.target.value).toLowerCase();
+		let textData=tempProcedureData;
+		let result = textData.filter(x=>x.description.toLowerCase().includes(searchText) );
+		setProcedureData(result);
+	};
 
 	const dropDownChange = (e) => {
 		let updateSearch = {...searchQuery, serviceTypeId: e.target.value};
@@ -53,6 +60,7 @@ const ProcedureProfile = () => {
 				dispatch(loaderShow());
 				const result = await getProcedureByProvideId(proId, searchQuery);
 				setProcedureData(result.data.data);
+				setTempProcedureData(result.data.data);
 				dispatch(loaderHide());
 			} catch (error) {}
 		};
