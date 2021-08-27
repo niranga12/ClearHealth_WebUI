@@ -4,15 +4,16 @@ import {freeSet} from '@coreui/icons';
 import 'font-awesome/css/font-awesome.min.css';
 import PropTypes from 'prop-types';
 
-const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDownChange, title = '', selectionList=[], placeholder = '&#xF002;', buttonTitle = null, showCount = 0, selectionTitle="",subHeader=""}) => {
+const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDownChange, title = '', selectionList=[], placeholder = '&#xF002;', buttonTitle = null, showCount = 0, selectionTitle="",subHeader="",buttonDisable=false, iconShow = true}) => {
 
 
 	//add new button 
 	const addNewButton = () => {
 		return (
-			<button type='button' className='btn btn-primary float-right ml-3 text-white' onClick={handleAddNew}>
+			<button type='button' className='btn btn-primary float-right ml-3 text-white' onClick={handleAddNew} disabled={buttonDisable}>
 				{' '}
-				<CIcon content={freeSet.cilPlus} color='white' className='add-icon-set' /> <span className='pt-1'> {buttonTitle}</span>
+				{iconShow && <CIcon content={freeSet.cilPlus} color='white' className='add-icon-set' /> }
+			    <span className='pt-1'> {buttonTitle}</span>
 			</button>
 		);
 	};
@@ -63,7 +64,8 @@ const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDown
 				<div className={`col-md-6 ${subHeader ? "mt-3" : ""}`} > 
 
 				    {buttonTitle ? addNewButton() :''}
-					<div className='float-right w-50'>
+					{/* <div className='float-right w-50'> */}
+					<div className='float-right'>
 						{' '}
 						<span className='fa fa-search search-icon'></span> <input type='text' onBlur={handleSearchChange} className=' form-control-sm  search-space ' placeholder={placeholder} />{' '}
 					</div>
@@ -82,10 +84,13 @@ AdminHeaderWithSearch.propTypes = {
 	title: PropTypes.string,
 	placeholder: PropTypes.string,
 	buttonTitle: PropTypes.string,
+	buttonDisable:PropTypes.bool,
+	iconShow:PropTypes.bool,
 	showCount: PropTypes.any,
 	selectionList:PropTypes.any,
 	selectionTitle:PropTypes.any,
 	subHeader:PropTypes.any
+
 
 };
 

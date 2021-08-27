@@ -24,6 +24,8 @@ const ProcedureProfile = () => {
 
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 	const [procedureData, setProcedureData] = useState([]);
+	const [tempProcedureData, setTempProcedureData]= useState([]);
+
 	const [deleteProcedureList, setDeleteProcedureList] = useState([]);
 	const [addProcedureList, setAddProcedureList] = useState([]);
 	const [savePrcoedureData, setSavePrcoedureData] = useState([]);
@@ -32,7 +34,12 @@ const ProcedureProfile = () => {
 	let history = useHistory();
 
 	// AdminHeaderWithSearch
-	const searchTextChange = (e) => {};
+	const searchTextChange = (e) => {
+	    let searchText=String(e.target.value).toLowerCase();
+		let textData=tempProcedureData;
+		let result = textData.filter(x=>x.description.toLowerCase().includes(searchText) );
+		setProcedureData(result);
+	};
 
 	const dropDownChange = (e) => {
 		let updateSearch = {...searchQuery, serviceTypeId: e.target.value};
@@ -53,6 +60,7 @@ const ProcedureProfile = () => {
 				dispatch(loaderShow());
 				const result = await getProcedureByProvideId(proId, searchQuery);
 				setProcedureData(result.data.data);
+				setTempProcedureData(result.data.data);
 				dispatch(loaderHide());
 			} catch (error) {}
 		};
@@ -109,6 +117,7 @@ const ProcedureProfile = () => {
 	//  add api to save save
 	const save = async () => {
 		let checkEmptyData = savePrcoedureData;
+		
 		let emptyData = checkEmptyData.filter((x) => {
 			return !x.facility && !x.physician ? true : false;
 		}); // this following conditon for radiology
@@ -159,21 +168,22 @@ const ProcedureProfile = () => {
 
 	return (
 		<div className='card  cover-content pt-2 '>
-			<AdminHeaderWithSearch title={providerName} handleSearchChange={searchTextChange} selectionList={ServiceType.Types} handleDropDownChange={dropDownChange} placeholder='Search here..' selectionTitle='Service Type' subHeader='Provider Name' />
+			<AdminHeaderWithSearch title={providerName} handleAddNew={save} buttonDisable={savePrcoedureData.length < 1}  buttonTitle='Save' iconShow={false}  handleSearchChange={searchTextChange} selectionList={ServiceType.Types} handleDropDownChange={dropDownChange} placeholder='Search here..' selectionTitle='Service Type' subHeader='Provider Name' />
 			<div className='divider m-1'></div>
 			<div className='row'>
 				<div className='col-md-4 '>
-					<DataTable columns={columns} data={procedureData} />
+					{procedureData &&  <DataTable columns={columns} data={procedureData} />}
+					
 				</div>
 				<div className='col-md-8 divder-left '>
-					<div className='row'>
+					{/* <div className='row'>
 						<div className='col-md-12'>
 							<button className='btn btn-primary float-right mr-3 mb-2 mt-2 col-md-3' disabled={savePrcoedureData.length < 1} onClick={save}>
 								{' '}
 								Save
 							</button>
 						</div>
-					</div>
+					</div> */}
 
 					{addProcedureList.map((item) => (
 						<ProcedureForm key={item.Id} data={item} handleSave={handleSave} />
