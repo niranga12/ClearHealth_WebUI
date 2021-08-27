@@ -13,7 +13,7 @@ const GlobalToolTable = ({filterDetail}) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				
+				setGlobalPackage([]);
 				if (filterDetail.serviceType && filterDetail.hospitalSearch) {
                     dispatch(loaderShow());
 
