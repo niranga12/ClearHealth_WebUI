@@ -168,7 +168,7 @@ const ProcedureProfile = () => {
 
 	return (
 		<div className='card  cover-content pt-2 '>
-			<AdminHeaderWithSearch title={providerName} handleSearchChange={searchTextChange} selectionList={ServiceType.Types} handleDropDownChange={dropDownChange} placeholder='Search here..' selectionTitle='Service Type' subHeader='Provider Name' />
+			<AdminHeaderWithSearch title={providerName} handleAddNew={save} buttonDisable={savePrcoedureData.length < 1}  buttonTitle='Save' iconShow={false}  handleSearchChange={searchTextChange} selectionList={ServiceType.Types} handleDropDownChange={dropDownChange} placeholder='Search here..' selectionTitle='Service Type' subHeader='Provider Name' />
 			<div className='divider m-1'></div>
 			<div className='row'>
 				<div className='col-md-4 '>
@@ -176,14 +176,14 @@ const ProcedureProfile = () => {
 					
 				</div>
 				<div className='col-md-8 divder-left '>
-					<div className='row'>
+					{/* <div className='row'>
 						<div className='col-md-12'>
 							<button className='btn btn-primary float-right mr-3 mb-2 mt-2 col-md-3' disabled={savePrcoedureData.length < 1} onClick={save}>
 								{' '}
 								Save
 							</button>
 						</div>
-					</div>
+					</div> */}
 
 					{addProcedureList.map((item) => (
 						<ProcedureForm key={item.Id} data={item} handleSave={handleSave} />

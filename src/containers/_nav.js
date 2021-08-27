@@ -124,7 +124,7 @@ const _nav =  [
     _tag: 'CSidebarNavItem',
     name: 'Pricing Tools',
     icon: <CIcon content={pricingTool} size={'2xl'} className="m-auto"/>,
-    // to: '/base/cards',
+     to: '/pricing',
   },
   {
     _tag: 'CSidebarNavItem',
