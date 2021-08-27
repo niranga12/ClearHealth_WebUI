@@ -17,7 +17,7 @@ const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
 	searchTerm: '',
-	filter: 'all'
+	filter: ''
 };
 
 
