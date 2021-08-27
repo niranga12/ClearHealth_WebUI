@@ -80,13 +80,12 @@ const PatientTable = () => {
 				sePatientData(result.data.data);
 
 
-				const countQuery = { searchTerm: searchQuery.searchTerm };
+				const countQuery = { searchTerm: searchQuery.searchTerm, filter:searchQuery.filter};
 				const resultCount = await getPatientListCount(countQuery);
 				setCount(resultCount.data.data.totalCount);
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
 				setPage(Math.ceil(pageCount));
 				dispatch(loaderHide());
-				// console.log(count)
 			} catch (error) {
 				OnError(error, dispatch);
 			}

@@ -67,12 +67,16 @@ export const ServiceType = {
 };
 
 export const selectionListDropDown = [
-		{ text: 'Select', value: '' },
-		{ text: 'Most Recent', value: 'recent' },
-		{ text: 'All', value: 'all' },
-		{ text: 'Delete', value: 'deleted' },
-	]
+	{ text: 'Select', value: '' },
+	{ text: 'Most Recent', value: 'recent' },
+	{ text: 'All', value: 'all' },
+	{ text: 'Delete', value: 'deleted' },
+]
 
+export const ActiveList=[
+		{ text: 'Active', value: 'Active' },
+		{ text: 'Inactive', value: 'Inactive' },	
+]
 
 export const ServiceTypeEnum = {
 	Radiology: 1,
@@ -84,40 +88,40 @@ export const ServiceTypeEnum = {
 };
 
 
-export const PackageItems={
-	GlobalPackage:1,
-	Facility:2,
-	Physician:3,
-	Anesthesia:4,
-	Pathology:5
+export const PackageItems = {
+	GlobalPackage: 1,
+	Facility: 2,
+	Physician: 3,
+	Anesthesia: 4,
+	Pathology: 5
 
 
 }
-	
 
-	
 
-export const Packages=[
-	{name:"Global Package", id:1},
-	{name:"Facility", id:2},
-	{name:"Physician", id:3},
-	{name:"Anesthesia", id:4},
-	{name:"Pathology", id:5}
+
+
+export const Packages = [
+	{ name: "Global Package", id: 1 },
+	{ name: "Facility", id: 2 },
+	{ name: "Physician", id: 3 },
+	{ name: "Anesthesia", id: 4 },
+	{ name: "Pathology", id: 5 }
 ]
 
 
-export const FacilityPackageField=[
+export const FacilityPackageField = [
 
-	{text:"Medicare Rate", value:"medicareRate", id:1},
-	{text:"Hospital Collection", value:"hospitalCollectionFee", id:2}
-]
-	
-export const PhysicianPackageField=[
-	{text:"Medicare Rate", value:"medicareRate", id:1},
-	{text:"Physician Collection", value:"physicianCollectionFee", id:2}	
+	{ text: "Medicare Rate", value: "medicareRate", id: 1 },
+	{ text: "Hospital Collection", value: "hospitalCollectionFee", id: 2 }
 ]
 
-export const EnhancementPercentage=[
-	{text:"6.5%",value:"6.5"},
-	{text:"15%",value:"15"}
+export const PhysicianPackageField = [
+	{ text: "Medicare Rate", value: "medicareRate", id: 1 },
+	{ text: "Physician Collection", value: "physicianCollectionFee", id: 2 }
+]
+
+export const EnhancementPercentage = [
+	{ text: "6.5%", value: "6.5" },
+	{ text: "15%", value: "15" }
 ]

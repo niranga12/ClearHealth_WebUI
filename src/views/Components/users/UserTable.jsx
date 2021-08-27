@@ -11,7 +11,7 @@ import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import { useHistory } from 'react-router-dom';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
-import { getUserList } from 'src/service/userService';
+import { getUserList, getUserListCount } from 'src/service/userService';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -67,11 +67,11 @@ const UserTable = () => {
 				setUserData(result.data.data);
 
 
-				// const countQuery = { searchTerm: searchQuery.searchTerm };
-				// const resultCount = await getPatientListCount(countQuery);
-				// setCount(resultCount.data.data.totalCount);
-				// let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
-				// setPage(Math.ceil(pageCount));
+				const countQuery = { searchTerm: searchQuery.searchTerm };
+				const resultCount = await getUserListCount(countQuery);
+				setCount(resultCount.data.data.totalCount);
+				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
+				setPage(Math.ceil(pageCount));
 				dispatch(loaderHide());
 			} catch (error) {
 				OnError(error, dispatch);
@@ -114,8 +114,8 @@ const UserTable = () => {
 
 			{
 				Header: 'Role Type',
-				accessor: 'roleTypeId', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 > {row.original.roleTypeId}</h5>,
+				accessor: 'roleTypeName', // accessor is the "key" in the data
+				Cell: ({ row }) => <h5 > {row.original.roleTypeName}</h5>,
 			},
 			{
 				Header: 'Status',

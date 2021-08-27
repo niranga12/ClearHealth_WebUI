@@ -3,26 +3,21 @@ import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { MaskFormat, PartyTypeEnum, ServiceMsg } from 'src/reusable/enum';
+import { ActiveList, ServiceMsg } from 'src/reusable/enum';
 import { useHistory } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
-import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
-import InputMask from 'react-input-mask';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { TextField } from '@material-ui/core';
-import DateSelector from 'src/views/common/dateSelector';
+import { saveUser, updateUserByPartyRoleId } from 'src/service/userService';
+import { getRoleList } from 'src/service/commonService';
+
+
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
 	lastName: yup.string().required('Last name is required'),
-	roleType: yup.string().required('role type is required'),
+	roleTypeId: yup.string().required('Role type is required'),
+	status: yup.string().required('Status is required'),
 	email: yup.string().required('Email is required').email('Email must be a valid email'),
-	phone: yup
-		.string()
-		.required('Phone is required')
-		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-
 });
 
 const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
@@ -35,23 +30,27 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 		control,
 		formState: { errors },
 	} = useForm({ resolver: yupResolver(schema) });
-	var initMonth = new Date();
-	initMonth.setMonth(initMonth.getMonth() - 3);
+
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const { dirtyFields } = useFormState({ control });
 	const dispatch = useDispatch();
 	let history = useHistory();
-	const [stateOption, setStateOption] = React.useState(defaultValues.state);
-	const [fromDate,setFromDate] = useState(initMonth);
+	const [roleTypeDta, setRoleTpeData] = useState([]);
 
 	useEffect(() => {
-		dispatch(loaderShow());
-		reset(defaultValues);
-		dispatch(loaderHide());
-		setStateOption(getValues('state'));
-		if (getValues('dateOfBirth') != '') {
-			setFromDate(getValues('dateOfBirth'));
-		}
+
+		const fetchData = async () => {
+			try {
+				const RoleTypeList = await getRoleList();
+				setRoleTpeData(RoleTypeList.data.data);
+				reset(defaultValues);
+			} catch (error) {
+				OnError(error, dispatch);
+			}
+		};
+		fetchData();
+
+
 
 	}, [defaultValues]);
 
@@ -70,29 +69,25 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 	// save User
 	const addUser = async (data) => {
 		const newUser = {
-				firstName: data.firstName,
-				lastName: data.lastName,
-				roleTypeId:data.roleTypeId,
-				status: data.status,
-				email: data.email,
-				
-			
+			firstName: data.firstName,
+			lastName: data.lastName,
+			roleTypeId: data.roleTypeId,
+			status: data.status,
+			email: data.email,
+
+
 		};
 		try {
 			if (newUser) {
-				// let result = await savePatient(newUser);
-				// if (result.data.message === ServiceMsg.OK) {
-				// 	dispatch(notify(`Successfully added`, 'success'));
-				// 	history.push('/users');
-				// }
+				let result = await saveUser(newUser);
+				if (result.data.message === ServiceMsg.OK) {
+					dispatch(notify(`Successfully added`, 'success'));
+					history.push('/users');
+				}
 			}
 		} catch (error) {
 			OnError(error, dispatch);
 		}
-	};
-
-	const stateSelect = (event) => {
-		setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
 
 
@@ -100,13 +95,13 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 	const updateUserInfo = async () => {
 		try {
 			const updateUser = {
-				...((dirtyFields.firstName || dirtyFields.lastName || dirtyFields.roleTypeId || dirtyFields.status|| dirtyFields.email) && {
-						firstName: getValues('firstName'),
-						lastName: getValues('lastName'),
-						roleTypeId: getValues('roleTypeId'),
-						status: getValues('status'),
-						email: getValues('email'),
-					
+				...((dirtyFields.firstName || dirtyFields.lastName || dirtyFields.roleTypeId || dirtyFields.status || dirtyFields.email) && {
+					firstName: getValues('firstName'),
+					lastName: getValues('lastName'),
+					roleTypeId: getValues('roleTypeId'),
+					status: getValues('status'),
+					email: getValues('email'),
+
 				}),
 
 			};
@@ -114,11 +109,11 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 				dispatch(notify(`No record to update`, 'error'));
 			} else {
 				try {
-					// const result = await updatePatientByPartyRoleId(partyRoleId, updateUser);
-					// if (result.data.message == ServiceMsg.OK) {
-					// 	dispatch(notify(`Successfully updated`, 'success'));
-					// 	history.push('/users');
-					// }
+					const result = await updateUserByPartyRoleId(partyRoleId, updateUser);
+					if (result.data.message == ServiceMsg.OK) {
+						dispatch(notify(`Successfully updated`, 'success'));
+						history.push('/users');
+					}
 				} catch (error) {
 					OnError(error, dispatch);
 				}
@@ -146,7 +141,6 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 						</div>
 
 					</div>
-					
 				</div>
 
 				<div className='row mb-3'>
@@ -161,35 +155,47 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 						</div>
 
 					</div>
-					
+
 				</div>
 
 
 				<div className='row mb-3'>
-				<div className='col-md-6'>
+					<div className='col-md-6'>
 						<div className='form-group'>
 							<label className='form-text'>
-								Email <span className='text-danger font-weight-bold '>*</span>
+								Role Type <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input type='text' className='form-control-sm' {...register('email')} />
-							<div className='small text-danger  pb-2   '>{errors.email?.message}</div>
+
+							<select name='roleTypeId' id='roleTypeId' className='form-control-sm'  {...register('roleTypeId')} >
+								{roleTypeDta.map((item, index) => (
+									<option key={index} value={item.roleTypeId}>
+										{item.description}
+									</option>
+								))}
+							</select>
+							<div className='small text-danger  pb-2   '>{errors.roleTypeId?.message}</div>
 						</div>
 					</div>
-				
+
 				</div>
 
 				<div className='row mb-3'>
 					<div className='col-md-6'>
 						<div className='form-group'>
 							<label className='form-text'>
-								Phone <span className='text-danger font-weight-bold '>*</span>
+								Status <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={isEdit ? true : false} className='form-control-sm' />
-							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
-							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
+							<select name='status' id='status' className='form-control-sm' {...register('status')}>
+								{ActiveList.map((item, index) => (
+									<option key={index} value={item.value}>
+										{item.text}
+									</option>
+								))}
+							</select>
+							<div className='small text-danger  pb-2   '>{errors.status?.message}</div>
 						</div>
 					</div>
-					
+
 				</div>
 
 				<div className='row mb-3'>
@@ -210,7 +216,6 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 					<div className='col-md-12'>
 						<button type='submit' className='btn btn-primary btn-lg float-right'>
 							{isEdit ? 'Update' : 'Save'}
-
 						</button>
 					</div>
 				</div>

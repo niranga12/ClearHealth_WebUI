@@ -4,12 +4,13 @@ import { useDispatch } from 'react-redux';
 import AdminTitle from 'src/views/common/adminTitle';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import UserForm from './UserForm';
+import { getUserByPartyRoleId } from 'src/service/userService';
 
 
 const defalutFormValue = {
 	firstName: '',
 	lastName: '',
-	roleType: '',
+	roleTypeId: '',
 	status: '',
 	email: '',
 
@@ -32,9 +33,9 @@ const UserProfile = () => {
 			dispatch(loaderShow());
 			if (id) {
 				try {
-					// const result = await getPatientByPartyRoleId(id);
-					// const formatedData = await updateFormFields(result.data.data);
-					// setUserData(formatedData);
+					const result = await getUserByPartyRoleId(id);
+					const formatedData = await updateFormFields(result.data.data);
+					setUserData(formatedData);
 				} catch (error) { }
 			}
 			dispatch(loaderHide());
@@ -47,7 +48,7 @@ const UserProfile = () => {
 		const userDetails = {
 			firstName: data.firstName,
 			lastName: data.lastName,
-			roleType: data.roleType,
+			roleTypeId: data.roleTypeId,
 			status: data.status,
 			email: data.email
 
