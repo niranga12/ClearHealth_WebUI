@@ -70,7 +70,7 @@ export const selectionListDropDown = [
 	{ text: 'Select', value: '' },
 	{ text: 'Most Recent', value: 'recent' },
 	{ text: 'All', value: 'all' },
-	{ text: 'Delete', value: 'deleted' },
+	{ text: 'Deleted', value: 'deleted' },
 ]
 
 export const ActiveList=[
