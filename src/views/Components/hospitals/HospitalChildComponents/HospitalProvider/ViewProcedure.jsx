@@ -49,18 +49,21 @@ const ViewProcedure = ({providerId}) => {
 				// Header: 'Optimized Facility Rate',
 				Header: () => (<div className="text-right">Optimized Facility Rate</div>),
 				accessor: 'facility', // accessor is the "key" in the data	
+				disableSortBy: true,
 				Cell: ({row}) =>( <div className=' text-black text-right'> {CurrencyFormat(Number(row.original.facility),true)} </div>),			
 			},
 			{
 				// Header: 'Optimized Physician Rate',
 				Header: () => (<div className="text-right">Optimized Physician Rate</div>),
-				accessor: 'physician', // accessor is the "key" in the data		
+				accessor: 'physician', // accessor is the "key" in the data	
+				disableSortBy: true,	
 				Cell: ({row}) =>( <div className=' text-black text-right'> {CurrencyFormat(Number(row.original.physician),true)} </div>),			
 			},
 			{
 				// Header: 'Anesthesia Rate',
 				Header: () => (<div className="text-right">Anesthesia Rate</div>),
-				accessor: 'anesthesia', // accessor is the "key" in the data	
+				accessor: 'anesthesia', // accessor is the "key" in the data
+				disableSortBy: true,	
 				Cell: ({row}) =>( <div className=' text-black text-right'> {CurrencyFormat(Number(row.original.anesthesia),true)} </div>),				
 			},
           
@@ -68,6 +71,7 @@ const ViewProcedure = ({providerId}) => {
 				// Header: 'Pathology Rate',
 				Header: () => (<div className="text-right">Pathology Rate</div>),
 				accessor: 'pathology', // accessor is the "key" in the data	
+				disableSortBy: true,
 				Cell: ({row}) =>( <div className=' text-black text-right' > {CurrencyFormat(Number(row.original.pathology),true)} </div>),				
 			},
 
@@ -76,12 +80,14 @@ const ViewProcedure = ({providerId}) => {
 				// Header: 'Clear Transactional Fee',
 				Header: () => (<div className="text-right">Clear Transactional Fee</div>),
 				accessor: 'clearFee', // accessor is the "key" in the data	
+				disableSortBy: true,
 				Cell: ({row}) =>( <div className=' text-black text-right'> {CurrencyFormat(Number(row.original.clearFee),true)} </div>),				
 			},
             {
 				// Header: 'Package Price',
 				Header: () => (<div className="text-right">Package Price</div>),
 				accessor: 'total', // accessor is the "key" in the data	
+				disableSortBy: true,
 				Cell: ({row}) =>( <div className=' text-black text-right'> {CurrencyFormat(Number(row.original.total),true)} </div>),				
 			}
 
