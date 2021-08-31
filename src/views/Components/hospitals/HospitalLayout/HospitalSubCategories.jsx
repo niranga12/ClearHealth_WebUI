@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     CCol,
     CNav,
@@ -16,9 +16,25 @@ import HospitalProvider from '../HospitalChildComponents/HospitalProvider/Hospit
 import HospitalOrderTable from '../HospitalChildComponents/HospitalOrder/HospitalOrderTable';
 import HospitalDashboard from '../HospitalChildComponents/HospitalDashboard/HospitalDashboard';
 import PricingToolGrid from '../../pricingTool/PricingToolGrid';
+import { HospitalTabList } from 'src/reusable/enum';
+import { useLocation } from 'react-router-dom';
 
 const HospitalSubCategories = () => {
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(HospitalTabList.Orders);
+  
+	const location = useLocation();
+
+  useEffect(() => {
+
+    const params = new URLSearchParams(location.search);
+    const tap = Number(params.get('tap'));
+    if(tap){
+      setActive(tap);
+    }
+
+ 
+  }, [location])
+ 
 
     return (
         <div>
@@ -60,20 +76,20 @@ const HospitalSubCategories = () => {
               </CNav>
               <CTabContent>
                 <CTabPane>
-                  {active ===0 ? <HospitalOrderTable />: ''}
+                  {active ===HospitalTabList.Orders ? <HospitalOrderTable />: ''}
                   
                 </CTabPane>
                 <CTabPane>
-                  {active ===1 ? <HospitalProvider />: ''}
+                  {active ===HospitalTabList.Providers ? <HospitalProvider />: ''}
                  
                 </CTabPane>
                 <CTabPane>
                 
-                {active ===2 ? <PricingToolGrid />: ''}
+                {active ===HospitalTabList.FeeSchedule? <PricingToolGrid />: ''}
                  
                 </CTabPane>
                 <CTabPane>
-                {active ===3 ?  < HospitalDashboard/>: ''}
+                {active ===HospitalTabList.Dashboard ?  < HospitalDashboard/>: ''}
                      
                 </CTabPane>
                 <CTabPane>

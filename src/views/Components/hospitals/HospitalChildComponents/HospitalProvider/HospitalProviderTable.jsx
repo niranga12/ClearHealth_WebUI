@@ -122,11 +122,14 @@ const HospitalProviderTable = () => {
 	  }
 
 	const  ProviderActions=({row})=> {
-		
+		const params = new URLSearchParams(location.search);
+		const id = params.get('id');
+		const name = params.get('name');
+
 		const addProcedure=()=>{
 			history.push({
 				pathname: `/procedure`,
-				search: `?providerId=${row.original.partyRoleId}&providerName=${row.original.firstName}`,
+				search: `?providerId=${row.original.partyRoleId}&providerName=${row.original.firstName}&hospitalId=${id}&hospitalName=${name}`,
 				
 			});
 		}

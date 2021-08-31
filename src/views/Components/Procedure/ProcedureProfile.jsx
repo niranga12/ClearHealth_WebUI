@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
 import {notify} from 'reapop';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
-import {ServiceMsg, ServiceType} from 'src/reusable/enum';
+import {HospitalTabList, ServiceMsg, ServiceType} from 'src/reusable/enum';
 import {getProcedureByProvideId, saveProcedureByProviderId} from 'src/service/providerService';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import DataTable from 'src/views/common/dataTable';
@@ -118,6 +118,10 @@ const ProcedureProfile = () => {
 	const save = async () => {
 		let checkEmptyData = savePrcoedureData;
 		
+		const params = new URLSearchParams(location.search);
+		const hospitalId = params.get('hospitalId');
+		const hospitalName = params.get('hospitalName');
+		
 		let emptyData = checkEmptyData.filter((x) => {
 			return !x.facility && !x.physician ? true : false;
 		}); // this following conditon for radiology
@@ -130,7 +134,13 @@ const ProcedureProfile = () => {
 				const result = await saveProcedureByProviderId(providerId, saveProcedure);
 				if (result.data.message === ServiceMsg.OK) {
 					dispatch(notify(`Successfully updated`, 'success'));
-					history.push('/hospitals');
+					//  history.push('/hospitals');
+					 history.push({
+						pathname: `/hospitals/hospital`,
+						search: `?id=${hospitalId}&name=${hospitalName}&tap=${HospitalTabList.Providers}`,
+						
+					});
+				
 				}
 			} catch (error) {
 				OnError(error, dispatch);

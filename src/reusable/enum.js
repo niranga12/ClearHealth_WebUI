@@ -125,3 +125,13 @@ export const EnhancementPercentage = [
 	{ text: "6.5%", value: "6.5" },
 	{ text: "15%", value: "15" }
 ]
+
+export const HospitalTabList={
+	Orders:0,
+	Providers:1,
+	FeeSchedule:2,
+	Dashboard:3,
+	Payment:4
+
+
+}
