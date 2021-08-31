@@ -33,6 +33,16 @@ function CellPatient({ row }) {
 	);
 }
 
+function CellAddress({row}) {
+	return (
+		<>
+			<div className='max-celladdress'>
+				{row.original.address1}, {row.original.address2},  {row.original.city}, {row.original.state}  {row.original.zip}
+			</div>
+		</>
+	);
+}
+
 function ActionPatient({ row }) {
 	let history = useHistory();
 	const redirectToEdit = () => {
@@ -45,9 +55,9 @@ function ActionPatient({ row }) {
 
 	return (
 		<>
-			<CDropdown className='m-1'>
-				<CDropdownToggle>
-					<div className='text-center text-gray font-15re cursor-point  ml-3'>
+			<CDropdown>
+				<CDropdownToggle className='p-0'>
+					<div className='text-center text-gray font-15re p-0 cursor-point  ml-3'>
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
@@ -115,6 +125,7 @@ const PatientTable = () => {
 		setSearchQuery({ ...initialSearch, filter: e.target.value });
 	};
 
+
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
 		() => [
@@ -126,13 +137,13 @@ const PatientTable = () => {
 			{
 				Header: 'DOB',
 				accessor: 'dateOfBirth', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 className='font-weight-normal text-black'> {row.original.dateOfBirth}</h5>,
+				Cell: ({ row }) => <div className='max-celladdress'> {row.original.dateOfBirth}</div>,
 			},
 
 			{
 				Header: 'Address',
 				accessor: 'address1', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 > {row.original.address1}, {row.original.address2},  {row.original.city}, {row.original.state}  {row.original.zip}</h5>,
+				Cell: CellAddress,
 			},
 			{
 				Header: 'Phone',

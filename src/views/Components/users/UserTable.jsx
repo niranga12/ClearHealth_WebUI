@@ -17,6 +17,8 @@ const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
 	searchTerm: '',
+	orderBy: "",
+    sortOrder: ""
 };
 
 
@@ -63,7 +65,12 @@ const UserTable = () => {
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
-				const result = await getUserList();
+				const getQuery = {  itemsPerPage : searchQuery.itemsPerPage ,
+					pageNumber : searchQuery.pageNumber,
+					searchTerm : searchQuery.searchTerm,
+					orderBy: searchQuery.orderBy,
+					sortOrder: searchQuery.sortOrder };
+				const result = await getUserList(getQuery);
 				setUserData(result.data.data);
 
 
@@ -104,23 +111,23 @@ const UserTable = () => {
 			{
 				Header: 'Name',
 				accessor: 'firstName', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 className='font-weight-normal text-black ml-4'> {row.original.firstName} {row.original.lastName} </h5>,
+				Cell: ({ row }) => <h5 className='max-celladdress'> {row.original.firstName} {row.original.lastName} </h5>,
 			},
 			{
 				Header: 'Email',
 				accessor: 'email', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 className='font-weight-normal text-black'> {row.original.email}</h5>,
+				Cell: ({ row }) => <h5 className='max-celladdress'> {row.original.email}</h5>,
 			},
 
 			{
 				Header: 'Role Type',
 				accessor: 'roleTypeName', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 > {row.original.roleTypeName}</h5>,
+				Cell: ({ row }) => <h5 className='max-celladdress'> {row.original.roleTypeName}</h5>,
 			},
 			{
 				Header: 'Status',
 				accessor: 'status', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 > {row.original.status}</h5>,
+				Cell: ({ row }) => <h5 className='max-celladdress'> {row.original.status}</h5>,
 			},
 			{
 				Header: '',
