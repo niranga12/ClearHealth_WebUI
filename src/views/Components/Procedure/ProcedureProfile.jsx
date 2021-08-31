@@ -37,7 +37,7 @@ const ProcedureProfile = () => {
 	const searchTextChange = (e) => {
 	    let searchText=String(e.target.value).toLowerCase();
 		let textData=tempProcedureData;
-		let result = textData.filter(x=>x.description.toLowerCase().includes(searchText) );
+		let result = textData.filter(x => x.description.toLowerCase().includes(searchText) || x.code.toLowerCase().includes(searchText) );
 		setProcedureData(result);
 	};
 

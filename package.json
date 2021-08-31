@@ -55,6 +55,7 @@
     "react-phone-number-input": "^3.1.23",
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
+    "react-select": "^4.3.1",
     "react-table": "^7.7.0",
     "reapop": "^3.0.4",
     "redux": "^4.0.5",

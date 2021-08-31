@@ -8,16 +8,16 @@ import * as yup from 'yup';
 import InputMask from 'react-input-mask';
 
 const schema = yup.object().shape({
-	name: yup.string().required(' Name is required').matches(ValidationPatterns.onlyCharacters, ' Name should contain only characters'),
+	firstName:  yup.string().required(' First Name is required').matches(ValidationPatterns.onlyCharacters, ' Name should contain only characters'),
+	middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
+	lastName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
 	dateOfBirth: yup.string(),
 	email: yup.string().email().required(),
 	phone: yup
 		.string()
 		.required('Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	primaryInsurance: yup.string(),
-	policyNumber: yup.string(),
-	accountNumber: yup.string(),
+
 });
 
 const OrderPatientsForm = () => {
@@ -40,14 +40,39 @@ const OrderPatientsForm = () => {
 				<div className='col-md-4'>
 					<div className='form-group'>
 						<label className='form-text'>
-							Name <span className='text-danger font-weight-bold '>*</span>
+						First Name <span className='text-danger font-weight-bold '>*</span>
 						</label>
-						<input className='form-control-sm' type='text' {...register('name')} />
-						<div className='small text-danger  pb-2   '>{errors.name?.message}</div>
+						<input className='form-control-sm' type='text' {...register('firstName')} />
+						<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
 					</div>
 				</div>
 
 				<div className='col-md-4'>
+					<div className='form-group'>
+						<label className='form-text'>
+						Middle Name <span className='text-danger font-weight-bold '>*</span>
+						</label>
+						<input className='form-control-sm' type='text' {...register('middleName')} />
+						<div className='small text-danger  pb-2   '>{errors.middleName?.message}</div>
+					</div>
+				</div>
+
+				<div className='col-md-4'>
+					<div className='form-group'>
+						<label className='form-text'>
+						Last Name <span className='text-danger font-weight-bold '>*</span>
+						</label>
+						<input className='form-control-sm' type='text' {...register('lastName')} />
+						<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
+					</div>
+				</div>
+
+
+			
+			</div>
+
+			<div className="row">
+			<div className='col-md-4'>
 					<div className='form-group'>
 						<label className='form-text'>
 							Date Of Birth<span className='text-danger font-weight-bold '>*</span>
@@ -67,9 +92,7 @@ const OrderPatientsForm = () => {
 						<div className='small text-danger  pb-2   '>{errors.email?.message}</div>
 					</div>
 				</div>
-			</div>
 
-			<div className='row'>
 				<div className='col-md-4'>
 					<div className='form-group'>
 						<label className='form-text'>
@@ -80,41 +103,12 @@ const OrderPatientsForm = () => {
 						<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 					</div>
 				</div>
-				<div className='col-md-4'>
-					<div className='form-group'>
-						<label className='form-text'>
-							{' '}
-							Primary Insurance <span className='text-danger font-weight-bold '>*</span>{' '}
-						</label>
-						<input className='form-control-sm' type='text' {...register('primaryInsurance')} />
-						<div className='small text-danger  pb-2   '>{errors.primaryInsurance?.message}</div>
-					</div>
-				</div>
-
-				<div className='col-md-4'>
-					<div className='form-group'>
-						<label className='form-text'>
-							{' '}
-							Policy Number <span className='text-danger font-weight-bold '>*</span>
-						</label>
-						<input className='form-control-sm' type='text' {...register('policyNumber')} />
-						<div className='small text-danger  pb-2   '>{errors.policyNumber?.message}</div>
-					</div>
-				</div>
+			
 			</div>
 
-			<div className='row '>
-				<div className='col-md-4'>
-					<div className='form-group'>
-						<label className='form-text'>
-							{' '}
-							Account Number <span className='text-danger font-weight-bold '>*</span>{' '}
-						</label>
-						<input className='form-control-sm' type='text' {...register('accountNumber')} />
-						<div className='small text-danger  pb-2   '>{errors.accountNumber?.message}</div>
-					</div>
-				</div>
-			</div>
+			
+
+		
 
           
 		</form>
