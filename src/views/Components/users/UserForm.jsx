@@ -7,10 +7,9 @@ import { ActiveList, ServiceMsg } from 'src/reusable/enum';
 import { useHistory } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
-import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { saveUser, updateUserByPartyRoleId } from 'src/service/userService';
 import { getRoleList } from 'src/service/commonService';
-
+import FormatText from 'src/reusable/FormatText';
 
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
@@ -136,7 +135,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								{' '}
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('firstName')} />
+							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
 						</div>
 
@@ -150,7 +149,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 								{' '}
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('lastName')} />
+							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
 						</div>
 
