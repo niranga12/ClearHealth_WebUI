@@ -15,6 +15,7 @@ const OrderForm = () => {
 	// const [procedure, setProcedure] = useState(1);
 	const [hospitalId, setHospitalId] = useState(null);
 	// const [selectedPatient, setselectedPatient] = useState(null);
+	// eslint-disable-next-line no-unused-vars
 	const [inputValue, setValue] = useState('');
 	const [selectedValue, setSelectedValue] = useState(null);
 	const [isEdit, setIsEdit] = useState(false)

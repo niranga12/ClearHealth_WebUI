@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 // import "../login/login.scss";
 import Logo from "src/reusable/Logo";
