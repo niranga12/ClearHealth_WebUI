@@ -94,7 +94,7 @@ const UserTable = () => {
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
 			setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
-		} else if (e.target.value.length === '') {
+		} else if (e.target.value.length == '') {
 			setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
 		} else {
 		}
@@ -111,7 +111,7 @@ const UserTable = () => {
 			{
 				Header: 'Name',
 				accessor: 'firstName', // accessor is the "key" in the data
-				Cell: ({ row }) => <h5 className='max-celladdress'> {row.original.firstName} {row.original.lastName} </h5>,
+				Cell: ({ row }) => <h5 className='font-weight-normal text-black ml-4'> {row.original.firstName} {row.original.lastName} </h5>,
 			},
 			{
 				Header: 'Email',

@@ -137,17 +137,20 @@ const PatientTable = () => {
 			},
 			{
 				Header: 'DOB',
+				disableSortBy: true,
 				accessor: 'dateOfBirth', // accessor is the "key" in the data
 				Cell: ({ row }) => <div className='max-celladdress'> {row.original.dateOfBirth}</div>,
 			},
 
 			{
 				Header: 'Address',
+				disableSortBy: true,
 				accessor: 'address1', // accessor is the "key" in the data
 				Cell: CellAddress,
 			},
 			{
 				Header: 'Phone',
+				disableSortBy: true,
 				accessor: 'phone', // accessor is the "key" in the data
 				Cell: CellPatient,
 			},
