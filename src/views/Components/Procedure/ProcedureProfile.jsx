@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {freeSet} from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import React, {useEffect, useMemo, useState} from 'react';

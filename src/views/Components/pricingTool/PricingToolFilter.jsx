@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -37,20 +38,22 @@ const PricingToolFilter = ({fieldsList=[],isNotGlobal, handleFilterChange,saveCh
 		setValue,
 		getValues,
 		reset,
-		control,
+		
 		formState,
 		// formState: {errors},
 	} = useForm({resolver: yupResolver(schema) ,	mode: "all"  });
 
 
-	const { isDirty, isValid } = formState;
+	const { isValid } = formState;
 
 
+
+// eslint-disable-next-line no-unused-vars
 const [serviceList, setServiceList] = useState(ServiceType.Types);
 const [hospitalList, setHospitalList] = useState([]);
 const [stateChange, setstateChange] = useState(false);
 
-const [hospitalId, setHospitalId] = useState(null);
+// const [hospitalId, setHospitalId] = useState(null);
 const location = useLocation();
 
 const dispatch = useDispatch();
@@ -63,7 +66,7 @@ useEffect(() => {
 	reset(resetTool)
 	const params = new URLSearchParams(location.search);
 	const id = params.get('id');
-	setHospitalId(id);
+	// setHospitalId(id);
 	const fetchData= async ()=>{
 		try {
 			dispatch(loaderShow());
@@ -85,6 +88,7 @@ useEffect(() => {
 		}
 	}
 	fetchData();	
+	  // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [selectedPackage,location])
 
 
@@ -94,7 +98,7 @@ useEffect(() => {
 	const formValue=getValues("filterTool");
 
 	handleFilterChange(formValue)
-	
+	  // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [stateChange])
 
 

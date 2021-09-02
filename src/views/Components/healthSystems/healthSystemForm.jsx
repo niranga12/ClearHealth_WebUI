@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // @ts-nocheck
 /* eslint-disable eqeqeq */
 import React, {useEffect, useRef, useState} from 'react';
@@ -52,10 +53,10 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 		register,
 		handleSubmit,
 		setValue,
-		setError,
+		
 		getValues,
 		reset,
-		clearErrors,
+		
 		control,
 		formState: {errors},
 	} = useForm({mode: 'all', resolver: yupResolver(schema)});

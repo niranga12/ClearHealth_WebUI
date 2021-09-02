@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -22,6 +23,7 @@ const ProcedureForm = ({data, handleSave}) => {
 		register,
 		setValue,
 		getValues,
+		// eslint-disable-next-line no-unused-vars
 		formState: {errors},
 	} = useForm({mode: 'all', resolver: yupResolver(schema)});
 

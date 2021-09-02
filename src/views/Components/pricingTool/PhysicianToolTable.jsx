@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import DataTable from 'src/views/common/dataTable';

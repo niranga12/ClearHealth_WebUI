@@ -50,7 +50,7 @@ const ProcedureProfile =React.lazy(() => import('./views/Components/Procedure/Pr
 const PricingTool =React.lazy(() => import('./views/Components/pricingTool/PricingToolGrid'));
 const User = React.lazy(() => import('./views/Components/users/UserGrid'));
 const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'));
-const OrderProfile= React.lazy(() => import('./views/Components/order/OrderProfile'));
+const OrderProfile= React.lazy(() => import('./views/Components/order/OrderProfile/OrderProfile'));
 
 
 

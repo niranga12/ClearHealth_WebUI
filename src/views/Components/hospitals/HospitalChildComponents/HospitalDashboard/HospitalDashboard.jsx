@@ -46,6 +46,7 @@ const HospitalDashboard = () => {
 		};
 
 		fetchData();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fromDate, toDate]);
 
 	const handleFromChange = (value) => {

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react';
 import {Packages} from 'src/reusable/enum';
 import PropTypes from 'prop-types';
