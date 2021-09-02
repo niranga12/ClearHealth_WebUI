@@ -205,7 +205,7 @@ const CollectionEnhancementOn=()=>{
 
 				<div className='col-md-2'>
 					<div className='form-group'>
-						<label className='form-text font-lato-bold oneline-th'> Collection Enhancement </label>
+						<label className='form-text font-lato-bold oneline-th'>{ isNotGlobal? 'Collection Enhancement' :'Clear Transactional Fee'}  </label>
 						{/* <input type='text' className='form-control-sm' {...register('filterTool.collectionEnhancement')} onBlur={()=>setstateChange(!stateChange)}/> */}
 						{isNotGlobal ? EnhancementPercentageInput():EnhancementPercentageSelect()}
 					</div>
