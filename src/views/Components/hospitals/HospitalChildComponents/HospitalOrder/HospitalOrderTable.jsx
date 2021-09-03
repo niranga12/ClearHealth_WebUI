@@ -33,10 +33,23 @@ function OrderAttempt({row}) {
 }
 
 function OrderActions({row}) {
+	let history = useHistory();
+	
+
+
+	const actionLink =()=>{
+
+		history.push({
+			pathname: `/order/view`,
+			search: `?orderId=${row.original.orderId}`,
+			// state: { detail: 'some_value' }
+		});
+	}
+
 	return (
 		<>
 			<div>
-				<div className='btn btn-view-account ml-3 float-right'> View Order</div>
+				<div className='btn btn-view-account ml-3 float-right' onClick={actionLink} > View Order</div>
 			</div>
 		</>
 	);
