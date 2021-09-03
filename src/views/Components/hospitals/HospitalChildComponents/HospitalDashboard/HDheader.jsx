@@ -1,4 +1,5 @@
-import React, { Fragment, useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {  useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DateSelector from 'src/views/common/dateSelector';
 

@@ -7,6 +7,7 @@ import HospitalSubCategories from './HospitalSubCategories';
 const HospitalLayout = () => {
   let history=useHistory();
 	const location = useLocation();
+	// eslint-disable-next-line no-unused-vars
 	const [partyRoleId, setPartyRoleId] = useState(null);
 	const [hospitalName, setHospitalName] = useState('');
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
@@ -42,7 +43,9 @@ function OrderActions({row}) {
 }
 
 function OrderStatusValue({row}) {
-	switch (row.original.orderStatus) {
+	const{orderStatus}=row.original;
+	
+	switch (orderStatus) {
 		case OrderStatus.Ordered:
 			return <div>Ordered</div>;
 
@@ -54,9 +57,9 @@ function OrderStatusValue({row}) {
 
 		case OrderStatus.Pending:
 			return <div>Pending</div>;
-
 		default:
-			break;
+			return <></>
+			// break;
 	}
 }
 
@@ -164,7 +167,7 @@ const handleAddOrder=(e)=>{
 			{
 				Header: 'Status',
 				accessor: 'orderStatus', // accessor is the "key" in the data
-				Cell: OrderStatusValue,
+				 Cell: OrderStatusValue,
 			},
 			{
 				Header: '',

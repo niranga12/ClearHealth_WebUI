@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import CIcon from '@coreui/icons-react';
 import React, { useEffect } from 'react'
 import { useExpanded, useSortBy, useTable } from 'react-table';
@@ -5,6 +6,7 @@ import PropTypes from 'prop-types';
 
 
 const DataTable = ({columns,data,sortingHandler,renderRowSubComponent}) => {
+    // eslint-disable-next-line no-unused-vars
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow,    visibleColumns,      state:{sortBy ,expanded} } = useTable({
       columns,
       data,

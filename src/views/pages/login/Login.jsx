@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 // import { Link, useHistory } from "react-router-dom";
 // import "./login.scss";

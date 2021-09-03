@@ -31,6 +31,7 @@ const ViewProcedure = ({providerId}) => {
         
       
        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [providerId])
 
     const subColumns = useMemo(

@@ -1,8 +1,9 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectionListDropDown, TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
-import { getHospitalsListCount } from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
 import PaginationTable from 'src/views/common/paginationTable';
 import OnError from 'src/_helpers/onerror';

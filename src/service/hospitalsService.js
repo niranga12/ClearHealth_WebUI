@@ -41,3 +41,10 @@ export const updatePhysicianPackage=(hospitalId,data)=>axiosInstance.put(`hospit
 
 // update Package global detail
 export const updateGlobalPackage=(hospitalId,data)=>axiosInstance.put(`hospital/${hospitalId}/packages`, data)
+
+
+//get CPT Codes By  hospitalId
+export const getCPTCodesByHospital=(hospitalId,data)=>axiosInstance.post(`hospital/${hospitalId}/procedurecodes`,data);
+
+// get patients details by hospitalId
+export const getPatientsDetailsByHospital=(hospitalId,data)=>axiosInstance.post(`hospital/${hospitalId}/patients`,data);

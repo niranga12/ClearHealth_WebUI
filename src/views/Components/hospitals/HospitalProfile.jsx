@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, {useEffect, useState} from 'react';
 import { useDispatch } from 'react-redux';
@@ -39,10 +40,6 @@ const defalutFormValue = {
 	contactPhone: '',
 	contactName: '',
 };
-const options = [
-    {name: 'Swedish', value: 'sv'},
-    {name: 'English', value: 'en'},
-]
 
 const HospitalProfile = () => {
 	const location = useLocation();

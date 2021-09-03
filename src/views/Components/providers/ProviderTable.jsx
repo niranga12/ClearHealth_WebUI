@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {TableSettingsEnum} from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
-import { getHospitalsListCount} from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
 import PaginationTable from 'src/views/common/paginationTable';
 import OnError from 'src/_helpers/onerror';
@@ -108,6 +108,7 @@ const ProviderTable = () => {
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+		// eslint-disable-next-line eqeqeq
 		} else if (e.target.value.length == '') {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
 		} else {
