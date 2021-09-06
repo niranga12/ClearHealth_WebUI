@@ -898,6 +898,11 @@ font-weight: bold;
   min-width: 70px;
 }
 
+input.form-control-sm:read-only {
+  background-color: rgb(243, 240, 240);
+}
+
+
 .view-Procedure-table{
   font-size: 0.8rem;
 
@@ -914,6 +919,13 @@ font-weight: bold;
   background-color:#eeeaea;
 
 }
+
+.disable{
+  pointer-events: none;
+  opacity: 0.4;
+  background-color:#f3f0f0;
+}
+
 // loader animation
 
 .center {

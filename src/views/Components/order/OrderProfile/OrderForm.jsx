@@ -1,148 +1,205 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import OrderPatientsForm from './OrderPatientsForm';
 import OrderProcedureSelect from './OrderProcedureSelect';
 import AsyncSelect from 'react-select/async';
-import { getPatientsDetailsByHospital } from 'src/service/hospitalsService';
-
-
+import {getPatientsDetailsByHospital} from 'src/service/hospitalsService';
+import {saveOrderData} from 'src/service/orderService';
+import { ServiceMsg } from 'src/reusable/enum';
+import { useDispatch } from 'react-redux';
+import { notify } from 'reapop';
+import OnError from 'src/_helpers/onerror';
+import 'font-awesome/css/font-awesome.min.css';
+import NormalizePhone from 'src/reusable/NormalizePhone';
 
 const OrderForm = () => {
-	
 	let btnRef = useRef();
 	const location = useLocation();
-
+	const dispatch = useDispatch();
+	const history = useHistory();
 	// const [procedure, setProcedure] = useState(1);
 	const [hospitalId, setHospitalId] = useState(null);
 	// const [selectedPatient, setselectedPatient] = useState(null);
 	// eslint-disable-next-line no-unused-vars
 	const [inputValue, setValue] = useState('');
 	const [selectedValue, setSelectedValue] = useState(null);
-	const [isEdit, setIsEdit] = useState(false)
+	const [isEdit, setIsEdit] = useState(false);
+	const [hospitalName, setHospitalName] = useState('');
 
 	const [selectedFormValue, setSelectedFormValue] = useState(null);
 	const [SelectedCpt, setSelectedCpt] = useState([]);
 	const [patientDetail, setPatientDetail] = useState(null);
-	
 
-
-
-// on location change get hospitalId
+	// on location change get hospitalId
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('hospitalId');
+		const name=params.get('name');
 		setHospitalId(id);
+		setHospitalName(name);
 		if (btnRef.current) {
 			btnRef.current.setAttribute('disabled', 'disabled');
 		}
 	}, [location]);
 
-	
-	
-	const handleCPTChange=(value)=>{
+	const handleCPTChange = (value) => {
 		setSelectedCpt(value);
 		// console.log(value);
-		CheckAvilableBtn();
-	}
+		// CheckAvilableBtn();
+	};
 
-	const CheckAvilableBtn=()=>{
-		debugger;
-		if (SelectedCpt.length>0 && patientDetail ) {
-			btnRef.current.removeAttribute('disabled');
-		} else {
-			btnRef.current.setAttribute('disabled', 'disabled');
-		}
+	// const CheckAvilableBtn = () => {
+	// 	debugger;
+	// 	if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) ) {
+	// 		btnRef.current.removeAttribute('disabled');
+	// 	} else {
+	// 		btnRef.current.setAttribute('disabled', 'disabled');
+	// 	}
+	// };
+
+ useEffect(() => {
+	if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) ) {
+		btnRef.current.removeAttribute('disabled');
+	} else {
+		btnRef.current.setAttribute('disabled', 'disabled');
 	}
+ }, [SelectedCpt,patientDetail,selectedValue])
 
 	// asyncoption
-	
 
-   
 	// handle input change event
-	const handleInputChange = value => {
-	  setValue(value);
+	const handleInputChange = (value) => {
+		setValue(value);
 	};
-   
-	// handle selection
-	const handleChange = value => {
-		// console.log(value);
-		
-let result={
-	patient:{
-		firstName:value.firstName,
-		middleName:value.middleName,
-		lastName:value.lastName,
-		dateOfBirth:value.dateOfBirth,
-		email:value.email,
-		phone:value.phone
-	}
+
 	
-}
-setSelectedFormValue(result)
-    //    result.partyRoleId ? setIsEdit(true) :setIsEdit(false);
-	  setIsEdit(true)
-	  setSelectedValue(value);
+	// handle selection
+	const handleChange = (value) => {
+		let result = {
+			patient: {
+				firstName: value.firstName,
+				middleName: value.middleName,
+				lastName: value.lastName,
+				dateOfBirth: value.dateOfBirth,
+				email: value.email,
+				phone: value.phone,
+				partyRoleId: value.partyRoleId,
+			},
+		};
+		setSelectedFormValue(result);
+		// console.log(result);
+		//    result.partyRoleId ? setIsEdit(true) :setIsEdit(false);
+		setIsEdit(true);
+		setSelectedValue(value);
+		// CheckAvilableBtn();
+
+	};
+
+	// load options using API call
+	const loadOptions = async (inputValue) => {
+		try {
+			let data = {searchTerm: inputValue};
+			let result = await getPatientsDetailsByHospital(hospitalId, data);
+			return result.data.data;
+		} catch (error) {}
+	};
+
+	const patientsFormDetail = (value) => {
+		// console.log(value);
+		setPatientDetail(value);
+		// CheckAvilableBtn();
+	};
+
+
+
+const handleClearSelection=()=>{
+	let result = {
+		patient: {
+			firstName: "",
+			middleName: "",
+			lastName: "",
+			
+			email:"",
+			phone:"",
+			partyRoleId: "",
+		},
+	};
+	setSelectedFormValue(result);
+	// console.log(result);
+	//    result.partyRoleId ? setIsEdit(true) :setIsEdit(false);
+	setIsEdit(false);
+
+	setSelectedValue(null);
+	// CheckAvilableBtn();
+	btnRef.current.setAttribute('disabled', 'disabled');
 }
 
-	 
-   
-	// load options using API call
-	const loadOptions = async(inputValue) => {
-		try {
-			let data={searchTerm:inputValue}
-			let result=await getPatientsDetailsByHospital(hospitalId,data);
-			return result.data.data;
-		} catch (error) {
-			
+	const saveOrder = async () => {
+		if (btnRef.current) {
+			btnRef.current.setAttribute('disabled', 'disabled');
 		}
 
+		let data;
+		if (selectedValue?.partyRoleId && SelectedCpt.length > 0) {
+			data = {
+				hospitalPartyRoleId: hospitalId,
+				patientPartyRoleId: selectedValue.partyRoleId,
+				procedures: SelectedCpt,
+			};
+		} else if (SelectedCpt.length > 0 && patientDetail) {
+			data = {
+				hospitalPartyRoleId: hospitalId,
+				patient: {...patientDetail,phone:NormalizePhone(patientDetail.phone)},
+				procedures: SelectedCpt,
+			};
+		}
+
+		try {
+			
+			let result = await saveOrderData(data);
+			if (result.data.message == ServiceMsg.OK) {
+				dispatch(notify(`Successfully added`, 'success'));
+				history.push({
+					pathname: `/hospitals/hospital`,
+					search: `?id=${hospitalId}&&name=${hospitalName}`,
+					// state: { detail: 'some_value' }
+				});
+			
+			
+			}
+
+		} catch (error) {
+			OnError(error, dispatch);
+		}
 	};
-
-	const patientsFormDetail=(value)=>{
-// console.log(value);
-setPatientDetail(value);
-CheckAvilableBtn();
-
-	}
-
-
 
 	return (
 		<div className='p-4'>
 			<div className='row'>
 				<div className='col-md-4 mb-4'>
-					<label className=" float-left mr-3 pt-1">Select Patient</label>
+					<label className=' float-left mr-3 pt-1'>Select Patient</label>
 					{/* <Select options={options} onChange={selectPatient} /> */}
 
+					<AsyncSelect cacheOptions defaultOptions value={selectedValue} getOptionLabel={(e) => e.firstName} getOptionValue={(e) => e.partyRoleId} loadOptions={loadOptions} onInputChange={handleInputChange} onChange={handleChange} />
 				
-					<AsyncSelect
-        cacheOptions
-        defaultOptions
-        value={selectedValue}
-        getOptionLabel={e => e.firstName}
-        getOptionValue={e => e.partyRoleId}
-        loadOptions={loadOptions}
-        onInputChange={handleInputChange}
-        onChange={handleChange}
-      />
-
 				</div>
-				<div className="col-md-6 mb-2 pt-3">
-					<h5 >If not , Please fill below fields</h5>
+				<div className='col-md-6 mb-2 pt-3'>
+				{isEdit? <div className="fa fa-close float-left mr-5 text-danger" onClick={handleClearSelection}> Clear</div>:""}
+					<h5 className="float-left">If not , Please fill below fields</h5>
 				</div>
 			</div>
 
-<div className="border-bottom mb-3"></div>
-			<OrderPatientsForm defaultValues={selectedFormValue} isEdit={isEdit}  handleForm={patientsFormDetail}/>
-			<div className="border-bottom"></div>
+			<div className='border-bottom mb-3'></div>
+			<OrderPatientsForm defaultValues={selectedFormValue} isEdit={isEdit} handleForm={patientsFormDetail} />
+			<div className='border-bottom'></div>
 
 			<h5 className='font-weight-bold mt-3 mb-3'>Procedures </h5>
 
-			<OrderProcedureSelect  handleCPTChange={handleCPTChange}/>
+			<OrderProcedureSelect handleCPTChange={handleCPTChange} />
 
 			<div className='row'>
 				<div className='col-md-12 mt-1'>
-					<button type='submit' ref={btnRef} className='btn btn-primary btn-lg float-right'>
+					<button type='submit' onClick={saveOrder} ref={btnRef} className='btn btn-primary btn-lg float-right'>
 						Save
 					</button>
 				</div>
@@ -150,6 +207,5 @@ CheckAvilableBtn();
 		</div>
 	);
 };
-
 
 export default OrderForm;
