@@ -94,10 +94,13 @@ useEffect(() => {
 
 
 useEffect(() => {
-
+  
 	const formValue=getValues("filterTool");
+	let hospitalName =formValue.hospitalSearch? hospitalList.find(x=>x.partyRoleId==formValue.hospitalSearch).name: "";
+	let serviceTypeName=formValue.serviceType? serviceList.find(x=>x.value==formValue.serviceType).text:"";
+	let formDetails={...formValue,hospitalName,serviceTypeName}
 
-	handleFilterChange(formValue)
+	handleFilterChange(formDetails)
 	  // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [stateChange])
 

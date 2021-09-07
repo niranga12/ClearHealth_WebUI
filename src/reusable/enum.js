@@ -100,7 +100,6 @@ export const PackageItems = {
 
 
 
-
 export const Packages = [
 	{ name: "Global Package", id: 1 },
 	{ name: "Facility", id: 2 },
@@ -135,3 +134,17 @@ export const HospitalTabList={
 
 
 }
+
+export const csvOptions = { 
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true, 
+    showTitle: false,
+    // title: 'CSV',
+    useTextFile: false,
+    useBom: true,
+    useKeysAsHeaders: true,
+	
+    // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+  };

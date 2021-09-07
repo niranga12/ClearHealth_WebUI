@@ -6,6 +6,8 @@ import {getGlobalPackageByHospitalId} from 'src/service/hospitalsService';
 import { useDispatch } from 'react-redux';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { CurrencyFormat } from 'src/reusable';
+import { SHOW_PRICE_DATA } from 'src/constansts';
+import { PackageItems, Packages } from 'src/reusable/enum';
 
 const GlobalToolTable = ({filterDetail}) => {
 	const [globalPackage, setGlobalPackage] = useState([]);
@@ -35,6 +37,18 @@ const GlobalToolTable = ({filterDetail}) => {
 	}, [filterDetail]);
 
 
+	useEffect(() => {
+
+	let packageName = Packages.find(x=>x.id== PackageItems.GlobalPackage).name;
+
+	let data={feeSchedule:globalPackage, packageName, filterDetail };
+	
+	dispatch({
+		type: SHOW_PRICE_DATA,
+		payload: data,
+	  }); 
+		
+	}, [globalPackage])
 
 
     const CalculationPackage=(enhancementPercentage)=>{

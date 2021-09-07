@@ -10,6 +10,7 @@ import {combineReducers } from 'redux'
 import { persistReducer } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
 import loaderReducer from './loaderReducer';
+import pricingReducer from './pricingReducer';
 
 
 const persistConfig={
@@ -22,6 +23,7 @@ const rootReducer= combineReducers({
    Login: loginReducer,
    sidebar: changeState,
    Loader:loaderReducer,
+   Pricing:pricingReducer,
    notifications: notificationsReducer(),
 
 })
