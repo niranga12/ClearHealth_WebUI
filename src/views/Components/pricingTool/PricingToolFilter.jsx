@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import {useForm} from 'react-hook-form';
 import { EnhancementPercentage, ServiceType } from 'src/reusable/enum';
 import { getHospitalsList } from 'src/service/hospitalsService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
@@ -58,12 +58,17 @@ const location = useLocation();
 
 const dispatch = useDispatch();
 
+ const price= useSelector(state=>state.Pricing)
 
 
   
 
 useEffect(() => {
+// for reset 
+    let serviceType =price.filterDetail?.serviceType?price.filterDetail.serviceType:"";
+	resetTool.filterTool.serviceType=serviceType;
 	reset(resetTool)
+	
 	const params = new URLSearchParams(location.search);
 	const id = params.get('id');
 	// setHospitalId(id);
@@ -80,6 +85,7 @@ useEffect(() => {
 	    }else{
 			setHospitalList(hospitals);
 		}
+		 setstateChange(!stateChange);
 		dispatch(loaderHide());
 
 
