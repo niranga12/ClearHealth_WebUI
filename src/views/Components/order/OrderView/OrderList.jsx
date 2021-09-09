@@ -1,39 +1,20 @@
-import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
-import React, { useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
+import React, {useEffect, useMemo, useState} from 'react';
 import DataTable from 'src/views/common/dataTable';
-
-const data =[
-    {
-    service:"MRI UPPer Extremity W/dye",
-    CPT:"CPT Code",
-    EHRAccNum:"31342424",
-    Ref:"Jacquline LIkoki",
-    Price:"$563.00",
-    Hospital:"Regional Medical Center"
-},{
-    service:"MRI UPPer Extremity W/dye",
-    CPT:"CPT Code",
-    EHRAccNum:"31342424",
-    Ref:"Jacquline LIkoki",
-    Price:"$563.00",
-    Hospital:"Regional Medical Center"
-}
-
-]
-
-const serviceDetail=({row})=>{
-return (
-    <>
-    <div className="pl-4">
-    <h5 className="font-weight-normal text-black">{row.original.service}</h5>
-    <div className="rectangle-intable">{row.original.Hospital}</div>
-    </div>
-    </>
-);
-}
+import PropTypes from 'prop-types';
 
 
+
+const serviceDetail = ({row}) => {
+	return (
+		<>
+			<div className='pl-4'>
+				<h5 className='font-weight-normal text-black'>{row.original.description}</h5>
+				<div className='rectangle-intable'>{row.original.facilityName}</div>
+			</div>
+		</>
+	);
+};
 
 function ActionOrderSystem({row}) {
 	// let history = useHistory();
@@ -41,8 +22,6 @@ function ActionOrderSystem({row}) {
 	const redirectToEdit = () => {
 		// history.push();
 	};
-
-	
 
 	return (
 		<>
@@ -54,81 +33,87 @@ function ActionOrderSystem({row}) {
 				</CDropdownToggle>
 				<CDropdownMenu>
 					<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>
-					<CDropdownItem >Delete</CDropdownItem>
+					<CDropdownItem>Delete</CDropdownItem>
 				</CDropdownMenu>
 			</CDropdown>
 		</>
 	);
 }
 
+const OrderList = ({orderDetail}) => {
+	const [order, setOrder] = useState(orderDetail);
+	const [orderData, setOrderData] = useState([]);
 
+	useEffect(() => {
+		setOrder(orderDetail);
+	}, [orderDetail]);
 
-const OrderList = () => {
+	useEffect(() => {
+		let facilityName = order?.orderPatientDetails?.facilityName;
+		let result = order?.orderDetails.map((x) => {
+			return {...x, facilityName};
+		});
+		setOrderData(result);
+	}, [order]);
 
-     // for table
-//SETTING COLUMNS NAMES
-const columns = useMemo(
+	// for table
+	//SETTING COLUMNS NAMES
+	const columns = useMemo(
+		() => [
+			{
+				Header: 'service',
+				accessor: 'description', // accessor is the "key" in the data
+				disableSortBy: true,
+				Cell: serviceDetail,
+			},
+			{
+				Header: 'CPT',
+				accessor: 'code',
+			},
+			{
+				Header: 'EHRAccNum',
+				accessor: 'EHRAccNum',
+			},
+			{
+				Header: 'Ref',
+				accessor: 'Ref',
+			},
+			{
+				Header: 'Price',
+				accessor: 'packagePrice',
+			},
 
-    () => [
-        {
-            Header: 'service',
-            accessor: 'service', // accessor is the "key" in the data
-            disableSortBy: true,
-            Cell: serviceDetail,
-        },
-        {
-            Header:'CPT',
-            accessor: 'CPT',
-        },
-        {
-            Header:'EHRAccNum',
-            accessor: 'EHRAccNum',
-        },
-        {
-            Header:'Ref',
-            accessor: 'Ref',
-        },
-        {
-            Header:'Price',
-            accessor: 'Price',
-        },
-     
-       
-        {
-            
-            Header:"Action",
-            accessor: '', // accessor is the "key" in the data
-            disableSortBy: true,
-            Cell:ActionOrderSystem 
-        },
-          
-        
-    ],
-    []
-);
-
+			{
+				Header: 'Action',
+				accessor: '', // accessor is the "key" in the data
+				disableSortBy: true,
+				Cell: ActionOrderSystem,
+			},
+		],
+		[]
+	);
 
 	return (
 		<div className='card  cover-content pt-2 '>
 			<div className='card-header border-none'>
 				<div className='row'>
 					<div className='col-md-6  '>
-						<div className='h4 mb-1 text-black'>Order #990077</div>
-						<div>01/18/2021</div>
+						<div className='h4 mb-1 text-black'>Order #{order?.orderPatientDetails?.orderNumber}</div>
+						<div>{order?.orderPatientDetails?.orderDate}</div>
 					</div>
 
-                    <div className="col-md-6">
-                      <div className='btn btn-view-account ml-3 float-right'>Approve</div>
-                    </div>
+					<div className='col-md-6'>
+						<div className='btn btn-view-account ml-3 float-right'>Approve</div>
+					</div>
 				</div>
 			</div>
 
-            <div className="card-body p-0">
-            <DataTable columns={columns} data={data}  />
-            </div>
-
+			<div className='card-body p-0'>{orderData && <DataTable columns={columns} data={orderData} />}</div>
 		</div>
 	);
 };
 
+OrderList.propTypes = {
+	orderDetail: PropTypes.any,
+};
 export default OrderList;
