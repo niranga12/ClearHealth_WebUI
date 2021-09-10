@@ -75,7 +75,7 @@ const OrderAction = ({row}) => {
 				</CDropdownMenu>
 			</CDropdown>
 
-			<CModal show={modal} onClose={setModal} color='danger'>
+			<CModal show={modal} onClose={setModal} >
 				<CModalHeader closeButton>
 					<CModalTitle>Delete</CModalTitle>
 				</CModalHeader>
@@ -90,9 +90,9 @@ const OrderAction = ({row}) => {
 				</CModalFooter>
 			</CModal>
 
-			<CModal show={primary} onClose={() => setPrimary(!primary)} color='primary'>
+			<CModal show={primary} onClose={() => setPrimary(!primary)} >
 				<CModalHeader closeButton>
-					<CModalTitle>Modal title</CModalTitle>
+					<CModalTitle>Update</CModalTitle>
 				</CModalHeader>
 				<CModalBody>{primary && <OrderActionEdit data={row.original} handleChangeCpt={editCpt} />}</CModalBody>
 				<CModalFooter>
