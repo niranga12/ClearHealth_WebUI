@@ -67,12 +67,12 @@ const HospitalSubCategories = () => {
                     Dashboard
                   </CNavLink>
                 </CNavItem>
-                <CNavItem>
+                {/* <CNavItem>
                   <CNavLink >
                   <CIcon name="logoPayment" size={'2xl'}  className="pr-1"/>
                     Payment
                   </CNavLink>
-                </CNavItem>
+                </CNavItem> */}
               </CNav>
               <CTabContent>
                 <CTabPane>
@@ -92,9 +92,9 @@ const HospitalSubCategories = () => {
                 {active ===HospitalTabList.Dashboard ?  < HospitalDashboard/>: ''}
                      
                 </CTabPane>
-                <CTabPane>
+                {/* <CTabPane>
                   {`5. payment ${active}`}
-                </CTabPane>
+                </CTabPane> */}
               </CTabContent>
             </CTabs>
           {/* </CCardBody> */}

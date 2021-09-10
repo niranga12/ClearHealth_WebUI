@@ -8,10 +8,10 @@ import PropTypes from 'prop-types';
 const RatingView = ({totalCount, count}) => {
 	// @ts-ignore
 	// eslint-disable-next-line no-unused-vars
-	const [total, setTotal] = useState(totalCount);
+	const [total, setTotal] = useState(Number(totalCount));
 	// @ts-ignore
 	// eslint-disable-next-line no-unused-vars
-	const [attempt, setAttempt] = useState(count);
+	const [attempt, setAttempt] = useState(Number(count));
 	const [pending, setPending] = useState(0);
 
 	useEffect(() => {

@@ -49,7 +49,7 @@ const OrderForm = () => {
 	};
 
 	// const CheckAvilableBtn = () => {
-	// 	debugger;
+	
 	// 	if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) ) {
 	// 		btnRef.current.removeAttribute('disabled');
 	// 	} else {

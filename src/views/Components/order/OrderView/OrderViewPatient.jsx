@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, {useEffect, useState} from 'react';
 import 'font-awesome/css/font-awesome.min.css';
 import PropTypes from 'prop-types';
@@ -30,12 +31,9 @@ const schema = yup.object().shape({
 const OrderViewPatient = ({patientDetail}) => {
 	const {
 		register,
-		handleSubmit,
-		setValue,
 		getValues,
 		reset,
 
-		formState,
 		// formState: {errors},
 	} = useForm({resolver: yupResolver(schema), mode: 'all'});
 

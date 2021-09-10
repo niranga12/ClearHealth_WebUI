@@ -26,7 +26,7 @@ function OrderAttempt({row}) {
 	return (
 		<>
 			<div className='min-150'>
-				<RatingView totalCount={row.original.totalAttempts} count={row.original.attempts} />
+				<RatingView totalCount={Number(row.original.totalAttempts)} count={Number(row.original.attempts)} />
 			</div>
 		</>
 	);
@@ -53,7 +53,7 @@ function OrderActions({row}) {
 			<div>
 			
 				<div className='btn btn-view-account ml-3 float-right' onClick={actionLink} > View Order</div>
-				<div className='btn btn-primary  float-right'  > Re Order</div>
+				<div className='btn btn-primary  float-right'  > Re Send</div>
 			</div>
 		</>
 	);

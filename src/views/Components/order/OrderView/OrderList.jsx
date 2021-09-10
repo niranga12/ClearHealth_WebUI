@@ -1,9 +1,8 @@
-import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
+
 import React, {useEffect, useMemo, useState} from 'react';
 import DataTable from 'src/views/common/dataTable';
 import PropTypes from 'prop-types';
-
-
+import OrderAction from './OrderAction';
 
 const serviceDetail = ({row}) => {
 	return (
@@ -16,29 +15,7 @@ const serviceDetail = ({row}) => {
 	);
 };
 
-function ActionOrderSystem({row}) {
-	// let history = useHistory();
 
-	const redirectToEdit = () => {
-		// history.push();
-	};
-
-	return (
-		<>
-			<CDropdown className='m-1'>
-				<CDropdownToggle>
-					<div className='text-center text-gray font-15re cursor-point  ml-3'>
-						<span className='fa fa-ellipsis-h '></span>
-					</div>
-				</CDropdownToggle>
-				<CDropdownMenu>
-					<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>
-					<CDropdownItem>Delete</CDropdownItem>
-				</CDropdownMenu>
-			</CDropdown>
-		</>
-	);
-}
 
 const OrderList = ({orderDetail}) => {
 	const [order, setOrder] = useState(orderDetail);
@@ -49,12 +26,19 @@ const OrderList = ({orderDetail}) => {
 	}, [orderDetail]);
 
 	useEffect(() => {
-		let facilityName = order?.orderPatientDetails?.facilityName;
+		try {
+			let facilityName = order?.orderPatientDetails?.facilityName;
 		let result = order?.orderDetails.map((x) => {
 			return {...x, facilityName};
 		});
 		setOrderData(result);
+		} catch (error) {
+			console.error(error);
+		}
+		
+		
 	}, [order]);
+
 
 	// for table
 	//SETTING COLUMNS NAMES
@@ -87,7 +71,8 @@ const OrderList = ({orderDetail}) => {
 				Header: 'Action',
 				accessor: '', // accessor is the "key" in the data
 				disableSortBy: true,
-				Cell: ActionOrderSystem,
+				
+				Cell: OrderAction,
 			},
 		],
 		[]
@@ -108,7 +93,7 @@ const OrderList = ({orderDetail}) => {
 				</div>
 			</div>
 
-			<div className='card-body p-0'>{orderData && <DataTable columns={columns} data={orderData} />}</div>
+			<div className='card-body p-0'>{orderData && <DataTable columns={columns} data={orderData}  />}</div>
 		</div>
 	);
 };

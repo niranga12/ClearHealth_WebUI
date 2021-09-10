@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useMemo, useState} from 'react';
 import DataTable from 'src/views/common/dataTable';
