@@ -4,16 +4,17 @@ import React, { useEffect, useMemo, useState } from 'react'
 import DataTable from 'src/views/common/dataTable';
 import PropTypes from 'prop-types';
 import { getFacilityPackageByHospitalId } from 'src/service/hospitalsService';
-import { FacilityPackageField } from 'src/reusable/enum';
+import { FacilityPackageField, PackageItems, Packages } from 'src/reusable/enum';
 import { useDispatch } from 'react-redux';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { CurrencyFormat } from 'src/reusable';
+import { SHOW_PRICE_DATA } from 'src/constansts';
 
 
 const FacilityToolTable = ({filterDetail}) => {
 
     const [facitlityData, setFacitlityData] = useState([]);
-const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
 
 useEffect(() => {
@@ -45,6 +46,26 @@ const fetchData= async()=>{
 fetchData();
     
 }, [filterDetail])
+
+
+
+
+
+useEffect(() => {
+    
+    let packageName = Packages.find(x=>x.id== PackageItems.Facility).name;
+    let data={feeSchedule:facitlityData, packageName, filterDetail };
+	
+	dispatch({
+		type: SHOW_PRICE_DATA,
+		payload: data,
+	  }); 
+		
+	}, [facitlityData])
+
+   
+
+
 
 
 const CalculationPackage=(enhancementPercentage,enhancementField)=>{

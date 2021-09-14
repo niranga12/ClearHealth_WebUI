@@ -26,17 +26,34 @@ function OrderAttempt({row}) {
 	return (
 		<>
 			<div className='min-150'>
-				<RatingView totalCount={row.original.totalAttempts} count={row.original.attempts} />
+				<RatingView totalCount={Number(row.original.totalAttempts)} count={Number(row.original.attempts)} />
 			</div>
 		</>
 	);
 }
 
+
+
 function OrderActions({row}) {
+	let history = useHistory();
+	
+
+
+	const actionLink =()=>{
+
+		history.push({
+			pathname: `/order/view`,
+			search: `?orderId=${row.original.orderId}`,
+			// state: { detail: 'some_value' }
+		});
+	}
+
 	return (
 		<>
 			<div>
-				<div className='btn btn-view-account ml-3 float-right'> View Order</div>
+			
+				<div className='btn btn-view-account ml-3 float-right' onClick={actionLink} > View Order</div>
+				<div className='btn btn-primary  float-right'  > Re Send</div>
 			</div>
 		</>
 	);
@@ -69,6 +86,7 @@ function HospitalOrderTable() {
    let history = useHistory();
 	const [hospitalOrderData, setHospitalOrderData] = useState([]);
      const [hospitalId, setHospitalId] = useState(null);
+	 const [hospitalName, setHospitalName] = useState('')
 	// const [page, setPage] = useState(1);
 	// const [count, setCount] = useState(0);
 
@@ -78,7 +96,10 @@ function HospitalOrderTable() {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
+		const name=params.get('name');
 		setHospitalId(id);
+		setHospitalName(name);
+
 		const fetchData = async () => {
 			try {
 				if (id) {
@@ -121,8 +142,7 @@ const handleAddOrder=(e)=>{
 	history.push('/order')
 	history.push({
 		pathname: `/order`,
-		search: `?hospitalId=${hospitalId}`,
-		
+		search: `?hospitalId=${hospitalId}&&name=${hospitalName}`,		
 	});
 
 }
@@ -169,6 +189,7 @@ const handleAddOrder=(e)=>{
 				accessor: 'orderStatus', // accessor is the "key" in the data
 				 Cell: OrderStatusValue,
 			},
+			
 			{
 				Header: '',
 				accessor: 'lastname', // accessor is the "key" in the data

@@ -3,11 +3,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import DataTable from 'src/views/common/dataTable';
-import { PhysicianPackageField } from 'src/reusable/enum';
+import { PackageItems, Packages, PhysicianPackageField } from 'src/reusable/enum';
 import { getPhysicianPackageByHospitalId } from 'src/service/hospitalsService';
 import { useDispatch } from 'react-redux';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { CurrencyFormat } from 'src/reusable';
+import { SHOW_PRICE_DATA } from 'src/constansts';
 
 
 const PhysicianToolTable = ({filterDetail}) => {
@@ -45,6 +46,19 @@ useEffect(() => {
     }, [filterDetail])
 
 
+
+    
+useEffect(() => {
+    
+    let packageName = Packages.find(x=>x.id== PackageItems.Physician).name;
+    let data={feeSchedule:physicianData, packageName, filterDetail };
+	
+	dispatch({
+		type: SHOW_PRICE_DATA,
+		payload: data,
+	  }); 
+		
+	}, [physicianData])
 
 
     const CalculationPackage=(enhancementPercentage,enhancementField) => {
