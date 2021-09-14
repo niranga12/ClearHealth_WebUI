@@ -48,13 +48,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 			}
 		};
 		fetchData();
-
-
-
 	}, [defaultValues]);
-
-
-
 
 	// form submit
 	const userFormSubmit = (data) => {
@@ -73,9 +67,8 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 			roleTypeId: data.roleTypeId,
 			status: data.status,
 			email: data.email,
-
-
 		};
+
 		try {
 			if (newUser) {
 				let result = await saveUser(newUser);
@@ -89,7 +82,6 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 		}
 	};
 
-
 	// update User
 	const updateUserInfo = async () => {
 		try {
@@ -100,7 +92,6 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 					roleTypeId: getValues('roleTypeId'),
 					status: getValues('status'),
 					email: getValues('email'),
-
 				}),
 
 			};
@@ -127,44 +118,34 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 			<form onSubmit={handleSubmit(userFormSubmit)}>
 				{/* hospital details */}
 				<h5 className='font-weight-bold mt-1'>Personal Information</h5>
-
 				<div className='row mb-3'>
-					<div className='col-md-6'>
+					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
 						</div>
-
 					</div>
-				</div>
 
-				<div className='row mb-3'>
-					<div className='col-md-6'>
+					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
 						</div>
-
 					</div>
 
-				</div>
-
-
-				<div className='row mb-3'>
-					<div className='col-md-6'>
+					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
 								Role Type <span className='text-danger font-weight-bold '>*</span>
 							</label>
-
 							<select name='roleTypeId' id='roleTypeId' className='form-control-sm'  {...register('roleTypeId')} >
 								{roleTypeDta.map((item, index) => (
 									<option key={index} value={item.roleTypeId}>
@@ -176,10 +157,11 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 						</div>
 					</div>
 
+
 				</div>
 
 				<div className='row mb-3'>
-					<div className='col-md-6'>
+					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
 								Status <span className='text-danger font-weight-bold '>*</span>
@@ -195,10 +177,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 						</div>
 					</div>
 
-				</div>
-
-				<div className='row mb-3'>
-					<div className='col-md-6'>
+					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
 								Email <span className='text-danger font-weight-bold '>*</span>
@@ -207,9 +186,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 							<div className='small text-danger  pb-2   '>{errors.email?.message}</div>
 						</div>
 					</div>
-
 				</div>
-
 
 				<div className='row'>
 					<div className='col-md-12'>
@@ -222,8 +199,6 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 		</div>
 	);
 };
-
-
 
 
 export default UserForm;
