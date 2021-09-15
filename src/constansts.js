@@ -13,4 +13,14 @@ export const SHOW_PRICE_DATA="SHOW_PRICE_DATA"
 
 export const CHANGE_ORDER_STATUS="CHANGE_ORDER_STATUS";
 export const RESET_ORDER_STATUS="RESET_ORDER_STATUS";
+export const RESET_MAIN_ORDER="RESET_MAIN_ORDER";
+
+
+
+export const CHANGE_ORDER_Table="CHANGE_ORDER_Table";
+
+export const RESET_ORDER_Table="RESET_ORDER_Table";
+
+
+
 

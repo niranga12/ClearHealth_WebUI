@@ -23,6 +23,7 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 const ForgotPW= React.lazy(()=>import('./views/pages/forgotpassword/forgotpassword'));
 const ResetPW= React.lazy(()=>import('./views/pages/resetpassword/resetpassword'));
 const DashboardMenu= React.lazy(()=>import('./views/Components/dashboardMenu/TheDashboardMenu'));
+const Payment =React.lazy(() => import('./views/Components/payment/Payment'));
 
 class App extends Component {
 
@@ -45,8 +46,9 @@ class App extends Component {
               <Route exact path="/resetpassword/:id" name="Reset Password" render={props => <ResetPW {...props}/>} />
              
               <AuthRoute  path="/main" name="main" render={props => <DashboardMenu {...props}/>} />
+              <AuthRoute  path="/payment" name="payment" render={props => <Payment {...props}/>} />
 
-
+              
               <AuthRoute  path="/" name="Home" render={props => <TheLayout {...props}/>} />
             
             </Switch>
