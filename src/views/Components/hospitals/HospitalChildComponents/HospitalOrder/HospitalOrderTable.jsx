@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
 import {notify} from 'reapop';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
-import { changeOrderTable, resetOrderTable } from 'src/actions/orderAction';
+import { resetOrderTable } from 'src/actions/orderAction';
 import {OrderStatus, ServiceMsg, TableSettingsEnum} from 'src/reusable/enum';
 import {getOrderListByHospitalId} from 'src/service/hospitalsService';
 import {orderAprove} from 'src/service/orderService';
@@ -130,7 +130,7 @@ function HospitalOrderTable() {
 		const name = params.get('name');
 		setHospitalId(id);
 		setHospitalName(name);
-
+		setHospitalOrderData([]);
 		const fetchData = async () => {
 			try {
 				if (id) {
