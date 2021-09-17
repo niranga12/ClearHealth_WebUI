@@ -134,6 +134,12 @@ export const HospitalTabList={
 
 
 }
+export const ContactMethod = {
+    Email: 0,
+    Phone : 1
+}
+
+
 
 export const csvOptions = { 
     fieldSeparator: ',',
