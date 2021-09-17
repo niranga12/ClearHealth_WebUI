@@ -926,6 +926,37 @@ input.form-control-sm:read-only {
   background-color:#f3f0f0;
 }
 
+.payment-address {
+  
+  color: #222831;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+.payment-information-about {
+
+  color: #7A7E83;
+ 
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 19px;
+}
+.pay-summary-name{
+
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.2em;
+}
+.pay-summary-address{
+color: #222831;
+
+font-size: 16px;
+font-weight: 500;
+letter-spacing: 0;
+line-height: 1.2em;
+}
 // loader animation
 
 .center {

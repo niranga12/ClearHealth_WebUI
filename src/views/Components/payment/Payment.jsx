@@ -2,6 +2,7 @@ import React from 'react'
 import { TheHeader } from 'src/containers';
 import NotificationLayout from 'src/_helpers/notification';
 import PaymentOrder from './PaymentOrder';
+import PaymentOrderSummary from './PaymentOrderSummary';
 
 const Payment = () => {
     return (
@@ -17,7 +18,7 @@ const Payment = () => {
         <PaymentOrder/>
                 </div>
         <div className="col-md-4">
-            fdas
+       <PaymentOrderSummary/>
         </div>
         </div>
         </div>
