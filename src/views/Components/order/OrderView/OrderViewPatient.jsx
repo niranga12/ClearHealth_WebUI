@@ -15,14 +15,18 @@ import {updatePatientByPartyRoleId} from 'src/service/patientService';
 import OnError from 'src/_helpers/onerror';
 import {useDispatch} from 'react-redux';
 import {notify} from 'reapop';
+import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 
 const schema = yup.object().shape({
 	patientForm: yup.object().shape({
-		firstName: yup.string(),
-		middleName: yup.string(),
-		lastName: yup.string().required(),
-		phoneNumber: yup.string(),
-		email: yup.string(),
+		firstName: yup.string().required('First Name is required'),
+		// middleName: yup.string(),
+		lastName: yup.string().required('Last Name is required'),
+		phoneNumber:yup
+		.string()
+		.required(' Phone is required')
+		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+		email: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 		DOB: yup.string(),
 		// enhancementOn:yup.string().required()
 	}),
@@ -34,8 +38,11 @@ const OrderViewPatient = ({patientDetail}) => {
 		getValues,
 		reset,
 
-		// formState: {errors},
+		 formState
 	} = useForm({resolver: yupResolver(schema), mode: 'all'});
+
+	const { isValid, errors} = formState;
+
 
 	const [isEdit, setisEdit] = useState(false);
 	const [patient, setPatient] = useState(patientDetail);
@@ -93,7 +100,7 @@ const OrderViewPatient = ({patientDetail}) => {
 	const saveButton = () => {
 		return (
 			<>
-				<button className='btn btn-primary float-right ml-3 text-white' onClick={() => update()}>
+				<button className='btn btn-primary float-right ml-3 text-white' disabled={!isValid} onClick={() => update()}>
 					{' '}
 					<span className='fa fa-x fa-save pr-2'></span> <span>Update </span>
 				</button>
@@ -123,6 +130,7 @@ const OrderViewPatient = ({patientDetail}) => {
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.firstName')} /> : <div className='h5'>{patient?.firstName}</div>}
+							<div className='small text-danger  pb-2   '>{errors.patientForm?.firstName?.message}</div>
 						</div>
 					</div>
 
@@ -131,9 +139,10 @@ const OrderViewPatient = ({patientDetail}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Middle Name <span className='text-danger font-weight-bold '>*</span>{' '}
+								Middle Name {' '}
 							</label>
 							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.middleName')} /> : <div className='h5'>{patient?.middleName} </div>}
+						
 						</div>
 					</div>
 
@@ -145,6 +154,7 @@ const OrderViewPatient = ({patientDetail}) => {
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.lastName')} /> : <div className='h5'> {patient?.lastName}</div>}
+							{isEdit && 	<div className='small text-danger  pb-2   '>{errors.patientForm?.lastName?.message}</div>}
 						</div>
 					</div>
 
@@ -168,6 +178,7 @@ const OrderViewPatient = ({patientDetail}) => {
 								Email <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.email')} /> : <div className='h5'>{patient?.email}</div>}
+							{isEdit && <div className='small text-danger  pb-2   '>{errors.patientForm?.email?.message}</div>}
 						</div>
 					</div>
 					{/* Phone*/}
@@ -177,7 +188,8 @@ const OrderViewPatient = ({patientDetail}) => {
 								{' '}
 								Phone <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							{isEdit ? <InputMask {...register('patientForm.phoneNumber')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patientForm.phoneNumber'))} className='form-control-sm' /> : <div className='h5'>{patient?.phoneNumber}</div>}
+							{isEdit ? <InputMask {...register('patientForm.phoneNumber')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(!isEdit, getValues('patientForm.phoneNumber'))} className='form-control-sm' /> : <div className='h5'>{patient?.phoneNumber}</div>}
+							{isEdit && <div className='small text-danger  pb-2   '>{errors.patientForm?.phoneNumber?.message}</div>}
 						</div>
 					</div>
 				</div>
