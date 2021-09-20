@@ -54,6 +54,10 @@ export const CurrencyDetail = {
 	USA: '$',
 };
 
+export const DateFormat={
+	USFormat: 'MM-DD-YYYY'
+}
+
 export const ServiceType = {
 	Types: [
 		{ value: '', text: 'Select' },

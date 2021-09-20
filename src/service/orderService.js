@@ -8,3 +8,6 @@ export const  deleteOrderCpt=(orderId,orderDetailId)=>axiosInstance.delete(`orde
 export const updateOrder=(orderId,orderDetail)=>axiosInstance.put(`order/${orderId}`,orderDetail);
 
 export const orderAprove=(orderId)=>axiosInstance.post(`order/${orderId}/approve`,{});
+
+export const getPatientOrderByOrderId=(orderId)=>axiosInstance.get(`order/${orderId}/patient`);
+
