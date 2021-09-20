@@ -8,6 +8,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {notify} from 'reapop';
 import {orderAprove} from 'src/service/orderService';
 import {ServiceMsg} from 'src/reusable/enum';
+import moment from 'moment';
 
 const serviceDetail = ({row}) => {
 	return (
@@ -109,13 +110,13 @@ const OrderList = ({orderDetail}) => {
 				<div className='row'>
 					<div className='col-md-6  '>
 						<div className='h4 mb-1 text-black'>Order #{order?.orderPatientDetails?.orderNumber}</div>
-						<div>{order?.orderPatientDetails?.orderDate}</div>
+						<div>{ moment(order?.orderPatientDetails?.orderDate).format('MM-DD-YYYY')}</div>
 					</div>
 
 					<div className='col-md-6'>
-						<div className='btn btn-view-account ml-3 float-right' onClick={approveOrder}>
+						<button className='btn btn-view-account ml-3 float-right'  disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts } onClick={approveOrder}>
 							Approve
-						</div>
+						</button>
 					</div>
 				</div>
 			</div>

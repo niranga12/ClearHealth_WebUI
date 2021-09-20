@@ -21,8 +21,10 @@ const initialSearch = {
 
 const selectionListDropDown = [
 	{text: 'Select', value: ''},
+	{text: 'Outstanding', value: 'Outstanding'},
+	{text: 'Accepted', value: 'Accepted'},
 	{text: 'Expired', value: 'Expired'},
-	{text: 'Valid', value: 'Valid'},
+
 ];
 
 
@@ -70,17 +72,21 @@ function OrderActions({row}) {
 		}
 	};
 
+	
+	
+
+
 	return (
 		<>
 			<div>
-				<div className='btn btn-view-account ml-3 float-right' onClick={actionLink}>
+				<div className='btn btn-view-account ml-3 float-right'  onClick={actionLink}>
 					{' '}
 					View Order
 				</div>
-				<div className='btn btn-primary  float-right' onClick={approveOrder}>
+				<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts } onClick={approveOrder}>
 					{' '}
 					Send Order
-				</div>
+				</button>
 			</div>
 		</>
 	);
