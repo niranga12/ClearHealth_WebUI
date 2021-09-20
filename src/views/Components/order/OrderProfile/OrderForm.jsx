@@ -81,6 +81,7 @@ const OrderForm = () => {
 				middleName: value.middleName,
 				lastName: value.lastName,
 				dateOfBirth: value.dateOfBirth,
+				contactMethod:value.contactMethod,
 				email: value.email,
 				phone: value.phone,
 				partyRoleId: value.partyRoleId,
@@ -105,7 +106,7 @@ const OrderForm = () => {
 	};
 
 	const patientsFormDetail = (value) => {
-		// console.log(value);
+		 
 		setPatientDetail(value);
 		// CheckAvilableBtn();
 	};
@@ -118,7 +119,7 @@ const handleClearSelection=()=>{
 			firstName: "",
 			middleName: "",
 			lastName: "",
-			
+			contactMethod:"",
 			email:"",
 			phone:"",
 			partyRoleId: "",

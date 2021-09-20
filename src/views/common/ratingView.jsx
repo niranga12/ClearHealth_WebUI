@@ -15,7 +15,10 @@ const RatingView = ({totalCount, count}) => {
 	const [pending, setPending] = useState(0);
 
 	useEffect(() => {
-		setPending(total - attempt);
+		if(total>=attempt){
+			setPending(total - attempt);
+		}
+	
 	}, [totalCount,count]);
 
 	const success = () => {

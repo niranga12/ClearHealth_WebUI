@@ -1,10 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useMemo, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
+import {notify} from 'reapop';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
-import {OrderStatus, TableSettingsEnum} from 'src/reusable/enum';
+import { resetOrderTable } from 'src/actions/orderAction';
+import {OrderStatus, ServiceMsg, TableSettingsEnum} from 'src/reusable/enum';
 import {getOrderListByHospitalId} from 'src/service/hospitalsService';
+import {orderAprove} from 'src/service/orderService';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import DataTable from 'src/views/common/dataTable';
 import RatingView from 'src/views/common/ratingView';
@@ -18,9 +21,13 @@ const initialSearch = {
 
 const selectionListDropDown = [
 	{text: 'Select', value: ''},
+	{text: 'Outstanding', value: 'Outstanding'},
+	{text: 'Accepted', value: 'Accepted'},
 	{text: 'Expired', value: 'Expired'},
-	{text: 'Valid', value: 'Valid'},
+
 ];
+
+
 
 function OrderAttempt({row}) {
 	return (
@@ -36,32 +43,58 @@ function OrderAttempt({row}) {
 
 function OrderActions({row}) {
 	let history = useHistory();
-	
 
+	const dispatch = useDispatch();
 
-	const actionLink =()=>{
-
+	const actionLink = () => {
 		history.push({
 			pathname: `/order/view`,
 			search: `?orderId=${row.original.orderId}`,
 			// state: { detail: 'some_value' }
 		});
-	}
+	};
+	const approveOrder = async () => {
+		try {
+			
+			// dispatch(changeOrderTable());
+			const result = await orderAprove(row.original.orderId);
+			if (result.data.message == ServiceMsg.OK) {
+				dispatch(notify(`Successfully updated`, 'success'));
+				// history.go(0)
+			setTimeout(() => {
+				dispatch(resetOrderTable());
+			}, 1500);		
+
+
+			}
+		} catch (error) {
+			OnError(error, dispatch);
+		}
+	};
+
+	
+	
+
 
 	return (
 		<>
 			<div>
-			
-				<div className='btn btn-view-account ml-3 float-right' onClick={actionLink} > View Order</div>
-				<div className='btn btn-primary  float-right'  > Re Send</div>
+				<div className='btn btn-view-account ml-3 float-right'  onClick={actionLink}>
+					{' '}
+					View Order
+				</div>
+				<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts } onClick={approveOrder}>
+					{' '}
+					Send Order
+				</button>
 			</div>
 		</>
 	);
 }
 
 function OrderStatusValue({row}) {
-	const{orderStatus}=row.original;
-	
+	const {orderStatus} = row.original;
+
 	switch (orderStatus) {
 		case OrderStatus.Ordered:
 			return <div>Ordered</div>;
@@ -75,31 +108,35 @@ function OrderStatusValue({row}) {
 		case OrderStatus.Pending:
 			return <div>Pending</div>;
 		default:
-			return <></>
-			// break;
+			return <></>;
+		// break;
 	}
 }
 
 function HospitalOrderTable() {
 	const location = useLocation();
 
-   let history = useHistory();
+	let history = useHistory();
 	const [hospitalOrderData, setHospitalOrderData] = useState([]);
-     const [hospitalId, setHospitalId] = useState(null);
-	 const [hospitalName, setHospitalName] = useState('')
+	const [hospitalId, setHospitalId] = useState(null);
+	const [hospitalName, setHospitalName] = useState('');
 	// const [page, setPage] = useState(1);
 	// const [count, setCount] = useState(0);
 
 	const dispatch = useDispatch();
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
+	
+	const orderChanges = useSelector((state) => state.mainOrder.changeProgress);
+
+
 
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
-		const name=params.get('name');
+		const name = params.get('name');
 		setHospitalId(id);
 		setHospitalName(name);
-
+		setHospitalOrderData([]);
 		const fetchData = async () => {
 			try {
 				if (id) {
@@ -120,7 +157,7 @@ function HospitalOrderTable() {
 			}
 		};
 		fetchData();
-	}, [location, searchQuery]);
+	}, [location, searchQuery,orderChanges]);
 
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
@@ -136,16 +173,14 @@ function HospitalOrderTable() {
 		// console.log(e.target.value);
 	};
 
-
-const handleAddOrder=(e)=>{
-	// console.log(e);
-	history.push('/order')
-	history.push({
-		pathname: `/order`,
-		search: `?hospitalId=${hospitalId}&&name=${hospitalName}`,		
-	});
-
-}
+	const handleAddOrder = (e) => {
+		// console.log(e);
+		history.push('/order');
+		history.push({
+			pathname: `/order`,
+			search: `?hospitalId=${hospitalId}&&name=${hospitalName}`,
+		});
+	};
 
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
@@ -187,9 +222,9 @@ const handleAddOrder=(e)=>{
 			{
 				Header: 'Status',
 				accessor: 'orderStatus', // accessor is the "key" in the data
-				 Cell: OrderStatusValue,
+				Cell: OrderStatusValue,
 			},
-			
+
 			{
 				Header: '',
 				accessor: 'lastname', // accessor is the "key" in the data
@@ -202,7 +237,7 @@ const handleAddOrder=(e)=>{
 	return (
 		<>
 			<div className=' pt-2 '>
-				<AdminHeaderWithSearch handleAddNew={handleAddOrder} handleSearchChange={searchTextChange} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown} buttonTitle="Add Order" placeholder='Search here..' title='Orders' />
+				<AdminHeaderWithSearch handleAddNew={handleAddOrder} handleSearchChange={searchTextChange} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown} buttonTitle='Add Order' placeholder='Search here..' title='Orders' />
 				<DataTable columns={columns} data={hospitalOrderData} />
 			</div>
 		</>

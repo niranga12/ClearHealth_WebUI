@@ -730,6 +730,8 @@ background-color: rgba(91,77,253,0.1);
 //   border-left: 1px solid #928e8e38;
 
 // }
+
+
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus{
   border-color: white;
   border-bottom: 4px solid #5b4dfd;
@@ -945,6 +947,37 @@ input.form-control-sm:read-only {
   background-color:#f3f0f0;
 }
 
+.payment-address {
+  
+  color: #222831;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+.payment-information-about {
+
+  color: #7A7E83;
+ 
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 19px;
+}
+.pay-summary-name{
+
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.2em;
+}
+.pay-summary-address{
+color: #222831;
+
+font-size: 16px;
+font-weight: 500;
+letter-spacing: 0;
+line-height: 1.2em;
+}
 // loader animation
 
 .center {
@@ -1010,3 +1043,47 @@ input.form-control-sm:read-only {
 
 
 // loader animation end
+
+
+
+/* CSS for Credit Card Payment form */
+.credit-card-box .panel-title {
+  display: inline;
+  font-weight: bold;
+}
+.credit-card-box .form-control.error {
+  border-color: red;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(255,0,0,0.6);
+}
+.credit-card-box label.error {
+font-weight: bold;
+color: red;
+padding: 2px 8px;
+margin-top: 2px;
+}
+.credit-card-box .payment-errors {
+font-weight: bold;
+color: red;
+padding: 2px 8px;
+margin-top: 2px;
+}
+.credit-card-box label {
+  display: block;
+}
+/* The old "center div vertically" hack */
+.credit-card-box .display-table {
+  display: table;
+}
+.credit-card-box .display-tr {
+  display: table-row;
+}
+.credit-card-box .display-td {
+  display: table-cell;
+  vertical-align: middle;
+  width: 50%;
+}
+/* Just looks nicer */
+.credit-card-box .panel-heading img {
+  min-width: 180px;
+}

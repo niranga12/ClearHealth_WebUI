@@ -17,6 +17,8 @@ const orderReducer = (state = initialState, action) => {
 				changeOrderProgress: false,
 			};
 
+		
+
 		default: {
 			return state;
 		}

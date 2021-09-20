@@ -1,8 +1,14 @@
-
 import React, {useEffect, useMemo, useState} from 'react';
 import DataTable from 'src/views/common/dataTable';
 import PropTypes from 'prop-types';
 import OrderAction from './OrderAction';
+import {useDispatch} from 'react-redux';
+import OnError from 'src/_helpers/onerror';
+import {useHistory, useLocation} from 'react-router-dom';
+import {notify} from 'reapop';
+import {orderAprove} from 'src/service/orderService';
+import {ServiceMsg} from 'src/reusable/enum';
+import moment from 'moment';
 
 const serviceDetail = ({row}) => {
 	return (
@@ -15,11 +21,20 @@ const serviceDetail = ({row}) => {
 	);
 };
 
-
-
 const OrderList = ({orderDetail}) => {
 	const [order, setOrder] = useState(orderDetail);
 	const [orderData, setOrderData] = useState([]);
+	const dispatch = useDispatch();
+	const location = useLocation();
+	const [orderId, setOrderId] = useState(null);
+	let history=useHistory()
+
+
+	useEffect(() => {
+		const params = new URLSearchParams(location.search);
+		const id = params.get('orderId');
+		setOrderId(id);
+	}, [location]);
 
 	useEffect(() => {
 		setOrder(orderDetail);
@@ -28,17 +43,28 @@ const OrderList = ({orderDetail}) => {
 	useEffect(() => {
 		try {
 			let facilityName = order?.orderPatientDetails?.facilityName;
-		let result = order?.orderDetails.map((x) => {
-			return {...x, facilityName};
-		});
-		setOrderData(result);
+			let result = order?.orderDetails.map((x) => {
+				return {...x, facilityName};
+			});
+			setOrderData(result);
 		} catch (error) {
 			console.error(error);
 		}
-		
-		
 	}, [order]);
 
+	const approveOrder = async () => {
+		try {
+			
+			const result = await orderAprove(orderId);
+			if (result.data.message == ServiceMsg.OK) {
+				dispatch(notify(`Successfully updated`, 'success'));
+				history.goBack();
+
+			}
+		} catch (error) {
+			OnError(error, dispatch);
+		}
+	};
 
 	// for table
 	//SETTING COLUMNS NAMES
@@ -71,7 +97,7 @@ const OrderList = ({orderDetail}) => {
 				Header: 'Action',
 				accessor: '', // accessor is the "key" in the data
 				disableSortBy: true,
-				
+
 				Cell: OrderAction,
 			},
 		],
@@ -84,16 +110,18 @@ const OrderList = ({orderDetail}) => {
 				<div className='row'>
 					<div className='col-md-6  '>
 						<div className='h4 mb-1 text-black'>Order #{order?.orderPatientDetails?.orderNumber}</div>
-						<div>{order?.orderPatientDetails?.orderDate}</div>
+						<div>{ moment(order?.orderPatientDetails?.orderDate).format('MM-DD-YYYY')}</div>
 					</div>
 
 					<div className='col-md-6'>
-						<div className='btn btn-view-account ml-3 float-right'>Approve</div>
+						<button className='btn btn-view-account ml-3 float-right'  disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts } onClick={approveOrder}>
+							Approve
+						</button>
 					</div>
 				</div>
 			</div>
 
-			<div className='card-body p-0'>{orderData && <DataTable columns={columns} data={orderData}  />}</div>
+			<div className='card-body p-0'>{orderData && <DataTable columns={columns} data={orderData} />}</div>
 		</div>
 	);
 };

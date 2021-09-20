@@ -21,8 +21,8 @@ const initialSearch = {
   itemsPerPage: TableSettingsEnum.ItemPerPage,
   pageNumber: 1,
   searchTerm: "",
-  orderBy: "",
-  sortOrder: ""
+  sortOrder:'desc',
+	orderBy:'id'
 };
 
 

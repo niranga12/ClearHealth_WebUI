@@ -54,6 +54,10 @@ export const CurrencyDetail = {
 	USA: '$',
 };
 
+export const DateFormat={
+	USFormat: 'MM-DD-YYYY'
+}
+
 export const ServiceType = {
 	Types: [
 		{ value: '', text: 'Select' },
@@ -132,6 +136,12 @@ export const HospitalTabList={
 	Dashboard:3,
 	Payment:4
 }
+export const ContactMethod = {
+    Email: 0,
+    Phone : 1
+}
+
+
 
 export const csvOptions = { 
     fieldSeparator: ',',

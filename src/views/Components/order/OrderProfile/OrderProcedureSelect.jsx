@@ -41,10 +41,12 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 			{
 				Header: 'CPT Code',
 				accessor: 'code', // accessor is the "key" in the data
+				disableSortBy: true,
 			},
 			{
 				Header: 'CPT Name',
 				accessor: 'description', // accessor is the "key" in the data
+				disableSortBy: true,
 			},
 		],
 		[]

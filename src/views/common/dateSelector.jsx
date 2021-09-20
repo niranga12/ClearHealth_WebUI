@@ -10,7 +10,7 @@ const DateSelector = ({handleDateChange,selectedDate,className,disableFuture=fal
        <DatePicker
         disableFuture={disableFuture}
         openTo="date"
-        format="dd/MM/yyyy"
+        format="MM/dd/yyyy"
         value={selectedDate}
         onChange={handleDateChange}
         className="calendar-font"

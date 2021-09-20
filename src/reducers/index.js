@@ -12,6 +12,7 @@ import storage from 'redux-persist/lib/storage';
 import loaderReducer from './loaderReducer';
 import pricingReducer from './pricingReducer';
 import orderReducer from './orderReducer';
+import orderTableReducer from './orderTableReducer';
 
 
 const persistConfig={
@@ -26,6 +27,7 @@ const rootReducer= combineReducers({
    Loader:loaderReducer,
    Pricing:pricingReducer,
    Order:orderReducer,
+   mainOrder:orderTableReducer,
    notifications: notificationsReducer(),
 
 })

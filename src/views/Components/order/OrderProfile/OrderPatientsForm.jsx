@@ -2,7 +2,7 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {MaskFormat, ValidationPatterns} from 'src/reusable/enum';
+import {ContactMethod, MaskFormat, ValidationPatterns} from 'src/reusable/enum';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import DateSelector from 'src/views/common/dateSelector';
 import * as yup from 'yup';
@@ -19,6 +19,7 @@ const schema = yup.object().shape({
 		middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
 		lastName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
 		dateOfBirth: yup.string(),
+		contactMethod: yup.string().required('Contact Method is required'),
 		email: yup.string().email(' Please enter a valid email').required('Email is required'),
 		phone: yup
 			.string()
@@ -51,10 +52,9 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 		if (isValid) {
 			const formValue = getValues('patient');
 			let newValue = {...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY')};
-
 			handleForm(newValue);
 		}
-	}, [stateChange]);
+	}, [stateChange,fromDate]);
 
 	// useEffect(() => {
 	// 	setValue("patient?.dateOfBirth",  moment(fromDate).format('MM-DD-YYYY'));
@@ -104,6 +104,23 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 							</label>
 							<DateSelector   className={` form-control-sm ${isEdit ? "disable" : ""}`}   selectedDate={fromDate} handleDateChange={handlefromDateChange}  disableFuture={true} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.dateOfBirth?.message}</div>
+						</div>
+					</div>
+
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								 Contact Method <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							<select name='' id='' className='form-control-sm' {...register('patient.contactMethod')}  onBlur={() => setstateChange(!stateChange)}   >
+								<option value="">Select</option>
+								<option value={ContactMethod.Email}>Email</option>
+								<option value={ContactMethod.Phone}>Phone</option>
+								</select>
+						
+							{/* <input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} /> */}
+							<div className='small text-danger  pb-2   '>{errors.patient?.contactMethod?.message}</div>
 						</div>
 					</div>
 

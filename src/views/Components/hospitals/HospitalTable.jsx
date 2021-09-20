@@ -16,6 +16,8 @@ const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
 	searchTerm: '',
+	sortOrder:'desc',
+	orderBy:'id'
 };
 
 function CellContract({ row }) {
