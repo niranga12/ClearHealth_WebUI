@@ -82,8 +82,10 @@ useEffect(() => {
       //   billing_details: billingDetails
 
       // });
-      // const result = await stripe.confirmCardPayment('pi_3JbTJsBOELX9tyni04ZI8oOZ_secret_WT1Iou4419shrypuGR6OqIO2C',{
-        const result = await stripe.confirmCardPayment(stripeKeySes,{
+      let Key=String(stripeKeySes) ;
+
+      //  const result = await stripe.confirmCardPayment('pi_3JbTJsBOELX9tyni04ZI8oOZ_secret_WT1Iou4419shrypuGR6OqIO2C',{
+        const result = await stripe.confirmCardPayment(Key,{
         payment_method: {
           card: elements.getElement(CardElement),
           billing_details: billingDetails

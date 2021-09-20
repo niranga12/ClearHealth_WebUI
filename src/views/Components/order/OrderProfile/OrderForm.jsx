@@ -106,7 +106,7 @@ const OrderForm = () => {
 	};
 
 	const patientsFormDetail = (value) => {
-		// console.log(value);
+		 
 		setPatientDetail(value);
 		// CheckAvilableBtn();
 	};

@@ -8,7 +8,6 @@ import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import {TheHeader} from 'src/containers';
 import { DateFormat } from 'src/reusable/enum';
 import {getPatientOrderByOrderId} from 'src/service/orderService';
-import { StripPublicKey } from 'src/_config';
 import NotificationLayout from 'src/_helpers/notification';
 import OnError from 'src/_helpers/onerror';
 import PayStripe from '../Payment-Stripe/PayStripe';
@@ -28,9 +27,9 @@ const Payment = () => {
 	
   // recreating the `Stripe` object on every render.
 // const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
-// const stripePromise = loadStripe("pk_test_51JKBypBOELX9tyniJrgYzR3SvXJDOusxZiuQ1wV60G8eJucn7p2hK1aKK0IPcktL6tTDh7fIeZL1lXQka7rZGpcz00oPjzhYRh");
-let pubKey=String(StripPublicKey) ;
-const stripePromise = loadStripe(pubKey);
+ const stripePromise = loadStripe("pk_test_51JKBypBOELX9tyniJrgYzR3SvXJDOusxZiuQ1wV60G8eJucn7p2hK1aKK0IPcktL6tTDh7fIeZL1lXQka7rZGpcz00oPjzhYRh");
+// let pubKey=String(StripPublicKey) ;
+// const stripePromise = loadStripe(pubKey);
 
 
 
