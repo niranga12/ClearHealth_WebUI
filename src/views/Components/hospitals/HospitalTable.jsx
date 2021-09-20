@@ -1,15 +1,15 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {TableSettingsEnum} from 'src/reusable/enum';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
-import {getHospitalsList, getHospitalsListCount} from 'src/service/hospitalsService';
+import { getHospitalsList, getHospitalsListCount } from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
 import PaginationTable from 'src/views/common/paginationTable';
 import OnError from 'src/_helpers/onerror';
 import 'font-awesome/css/font-awesome.min.css';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
-import {useHistory} from 'react-router-dom';
-import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
+import { useHistory } from 'react-router-dom';
+import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 
 const initialSearch = {
@@ -18,7 +18,7 @@ const initialSearch = {
 	searchTerm: '',
 };
 
-function CellContract({row}) {
+function CellContract({ row }) {
 	return (
 		<>
 			<div>{row.original.contactName}</div>
@@ -34,7 +34,7 @@ function CellContract({row}) {
 	);
 }
 
-function CellAddress({row}) {
+function CellAddress({ row }) {
 	return (
 		<>
 			<div className='max-celladdress'>
@@ -51,7 +51,29 @@ function CellAddress({row}) {
 	);
 }
 
-function ActionHospital({row}) {
+function CellHospitalName({ row }) {
+	let history = useHistory();
+	const onclickBoarding = () => {
+		history.push({
+			pathname: `/hospitals/profile`,
+			search: `?id=${row.original.partyRoleId}`,
+			// state: { detail: 'some_value' }
+		});
+	};
+	return (
+		<>
+			<div className='max-celladdress'>
+				<h5 className='font-weight-normal text-black'> {row.original.name} </h5>
+				{ row.original.isOnboardingCompleted != '1' && <div  className="cursor-point text-primary" onClick={onclickBoarding}>(Onboarding Pending)</div>}
+		
+			</div>
+
+
+		</>
+	);
+}
+
+function ActionHospital({ row }) {
 	let history = useHistory();
 	const redirectToEdit = () => {
 		history.push({
@@ -105,9 +127,9 @@ const HospitalTable = () => {
 
 				const result = await getHospitalsList(searchQuery);
 				setHospitalData(result.data.data);
-			
 
-				const countQuery = {searchTerm: searchQuery.searchTerm};
+
+				const countQuery = { searchTerm: searchQuery.searchTerm };
 				const resultCount = await getHospitalsListCount(countQuery);
 				setCount(resultCount.data.data.totalCount);
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
@@ -120,23 +142,23 @@ const HospitalTable = () => {
 			}
 		};
 		fetchData();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchQuery]);
-  
-	
-	
 
-	const pageChange = (event, value) =>{
+
+
+
+	const pageChange = (event, value) => {
 		// setPage(value);
-		setSearchQuery({...searchQuery, pageNumber: value});
+		setSearchQuery({ ...searchQuery, pageNumber: value });
 	};
 
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
-			setSearchQuery({...initialSearch, searchTerm: e.target.value});
-		// eslint-disable-next-line eqeqeq
+			setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
+			// eslint-disable-next-line eqeqeq
 		} else if (e.target.value.length == '') {
-			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			setSearchQuery({ ...initialSearch, searchTerm: e.target.value });
 		} else {
 		}
 	};
@@ -146,21 +168,21 @@ const HospitalTable = () => {
 	};
 
 
-	
-	const sortingHandler=(sorting)=>{  
-		if(sorting.length > 0){
-		  let result={...searchQuery,orderBy:sorting[0].id?sorting[0].id :"", sortOrder:sorting[0].desc?'desc':'asc' }
-		  setSearchQuery(result)
-		}
-		else{
-		 // this validation for initial load avoid 2 times call api
-		  if(JSON.stringify(initialSearch) !== JSON.stringify(searchQuery)){
-			let result={...searchQuery, orderBy:"", sortOrder:"" }
+
+	const sortingHandler = (sorting) => {
+		if (sorting.length > 0) {
+			let result = { ...searchQuery, orderBy: sorting[0].id ? sorting[0].id : "", sortOrder: sorting[0].desc ? 'desc' : 'asc' }
 			setSearchQuery(result)
-		  }     
 		}
-	
-	  }
+		else {
+			// this validation for initial load avoid 2 times call api
+			if (JSON.stringify(initialSearch) !== JSON.stringify(searchQuery)) {
+				let result = { ...searchQuery, orderBy: "", sortOrder: "" }
+				setSearchQuery(result)
+			}
+		}
+
+	}
 
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
@@ -168,12 +190,13 @@ const HospitalTable = () => {
 			{
 				Header: 'Health System',
 				accessor: 'healthSystemName', // accessor is the "key" in the data
-				Cell: ({value}) => <h5 className='font-weight-normal text-black ml-4'> {value} </h5>,
+				Cell: ({ value }) => <h5 className='font-weight-normal text-black ml-4'> {value} </h5>,
 			},
 			{
 				Header: 'Hospital Name',
 				accessor: 'name', // accessor is the "key" in the data
-				Cell: ({value}) => <h5 className='font-weight-normal text-black'> {value} </h5>,
+				Cell: CellHospitalName
+				// Cell: ({value}) => <h5 className='font-weight-normal text-black'> {value} </h5>,
 			},
 
 			{
@@ -192,7 +215,7 @@ const HospitalTable = () => {
 				disableSortBy: true,
 				// accessor: '[row identifier to be passed to button]',
 				Cell: ActionHospital,
-				
+
 			},
 		],
 		[]

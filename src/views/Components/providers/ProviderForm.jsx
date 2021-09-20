@@ -40,7 +40,7 @@ const schema = yup.object().shape({
 	phone: yup.string()
 		.required('Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	speciality: yup.string().required('Speciality is required'),
+	speciality: yup.string().required('Specialty is required'),
 	taxId: yup.string(),
 	nip: yup.string().required('NPI is required'),
 	bankName: yup.string(),
@@ -444,7 +444,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					<div className='col-md-4'>
 
 						<h5 className='font-weight-bold mt-1'>
-							<span className='pr-5'>Address </span> <input type='checkbox' className='form-check-input' onChange={handleHospitalChecked} /> <span className='small'>Use hospital address</span>{' '}
+							<span className='pr-5'>Address </span> <input type='checkbox' className='form-check-input' onChange={handleHospitalChecked} /> <span className='small'>Use Hospital Address</span>{' '}
 						</h5>
 						{/* <h5 className='font-weight-bold mt-1'>Address </h5> */}
 						<div className='form-group'>
@@ -567,7 +567,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Speciality <span className='text-danger font-weight-bold '>*</span>{' '}
+								Specialty <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('speciality')}>
 								<option value=''>Select</option>

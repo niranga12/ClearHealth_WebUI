@@ -34,7 +34,7 @@ function ActionUser({ row }) {
 		<>
 			<CDropdown>
 				<CDropdownToggle className='p-0'>
-					<div className='text-center text-gray font-15re cursor-point  ml-3'>
+					<div className='text-center text-gray font-15re three-dot-margin cursor-point  ml-3'>
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>

@@ -8,8 +8,9 @@ import { useHistory } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
 import { saveUser, updateUserByPartyRoleId } from 'src/service/userService';
-import { getRoleList } from 'src/service/commonService';
+import { getRoleList, getSpecificRoleList } from 'src/service/commonService';
 import FormatText from 'src/reusable/FormatText';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 
 const schema = yup.object().shape({
 	firstName: yup.string().required('First name is required'),
@@ -40,7 +41,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 
 		const fetchData = async () => {
 			try {
-				const RoleTypeList = await getRoleList();
+				const RoleTypeList = await getSpecificRoleList();
 				setRoleTpeData(RoleTypeList.data.data);
 				reset(defaultValues);
 			} catch (error) {
@@ -61,6 +62,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 
 	// save User
 	const addUser = async (data) => {
+		dispatch(loaderShow());
 		const newUser = {
 			firstName: data.firstName,
 			lastName: data.lastName,
@@ -73,11 +75,13 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 			if (newUser) {
 				let result = await saveUser(newUser);
 				if (result.data.message === ServiceMsg.OK) {
+					dispatch(loaderHide());
 					dispatch(notify(`Successfully added`, 'success'));
 					history.push('/users');
 				}
 			}
 		} catch (error) {
+			dispatch(loaderHide());
 			OnError(error, dispatch);
 		}
 	};
@@ -85,6 +89,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 	// update User
 	const updateUserInfo = async () => {
 		try {
+			dispatch(loaderShow());
 			const updateUser = {
 				...((dirtyFields.firstName || dirtyFields.lastName || dirtyFields.roleTypeId || dirtyFields.status || dirtyFields.email) && {
 					firstName: getValues('firstName'),
@@ -101,11 +106,13 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 				try {
 					const result = await updateUserByPartyRoleId(partyRoleId, updateUser);
 					if (result.data.message == ServiceMsg.OK) {
+						dispatch(loaderHide());
 						dispatch(notify(`Successfully updated`, 'success'));
 						history.push('/users');
 					}
 				} catch (error) {
 					OnError(error, dispatch);
+					dispatch(loaderHide());
 				}
 			}
 		} catch (error) {

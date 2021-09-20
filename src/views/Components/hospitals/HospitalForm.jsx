@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useRef, useState} from 'react';
-import {useForm, useFormState} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+import React, { useEffect, useRef, useState } from 'react';
+import { useForm, useFormState } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {useDispatch} from 'react-redux';
-import {MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
-import {useHistory} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
+import { useHistory } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
-import {InvoiceReceiveMethod} from 'src/_helpers/CommonDataList';
-import {saveHospital, updateHospitalByPartyRoleId} from 'src/service/hospitalsService';
-import {notify} from 'reapop';
+import { InvoiceReceiveMethod } from 'src/_helpers/CommonDataList';
+import { saveHospital, updateHospitalByPartyRoleId } from 'src/service/hospitalsService';
+import { notify } from 'reapop';
 import InputMask from 'react-input-mask';
 import NormalizePhone from 'src/reusable/NormalizePhone';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import useDebounce from 'src/reusable/debounce';
-import {getValidateOrganization} from 'src/service/commonService';
+import { getValidateOrganization } from 'src/service/commonService';
 import FormatText from 'src/reusable/FormatText';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -55,7 +55,7 @@ const schema = yup.object().shape({
 	contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact name should contain only characters'),
 });
 
-const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = []}) => {
+const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = [], onboardingInfo }) => {
 	const {
 		register,
 		handleSubmit,
@@ -63,15 +63,15 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 		getValues,
 		reset,
 		control,
-		formState: {errors},
-	} = useForm({resolver: yupResolver(schema), mode: 'all'});
+		formState: { errors },
+	} = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
 	const [stateOption, setStateOption] = useState(defaultValues.state);
 	const [businessStateOption, setBusinessStateOption] = useState(defaultValues.businessState);
 
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
-	const {dirtyFields} = useFormState({control});
+	const { dirtyFields } = useFormState({ control });
 	const dispatch = useDispatch();
 	let history = useHistory();
 	let btnRef = useRef();
@@ -92,7 +92,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 					let data = {
 						roleTypeId: Organizations.Hospital,
 						organizationName: debouncedName,
-						...(isEdit && {partyRoleId}),
+						...(isEdit && { partyRoleId }),
 					};
 
 					const result = await getValidateOrganization(data);
@@ -104,12 +104,12 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 					}
 					setIsSearching(false);
 					setIsAlreadyExit(!result.data.data);
-					setValue('hospitalName', debouncedName, {shouldValidate: true, shouldDirty: true});
+					setValue('hospitalName', debouncedName, { shouldValidate: true, shouldDirty: true });
 				} else {
 					setIsSearching(false);
 					setIsAlreadyExit(false);
 				}
-			} catch (error) {}
+			} catch (error) { }
 		};
 		fetchValidate();
 	}, [debouncedName]);
@@ -136,7 +136,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 				shouldValidate: true,
 				shouldDirty: true,
 			});
-			setBusinessStateOption( getValues('state'));
+			setBusinessStateOption(getValues('state'));
 		} else {
 			setValue('businessAddress1', '');
 			setValue('businessAddress2', '');
@@ -148,14 +148,14 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 	};
 
 	const stateSelect = (event) => {
-		setValue('state', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
+		setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
 	const businessStateSelect = (event) => {
-		setValue('businessState', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
+		setValue('businessState', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
-	
 
-   // set default form values
+
+	// set default form values
 	useEffect(() => {
 		try {
 			reset(defaultValues);
@@ -246,33 +246,33 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 	const updateHospitalInfo = async () => {
 		try {
 			const updateHospital = {
-				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId) && {hospital: {name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId')}}),
+				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId) && { hospital: { name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId') } }),
 				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip) && {
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
 							? [
-									{
-										partyContactTypeId: PartyTypeEnum.primary,
-										address1: getValues('address1'),
-										address2: getValues('address2'),
-										city: getValues('city'),
-										state: getValues('state'),
-										zip: getValues('zip'),
-									},
-							  ]
+								{
+									partyContactTypeId: PartyTypeEnum.primary,
+									address1: getValues('address1'),
+									address2: getValues('address2'),
+									city: getValues('city'),
+									state: getValues('state'),
+									zip: getValues('zip'),
+								},
+							]
 							: []),
 
 						...(dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip
 							? [
-									{
-										partyContactTypeId: PartyTypeEnum.shipping,
-										address1: getValues('businessAddress1'),
-										address2: getValues('businessAddress2'),
-										city: getValues('businessCity'),
-										state: getValues('businessState'),
-										zip: getValues('businessZip'),
-									},
-							  ]
+								{
+									partyContactTypeId: PartyTypeEnum.shipping,
+									address1: getValues('businessAddress1'),
+									address2: getValues('businessAddress2'),
+									city: getValues('businessCity'),
+									state: getValues('businessState'),
+									zip: getValues('businessZip'),
+								},
+							]
 							: []),
 					],
 				}),
@@ -424,7 +424,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('phone'))} className='form-control-sm' />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('phone'))} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
 						</div>
@@ -503,7 +503,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('patientContactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('patientContactPhone'))} className='form-control-sm' />
+							<InputMask {...register('patientContactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patientContactPhone'))} className='form-control-sm' />
 
 							{/* <input type='text' className='form-control-sm' {...register('patientContactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.patientContactPhone?.message}</div>
@@ -532,7 +532,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 
 						<div className='form-group'>
 							<label className='form-text'> Phone</label>
-							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('contactPhone'))} className='form-control-sm' />
+							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('contactPhone'))} className='form-control-sm' />
 
 							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
 							<div className='small text-danger  pb-2   '> {errors.contactPhone?.message} </div>
@@ -597,6 +597,30 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						</div>
 					</div>
 				</div>
+
+				{/* Stripe */}
+				<h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5>
+				<div className='row'>
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>Update Link</label>
+							<a href={onboardingInfo.url} target="_blank" >
+								{onboardingInfo.isOnboardingCompleted == '1' ? "Update Account" : "Complete Account"}</a>
+						</div>
+
+
+					</div>
+
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>Status</label>
+							{onboardingInfo.isOnboardingCompleted == '1' ? <div className='font-weight-bold font-green'>Complete</div> : <div className='font-weight-bold font-red'>Pending</div>}
+						</div>
+
+
+					</div>
+				</div>
+
 
 				<div className='row'>
 					<div className='col-md-12'>

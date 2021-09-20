@@ -13,7 +13,7 @@ const DateSelector = ({handleDateChange,selectedDate,className,disableFuture=fal
         format="dd/MM/yyyy"
         value={selectedDate}
         onChange={handleDateChange}
-        className={className}
+        className="calendar-font"
       />
 
       </MuiPickersUtilsProvider>

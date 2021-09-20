@@ -361,8 +361,17 @@ button:focus {
   // background-color: #eae4e454;
 }
 .cursor-point {
-  cursor: pointer;
+  cursor: pointer !important
 }
+ .font-green{
+  color: green
+ }
+
+ .font-red{
+  color: red
+ }
+
+
 .sub-title{
   font-size: 0.9rem;
 }
@@ -531,6 +540,16 @@ label,
 
 .font-15re {
   font-size: 1.5rem !important;
+}
+
+.three-dot-margin{
+  margin-top: -12px;
+}
+
+.calendar-font {
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  color: #768192 !important;
 }
 
 .text-black {

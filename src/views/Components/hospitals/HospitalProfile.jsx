@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { Country } from 'src/reusable/enum';
 import { getStateList } from 'src/service/commonService';
 import { getHealthSystemList } from 'src/service/healthsystemService';
-import {getHospitalByPartyRoleId} from 'src/service/hospitalsService';
+import { getHospitalByPartyRoleId, getOnboardinginfo } from 'src/service/hospitalsService';
 import AdminTitle from 'src/views/common/adminTitle';
 import OnError from 'src/_helpers/onerror';
 import HospitalForm from './HospitalForm';
@@ -20,7 +20,7 @@ const defalutFormValue = {
 	city: '',
 	state: '',
 	zip: '',
-    phone:'',
+	phone: '',
 	businessAddress1: '',
 	businessAddress2: '',
 	businessCity: '',
@@ -47,7 +47,7 @@ const HospitalProfile = () => {
 	const [editProfile, setEditProfile] = useState(false);
 
 	const [stateList, setstateList] = useState([])
-
+	const [onboardingInfo, setOnboarding] = useState([])
 	const [hospitalData, setHospitalData] = useState(defalutFormValue);
 	const [healthSystems, setHealthSystem] = useState([]);
 	const dispatch = useDispatch();
@@ -63,37 +63,43 @@ const HospitalProfile = () => {
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
+				//getHealthSystemList
 				const res = await getHealthSystemList({});
 				setHealthSystem(res.data.data);
-               const stateResult=await getStateList(Country.USA);
-			   setstateList(stateResult.data.data)
+				//getStateList
+				const stateResult = await getStateList(Country.USA);
+				setstateList(stateResult.data.data)
+				//getOnboardinginfo
+				const onboarding = await getOnboardinginfo(id);
+				//const onboarding = await getOnboardinginfo(id);
+				setOnboarding(onboarding.data.data)
 
 			} catch (error) {
 				OnError(error, dispatch);
-				}
+			}
 			if (id) {
 				try {
 					// const res = await getHealthSystemList({});
 					// setHealthSystem(res.data.data);
+
 					const result = await getHospitalByPartyRoleId(id);
 					const formatedData = await updateFormFields(result.data.data);
-
 					setHospitalData(formatedData);
 				} catch (error) {
 					OnError(error, dispatch);
 				}
 
 			}
-								dispatch(loaderHide());
-	
-			
+			dispatch(loaderHide());
+
+
 		};
 		fetchData();
 	}, [location]);
 
-  // updated form fields
+	// updated form fields
 	const updateFormFields = (data) => {
-    
+
 		const hospitalData = {
 			hospitalName: data.hospital.name,
 			healthSystemPartyRoleId: data.hospital.healthSystemPartyRoleId,
@@ -102,7 +108,7 @@ const HospitalProfile = () => {
 			city: data.hospital.primaryCity,
 			state: data.hospital.primaryState,
 			zip: data.hospital.primaryZip,
-            phone:data.hospital.phoneNumber,
+			phone: data.hospital.phoneNumber,
 			businessAddress1: data.hospital.secondaryAddress1,
 			businessAddress2: data.hospital.secondaryAddress2,
 			businessCity: data.hospital.secondaryCity,
@@ -111,8 +117,8 @@ const HospitalProfile = () => {
 			patientContactName: data.primaryContact.name,
 			patientContactPhone: data.primaryContact.phone,
 			patientContactEmail: data.primaryContact.email,
-			consolidatedInvoice: data.paymentInfo.consolidatedInvoice ==1 ?true:false,
-			applySAASTax: data.paymentInfo.applySAASTax ==1 ?true:false,
+			consolidatedInvoice: data.paymentInfo.consolidatedInvoice == 1 ? true : false,
+			applySAASTax: data.paymentInfo.applySAASTax == 1 ? true : false,
 			taxId: data.paymentInfo.taxId,
 			invoiceReceiveMethod: data.paymentInfo.invoiceReceiveMethod,
 			accountNumber: data.paymentInfo.accountNumber,
@@ -121,16 +127,16 @@ const HospitalProfile = () => {
 			contactEmail: data.paymentInfo.email,
 			contactPhone: data.paymentInfo.phone,
 			contactName: data.paymentInfo.name,
-		};    
+		};
 		return hospitalData;
-    
+
 	};
 
 	return (
 		<div className="card  cover-content pt-2 ">
 			<AdminTitle title={editProfile ? 'Edit Hospital' : 'Add Hospital'} />
 
-			<HospitalForm defaultValues={hospitalData} stateList={stateList} isEdit={editProfile} healthSystems={healthSystems} partyRoleId={partyRoleId} />
+			<HospitalForm defaultValues={hospitalData} stateList={stateList} isEdit={editProfile} healthSystems={healthSystems} partyRoleId={partyRoleId} onboardingInfo={onboardingInfo} />
 		</div>
 	);
 };
