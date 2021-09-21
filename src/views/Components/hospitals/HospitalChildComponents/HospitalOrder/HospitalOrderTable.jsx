@@ -43,7 +43,7 @@ function OrderAttempt({row}) {
 
 function OrderActions({row}) {
 	let history = useHistory();
-
+	const orderChanges = useSelector((state) => state.mainOrder.changeProgress);
 	const dispatch = useDispatch();
 
 	const actionLink = () => {
@@ -62,8 +62,8 @@ function OrderActions({row}) {
 				dispatch(notify(`Successfully updated`, 'success'));
 				// history.go(0)
 			setTimeout(() => {
-				dispatch(resetOrderTable());
-			}, 1500);		
+				dispatch(resetOrderTable(orderChanges));
+			}, 1000);		
 
 
 			}
