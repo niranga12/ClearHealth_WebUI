@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
-
 import DataTable from 'src/views/common/dataTable';
 import PaginationTable from 'src/views/common/paginationTable';
 import OnError from 'src/_helpers/onerror';
@@ -18,9 +17,8 @@ const initialSearch = {
 	pageNumber: 1,
 	searchTerm: '',
 	orderBy: "",
-    sortOrder: ""
+	sortOrder: ""
 };
-
 
 function ActionUser({ row }) {
 	let history = useHistory();
@@ -34,9 +32,9 @@ function ActionUser({ row }) {
 
 	return (
 		<>
-			<CDropdown className='m-1'>
-				<CDropdownToggle>
-					<div className='text-center text-gray font-15re cursor-point  ml-3'>
+			<CDropdown>
+				<CDropdownToggle className='p-0'>
+					<div className='text-center text-gray font-15re three-dot-margin cursor-point  ml-3'>
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
@@ -53,27 +51,24 @@ const UserTable = () => {
 	let history = useHistory();
 
 	const [userData, setUserData] = useState([]);
-
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
-
 	const dispatch = useDispatch();
-
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
-				const getQuery = {  itemsPerPage : searchQuery.itemsPerPage ,
-					pageNumber : searchQuery.pageNumber,
-					searchTerm : searchQuery.searchTerm,
+				const getQuery = {
+					itemsPerPage: searchQuery.itemsPerPage,
+					pageNumber: searchQuery.pageNumber,
+					searchTerm: searchQuery.searchTerm,
 					orderBy: searchQuery.orderBy,
-					sortOrder: searchQuery.sortOrder };
+					sortOrder: searchQuery.sortOrder
+				};
 				const result = await getUserList(getQuery);
 				setUserData(result.data.data);
-
-
 				const countQuery = { searchTerm: searchQuery.searchTerm };
 				const resultCount = await getUserListCount(countQuery);
 				setCount(resultCount.data.data.totalCount);
@@ -101,7 +96,6 @@ const UserTable = () => {
 	};
 
 	const addNewUser = () => {
-
 		history.push('/users/profile');
 	};
 
@@ -134,7 +128,7 @@ const UserTable = () => {
 				accessor: 'partyRoleId',
 				// accessor: '[row identifier to be passed to button]',
 				Cell: ActionUser,
-				
+
 			},
 		],
 		[]

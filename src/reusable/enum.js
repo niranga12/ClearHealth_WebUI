@@ -135,8 +135,6 @@ export const HospitalTabList={
 	FeeSchedule:2,
 	Dashboard:3,
 	Payment:4
-
-
 }
 export const ContactMethod = {
     Email: 0,
@@ -158,3 +156,9 @@ export const csvOptions = {
 	
     // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
   };
+
+  export const Roleclassificationtype={
+	SecurityRoles:1,
+	OrganizationRoles:2,
+	PersonRoles:3,
+}

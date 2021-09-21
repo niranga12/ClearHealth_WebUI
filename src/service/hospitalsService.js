@@ -48,3 +48,6 @@ export const getCPTCodesByHospital=(hospitalId,data)=>axiosInstance.post(`hospit
 
 // get patients details by hospitalId
 export const getPatientsDetailsByHospital=(hospitalId,data)=>axiosInstance.post(`hospital/${hospitalId}/patients`,data);
+
+//Stripe on board infor
+export const getOnboardinginfo=(partyRoleId)=>axiosInstance.get(`payment/onboardinginfo/${partyRoleId}`);

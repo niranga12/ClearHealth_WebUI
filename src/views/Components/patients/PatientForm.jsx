@@ -257,7 +257,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 								DOB <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							{/* <input className='form-control-sm' type='text' {...register('dateOfBirth')} /> */}
-							<DateSelector className='form-control-sm' selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true}/>
+							<DateSelector className={'form-control-sm calendar-font'} selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true}/>
 							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
 						</div>
 
