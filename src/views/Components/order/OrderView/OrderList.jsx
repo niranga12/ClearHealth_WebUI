@@ -122,7 +122,8 @@ const OrderList = ({orderDetail}) => {
 					</div>
 
 					<div className='col-md-6'>
-						<button className='btn btn-view-account ml-3 float-right'  disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts } onClick={approveOrder}>
+					{/* disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData } */}
+						<button className='btn btn-view-account ml-3 float-right'  disabled={ order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData.length } onClick={approveOrder}>
 							Approve
 						</button>
 					</div>

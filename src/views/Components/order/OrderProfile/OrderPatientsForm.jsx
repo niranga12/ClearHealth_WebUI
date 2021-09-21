@@ -54,7 +54,8 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 	}, [defaultValues]);
 
 	useEffect(() => {
-		if (isValid) {
+		
+		if (isValid && !errors.hasOwnProperty('patient') ) {
 			const formValue = getValues('patient');
 			let newValue = {...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY')};
 			handleForm(newValue);

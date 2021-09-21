@@ -18,6 +18,7 @@ const OrderView = () => {
 
 	const fetchData = async (id) => {
 		try {
+			
 			dispatch(loaderShow());
 				const result = await getOrderByOrderId(id);
 				setOrderList(result.data.data[0]);
@@ -47,7 +48,7 @@ const OrderView = () => {
 	}, [location]);
 
 	useEffect(() => {
-		if (orderStatus) {
+		if (orderStatus) {		
 			setOrderList(null);
 
 			fetchData(orderId);
