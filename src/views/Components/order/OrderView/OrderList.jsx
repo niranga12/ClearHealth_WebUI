@@ -42,11 +42,19 @@ const OrderList = ({orderDetail}) => {
 
 	useEffect(() => {
 		try {
-			let facilityName = order?.orderPatientDetails?.facilityName;
-			let result = order?.orderDetails.map((x) => {
-				return {...x, facilityName};
-			});
-			setOrderData(result);
+			if(order?.orderDetails.length){
+				let facilityName = order?.orderPatientDetails?.facilityName;
+				let result = order?.orderDetails?.map((x) => {
+					return {...x, facilityName};
+				});
+				setOrderData(result)
+			}
+			else{
+				setOrderData([]);
+			}
+			
+			
+			
 		} catch (error) {
 			console.error(error);
 		}
