@@ -13,11 +13,12 @@ import PropTypes from 'prop-types';
 import {EnableMaskPhone} from 'src/reusable';
 import moment from 'moment';
 
+
 const schema = yup.object().shape({
 	patient: yup.object().shape({
 		firstName: yup.string().required(' First Name is required').matches(ValidationPatterns.onlyCharacters, ' Name should contain only characters'),
 		middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
-		lastName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
+		lastName: yup.string().required(' Last Name is required').matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
 		dateOfBirth: yup.string(),
 		contactMethod: yup.string().required('Contact Method is required'),
 		email: yup.string().email(' Please enter a valid email').required('Email is required'),
@@ -36,12 +37,16 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 	const [fromDate, handlefromDateChange] = useState(Date.now());
 
 	const [stateChange, setstateChange] = useState(false);
+	
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		try {
 			reset(defaultValues);
 			handlefromDateChange(defaultValues?.patient?.dateOfBirth);
+
+			
+
 		} catch (error) {
 			OnError(error, dispatch);
 		}
@@ -53,6 +58,8 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 			const formValue = getValues('patient');
 			let newValue = {...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY')};
 			handleForm(newValue);
+		}else{
+			handleForm(null);
 		}
 	}, [stateChange,fromDate]);
 

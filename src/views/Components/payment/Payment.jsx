@@ -92,8 +92,10 @@ const formValid=(val)=>{
 	}
 
   const formChange=(value)=>{
+	 
 
 setPatientData(value)
+
 
 let result ={
     address: {

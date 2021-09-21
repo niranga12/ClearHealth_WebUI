@@ -19,8 +19,11 @@ const OrderView = () => {
 	const fetchData = async (id) => {
 		try {
 			dispatch(loaderShow());
-			const result = await getOrderByOrderId(id);
-			setOrderList(result.data.data[0]);
+				const result = await getOrderByOrderId(id);
+				setOrderList(result.data.data[0]);
+			
+		
+			
 			dispatch(loaderHide());
 
 			// console.log(count)
@@ -29,7 +32,14 @@ const OrderView = () => {
 		}
 	};
 
+
+
+
+	
+
 	useEffect(() => {
+		setOrderList(null);
+
 		const params = new URLSearchParams(location.search);
 		const id = params.get('orderId');
 		setOrderId(id);
@@ -38,6 +48,8 @@ const OrderView = () => {
 
 	useEffect(() => {
 		if (orderStatus) {
+			setOrderList(null);
+
 			fetchData(orderId);
 			dispatch(resetOrder());
 		}

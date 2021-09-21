@@ -16,6 +16,7 @@ import OnError from 'src/_helpers/onerror';
 import {useDispatch} from 'react-redux';
 import {notify} from 'reapop';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
+import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
 
 const schema = yup.object().shape({
 	patientForm: yup.object().shape({
@@ -31,6 +32,16 @@ const schema = yup.object().shape({
 		// enhancementOn:yup.string().required()
 	}),
 });
+
+const orderPhone=(phone)=>{
+	return (
+		<div className='rectangle-intable'>
+		{' '}
+		<span className='fa fa-phone text-health-icon pr-1'></span> {phone}
+	</div>
+	)
+}
+
 
 const OrderViewPatient = ({patientDetail}) => {
 	const {
@@ -166,7 +177,7 @@ const OrderViewPatient = ({patientDetail}) => {
 								{' '}
 								Date Of Birth <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							{isEdit ? <DateSelector className='form-control-sm' selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true} /> : <div className='h5'> {patient?.DOB}</div>}
+							{isEdit ? <DateSelector className='form-control-sm text-light-gray ' selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true} /> : <div className='h5'> {patient?.DOB}</div>}
 						</div>
 					</div>
 
@@ -188,7 +199,7 @@ const OrderViewPatient = ({patientDetail}) => {
 								{' '}
 								Phone <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							{isEdit ? <InputMask {...register('patientForm.phoneNumber')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(!isEdit, getValues('patientForm.phoneNumber'))} className='form-control-sm' /> : <div className='h5'>{patient?.phoneNumber}</div>}
+							{isEdit ? <InputMask {...register('patientForm.phoneNumber')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(!isEdit, getValues('patientForm.phoneNumber'))} className='form-control-sm' /> :  orderPhone(patient?.phoneNumber)  }
 							{isEdit && <div className='small text-danger  pb-2   '>{errors.patientForm?.phoneNumber?.message}</div>}
 						</div>
 					</div>

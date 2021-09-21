@@ -3,10 +3,13 @@ import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
-import {ValidationPatterns} from 'src/reusable/enum';
+import {Country, ValidationPatterns} from 'src/reusable/enum';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import DateSelector from 'src/views/common/dateSelector';
+import { getStateList } from 'src/service/commonService';
+// import { TextField } from '@material-ui/core';
+// import { Autocomplete } from '@material-ui/lab';
 
 const schema = yup.object().shape({
 	order: yup.object().shape({
@@ -53,20 +56,45 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 
 	const [fieldChange, setFieldChange] = useState(false);
 	const [fromDate, handlefromDateChange] = useState(Date.now());
+	const [stateList, setstateList] = useState(null)
+	// const [businessStateOption, setBusinessStateOption] = useState('');
+	// const [stateOption, setStateOption] = useState('');
 
+	
+	const stateSelect = (event) => {
+		setValue('order.state', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
+	};
+	const businessStateSelect = (event) => {
+		setValue('order.billingState', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
+	};
+	
 
 	useEffect(() => {
 		reset(patientOrder);
+
+
+		const fetchData = async () => {
+			try {
+				const stateResult=await getStateList(Country.USA);
+			setstateList(stateResult.data.data)
+			} catch (error) {
+				
+			}
+			
+			}
+
+			fetchData();
 	}, [patientOrder]);
 
 	useEffect(() => {
-		
+		debugger
 	
 		handleValid(isValid);
 		if(isValid){
 			let value=getValues("order")
 			let newValue = {...value, dateOfBirth: moment(fromDate).format('MM-DD-YYYY')};
 			formChange(newValue);
+			
 		}
 		
 	}, [fieldChange])
@@ -195,6 +223,18 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 							<label className='form-text'>
 								State <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
+							{/* <Autocomplete
+									id='combo-box-demo'
+									options={stateList}
+									//   value={stateOption}
+									inputValue={stateOption}
+									onInputChange={(event, newInputValue) => {
+										setStateOption(newInputValue);
+									}}
+									getOptionLabel={(option) => option.stateName}
+									onChange={stateSelect}
+									renderInput={(params) => <TextField {...params} {...register('order.state')} className='control-autocomplete' variant='outlined' />}
+								/> */}
 							<input className='form-control-sm' type='text' {...register('order.state')} onBlur={() => setFieldChange(!fieldChange)}  />
 						</div>
 					</div>
@@ -243,6 +283,18 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 							<label className='form-text'>
 								State <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
+							{/* <Autocomplete
+									id='business state'
+									options={stateList}
+									//   value={stateOption}
+									inputValue={businessStateOption}
+									onInputChange={(event, newInputValue) => {
+										setBusinessStateOption(newInputValue);
+									}}
+									getOptionLabel={(option) => option.stateName}
+									onChange={businessStateSelect}
+									renderInput={(params) => <TextField {...params} {...register('order.billingState')} className='control-autocomplete' variant='outlined' />}
+								/> */}
 							<input className='form-control-sm' type='text' {...register('order.billingState')} onBlur={() => setFieldChange(!fieldChange)} />
 						</div>
 					</div>
