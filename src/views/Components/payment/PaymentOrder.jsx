@@ -87,7 +87,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 	}, [patientOrder]);
 
 	useEffect(() => {
-		debugger
+		
 	
 		handleValid(isValid);
 		if(isValid){

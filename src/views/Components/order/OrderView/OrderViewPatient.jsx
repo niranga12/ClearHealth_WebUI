@@ -37,7 +37,7 @@ const orderPhone=(phone)=>{
 	return (
 		<div className='rectangle-intable'>
 		{' '}
-		<span className='fa fa-phone text-health-icon pr-1'></span> {phone}
+		<span className='fa fa-phone text-health-icon pr-1'></span> {phone && PhoneNumberFormater(phone)}
 	</div>
 	)
 }
@@ -141,7 +141,7 @@ const OrderViewPatient = ({patientDetail}) => {
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.firstName')} /> : <div className='h5'>{patient?.firstName}</div>}
-							<div className='small text-danger  pb-2   '>{errors.patientForm?.firstName?.message}</div>
+							{isEdit && <div className='small text-danger  pb-2'>{errors.patientForm?.firstName?.message}</div>}
 						</div>
 					</div>
 

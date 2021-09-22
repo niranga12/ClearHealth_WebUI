@@ -183,6 +183,7 @@ const HospitalProviderTable = () => {
 			{
 				Header: 'Live Procedures',
 				accessor: 'livecount', // accessor is the "key" in the data
+				Cell: ({row}) =>( <h5 className='font-weight-normal text-black'> {row.original.livecount? row.original.livecount : 0} </h5>),
 				disableSortBy: true,
 				
 			},
