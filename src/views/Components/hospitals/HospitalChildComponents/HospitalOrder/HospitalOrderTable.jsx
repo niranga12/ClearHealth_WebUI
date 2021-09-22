@@ -6,10 +6,11 @@ import {notify} from 'reapop';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import { resetOrderTable } from 'src/actions/orderAction';
 import {OrderStatus, ServiceMsg, TableSettingsEnum} from 'src/reusable/enum';
-import {getOrderListByHospitalId} from 'src/service/hospitalsService';
+import {getOrderListByHospitalId, getOrderListCountByHospitalId} from 'src/service/hospitalsService';
 import {orderAprove} from 'src/service/orderService';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import DataTable from 'src/views/common/dataTable';
+import PaginationTable from 'src/views/common/paginationTable';
 import RatingView from 'src/views/common/ratingView';
 import OnError from 'src/_helpers/onerror';
 
@@ -83,7 +84,7 @@ function OrderActions({row}) {
 					{' '}
 					View Order
 				</div>
-				<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts } onClick={approveOrder}>
+				<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) } onClick={approveOrder}>
 					{' '}
 					Send Order
 				</button>
@@ -120,8 +121,10 @@ function HospitalOrderTable() {
 	const [hospitalOrderData, setHospitalOrderData] = useState([]);
 	const [hospitalId, setHospitalId] = useState(null);
 	const [hospitalName, setHospitalName] = useState('');
-	// const [page, setPage] = useState(1);
-	// const [count, setCount] = useState(0);
+
+
+	 const [page, setPage] = useState(1);
+	 const [count, setCount] = useState(0);
 
 	const dispatch = useDispatch();
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
@@ -144,11 +147,13 @@ function HospitalOrderTable() {
 					const result = await getOrderListByHospitalId(id, searchQuery);
 					setHospitalOrderData(result.data.data);
 
+					let resultCount=await getOrderListCountByHospitalId(id, searchQuery);
+
 					// const countQuery = {searchTerm: searchQuery.searchTerm};
 					// const resultCount = await getProviderListCountByHospitalId(id,countQuery);
-					// setCount(resultCount.data.data.totalCount);
-					// let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
-					// setPage(Math.ceil(pageCount));
+					 setCount(resultCount.data.data.totalCount);
+					 let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
+					 setPage(Math.ceil(pageCount));
 
 					dispatch(loaderHide());
 				}
@@ -158,6 +163,12 @@ function HospitalOrderTable() {
 		};
 		fetchData();
 	}, [location, searchQuery,orderChanges]);
+
+
+	const pageChange = (event, value) => {
+		// setPage(value);
+		setSearchQuery({ ...searchQuery, pageNumber: value });
+	  };
 
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
@@ -239,6 +250,20 @@ function HospitalOrderTable() {
 			<div className=' pt-2 '>
 				<AdminHeaderWithSearch handleAddNew={handleAddOrder} handleSearchChange={searchTextChange} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown} buttonTitle='Add Order' placeholder='Search here..' title='Orders' />
 				<DataTable columns={columns} data={hospitalOrderData} />
+				<div className="row">
+          <div className="col-md-12 pl-5 pr-5">
+            {count > 0 ? (
+              <PaginationTable
+                handlePageChange={pageChange}
+                countPage={page}
+                count={count}
+                currentPage={searchQuery.pageNumber}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
 			</div>
 		</>
 	);

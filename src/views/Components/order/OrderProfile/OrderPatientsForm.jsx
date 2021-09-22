@@ -12,6 +12,7 @@ import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {EnableMaskPhone} from 'src/reusable';
 import moment from 'moment';
+import FormatText from 'src/reusable/FormatText';
 
 
 const schema = yup.object().shape({
@@ -80,7 +81,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 							<label className='form-text'>
 								First Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('patient.firstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
+							<input className='form-control-sm' type='text' {...register('patient.firstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.patient?.firstName?.message}</div>
 						</div>
 					</div>
@@ -88,7 +89,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>Middle Name</label>
-							<input className='form-control-sm' type='text' {...register('patient.middleName')} readOnly={isEdit}  onBlur={() => setstateChange(!stateChange)} />
+							<input className='form-control-sm' type='text' {...register('patient.middleName')} readOnly={isEdit}  onBlur={() => setstateChange(!stateChange)}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.patient?.middleName?.message}</div>
 						</div>
 					</div>
@@ -98,7 +99,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 							<label className='form-text'>
 								Last Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('patient.lastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
+							<input className='form-control-sm' type='text' {...register('patient.lastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.patient?.lastName?.message}</div>
 						</div>
 					</div>
@@ -119,7 +120,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								 Contact Method <span className='text-danger font-weight-bold '>*</span>{' '}
+								Preferred Contact Method <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('patient.contactMethod')}  onBlur={() => setstateChange(!stateChange)}   >
 								<option value="">Select</option>

@@ -18,9 +18,9 @@ const TheHeaderDropdownNotif = () => {
     >
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <CIcon name="cil-bell"  size={'lg'}/>
-        <CBadge shape="pill" color="danger">{itemsCount}</CBadge>
+        {/* <CBadge shape="pill" color="danger">{itemsCount}</CBadge> */}
       </CDropdownToggle>
-      <CDropdownMenu  placement="bottom-end" className="pt-0">
+      {/* <CDropdownMenu  placement="bottom-end" className="pt-0">
         <CDropdownItem
           header
           tag="div"
@@ -62,7 +62,7 @@ const TheHeaderDropdownNotif = () => {
           <CProgress size="xs" color="danger" value={90} />
           <small className="text-muted">243GB/256GB</small>
         </CDropdownItem>
-      </CDropdownMenu>
+      </CDropdownMenu> */}
     </CDropdown>
   )
 }
