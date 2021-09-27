@@ -21,14 +21,16 @@ const PaymentOrderSummary = ({orderDetail}) => {
 				return (
 					<tr key={index}>
 						<td className='pay-summary-name p-2'>{ x.description }</td>
-						<td className='pay-summary-name p-2 text-right'>{x.packagePrice}</td>
+						{/* <td className='pay-summary-name p-2 text-right'>{x.packagePrice}</td> */}
+						<td className='pay-summary-name p-2 text-right'>{x.discountedPrice}</td>
 					</tr>
 				);
 			});
 			// console.log(list)
 			setOrderCPTList(list);
 			
-			let subtotal = CPTDetails.reduce((sum, item) => sum + Number(item.packagePrice), 0);
+			// let subtotal = CPTDetails.reduce((sum, item) => sum + Number(item.packagePrice), 0);
+			let subtotal = CPTDetails.reduce((sum, item) => sum + Number(item.discountedPrice), 0);
 			setSubToal(subtotal);
 			let total = Number(subtotal) + Number(tax);
 			setTotal(total);

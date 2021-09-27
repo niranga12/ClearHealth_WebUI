@@ -9,3 +9,6 @@ export const getStateList=(countryId) => axiosInstance.get(`geography/state/${co
 export const getRoleList=() => axiosInstance.get(`role`);
 export const getSpecificRoleList=() => axiosInstance.get(`role/`+ Roleclassificationtype.SecurityRoles);
 
+// menu/2/1
+export const getMenu=(resourceType,permissionType) =>axiosInstance.get(`menu/${resourceType}/${permissionType}`);
+

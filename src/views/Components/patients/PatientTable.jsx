@@ -1,8 +1,8 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { selectionListDropDown, TableSettingsEnum } from 'src/reusable/enum';
+import { useDispatch, useSelector } from 'react-redux';
+import { ButtonPermissions, ScreenPermissions, selectionListDropDown, TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
 import DataTable from 'src/views/common/dataTable';
 import PaginationTable from 'src/views/common/paginationTable';
@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { getPatientList, getPatientListCount } from 'src/service/patientService';
+import PermissionButton from 'src/reusable/PermissionButton';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -46,6 +47,22 @@ function CellAddress({row}) {
 
 function ActionPatient({ row }) {
 	let history = useHistory();
+	const [editPE, setEditPE] = useState(false);
+	const [deletePE, setdeletePE] = useState(false);
+	let permissionList= useSelector((state) => state.Permission.UiPermissions);
+
+	useEffect(() => {
+		let Permission=PermissionButton(ScreenPermissions.Patients,ButtonPermissions.EditPatient,permissionList);
+		setEditPE(Permission);
+
+		let deletePermission=PermissionButton(ScreenPermissions.Patients,ButtonPermissions.DeletePatient,permissionList);
+		setdeletePE(deletePermission)
+
+	}, [])
+
+
+
+
 	const redirectToEdit = () => {
 		history.push({
 			pathname: `/patients/profile`,
@@ -63,7 +80,9 @@ function ActionPatient({ row }) {
 					</div>
 				</CDropdownToggle>
 				<CDropdownMenu>
-					<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>
+				{editPE && 	<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
+
+				{/* {deletePE && <CDropdownItem >Delete</CDropdownItem> } */}
 					{/* <CDropdownItem onClick={redirectAccount}>Account</CDropdownItem> */}
 				</CDropdownMenu>
 			</CDropdown>
@@ -81,11 +100,20 @@ const PatientTable = () => {
 
 	const dispatch = useDispatch();
 
+		// for button permission
+		const [addPatientPE, setAddPatientPE] = useState(false);
+		let permissionList= useSelector((state) => state.Permission.UiPermissions);
+
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
+
+				// button Permission
+				let Permission=PermissionButton(ScreenPermissions.Patients,ButtonPermissions.AddPatient,permissionList);
+				setAddPatientPE(Permission);
+				
 				dispatch(loaderShow());
 				const result = await getPatientList(searchQuery);
 				sePatientData(result.data.data);
@@ -167,7 +195,7 @@ const PatientTable = () => {
 
 	return (
 		<>
-			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown} placeholder='Search here..' buttonTitle='New Patient' title='Patients' />
+			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown}   buttonHide={!addPatientPE} placeholder='Search here..' buttonTitle='New Patient' title='Patients' />
 			<DataTable columns={columns} data={patientData} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>
