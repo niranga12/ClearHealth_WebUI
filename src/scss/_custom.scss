@@ -570,6 +570,8 @@ label,
 .MuiPaginationItem-textPrimary.Mui-selected {
   color: #7c70fd !important;
   background-color: #ffffff !important;
+  font-weight: bolder !important;
+
 }
 .MuiPaginationItem-root {
   color: #92929d !important;
@@ -1086,4 +1088,16 @@ margin-top: 2px;
 /* Just looks nicer */
 .credit-card-box .panel-heading img {
   min-width: 180px;
+}
+
+.MuiInputBase-root {
+  color: rgb(156 159 165) !important;
+ 
+}
+// .MuiFormControl-root{
+//   width:100% !important;
+// }
+
+.hide{
+  display:none;
 }

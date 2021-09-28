@@ -42,11 +42,19 @@ const OrderList = ({orderDetail}) => {
 
 	useEffect(() => {
 		try {
-			let facilityName = order?.orderPatientDetails?.facilityName;
-			let result = order?.orderDetails.map((x) => {
-				return {...x, facilityName};
-			});
-			setOrderData(result);
+			if(order?.orderDetails.length){
+				let facilityName = order?.orderPatientDetails?.facilityName;
+				let result = order?.orderDetails?.map((x) => {
+					return {...x, facilityName};
+				});
+				setOrderData(result)
+			}
+			else{
+				setOrderData([]);
+			}
+			
+			
+			
 		} catch (error) {
 			console.error(error);
 		}
@@ -71,17 +79,17 @@ const OrderList = ({orderDetail}) => {
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'service',
+				Header: 'Service',
 				accessor: 'description', // accessor is the "key" in the data
 				disableSortBy: true,
 				Cell: serviceDetail,
 			},
 			{
-				Header: 'CPT',
+				Header: 'CPT Code',
 				accessor: 'code',
 			},
 			{
-				Header: 'EHRAccNum',
+				Header: 'Acc. Num',
 				accessor: 'EHRAccNum',
 			},
 			{
@@ -94,8 +102,8 @@ const OrderList = ({orderDetail}) => {
 			},
 
 			{
-				Header: 'Action',
-				accessor: '', // accessor is the "key" in the data
+				Header: '',
+				accessor: 'id', // accessor is the "key" in the data
 				disableSortBy: true,
 
 				Cell: OrderAction,
@@ -114,7 +122,8 @@ const OrderList = ({orderDetail}) => {
 					</div>
 
 					<div className='col-md-6'>
-						<button className='btn btn-view-account ml-3 float-right'  disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts } onClick={approveOrder}>
+					{/* disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData } */}
+						<button className='btn btn-view-account ml-3 float-right'  disabled={ order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData.length } onClick={approveOrder}>
 							Approve
 						</button>
 					</div>

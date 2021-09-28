@@ -21,6 +21,11 @@ export const CHANGE_ORDER_Table="CHANGE_ORDER_Table";
 
 export const RESET_ORDER_Table="RESET_ORDER_Table";
 
+export const FETCH_PERMISSION="FETCH_PERMISSION";
+export const RESET_PERMISSION="RESET_PERMISSION";
+
+
+
 
 
 

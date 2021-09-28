@@ -162,3 +162,67 @@ export const csvOptions = {
 	OrganizationRoles:2,
 	PersonRoles:3,
 }
+
+
+
+export const ScreenPermissions={
+	Home:1,
+	Hospital:2,
+	HealthSystem:3,
+	Providers:4,
+	PricingTool:5,
+	Orders:6,
+	Patients:7,
+	Accounting:8,
+	Profile:9,
+	UserManagement:10
+}
+
+export const ButtonPermissions={
+	AddHealthSystem:20,
+	EditHealthSystem:21,
+	DeleteHealthSystem:22,
+	AddProviders:23,
+	EditProviders:24,
+	DeleteProviders:25,
+	ViewProviderProcedures:26,
+	AddProviderProcedures:27,
+	AddHospital:11,
+	EditHospital:12,
+	DeleteHospital:13,
+	AddProvidersHospital:16,
+	AddPatient: 28,
+	EditPatient: 29,
+	DeletePatient:30,
+	AddUser: 31,
+	EditUser:32,
+	DeleteUser:33,
+
+	OrdersTab:14,
+	ViewProvidersTab:15,
+	HospitalAddProviders:16,
+	FeeScheduleTab:17,
+	DashboardTab:18,
+	PaymentTab:19
+
+}
+
+
+export const  ResourceType = {
+    Page: 1,
+    Button: 2,
+    Controller: 3
+}
+
+export const  PermissionType = {
+    View: 1,
+    NotAuthorized: 2
+}
+
+
+
+
+
+
+
+

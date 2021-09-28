@@ -1,3 +1,4 @@
+
 import { CHANGE_ORDER_STATUS, RESET_ORDER_STATUS,CHANGE_ORDER_Table, RESET_ORDER_Table } from "src/constansts";
 
 
@@ -27,11 +28,14 @@ export const resetOrder = () => {
 // };
 
 
-export const resetOrderTable = () => {
+export const resetOrderTable = (orderChanges) => {
+
 	return function (dispatch) {
 		
+
 		dispatch({
 			type:RESET_ORDER_Table,
+			payload: !orderChanges,
 		});
 	};
 };

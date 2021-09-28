@@ -42,6 +42,7 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 				Header: 'CPT Code',
 				accessor: 'code', // accessor is the "key" in the data
 				disableSortBy: true,
+				Cell: ({value}) => <h6 className='font-weight-normal text-black ml-4'> {value} </h6>,
 			},
 			{
 				Header: 'CPT Name',

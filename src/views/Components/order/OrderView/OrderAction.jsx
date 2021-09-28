@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle} from '@coreui/react';
 import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
 import {useLocation} from 'react-router';
@@ -18,11 +18,16 @@ const OrderAction = ({row}) => {
 	const location = useLocation();
 	const [orderId, setOrderId] = useState(null);
 	const dispatch = useDispatch();
+	let btnRef = useRef();
 
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('orderId');
 		setOrderId(id);
+		if (btnRef.current) {
+		btnRef.current.removeAttribute('disabled');
+		}
+		
 	}, [location]);
 
 	const deleteOrder = async () => {
@@ -44,8 +49,13 @@ const OrderAction = ({row}) => {
 
 
 	const update = async () => {
-	
+		if (btnRef.current) {
+			btnRef.current.setAttribute('disabled', 'disabled');
+		}
 		try {
+			
+				// btnRef.current.setAttribute('disabled', 'disabled');
+			
 			let result = await updateOrder(orderId, updateData);
 			if (result.data.message == ServiceMsg.OK) {
 				dispatch(notify(`Successfully updated`, 'success'));
@@ -96,9 +106,9 @@ const OrderAction = ({row}) => {
 				</CModalHeader>
 				<CModalBody>{primary && <OrderActionEdit data={row.original} handleChangeCpt={editCpt} />}</CModalBody>
 				<CModalFooter>
-					<CButton color='primary' disabled={!updateData} onClick={update}>
+					<button className='btn btn-primary' ref={btnRef} disabled={!updateData} onClick={update}>
 						Update
-					</CButton>{' '}
+					</button>{' '}
 					<CButton color='secondary' onClick={() => setPrimary(!primary)}>
 						Cancel
 					</CButton>

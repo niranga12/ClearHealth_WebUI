@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { TableSettingsEnum } from 'src/reusable/enum';
+import { useDispatch, useSelector } from 'react-redux';
+import { ButtonPermissions, PermissionType, ResourceType, ScreenPermissions, TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
 import { getHospitalsList, getHospitalsListCount } from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
@@ -11,6 +11,7 @@ import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import { useHistory } from 'react-router-dom';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+import PermissionButton from 'src/reusable/PermissionButton';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -77,6 +78,15 @@ function CellHospitalName({ row }) {
 
 function ActionHospital({ row }) {
 	let history = useHistory();
+	const [editPE, setEditPE] = useState(false);
+	let permissionList= useSelector((state) => state.Permission.UiPermissions);
+
+	useEffect(() => {
+		let Permission=PermissionButton(ScreenPermissions.Hospital,ButtonPermissions.EditHospital,permissionList);
+		setEditPE(Permission);
+	}, [])
+
+
 	const redirectToEdit = () => {
 		history.push({
 			pathname: `/hospitals/profile`,
@@ -102,7 +112,7 @@ function ActionHospital({ row }) {
 					</div>
 				</CDropdownToggle>
 				<CDropdownMenu>
-					<CDropdownItem onClick={redirectToEdit}>Edit Details</CDropdownItem>
+				{editPE && <CDropdownItem onClick={redirectToEdit}>Edit Details</CDropdownItem>}	
 					<CDropdownItem onClick={redirectAccount}>View Account</CDropdownItem>
 				</CDropdownMenu>
 			</CDropdown>
@@ -118,14 +128,25 @@ const HospitalTable = () => {
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
 
+	// for button permission
+	const [addHospital, setAddHospital] = useState(false);
+	let permissionList= useSelector((state) => state.Permission.UiPermissions);
+
 	const dispatch = useDispatch();
 
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 
 	useEffect(() => {
+		
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
+
+				// button Permission
+				let Permission=PermissionButton(ScreenPermissions.Hospital,ButtonPermissions.AddHospital,permissionList);
+				setAddHospital(Permission);
+				
+
 
 				const result = await getHospitalsList(searchQuery);
 				setHospitalData(result.data.data);
@@ -225,7 +246,7 @@ const HospitalTable = () => {
 
 	return (
 		<>
-			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewHospital} placeholder='Search here..' buttonTitle='New Hospital' title='Hospitals' />
+			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewHospital} placeholder='Search here..'   buttonTitle='New Hospital' buttonHide={!addHospital}  title='Hospitals' />
 			<DataTable columns={columns} data={hospitalData} sortingHandler={sortingHandler} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>

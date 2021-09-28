@@ -15,7 +15,7 @@ const orderTableReducer = (state = initialState, action) => {
 		case RESET_ORDER_Table:
                 return {
                     ...state,
-                    changeProgress: !initialState.changeProgress,
+                    changeProgress: action.payload,
                 }; 
            
 			

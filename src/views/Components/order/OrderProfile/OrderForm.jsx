@@ -178,15 +178,18 @@ const handleClearSelection=()=>{
 		<div className='p-4'>
 			<div className='row'>
 				<div className='col-md-4 mb-4'>
-					<label className=' float-left mr-3 pt-1'>Select Patient</label>
+					<label className=' float-left mr-3 pt-1 font-weight-bold'>Select Patient</label>
 					{/* <Select options={options} onChange={selectPatient} /> */}
 
-					<AsyncSelect cacheOptions defaultOptions value={selectedValue} getOptionLabel={(e) => e.firstName} getOptionValue={(e) => e.partyRoleId} loadOptions={loadOptions} onInputChange={handleInputChange} onChange={handleChange} />
+					<AsyncSelect cacheOptions defaultOptions value={selectedValue} getOptionLabel={(e) => e.firstName + ' '+ e.lastName} getOptionValue={(e) => e.partyRoleId} loadOptions={loadOptions} onInputChange={handleInputChange} onChange={handleChange} />
 				
 				</div>
-				<div className='col-md-6 mb-2 pt-3'>
-				{isEdit? <div className="fa fa-close float-left mr-5 text-danger" onClick={handleClearSelection}> Clear</div>:""}
-					<h5 className="float-left">If not , Please fill below fields</h5>
+				<div className="col-md-4 pt-3">
+				{isEdit? <div className="fa fa-close float-left mr-5 text-danger cursor-point " onClick={handleClearSelection}> Clear</div>:""}
+				</div>
+				<div className='col-md-12 mb-2 pt-1'>
+				
+					<h5 className="float-left">If not, Please fill the below fields</h5>
 				</div>
 			</div>
 

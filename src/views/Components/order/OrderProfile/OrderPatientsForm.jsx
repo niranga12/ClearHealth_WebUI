@@ -12,36 +12,49 @@ import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {EnableMaskPhone} from 'src/reusable';
 import moment from 'moment';
+import FormatText from 'src/reusable/FormatText';
 
-const schema = yup.object().shape({
+
+let schema = yup.object().shape({
 	patient: yup.object().shape({
 		firstName: yup.string().required(' First Name is required').matches(ValidationPatterns.onlyCharacters, ' Name should contain only characters'),
 		middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
-		lastName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
+		lastName: yup.string().required(' Last Name is required').matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
 		dateOfBirth: yup.string(),
 		contactMethod: yup.string().required('Contact Method is required'),
-		email: yup.string().email(' Please enter a valid email').required('Email is required'),
+	    email: yup.string().email(' Please enter a valid email').required('Email is required'),
 		phone: yup
 			.string()
 			.required('Phone is required')
 			.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+		// email: yup.string().email(' Please enter a valid email'),
+		// phone: yup
+		// 	.string()
+		// 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	}),
 });
 
 const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
-	const {register, getValues, reset, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
+	const {register, getValues, reset,setValue, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
 	const { isValid, errors} = formState;
+
+	 const [isMail, setIsmail] = useState(false);
+	 const [isPhone, setIsPhone] = useState(false);
 
 	const [fromDate, handlefromDateChange] = useState(Date.now());
 
 	const [stateChange, setstateChange] = useState(false);
+	
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		try {
 			reset(defaultValues);
 			handlefromDateChange(defaultValues?.patient?.dateOfBirth);
+
+			
+
 		} catch (error) {
 			OnError(error, dispatch);
 		}
@@ -49,12 +62,57 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 	}, [defaultValues]);
 
 	useEffect(() => {
-		if (isValid) {
+		let isAviable=false;
+		const formValue = getValues('patient');
+		let value=Number(formValue?.contactMethod)
+
+		if(value>-1){
+			if(value=== Number(ContactMethod.Email)){
+				setIsmail(true);
+				setIsPhone(false);
+				// schema.patient?. yup.object().shape({})
+			}else if(value=== Number(ContactMethod.Phone)){
+				setIsPhone(true);
+				setIsmail(false);
+			}
+		}
+		else{
+			setIsmail(false);
+			setIsPhone(false);
+		}
+
+
+		
+		if( formValue?.contactMethod == ContactMethod.Email && formValue?.firstName && formValue?.middleName && Number(formValue?.contactMethod)>=0 && formValue?.lastName  && formValue?.email  ){
+			isAviable=true;
+		} else if(formValue?.contactMethod == ContactMethod.Phone  && formValue?.firstName && formValue?.middleName && formValue?.lastName && Number(formValue?.contactMethod)>=0  && formValue?.phone){
+			isAviable=true;
+		}else{
+			isAviable=false;
+		}
+		
+
+
+
+
+		 if (isAviable ) {
+			// if ( isValid && !errors.hasOwnProperty('patient')  ) {
 			const formValue = getValues('patient');
 			let newValue = {...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY')};
 			handleForm(newValue);
+		}else{
+			handleForm(null);
 		}
 	}, [stateChange,fromDate]);
+
+	// const contactMethodChange =(value)=>{
+	// 	console.log(value);
+		
+	
+		
+	// setstateChange(!stateChange)
+
+	// }
 
 	// useEffect(() => {
 	// 	setValue("patient?.dateOfBirth",  moment(fromDate).format('MM-DD-YYYY'));
@@ -72,7 +130,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 							<label className='form-text'>
 								First Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('patient.firstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
+							<input className='form-control-sm' type='text' {...register('patient.firstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.patient?.firstName?.message}</div>
 						</div>
 					</div>
@@ -80,7 +138,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>Middle Name</label>
-							<input className='form-control-sm' type='text' {...register('patient.middleName')} readOnly={isEdit}  onBlur={() => setstateChange(!stateChange)} />
+							<input className='form-control-sm' type='text' {...register('patient.middleName')} readOnly={isEdit}  onBlur={() => setstateChange(!stateChange)}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.patient?.middleName?.message}</div>
 						</div>
 					</div>
@@ -90,7 +148,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 							<label className='form-text'>
 								Last Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('patient.lastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
+							<input className='form-control-sm' type='text' {...register('patient.lastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
 							<div className='small text-danger  pb-2   '>{errors.patient?.lastName?.message}</div>
 						</div>
 					</div>
@@ -111,10 +169,10 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								 Contact Method <span className='text-danger font-weight-bold '>*</span>{' '}
+								Preferred Contact Method <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('patient.contactMethod')}  onBlur={() => setstateChange(!stateChange)}   >
-								<option value="">Select</option>
+								<option value="-1">Select</option>
 								<option value={ContactMethod.Email}>Email</option>
 								<option value={ContactMethod.Phone}>Phone</option>
 								</select>
@@ -128,7 +186,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Email <span className='text-danger font-weight-bold '>*</span>{' '}
+								Email 	{isMail && <span className='text-danger font-weight-bold '>*</span> }	
 							</label>
 							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.email?.message}</div>
@@ -139,7 +197,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Phone <span className='text-danger font-weight-bold '>*</span>
+								Phone {isPhone && <span className='text-danger font-weight-bold '>*</span>}	
 							</label>
 							<InputMask {...register('patient.phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patient.phone'))} className='form-control-sm' readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
 							{/* <InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={false} className='form-control-sm' /> */}

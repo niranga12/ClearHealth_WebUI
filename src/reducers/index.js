@@ -13,12 +13,13 @@ import loaderReducer from './loaderReducer';
 import pricingReducer from './pricingReducer';
 import orderReducer from './orderReducer';
 import orderTableReducer from './orderTableReducer';
+import permissionReducer from './permissionReducer';
 
 
 const persistConfig={
    key:'root',
    storage,
-   whitelist:['Login']
+   whitelist:['Login','Permission']
 }
 
 const rootReducer= combineReducers({
@@ -28,6 +29,7 @@ const rootReducer= combineReducers({
    Pricing:pricingReducer,
    Order:orderReducer,
    mainOrder:orderTableReducer,
+   Permission:permissionReducer,
    notifications: notificationsReducer(),
 
 })

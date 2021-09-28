@@ -2,6 +2,7 @@
 import jwt from "jwt-decode"; // import dependency
 import {
   
+  FETCH_PERMISSION,
   LOG_OUT,
   
   USER_LOGIN,
@@ -14,6 +15,8 @@ import {notify} from 'reapop'
 // import history from "../_helpers/history";
 // import onError from "src/_helpers/onerror";
 import {userLogin} from "../service/userService";
+import { PermissionType, ResourceType } from "src/reusable/enum";
+import { getMenu } from "src/service/commonService";
 
 // export const  login = (loginDetail) =>{
 
@@ -70,12 +73,14 @@ export const login = (loginDetail,history) => async (dispatch) => {
               const token = res.data.data.token;
               localStorage.setItem("token", token);
               const user = jwt(token);
+              GetPermissions(dispatch);
               // @ts-ignore
               let loginUser = { ...user, isLogin: true, keepMeSignIn:loginDetail.keepSignIn };
               dispatch({
                 type: USER_LOGIN,
                 payload: loginUser,
               });
+
               
               dispatch(notify('Logged in successfully', 'success'))
               history.push("/main");
@@ -124,6 +129,29 @@ export const login = (loginDetail,history) => async (dispatch) => {
 //     // })
 //   }
 // };
+
+
+
+export const GetPermissions= async (dispatch) =>{
+  try {
+     getMenu(ResourceType.Button,PermissionType.View).then(
+       res=>{
+        let data={UiPermissions:res.data.data}
+        dispatch({
+          type: FETCH_PERMISSION,
+          payload: data,
+        });
+       }
+     )
+   
+
+
+  } catch (error) {
+    
+  }
+
+}
+
 
 export const logout = () => {
   return function (dispatch) {
