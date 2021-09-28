@@ -41,12 +41,18 @@ class App extends Component {
               <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
               <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
               <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
+
+              
+              <Route exact  path="/payment" name="payment" render={props => <Payment {...props}/>} />
+              <Route exact  path="/payment/:id" name="payment" render={props => <Payment {...props}/>} />
+
+
               <Route exact path="/forgotpassword" name="Forgot Password" render={props => <ForgotPW {...props}/>} />
               <Route exact path="/resetpassword"  name="Reset Password" render={props => <ResetPW {...props} />} />
               <Route exact path="/resetpassword/:id" name="Reset Password" render={props => <ResetPW {...props}/>} />
              
               <AuthRoute  path="/main" name="main" render={props => <DashboardMenu {...props}/>} />
-              <AuthRoute  path="/payment" name="payment" render={props => <Payment {...props}/>} />
+              {/* <AuthRoute  path="/payment" name="payment" render={props => <Payment {...props}/>} /> */}
 
               
               <AuthRoute  path="/" name="Home" render={props => <TheLayout {...props}/>} />

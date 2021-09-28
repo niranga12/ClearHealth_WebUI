@@ -24,6 +24,8 @@ export const ServiceMsg = {
 	AuthFailed: 'AuthFailed',
 	ServerError: 'ServerError',
 	InvalidRequest: 'InvalidRequest',
+	OrderAlreadyProcessed: 'OrderAlreadyProcessed',
+	InvalidOrder: 'InvalidOrder',
 };
 export const MaskFormat = {
 	phoneNumber: '(999) 999 - 9999',
@@ -54,33 +56,33 @@ export const CurrencyDetail = {
 	USA: '$',
 };
 
-export const DateFormat={
-	USFormat: 'MM-DD-YYYY'
-}
+export const DateFormat = {
+	USFormat: 'MM-DD-YYYY',
+};
 
 export const ServiceType = {
 	Types: [
-		{ value: '', text: 'Select' },
-		{ value: 1, text: 'Radiology' },
-		{ value: 2, text: 'OB/GYN' },
-		{ value: 3, text: 'Labs' },
-		{ value: 4, text: 'General Surgery' },
-		{ value: 5, text: 'Gastroenterology' },
-		{ value: 6, text: 'Cardiac Imaging' },
+		{value: '', text: 'Select'},
+		{value: 1, text: 'Radiology'},
+		{value: 2, text: 'OB/GYN'},
+		{value: 3, text: 'Labs'},
+		{value: 4, text: 'General Surgery'},
+		{value: 5, text: 'Gastroenterology'},
+		{value: 6, text: 'Cardiac Imaging'},
 	],
 };
 
 export const selectionListDropDown = [
-	{ text: 'Select', value: '' },
-	{ text: 'Most Recent', value: 'recent' },
-	{ text: 'All', value: 'all' },
-	{ text: 'Deleted', value: 'deleted' },
-]
+	{text: 'Select', value: ''},
+	{text: 'Most Recent', value: 'recent'},
+	{text: 'All', value: 'all'},
+	{text: 'Deleted', value: 'deleted'},
+];
 
-export const ActiveList=[
-		{ text: 'Active', value: 'Active' },
-		{ text: 'Inactive', value: 'Inactive' },	
-]
+export const ActiveList = [
+	{text: 'Active', value: 'Active'},
+	{text: 'Inactive', value: 'Inactive'},
+];
 
 export const ServiceTypeEnum = {
 	Radiology: 1,
@@ -91,138 +93,117 @@ export const ServiceTypeEnum = {
 	CardiacImaging: 6,
 };
 
-
 export const PackageItems = {
 	GlobalPackage: 1,
 	Facility: 2,
 	Physician: 3,
 	Anesthesia: 4,
-	Pathology: 5
-
-
-}
-
-
+	Pathology: 5,
+};
 
 export const Packages = [
-	{ name: "Global Package", id: 1 },
-	{ name: "Facility", id: 2 },
-	{ name: "Physician", id: 3 },
-	{ name: "Anesthesia", id: 4 },
-	{ name: "Pathology", id: 5 }
-]
-
+	{name: 'Global Package', id: 1},
+	{name: 'Facility', id: 2},
+	{name: 'Physician', id: 3},
+	{name: 'Anesthesia', id: 4},
+	{name: 'Pathology', id: 5},
+];
 
 export const FacilityPackageField = [
-
-	{ text: "Medicare Rate", value: "medicareRate", id: 1 },
-	{ text: "Hospital Collection", value: "hospitalCollectionFee", id: 2 }
-]
+	{text: 'Medicare Rate', value: 'medicareRate', id: 1},
+	{text: 'Hospital Collection', value: 'hospitalCollectionFee', id: 2},
+];
 
 export const PhysicianPackageField = [
-	{ text: "Medicare Rate", value: "medicareRate", id: 1 },
-	{ text: "Physician Collection", value: "physicianCollectionFee", id: 2 }
-]
+	{text: 'Medicare Rate', value: 'medicareRate', id: 1},
+	{text: 'Physician Collection', value: 'physicianCollectionFee', id: 2},
+];
 
 export const EnhancementPercentage = [
-	{ text: "6.5%", value: "6.5" },
-	{ text: "15%", value: "15" }
-]
+	{text: '6.5%', value: '6.5'},
+	{text: '15%', value: '15'},
+];
 
-export const HospitalTabList={
-	Orders:0,
-	Providers:1,
-	FeeSchedule:2,
-	Dashboard:3,
-	Payment:4
-}
+export const HospitalTabList = {
+	Orders: 0,
+	Providers: 1,
+	FeeSchedule: 2,
+	Dashboard: 3,
+	Payment: 4,
+};
 export const ContactMethod = {
-    Email: 0,
-    Phone : 1
-}
+	Email: 0,
+	Phone: 1,
+};
 
+export const csvOptions = {
+	fieldSeparator: ',',
+	quoteStrings: '"',
+	decimalSeparator: '.',
+	showLabels: true,
+	showTitle: false,
+	// title: 'CSV',
+	useTextFile: false,
+	useBom: true,
+	useKeysAsHeaders: true,
 
+	// headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+};
 
-export const csvOptions = { 
-    fieldSeparator: ',',
-    quoteStrings: '"',
-    decimalSeparator: '.',
-    showLabels: true, 
-    showTitle: false,
-    // title: 'CSV',
-    useTextFile: false,
-    useBom: true,
-    useKeysAsHeaders: true,
-	
-    // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
-  };
+export const Roleclassificationtype = {
+	SecurityRoles: 1,
+	OrganizationRoles: 2,
+	PersonRoles: 3,
+};
 
-  export const Roleclassificationtype={
-	SecurityRoles:1,
-	OrganizationRoles:2,
-	PersonRoles:3,
-}
+export const ScreenPermissions = {
+	Home: 1,
+	Hospital: 2,
+	HealthSystem: 3,
+	Providers: 4,
+	PricingTool: 5,
+	Orders: 6,
+	Patients: 7,
+	Accounting: 8,
+	Profile: 9,
+	UserManagement: 10,
+};
 
-
-
-export const ScreenPermissions={
-	Home:1,
-	Hospital:2,
-	HealthSystem:3,
-	Providers:4,
-	PricingTool:5,
-	Orders:6,
-	Patients:7,
-	Accounting:8,
-	Profile:9,
-	UserManagement:10
-}
-
-export const ButtonPermissions={
-	AddHealthSystem:20,
-	EditHealthSystem:21,
-	DeleteHealthSystem:22,
-	AddProviders:23,
-	EditProviders:24,
-	DeleteProviders:25,
-	ViewProviderProcedures:26,
-	AddProviderProcedures:27,
-	AddHospital:11,
-	EditHospital:12,
-	DeleteHospital:13,
-	AddProvidersHospital:16,
+export const ButtonPermissions = {
+	AddHealthSystem: 20,
+	EditHealthSystem: 21,
+	DeleteHealthSystem: 22,
+	AddProviders: 23,
+	EditProviders: 24,
+	DeleteProviders: 25,
+	ViewProviderProcedures: 26,
+	AddProviderProcedures: 27,
+	AddHospital: 11,
+	EditHospital: 12,
+	DeleteHospital: 13,
+	AddProvidersHospital: 16,
 	AddPatient: 28,
 	EditPatient: 29,
-	DeletePatient:30,
+	DeletePatient: 30,
 	AddUser: 31,
-	EditUser:32,
-	DeleteUser:33,
+	EditUser: 32,
+	DeleteUser: 33,
 
-	OrdersTab:14,
-	ViewProvidersTab:15,
-	HospitalAddProviders:16,
-	FeeScheduleTab:17,
-	DashboardTab:18,
-	PaymentTab:19
+	OrdersTab: 14,
+	ViewProvidersTab: 15,
+	HospitalAddProviders: 16,
+	FeeScheduleTab: 17,
+	DashboardTab: 18,
+	PaymentTab: 19,
+};
 
-}
+export const ResourceType = {
+	Page: 1,
+	Button: 2,
+	Controller: 3,
+};
 
-
-export const  ResourceType = {
-    Page: 1,
-    Button: 2,
-    Controller: 3
-}
-
-export const  PermissionType = {
-    View: 1,
-    NotAuthorized: 2
-}
-
-
-
-
-
-
-
-
+export const PermissionType = {
+	View: 1,
+	NotAuthorized: 2,
+};

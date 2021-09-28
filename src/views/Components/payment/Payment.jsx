@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import moment from 'moment';
@@ -6,8 +7,8 @@ import {useDispatch} from 'react-redux';
 import {useLocation} from 'react-router';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import {TheHeader} from 'src/containers';
-import { DateFormat } from 'src/reusable/enum';
-import {getPatientOrderByOrderId} from 'src/service/orderService';
+import { DateFormat, ServiceMsg } from 'src/reusable/enum';
+import { getPatientOrderDetailsByOrderId } from 'src/service/paymentService';
 import NotificationLayout from 'src/_helpers/notification';
 import OnError from 'src/_helpers/onerror';
 import PayStripe from '../Payment-Stripe/PayStripe';
@@ -16,7 +17,7 @@ import PaymentOrderSummary from './PaymentOrderSummary';
 
 const Payment = () => {
 	const [orderDetail, setOrderDetails] = useState([]);
-	const [orderId, setOrderId] = useState(null);
+	// const [orderId, setOrderId] = useState(null);
   const [patient, setPatient] = useState(null)
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -36,17 +37,29 @@ const Payment = () => {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
-		const key= params.get('key');
-		setOrderId(id);
-		setSTKey(key);
+		// const key= params.get('key');
+		// setOrderId(id);
+	
 
 		const fetchData = async () => {
 			dispatch(loaderShow());
 			try {
-				const result = await getPatientOrderByOrderId(id);
-				setOrderDetails(result.data.data[0]);
-       let orderPayment=  formatPaymentDetail(result.data.data[0]?.orderPatientDetails);
-      setPatient(orderPayment);
+				const result = await getPatientOrderDetailsByOrderId(id);
+				if(result.data.message==ServiceMsg.OK){
+					setOrderDetails(result.data.data);
+					
+					console.log(result.data.data);
+					setSTKey(result.data.data?.clientSecret);
+					let orderPayment=  formatPaymentDetail(result.data.data?.orderPatientDetails);
+				    setPatient(orderPayment);
+				}else if(result.data.message==ServiceMsg.OrderAlreadyProcessed){
+
+				}
+				else if(result.data.message==ServiceMsg.InvalidOrder){
+
+				}
+
+				
 
 			} catch (error) {
 				OnError(error, dispatch);
@@ -61,9 +74,9 @@ const Payment = () => {
     // console.log(detail);
 		let data = {
 			order: {
-				referringProvider: '',
-				accountNumber: '',
-				orderId: orderId,
+				// referringProvider: '',
+				// accountNumber: '',
+				orderId: detail.orderId,
 				orderDate: moment(detail.orderDate).format(DateFormat.USFormat) ,
 
 				patientName: detail.firstName + ' ' + detail.lastName,
@@ -72,11 +85,11 @@ const Payment = () => {
 				referringProviderName: '',
 				dateOfBirth: moment(detail.DOB).format(DateFormat.USFormat) ,
 
-				address1: '',
-				address2: '',
-				city: '',
-				state: '',
-				zip: '',
+				// address1: '',
+				// address2: '',
+				// city: '',
+				// state: '',
+				// zip: '',
 				billingAddress1: '',
 				billingAddress2: '',
 				billingCity: '',
@@ -108,6 +121,7 @@ let result ={
     email: value.email,
     name: value.patientName,
     phone: value.contactPhone,
+	
 }
 
 setBillingData(result);
@@ -116,6 +130,8 @@ setBillingData(result);
 
 	return (
 		<>
+		   
+
 			<div className='c-app c-default-layout'>
 				<NotificationLayout />
 				<div className='c-wrapper'>
@@ -127,7 +143,7 @@ setBillingData(result);
 								<PaymentOrder  patientOrder={patient} formChange={formChange} handleValid={formValid}/>
 								<div className='component-header mt-4 mb-4 '>Payment Details </div>
                 <Elements stripe={stripePromise}>
-                <PayStripe billingDetails={billingData}  stKey={stKey} isValid={isValid}/>
+                <PayStripe billingDetails={billingData}  stKey={stKey} isValid={isValid} orderId={patientData?.orderId}/>
                </Elements>
             
 							</div>
@@ -138,6 +154,7 @@ setBillingData(result);
 					</div>
 				</div>
 			</div>
+			
 		</>
 	);
 };
