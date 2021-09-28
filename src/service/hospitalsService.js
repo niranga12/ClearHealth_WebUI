@@ -51,3 +51,7 @@ export const getPatientsDetailsByHospital=(hospitalId,data)=>axiosInstance.post(
 
 //Stripe on board infor
 export const getOnboardinginfo=(partyRoleId)=>axiosInstance.get(`payment/onboardinginfo/${partyRoleId}`);
+
+export const save=(data)=>axiosInstance.post(`hospital`,data);
+
+export const saveNotifyUser=(partyRoleId,data)=>axiosInstance.post(`payment/onboardingAlert/`+partyRoleId,data);
