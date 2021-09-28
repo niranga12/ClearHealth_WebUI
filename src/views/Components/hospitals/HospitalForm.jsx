@@ -19,6 +19,8 @@ import FormatText from 'src/reusable/FormatText';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { EnableMaskPhone } from 'src/reusable';
+import HospitalNotifyUser from './HospitalNotifyUser';
+
 
 const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital name should contain only characters'),
@@ -69,7 +71,6 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [stateOption, setStateOption] = useState(defaultValues.state);
 	const [businessStateOption, setBusinessStateOption] = useState(defaultValues.businessState);
 
-
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const { dirtyFields } = useFormState({ control });
 	const dispatch = useDispatch();
@@ -82,7 +83,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [isAlreadyExit, setIsAlreadyExit] = useState(false);
 	// ... so that we aren't hitting our API rapidly.
 	const debouncedName = useDebounce(hospitalName, 1000);
-
+	const [isNotify, setIsNotify] = useState(false)
 	// validate organition name
 	useEffect(() => {
 		const fetchValidate = async () => {
@@ -177,6 +178,12 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		} else {
 			addHospital(data);
 		}
+	};
+
+	const notifyUser = (data) => {
+		debugger;
+		
+		setIsNotify(!isNotify);
 	};
 
 	// save hospital
@@ -599,8 +606,9 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				</div>
 
 				{/* Stripe */}
-				<h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5>
-				<div className='row'>
+				{ isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null }
+				
+				{ isEdit ? <div className='row'>
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>Update Link</label>
@@ -611,15 +619,23 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 					</div>
 
-					<div className='col-md-4'>
+					<div className='col-md-4 row'>
 						<div className='form-group'>
 							<label className='form-text'>Status</label>
 							{onboardingInfo.isOnboardingCompleted == '1' ? <div className='font-weight-bold font-green'>Complete</div> : <div className='font-weight-bold font-red'>Pending</div>}
 						</div>
 
-
+						<div className='form-group'>
+							<div className='ml-5 mt-4'>
+							<div  onClick={notifyUser} className='btn btn-secondary m-0'>
+								Notify User
+							</div>
+							</div>
+						</div>
 					</div>
-				</div>
+				</div>: null }
+
+				
 
 
 				<div className='row'>
@@ -630,6 +646,9 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					</div>
 				</div>
 			</form>
+
+			<HospitalNotifyUser partyRoleId={partyRoleId} isNotify={isNotify}/>
+
 		</div>
 	);
 };
