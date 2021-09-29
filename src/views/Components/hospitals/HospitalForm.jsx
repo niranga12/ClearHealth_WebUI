@@ -159,6 +159,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	// set default form values
 	useEffect(() => {
 		try {
+			
 			reset(defaultValues);
 			setStateOption(defaultValues.state); //set state dropdown value
 			setBusinessStateOption(defaultValues.businessState);
@@ -180,10 +181,14 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		}
 	};
 
-	const notifyUser = (data) => {
-		
+	const notifyUser = () => {
 		setIsNotify(!isNotify);
 	};
+
+	const modelCancel=() =>{
+		setIsNotify(!isNotify);
+	};
+
 
 	// save hospital
 	const addHospital = async (data) => {
@@ -646,7 +651,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				</div>
 			</form>
 
-			<HospitalNotifyUser partyRoleId={partyRoleId} isNotify={isNotify}/>
+			<HospitalNotifyUser partyRoleId={partyRoleId} isNotify={isNotify} handleCancel={modelCancel}/>
 
 		</div>
 	);

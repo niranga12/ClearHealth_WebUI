@@ -59,7 +59,7 @@ function CellHospitalName({ row }) {
 	const onclickBoarding = () => {
 		history.push({
 			pathname: `/hospitals/profile`,
-			search: `?id=${row.original.partyRoleId}`,
+			search: `?id=${row.original.partyRoleId}&&onboarding=bottom`,
 			// state: { detail: 'some_value' }
 		});
 	};
@@ -70,8 +70,6 @@ function CellHospitalName({ row }) {
 				{ row.original.isOnboardingCompleted != '1' && <div  className="cursor-point text-primary" onClick={onclickBoarding}>(Onboarding Pending)</div>}
 		
 			</div>
-
-
 		</>
 	);
 }

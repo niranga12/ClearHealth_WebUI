@@ -13,7 +13,7 @@ const schema = yup.object().shape({
     email: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 });
 
-const HospitalNotifyUser = ({ partyRoleId = null, isNotify }) => {
+const HospitalNotifyUser = ({ partyRoleId = null, isNotify,handleCancel }) => {
     const {
         register,
         handleSubmit,
@@ -45,6 +45,8 @@ const HospitalNotifyUser = ({ partyRoleId = null, isNotify }) => {
         }
             let result = await saveNotifyUser(partyRoleId,user);
             if (result.data.message === ServiceMsg.OK) {
+                setValue('email','')
+                handleCancel();
         }
     } catch (error) {
         OnError(error);
@@ -66,7 +68,7 @@ return (
             <CButton color='primary' onClick={onNotifyUser} >
                 Send
             </CButton>{' '}
-            <CButton color='secondary' onClick={() => setModal(false)}>
+            <CButton color='secondary' onClick={handleCancel}>
                 Cancel
             </CButton>
         </CModalFooter>
