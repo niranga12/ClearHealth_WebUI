@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
 import { saveProvider, updateProviderByPartyRoleId } from 'src/service/providerService';
@@ -43,9 +43,9 @@ const schema = yup.object().shape({
 	speciality: yup.string().required('Specialty is required'),
 	taxId: yup.string(),
 	nip: yup.string().required('NPI is required'),
-	bankName: yup.string(),
-	accountNumber: yup.string(),
-	routing: yup.string()
+	// bankName: yup.string(),
+	// accountNumber: yup.string(),
+	// routing: yup.string()
 });
 
 const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData = [], stateList = [] }) => {
@@ -67,6 +67,11 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [billingStateOption, setBillingStateOption] = React.useState(defaultValues.billingState);
 	const dispatch = useDispatch();
 	let history = useHistory();
+	const location = useLocation();
+
+	const [tabId, setTabId] = useState(null);
+	const [hospitalName, setHospitalName] = useState(null);
+	const [hospitalId, setHospitalId] = useState(null);
 
 	//const [healthSystems, setHealthSystem] = useState([]);
 
@@ -108,7 +113,16 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		setStateOption(defaultValues.state); //set state dropdown value
 		setBillingStateOption(defaultValues.billingState);
 
-	}, [defaultValues]);
+		const params = new URLSearchParams(location.search);
+		const tap = params.get('tap');
+		const hosName=params.get('hospitalName');
+		const hosId=params.get('hospitalId');
+
+		setTabId(tap);
+		setHospitalName(hosName)
+		setHospitalId(hosId)
+
+	}, [defaultValues,location]);
 
 
 	useEffect(() => {
@@ -246,18 +260,30 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			paymentInfo: {
 				NPI: data.nip,
 				taxId: data.taxId,
-				bankName: data.bankName,
-				routing: data.routing,
-				accountNumber: data.accountNumber,
+				// bankName: data.bankName,
+				// routing: data.routing,
+				// accountNumber: data.accountNumber,
 
 			},
 		};
 		try {
+			
 			if (newProvider) {
 				let result = await saveProvider(newProvider);
 				if (result.data.message === ServiceMsg.OK) {
 					dispatch(notify(`Successfully added`, 'success'));
-					history.push('/providers');
+
+					// for redirecting parent page
+					if(tabId &&hospitalId ){
+						history.push({
+							pathname: `/hospitals/hospital`,
+							search: `?id=${hospitalId}&name=${hospitalName}&tap=${tabId}`,
+							
+						});
+					}else{
+						history.push('/providers');
+					}
+					
 				}
 			}
 		} catch (error) {
@@ -332,9 +358,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						taxId: getValues('taxId'),
 						NPI: getValues('nip'),
-						bankName: getValues('bankName'),
-						routing: getValues('routing'),
-						accountNumber: getValues('accountNumber'),
+						// bankName: getValues('bankName'),
+						// routing: getValues('routing'),
+						// accountNumber: getValues('accountNumber'),
 
 					},
 				}),
@@ -603,13 +629,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				</div>
 
 				{/* payment info */}
-				<h5 className='font-weight-bold mt-1'>Payment Info </h5>
+				{/* <h5 className='font-weight-bold mt-1'>Payment Info </h5> */}
 
-				<div className='row'>
+				{/* <div className='row'> */}
 
 
 					{/* secound details */}
-					<div className='col-md-4'>
+					{/* <div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
@@ -637,10 +663,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<input type='text' className='form-control-sm' {...register('routing')} />
 							<div className='small text-danger  pb-2   '> {errors.routing?.message} </div>
 						</div>
-					</div>
+					</div> */}
 
 
-				</div>
+				{/* </div> */}
 
 				<div className='row'>
 					<div className='col-md-12'>

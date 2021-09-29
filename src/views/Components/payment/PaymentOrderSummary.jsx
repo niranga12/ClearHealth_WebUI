@@ -13,6 +13,8 @@ const PaymentOrderSummary = ({orderDetail}) => {
 	useEffect(() => {
 		setorderPatientDetails(orderDetail?.orderPatientDetails);
 		setCPTDetail(orderDetail?.orderDetails);
+		setSubToal(orderDetail?.orderTotal);
+		setTotal(orderDetail?.orderTotal);
 	}, [orderDetail]);
 
 	useEffect(() => {
@@ -22,18 +24,18 @@ const PaymentOrderSummary = ({orderDetail}) => {
 					<tr key={index}>
 						<td className='pay-summary-name p-2'>{ x.description }</td>
 						{/* <td className='pay-summary-name p-2 text-right'>{x.packagePrice}</td> */}
-						<td className='pay-summary-name p-2 text-right'>{x.discountedPrice}</td>
+						<td className='pay-summary-name p-2 text-right'>${x.discountedPrice}</td>
 					</tr>
 				);
 			});
 			
 			setOrderCPTList(list);
 			
-			// let subtotal = CPTDetails.reduce((sum, item) => sum + Number(item.packagePrice), 0);
-			let subtotal = CPTDetails.reduce((sum, item) => sum + Number(item.discountedPrice), 0);
-			setSubToal(subtotal);
-			let total = Number(subtotal) + Number(tax);
-			setTotal(total);
+			
+			// let subtotal = CPTDetails.reduce((sum, item) => sum + Number(item.discountedPrice), 0);
+			// setSubToal(subtotal);
+			// let total = Number(subtotal) + Number(tax);
+			// setTotal(total);
 			
 		}
 	}, [CPTDetails]);
@@ -53,8 +55,8 @@ const PaymentOrderSummary = ({orderDetail}) => {
 						<tr className='border-bottom'>
 							<td className='pay-summary-address'>
 								<div className='pt-3'>{orderPatientDetails?.facilityName}</div>
-								<div>{orderPatientDetails?.facilityAddress1 + ' ' + orderPatientDetails?.facilityAddress2 + ' ' + orderPatientDetails?.facilityCity} </div>
-								<div className='pb-3'>{orderPatientDetails?.facilityState  + ' ' + orderPatientDetails?.facilityZip}</div>
+								<div>{orderPatientDetails?.facilityAddress1 + ', ' + orderPatientDetails?.facilityAddress2 + ', ' + orderPatientDetails?.facilityCity} </div>
+								<div className='pb-3'>{orderPatientDetails?.facilityState  + ', ' + orderPatientDetails?.facilityZip}</div>
 								{/* <div  className="pb-3 text-primary cursor-point">Delete</div> */}
 							</td>
 							<td></td>

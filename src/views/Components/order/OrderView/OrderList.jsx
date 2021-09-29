@@ -88,14 +88,14 @@ const OrderList = ({orderDetail}) => {
 				Header: 'CPT Code',
 				accessor: 'code',
 			},
-			{
-				Header: 'Acc. Num',
-				accessor: 'EHRAccNum',
-			},
-			{
-				Header: 'Ref',
-				accessor: 'Ref',
-			},
+			// {
+			// 	Header: 'Acc. Num',
+			// 	accessor: 'EHRAccNum',
+			// },
+			// {
+			// 	Header: 'Ref',
+			// 	accessor: 'Ref',
+			// },
 			{
 				Header: 'Price',
 				accessor: 'packagePrice',

@@ -181,7 +181,6 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	};
 
 	const notifyUser = (data) => {
-		debugger;
 		
 		setIsNotify(!isNotify);
 	};

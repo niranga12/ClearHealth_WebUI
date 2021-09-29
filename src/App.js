@@ -24,6 +24,7 @@ const ForgotPW= React.lazy(()=>import('./views/pages/forgotpassword/forgotpasswo
 const ResetPW= React.lazy(()=>import('./views/pages/resetpassword/resetpassword'));
 const DashboardMenu= React.lazy(()=>import('./views/Components/dashboardMenu/TheDashboardMenu'));
 const Payment =React.lazy(() => import('./views/Components/payment/Payment'));
+const OnBoarding = React.lazy(()=>import('./views/pages/onboarding/onBoardingComplete'));
 
 class App extends Component {
 
@@ -41,6 +42,7 @@ class App extends Component {
               <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
               <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
               <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
+              <Route exact path="/onboardingcomplete" name="On Boarding Complete" render={props => <OnBoarding {...props}/>} />
 
               
               <Route exact  path="/payment" name="payment" render={props => <Payment {...props}/>} />

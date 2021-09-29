@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { notify } from "reapop";
 // import history from "src/_helpers/history";
 import OnError from "src/_helpers/onerror";
+import { loaderHide, loaderShow } from "src/actions/loaderAction";
 
 const schema = yup.object().shape({
   password: yup.string().required("Password is required"),
@@ -55,6 +56,8 @@ const ResetPassword = () => {
   const resetPass = async (data) => {
     
     try {
+      disPatch(loaderShow());
+
       const resetData = {
         token: id,
         username: userName,
@@ -65,6 +68,7 @@ const ResetPassword = () => {
         disPatch(notify(`Successfully added`, "success"));
         history.push("/login");
       }
+      disPatch(loaderHide());
     } catch (error) {
       OnError(error, disPatch);
     }

@@ -18,7 +18,7 @@ import FormatText from 'src/reusable/FormatText';
 let schema = yup.object().shape({
 	patient: yup.object().shape({
 		firstName: yup.string().required(' First Name is required').matches(ValidationPatterns.onlyCharacters, ' Name should contain only characters'),
-		middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
+		// middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
 		lastName: yup.string().required(' Last Name is required').matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
 		dateOfBirth: yup.string(),
 		contactMethod: yup.string().required('Contact Method is required'),
