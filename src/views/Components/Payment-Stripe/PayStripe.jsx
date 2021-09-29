@@ -1,6 +1,6 @@
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
 import {useHistory, useLocation} from 'react-router';
@@ -45,8 +45,12 @@ const PayStripe = ({billingDetails, stKey, isValid,orderId}) => {
 	const [validDetail, setIsvalidDetail] = useState(false);
 	const dispatch = useDispatch();
 	const history = useHistory();
+	let btnRef = useRef();
 
 	useEffect(() => {
+		// if (btnRef.current) {
+		// btnRef.current.removeAttribute('disabled');
+		// }
 		setBillDet(billingDetails?.order);
 		setStripeKeySes(stKey);
 		setIsvalidDetail(isValid);
@@ -57,6 +61,9 @@ const PayStripe = ({billingDetails, stKey, isValid,orderId}) => {
 
 	const handleSubmit = async (event) => {
 		// Block native form submission.
+		// if (btnRef.current) {
+		// 	btnRef.current.setAttribute('disabled', 'disabled');
+		// }
 		event.preventDefault();
 
 		if (!stripe || !elements) {
@@ -135,7 +142,7 @@ const PayStripe = ({billingDetails, stKey, isValid,orderId}) => {
 					</div>
 				</div>
 
-				<button type='submit' className='btn btn-primary' disabled={!stripe || !validDetail}>
+				<button type='submit' className='btn btn-primary'  disabled={!stripe || !validDetail}>
 					Pay Now
 				</button>
 			</form>
