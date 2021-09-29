@@ -40,6 +40,7 @@ const schema = yup.object().shape({
 	phone: yup.string()
 		.required('Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+	email: yup.string().required('Email is required').email('Email must be a valid email'),
 	speciality: yup.string().required('Specialty is required'),
 	taxId: yup.string(),
 	nip: yup.string().required('NPI is required'),
@@ -562,6 +563,15 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							</label>
 							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('phone'))} className='form-control-sm' />
 							<div className='small text-danger  pb-2'>{errors.phone?.message}</div>
+						</div>
+
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								Email <span className='text-danger font-weight-bold '></span>{' '}
+							</label>
+							<input type='text' className='form-control-sm' {...register('email')} />
+							<div className='small text-danger  pb-2   '> {errors.email?.message} </div>
 						</div>
 
 						<div className='form-group'>

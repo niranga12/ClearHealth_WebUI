@@ -57,7 +57,12 @@ const HospitalProfile = () => {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
+		const onboarding = params.get('onboarding');
 		setPartyRoleId(id);
+		if (onboarding == 'bottom') {
+			window.scrollTo(0, document.body.scrollHeight);
+		}
+
 		id ? setEditProfile(true) : setEditProfile(false);
 
 		const fetchData = async () => {
