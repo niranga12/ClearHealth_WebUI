@@ -155,7 +155,7 @@ const HospitalTable = () => {
 				setCount(resultCount.data.data.totalCount);
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
 				setPage(Math.ceil(pageCount));
-				// console.log(count)
+				
 				dispatch(loaderHide());
 
 			} catch (error) {

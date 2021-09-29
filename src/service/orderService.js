@@ -9,5 +9,5 @@ export const updateOrder=(orderId,orderDetail)=>axiosInstance.put(`order/${order
 
 export const orderAprove=(orderId)=>axiosInstance.post(`order/${orderId}/approve`,{});
 
-export const getPatientOrderByOrderId=(orderId)=>axiosInstance.get(`order/${orderId}/patient`);
+// export const getPatientOrderByOrderId=(orderId)=>axiosInstance.get(`order/${orderId}/patient`);
 

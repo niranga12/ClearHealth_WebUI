@@ -157,11 +157,11 @@ setIsAddHealthPE(Permission);
         setCount(resultCount.data.data.totalCount);
         let pageCount =
           resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
-        //  console.log(pageCount)
+      
         setPage(Math.ceil(pageCount));
         dispatch(loaderHide());
 
-        // console.log(count)
+      
       } catch (error) {
         OnError(error, dispatch);
       }
@@ -171,12 +171,12 @@ setIsAddHealthPE(Permission);
 
   //  const searchTextChange= (value)=>{
 
-  //   //  console.log();
+  
   //   if(value.length>3){
   //     setSearchQuery({...initialSearch,searchTerm:value})
   //   }
 
-  //   console.log(searchQuery);
+  
   //  }
 
   //  const resCount = useCallback(

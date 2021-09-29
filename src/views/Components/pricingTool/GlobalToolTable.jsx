@@ -61,7 +61,7 @@ const GlobalToolTable = ({filterDetail}) => {
         return {...x,clearTransactionalFee:clearFees, packagePrice:total }
        
            });
-           // console.log(updatedData);
+         
            setGlobalPackage(updatedData)
        
        

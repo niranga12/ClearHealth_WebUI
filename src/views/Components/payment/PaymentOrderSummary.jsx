@@ -26,7 +26,7 @@ const PaymentOrderSummary = ({orderDetail}) => {
 					</tr>
 				);
 			});
-			// console.log(list)
+			
 			setOrderCPTList(list);
 			
 			// let subtotal = CPTDetails.reduce((sum, item) => sum + Number(item.packagePrice), 0);

@@ -104,9 +104,17 @@ const Login = () => {
         />
         <div className="small text-danger pb-2  ">{errors.password?.message}</div>
         <div className="row p-2">
-<div className="col-md-6 pl-4 checkbox">
-  <input type="checkbox" className="form-check-input" name="KeepSign" id=""   {...register("keepSignIn")}/> <div className="label  form-check-label ">Keep me signed in</div>
+<div className="col-md-6 pl-2 checkbox">
+<div className="checkbox-container float-left">
+        <label className="checkbox-label">
+            <input type="checkbox" name="KeepSign" id=""    {...register("keepSignIn")}/>
+            <span className="checkbox-custom"></span>
+        </label>
 </div>
+  {/* <input type="checkbox" className="form-check-input" name="KeepSign" id=""   {...register("keepSignIn")}/> <div className="label  form-check-label ">Keep me signed in</div> */}
+  <div className="label  form-check-label pl-2 ml-3 "> Keep me signed in</div>
+</div>
+
 <div className="col-md-6 text-right">
 <div className=" label  text-right text-loginblue  font-lato-bold cil-cursor cursor-point" onClick={redirectToPage}>
           Forgot Password?

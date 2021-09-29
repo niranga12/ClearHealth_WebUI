@@ -18,45 +18,7 @@ import {userLogin} from "../service/userService";
 import { PermissionType, ResourceType } from "src/reusable/enum";
 import { getMenu } from "src/service/commonService";
 
-// export const  login = (loginDetail) =>{
 
-//     return {
-//         type:'LOGIN',
-//         payload:"fadsf"
-//     }
-
-// }
-
-// export const login = (loginDetail) =>{
-
-//     return (dispatch) => {
-//       //let history = useHistory();
-
-//       // dispatch({
-//       //   type: FETCHING_USER
-//       // });
-//     //    dispatch({type: CREATE_ORGANIZATION});
-//        axios.post(`${WebAPi}/auth/login`,loginDetail)
-//           .then((res) =>{
-//               console.log(res);
-//               const token = res.data.data.token;
-//               localStorage.setItem('token',token);
-//               const user = jwt(token);
-//               // @ts-ignore
-//               let loginUser={ ...user, isLogin:true}
-//               console.log(user)
-
-//               dispatch({type: USER_LOGIN, payload: loginUser});
-
-//           })
-//           .catch((error)=> {
-//               console.log(error);
-//             //   dispatch({type: CREATE_ORGANIZATION_FAILURE, payload: error});
-//           })
-//     }
-
-
-//   }
 
 
 
@@ -90,45 +52,13 @@ export const login = (loginDetail,history) => async (dispatch) => {
          );
      
     } catch (e) {
-        console.log(e);
+        console.error(e);
       dispatch(notify('Login Fail', 'info'))
         
       
     }
   };
 
-// export const login = (loginDetail) => async (dispatch) => {
-//   // let history = useHistory();
- 
-
-//   try {
-//     // const res = await axios.post(`${WebAPi}/auth/login`, loginDetail)
-
-   
-//     const token = res.data.data.token;
-//     localStorage.setItem("token", token);
-//     const user = await jwt(token);
-//     // @ts-ignore
-//     let loginUser = { ...user, isLogin: true };
-//     dispatch({
-//       type: USER_LOGIN,
-//       payload: loginUser,
-//     });
-//     dispatch(notify('Login Success', 'success'))
-//     history.push("/dashboard");
-
-
-    
-//   } catch (e) {
-//       console.log(e);
-//     dispatch(notify('Login Fail', 'info'))
-      
-//     // dispatch( {
-//     //     type: USERS_ERROR,
-//     //     payload: console.log(e),
-//     // })
-//   }
-// };
 
 
 

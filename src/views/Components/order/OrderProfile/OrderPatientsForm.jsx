@@ -106,7 +106,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 	}, [stateChange,fromDate]);
 
 	// const contactMethodChange =(value)=>{
-	// 	console.log(value);
+	
 		
 	
 		

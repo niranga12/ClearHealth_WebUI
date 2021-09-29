@@ -53,7 +53,7 @@ const OrderActionEdit = ({data, handleChangeCpt}) => {
 				let result = await getCPTCodesByHospital(data.hospitalPartyRoleId, {});
 				setCptList(result.data.data);
 				let selected =result.data.data.filter(x=>x.Id==data.codeId);
-				// console.log(selected);
+				
 				setDefaultValue(selected);
 				let formDetail={
 					cptDetail:{...data}

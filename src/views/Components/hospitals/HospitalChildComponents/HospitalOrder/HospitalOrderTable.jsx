@@ -181,11 +181,11 @@ function HospitalOrderTable() {
 	};
 
 	const dropDownChange = (e) => {
-		// console.log(e.target.value);
+		
 	};
 
 	const handleAddOrder = (e) => {
-		// console.log(e);
+		
 		history.push('/order');
 		history.push({
 			pathname: `/order`,

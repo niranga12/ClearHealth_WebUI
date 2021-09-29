@@ -29,6 +29,8 @@ const TheHeader = () => {
   const dispatch = useDispatch();
   let history=useHistory()
   const sidebarShow = useSelector((state) => state.sidebar.sidebarShow);
+  let isPermission = useSelector((state) => state.Login.isLogin);
+
 
   // const toggleSidebar = () => {
   //   const val = [true, "responsive"].includes(sidebarShow)
@@ -83,14 +85,14 @@ const TheHeader = () => {
 
       <CHeaderNav className="px-3">
      
-        <TheHeaderDropdownNotif/>
+      { isPermission &&   <TheHeaderDropdownNotif/>}
         
         {/* <div className="font-weight-bold">Name</div> */}
         {/* <TheHeaderDropdownTasks/>
         <TheHeaderDropdownMssg/> */}
-       <TheHeaderDropdownImage/>
-        <TheTittleUser/>
-        <TheHeaderDropdown />
+    { isPermission &&    <TheHeaderDropdownImage/>}
+    { isPermission &&    <TheTittleUser/> }
+     { isPermission &&     <TheHeaderDropdown /> }
        
       </CHeaderNav>
 

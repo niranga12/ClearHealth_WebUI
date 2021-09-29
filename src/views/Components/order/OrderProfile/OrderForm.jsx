@@ -44,7 +44,7 @@ const OrderForm = () => {
 
 	const handleCPTChange = (value) => {
 		setSelectedCpt(value);
-		// console.log(value);
+	
 		// CheckAvilableBtn();
 	};
 
@@ -88,7 +88,7 @@ const OrderForm = () => {
 			},
 		};
 		setSelectedFormValue(result);
-		// console.log(result);
+		
 		//    result.partyRoleId ? setIsEdit(true) :setIsEdit(false);
 		setIsEdit(true);
 		setSelectedValue(value);
@@ -126,7 +126,7 @@ const handleClearSelection=()=>{
 		},
 	};
 	setSelectedFormValue(result);
-	// console.log(result);
+	
 	//    result.partyRoleId ? setIsEdit(true) :setIsEdit(false);
 	setIsEdit(false);
 
