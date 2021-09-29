@@ -47,7 +47,7 @@ const ResetPassword = () => {
 
       })
       .catch((error) => {onError(error, disPatch);
-        // console.log( error.response.data.message);
+        
         setIsValid(false);
       });
   }, []);

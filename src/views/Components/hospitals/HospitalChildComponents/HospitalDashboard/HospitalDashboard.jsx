@@ -36,7 +36,7 @@ const HospitalDashboard = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				// console.log(searchQuery);
+				
 				 let data = {toDate,  fromDate};
 				const result = await getHospitalDashboard(data);
 				setdashboardItems(result.data.data);
@@ -52,16 +52,16 @@ const HospitalDashboard = () => {
 	const handleFromChange = (value) => {
 		setfromDate(value.toLocaleDateString());
 		// let search={...searchQuery ,fromDate:value.toLocaleDateString()}
-		// console.log(search);
+		
 		// setsearchQuery({...searchQuery ,fromDate:value.toLocaleDateString()});
-		//  console.log(value.toLocaleDateString());
+	
 	
 	};
 
 	const handleToChange = (value) => {
 		setToDate(value.toLocaleDateString());
 		// setsearchQuery({...searchQuery, toDate:value.toLocaleDateString()});
-		// console.log(value.toLocaleDateString());
+		
 	};
 
 	return (

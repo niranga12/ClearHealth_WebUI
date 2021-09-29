@@ -81,8 +81,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 
 	// form submit
 	const patientFormSubmit = (data) => {
-		// console.log(data)
-		// console.log("isEdit", isEdit)
+		
 		if (isEdit) {
 			updatePatientInfo();
 		} else {

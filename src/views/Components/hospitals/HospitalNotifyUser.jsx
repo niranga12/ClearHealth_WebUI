@@ -35,7 +35,7 @@ const HospitalNotifyUser = ({ partyRoleId = null, isNotify }) => {
     const onNotifyUser = async () => {
   
 
-    // console.log(newHospital);
+    
 
     try {
         let email = getValues('email')

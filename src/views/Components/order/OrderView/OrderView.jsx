@@ -37,7 +37,7 @@ const OrderView = () => {
 			
 			dispatch(loaderHide());
 
-			// console.log(count)
+		
 		} catch (error) {
 			OnError(error, dispatch);
 		}

@@ -91,7 +91,7 @@ const ProcedureProfile = () => {
 	};
 
 	const ActionProcedure = ({row, data}) => {
-		// console.log(procedureData)
+		
 
 		return (
 			<>

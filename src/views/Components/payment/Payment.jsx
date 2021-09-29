@@ -48,7 +48,7 @@ const Payment = () => {
 				if(result.data.message==ServiceMsg.OK){
 					setOrderDetails(result.data.data);
 					
-					console.log(result.data.data);
+					
 					setSTKey(result.data.data?.clientSecret);
 					let orderPayment=  formatPaymentDetail(result.data.data?.orderPatientDetails);
 				    setPatient(orderPayment);
@@ -71,7 +71,7 @@ const Payment = () => {
 	}, [location]);
 
 	const formatPaymentDetail = (detail) => {
-    // console.log(detail);
+   
 		let data = {
 			order: {
 				// referringProvider: '',

@@ -234,7 +234,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			},
 		};
 
-		// console.log(newHospital);
+
 
 		try {
 			if (newHospital) {

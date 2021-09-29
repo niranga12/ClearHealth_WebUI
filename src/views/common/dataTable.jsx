@@ -19,7 +19,7 @@ const DataTable = ({columns,data,sortingHandler,renderRowSubComponent}) => {
 
    
     useEffect(() => {
-    // console.log(sortBy )
+    
    if(sortingHandler){sortingHandler(sortBy)}
     
     }, [sortBy])

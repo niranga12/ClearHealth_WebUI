@@ -74,7 +74,7 @@ const CalculationPackage=(enhancementPercentage,enhancementField)=>{
     return {...x,clearOptimizedFee:newClearFees}
 
     });
-    // console.log(updatedData);
+    
     setFacitlityData(updatedData)
 
 

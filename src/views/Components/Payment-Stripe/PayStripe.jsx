@@ -8,6 +8,8 @@ import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {notify} from 'reapop';
 import {getOrderSuccessByOrderId} from 'src/service/paymentService';
+import { ServiceMsg } from 'src/reusable/enum';
+import OnError from 'src/_helpers/onerror';
 
 const CARD_OPTIONS = {
 	hidePostalCode: true,
@@ -87,19 +89,29 @@ const PayStripe = ({billingDetails, stKey, isValid,orderId}) => {
 
 		if (result.error) {
 			// Show error to your customer (e.g., insufficient funds)
-			console.log(result.error.message);
+			console.error(result.error.message);
 			dispatch(notify(result.error.message, 'error'));
 		} else {
 			// The payment has been processed!
 			if (result.paymentIntent.status === 'succeeded') {
-				console.log(result);
+				
 			
 				let data = {
 					paymentStatus: JSON.stringify(result.paymentIntent),
 				};
-				await getOrderSuccessByOrderId(orderId, data);
-        dispatch(notify('Paid successfully', 'success'));
-				history.push('/main');
+				try {
+					let saveResult=	await getOrderSuccessByOrderId(orderId, data);
+					if(saveResult.data.message==ServiceMsg.OK){
+						dispatch(notify('Paid successfully', 'success'));
+						history.push('/main');
+					}else{
+						dispatch(notify('Paid successfully but not saved in history', 'error'));
+					}
+				} catch (error) {
+					OnError(error, dispatch);
+				}
+		
+               
 				// Show a success message to your customer
 				// There's a risk of the customer closing the window before callback
 				// execution. Set up a webhook or plugin to listen for the
@@ -108,11 +120,7 @@ const PayStripe = ({billingDetails, stKey, isValid,orderId}) => {
 			}
 		}
 
-		// if (error) {
-		//   console.log('[error]', error);
-		// } else {
-		//   console.log('[PaymentMethod]', paymentMethod);
-		// }
+		
 	};
 
 	return (
