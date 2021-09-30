@@ -3,10 +3,13 @@ import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
-import {Country, ValidationPatterns} from 'src/reusable/enum';
+import {Country, MaskFormat, ValidationPatterns} from 'src/reusable/enum';
+import InputMask from 'react-input-mask';
+
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import DateSelector from 'src/views/common/dateSelector';
+import { EnableMaskPhone } from 'src/reusable';
 // import { getStateList } from 'src/service/commonService';
 // import { TextField } from '@material-ui/core';
 // import { Autocomplete } from '@material-ui/lab';
@@ -160,7 +163,8 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 							<label className='form-text'>
 								Contact Number <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('order.contactPhone')}  onBlur={() => setFieldChange(!fieldChange)} />
+							<InputMask {...register('order.contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(true, getValues('order.contactPhone'))} className='form-control-sm' />
+							{/* <input className='form-control-sm' type='text' {...register('order.contactPhone')}  onBlur={() => setFieldChange(!fieldChange)} /> */}
 							<div className='small text-danger  pb-2   '>{errors?.order?.contactPhone?.message}</div>
 						</div>
 					</div>

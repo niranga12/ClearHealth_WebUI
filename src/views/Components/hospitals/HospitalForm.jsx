@@ -45,16 +45,16 @@ const schema = yup.object().shape({
 		.required('Contact Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
-	consolidatedInvoice: yup.bool(),
-	applySAASTax: yup.bool(),
-	taxId: yup.string(),
-	invoiceReceiveMethod: yup.string(),
-	accountNumber: yup.string(),
-	routing: yup.string(),
-	bankName: yup.string(),
-	contactEmail: yup.string().email(' Email must be a valid email'),
-	contactPhone: yup.string().test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact name should contain only characters'),
+	// consolidatedInvoice: yup.bool(),
+	// applySAASTax: yup.bool(),
+	// taxId: yup.string(),
+	// invoiceReceiveMethod: yup.string(),
+	// accountNumber: yup.string(),
+	// routing: yup.string(),
+	// bankName: yup.string(),
+	// contactEmail: yup.string().email(' Email must be a valid email'),
+	// contactPhone: yup.string().test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+	// contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact name should contain only characters'),
 });
 
 const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = [], onboardingInfo }) => {
@@ -224,18 +224,18 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				phone: NormalizePhone(data.patientContactPhone),
 				email: data.patientContactEmail,
 			},
-			paymentInfo: {
-				name: data.contactName,
-				phone: NormalizePhone(data.contactPhone),
-				email: data.contactEmail,
-				taxId: data.taxId,
-				bankName: data.bankName,
-				routing: data.routing,
-				accountNumber: data.accountNumber,
-				invoiceReceiveMethod: data.invoiceReceiveMethod,
-				applySAASTax: data.applySAASTax ? 1 : 0,
-				consolidatedInvoice: data.consolidatedInvoice ? 1 : 0,
-			},
+			// paymentInfo: {
+			// 	name: data.contactName,
+			// 	phone: NormalizePhone(data.contactPhone),
+			// 	email: data.contactEmail,
+			// 	taxId: data.taxId,
+			// 	bankName: data.bankName,
+			// 	routing: data.routing,
+			// 	accountNumber: data.accountNumber,
+			// 	invoiceReceiveMethod: data.invoiceReceiveMethod,
+			// 	applySAASTax: data.applySAASTax ? 1 : 0,
+			// 	consolidatedInvoice: data.consolidatedInvoice ? 1 : 0,
+			// },
 		};
 
 
@@ -300,20 +300,20 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						number: NormalizePhone(getValues('phone')),
 					},
 				}),
-				...((dirtyFields.contactName || dirtyFields.contactPhone || dirtyFields.contactEmail || dirtyFields.taxId || dirtyFields.bankName || dirtyFields.routing || dirtyFields.accountNumber || dirtyFields.invoiceReceiveMethod || dirtyFields.applySAASTax || dirtyFields.consolidatedInvoice) && {
-					paymentInfo: {
-						name: getValues('contactName'),
-						phone: NormalizePhone(getValues('contactPhone')),
-						email: getValues('contactEmail'),
-						taxId: getValues('taxId'),
-						bankName: getValues('bankName'),
-						routing: getValues('routing'),
-						accountNumber: getValues('accountNumber'),
-						invoiceReceiveMethod: getValues('invoiceReceiveMethod'),
-						applySAASTax: getValues('applySAASTax') ? 1 : 0,
-						consolidatedInvoice: getValues('consolidatedInvoice') ? 1 : 0,
-					},
-				}),
+				// ...((dirtyFields.contactName || dirtyFields.contactPhone || dirtyFields.contactEmail || dirtyFields.taxId || dirtyFields.bankName || dirtyFields.routing || dirtyFields.accountNumber || dirtyFields.invoiceReceiveMethod || dirtyFields.applySAASTax || dirtyFields.consolidatedInvoice) && {
+				// 	paymentInfo: {
+				// 		name: getValues('contactName'),
+				// 		phone: NormalizePhone(getValues('contactPhone')),
+				// 		email: getValues('contactEmail'),
+				// 		taxId: getValues('taxId'),
+				// 		bankName: getValues('bankName'),
+				// 		routing: getValues('routing'),
+				// 		accountNumber: getValues('accountNumber'),
+				// 		invoiceReceiveMethod: getValues('invoiceReceiveMethod'),
+				// 		applySAASTax: getValues('applySAASTax') ? 1 : 0,
+				// 		consolidatedInvoice: getValues('consolidatedInvoice') ? 1 : 0,
+				// 	},
+				// }),
 			};
 			if (Object.keys(updateHospital).length === 0) {
 				dispatch(notify(`No record to update`, 'error'));
@@ -531,7 +531,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				</div>
 
 				{/* payment info */}
-				<h5 className='font-weight-bold mt-1'>Payment Info </h5>
+				{/* <h5 className='font-weight-bold mt-1'>Payment Info </h5>
 
 				<div className='row'>
 					<div className='col-md-4'>
@@ -545,7 +545,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<label className='form-text'> Phone</label>
 							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('contactPhone'))} className='form-control-sm' />
 
-							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
+							
 							<div className='small text-danger  pb-2   '> {errors.contactPhone?.message} </div>
 						</div>
 
@@ -556,7 +556,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						</div>
 					</div>
 
-					{/* secound details */}
+					
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'> Bank Name</label>
@@ -607,7 +607,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<label className='form-check-label'>Consolidated Invoice</label>
 						</div>
 					</div>
-				</div>
+				</div> */}
 
 				{/* Stripe */}
 				{ isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null }

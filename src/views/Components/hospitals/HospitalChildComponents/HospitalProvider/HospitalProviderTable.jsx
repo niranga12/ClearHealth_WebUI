@@ -4,7 +4,7 @@ import DataTable from 'src/views/common/dataTable';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
-import {ButtonPermissions, ScreenPermissions, TableSettingsEnum} from 'src/reusable/enum';
+import {ButtonPermissions, HospitalTabList, ScreenPermissions, TableSettingsEnum} from 'src/reusable/enum';
 import {getProviderListByHospitalId, getProviderListCountByHospitalId} from 'src/service/hospitalsService';
 import OnError from 'src/_helpers/onerror';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
@@ -35,6 +35,7 @@ const HospitalProviderTable = () => {
 	let history = useHistory();
 	const [hospitalProviderData, setHospitalProviderData] = useState([]);
 	const [hospitalId, setHospitalId] = useState(null);
+	const [hospitalName, setHospitalName] = useState(null)
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
 
@@ -47,7 +48,9 @@ const HospitalProviderTable = () => {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
+        const hosName=params.get('name');
 		setHospitalId(id);
+		setHospitalName(hosName)
 		// button Permission
 		let Permission = PermissionButton(ScreenPermissions.Hospital, ButtonPermissions.HospitalAddProviders, permissionList);
 		setIsAddProviderPE(Permission);
@@ -78,7 +81,7 @@ const HospitalProviderTable = () => {
 	const addNewProvider = () => {
 		history.push({
 			pathname: `/providers/profile`,
-			search: `?hospitalId=${hospitalId}`,
+			search: `?hospitalId=${hospitalId}&&hospitalName=${hospitalName}&&tap=${HospitalTabList.Providers}`,
 		});
 	};
 

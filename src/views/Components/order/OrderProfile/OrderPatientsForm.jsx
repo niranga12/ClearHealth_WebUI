@@ -18,7 +18,7 @@ import FormatText from 'src/reusable/FormatText';
 let schema = yup.object().shape({
 	patient: yup.object().shape({
 		firstName: yup.string().required(' First Name is required').matches(ValidationPatterns.onlyCharacters, ' Name should contain only characters'),
-		middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
+		// middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
 		lastName: yup.string().required(' Last Name is required').matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
 		dateOfBirth: yup.string(),
 		contactMethod: yup.string().required('Contact Method is required'),
@@ -83,9 +83,9 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 
 
 		
-		if( formValue?.contactMethod == ContactMethod.Email && formValue?.firstName && formValue?.middleName && Number(formValue?.contactMethod)>=0 && formValue?.lastName  && formValue?.email  ){
+		if( formValue?.contactMethod == ContactMethod.Email && formValue?.firstName  && Number(formValue?.contactMethod)>=0 && formValue?.lastName  && formValue?.email  ){
 			isAviable=true;
-		} else if(formValue?.contactMethod == ContactMethod.Phone  && formValue?.firstName && formValue?.middleName && formValue?.lastName && Number(formValue?.contactMethod)>=0  && formValue?.phone){
+		} else if(formValue?.contactMethod == ContactMethod.Phone  && formValue?.firstName  && formValue?.lastName && Number(formValue?.contactMethod)>=0  && formValue?.phone){
 			isAviable=true;
 		}else{
 			isAviable=false;

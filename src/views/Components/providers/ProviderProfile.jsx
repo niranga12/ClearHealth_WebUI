@@ -34,9 +34,9 @@ const defalutFormValue = {
 	speciality: '',
 	taxId: '',
 	nip: '',
-	bankName: '',
-	accountNumber: '',
-	routing: '',
+	// bankName: '',
+	// accountNumber: '',
+	// routing: '',
 };
 
 const ProviderProfile = () => {
@@ -122,9 +122,9 @@ const ProviderProfile = () => {
 			speciality: data.speciality,
 			taxId: data.taxId,
 			nip: data.NPI,
-			bankName: data.bankName,
-			accountNumber: data.accountNumber,
-			routing: data.routing
+			// bankName: data.bankName,
+			// accountNumber: data.accountNumber,
+			// routing: data.routing
 		};
 
 		return providerDetails;
