@@ -7,16 +7,20 @@ import {
   CDropdownToggle,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { logout } from 'src/actions/loginAction'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from 'react-router-dom'
+import PermissionMenu from 'src/reusable/PermissionMenu'
+import { ScreenPermissions } from 'src/reusable/enum'
 
 const TheHeaderDropdown = () => {
   let  dispatch = useDispatch()
   let history = useHistory();
+  let permissionList= useSelector((state) => state.Permission.UiPermissions);
+
   const logOut=()=>{
     dispatch(logout())
   }
@@ -96,8 +100,8 @@ const TheHeaderDropdown = () => {
           Messages
           <CBadge color="primary" className="mfs-auto">42</CBadge>
         </CDropdownItem>
-        <CDropdownItem divider />
-        <CDropdownItem onClick={onClickUser}>
+        <CDropdownItem divider  className={` ${PermissionMenu(ScreenPermissions.UserManagement,permissionList) ? "" : "hide"}`}/>
+        <CDropdownItem className={` ${PermissionMenu(ScreenPermissions.UserManagement,permissionList) ? "" : "hide"}`} onClick={onClickUser}>
           <CIcon name="cil-lock-locked" className="mfe-2" />
           User Management
         </CDropdownItem>
