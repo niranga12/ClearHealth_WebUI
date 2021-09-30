@@ -157,6 +157,7 @@ export const Roleclassificationtype = {
 };
 
 export const ScreenPermissions = {
+	Main:0,
 	Home: 1,
 	Hospital: 2,
 	HealthSystem: 3,
