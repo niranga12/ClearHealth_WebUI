@@ -83,9 +83,9 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 
 
 		
-		if( formValue?.contactMethod == ContactMethod.Email && formValue?.firstName && formValue?.middleName && Number(formValue?.contactMethod)>=0 && formValue?.lastName  && formValue?.email  ){
+		if( formValue?.contactMethod == ContactMethod.Email && formValue?.firstName  && Number(formValue?.contactMethod)>=0 && formValue?.lastName  && formValue?.email  ){
 			isAviable=true;
-		} else if(formValue?.contactMethod == ContactMethod.Phone  && formValue?.firstName && formValue?.middleName && formValue?.lastName && Number(formValue?.contactMethod)>=0  && formValue?.phone){
+		} else if(formValue?.contactMethod == ContactMethod.Phone  && formValue?.firstName  && formValue?.lastName && Number(formValue?.contactMethod)>=0  && formValue?.phone){
 			isAviable=true;
 		}else{
 			isAviable=false;
