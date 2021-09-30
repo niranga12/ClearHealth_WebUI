@@ -218,6 +218,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				firstName: data.firstName,
 				middleName: data.middleName,
 				lastName: data.lastName,
+				email:data.email,
 				hospitalList: data.hospitalName,
 				speciality: data.speciality,
 			},
@@ -284,6 +285,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						firstName: getValues('firstName'),
 						middleName: getValues('middleName'),
 						lastName: getValues('lastName'),
+						email: getValues('email'),
 						hospitalList: getValues('hospitalName'),
 						speciality: getValues('speciality'),
 					}
