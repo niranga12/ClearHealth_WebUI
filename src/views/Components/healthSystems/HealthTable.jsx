@@ -83,10 +83,10 @@ useEffect(() => {
   const fetchPermission = async () => {
 
   let EditPermission= await PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.EditHealthSystem,permissionList);
-  setIsEditHealthPE(EditPermission);
+   setIsEditHealthPE(EditPermission);
 
   let DeletePermission=await PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.DeleteHealthSystem,permissionList);
-  setIsDeleteHealthPE(DeletePermission);
+   setIsDeleteHealthPE(DeletePermission);
   }
 
   fetchPermission();
@@ -113,7 +113,7 @@ useEffect(() => {
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
-				<CDropdownMenu>
+				<CDropdownMenu className={`${(!isEditHealthPE && !isDeleteHealthPE) ? 'hide':'' }`}>
 				{isEditHealthPE && <CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
 				{isDeleteHealthPE && <CDropdownItem >Delete</CDropdownItem>}	
 				</CDropdownMenu>

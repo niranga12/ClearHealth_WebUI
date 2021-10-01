@@ -76,7 +76,7 @@ function ActionProvider({row}) {
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
-				<CDropdownMenu>
+				<CDropdownMenu className={`${(!isEditProviderPE && !isDeleteProviderPE) ? 'hide':'' }`}>
 				{isEditProviderPE && 	<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
 				{isDeleteProviderPE &&	<CDropdownItem >Delete</CDropdownItem>}
 					{/* <CDropdownItem onClick={redirectAccount}>Account</CDropdownItem> */}

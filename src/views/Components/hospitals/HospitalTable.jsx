@@ -109,7 +109,7 @@ function ActionHospital({ row }) {
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
-				<CDropdownMenu>
+				<CDropdownMenu >
 				{editPE && <CDropdownItem onClick={redirectToEdit}>Edit Details</CDropdownItem>}	
 					<CDropdownItem onClick={redirectAccount}>View Account</CDropdownItem>
 				</CDropdownMenu>
