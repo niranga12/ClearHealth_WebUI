@@ -175,11 +175,11 @@ function HospitalOrderTable() {
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
 			// setSearchQuery({...initialSearch, searchTerm: e.target.value});
-			setSearchQuery({...searchQuery, searchTerm: e.target.value});
+			setSearchQuery({...searchQuery, searchTerm: e.target.value, pageNumber: 1});
 			// eslint-disable-next-line eqeqeq
 		} else if (e.target.value.length == '') {
 			// setSearchQuery({...initialSearch, searchTerm: e.target.value});
-			setSearchQuery({...searchQuery, searchTerm: e.target.value});
+			setSearchQuery({...searchQuery, searchTerm: e.target.value, pageNumber: 1});
 		} else {
 		}
 	};
@@ -187,7 +187,7 @@ function HospitalOrderTable() {
 	const dropDownChange = (e) => {
 		// console.log(e);
 		if(e.target.value){
-			setSearchQuery({ ...searchQuery, paymentStatus:  Number(e.target.value) });
+			setSearchQuery({ ...searchQuery, paymentStatus:  Number(e.target.value) ,pageNumber: 1});
 		}
 		
 		
