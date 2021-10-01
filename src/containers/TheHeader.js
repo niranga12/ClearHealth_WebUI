@@ -85,7 +85,7 @@ const TheHeader = () => {
 
       <CHeaderNav className="px-3">
      
-      { isPermission &&   <TheHeaderDropdownNotif/>}
+      {/* { isPermission &&   <TheHeaderDropdownNotif/>} */}
         
         {/* <div className="font-weight-bold">Name</div> */}
         {/* <TheHeaderDropdownTasks/>

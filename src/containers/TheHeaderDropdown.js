@@ -95,12 +95,12 @@ const TheHeaderDropdown = () => {
           Payments
           <CBadge color="secondary" className="mfs-auto">42</CBadge>
         </CDropdownItem> */}
-        <CDropdownItem>
+        {/* <CDropdownItem>
           <CIcon name="cil-file" className="mfe-2" />
           Messages
           <CBadge color="primary" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
-        <CDropdownItem divider  className={` ${PermissionMenu(ScreenPermissions.UserManagement,permissionList) ? "" : "hide"}`}/>
+        </CDropdownItem> */}
+        {/* <CDropdownItem divider  className={` ${PermissionMenu(ScreenPermissions.UserManagement,permissionList) ? "" : "hide"}`}/> */}
         <CDropdownItem className={` ${PermissionMenu(ScreenPermissions.UserManagement,permissionList) ? "" : "hide"}`} onClick={onClickUser}>
           <CIcon name="cil-lock-locked" className="mfe-2" />
           User Management

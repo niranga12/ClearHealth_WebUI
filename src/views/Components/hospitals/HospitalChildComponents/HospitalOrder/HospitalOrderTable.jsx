@@ -18,13 +18,15 @@ const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
 	searchTerm: '',
+	PaymentStatus:1
 };
 
 const selectionListDropDown = [
-	{text: 'Select', value: ''},
-	{text: 'Outstanding', value: 'Outstanding'},
-	{text: 'Accepted', value: 'Accepted'},
-	{text: 'Expired', value: 'Expired'},
+	{text: 'All', value: '1'},
+	{text: 'Pending', value: '2'},
+	{text: 'Outstanding', value: '3'},
+	{text: 'Paid', value: '4'},
+	{text: 'Expired', value: '5'},
 
 ];
 
@@ -172,15 +174,22 @@ function HospitalOrderTable() {
 
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
-			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			// setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			setSearchQuery({...searchQuery, searchTerm: e.target.value});
 			// eslint-disable-next-line eqeqeq
 		} else if (e.target.value.length == '') {
-			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			// setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			setSearchQuery({...searchQuery, searchTerm: e.target.value});
 		} else {
 		}
 	};
 
 	const dropDownChange = (e) => {
+		// console.log(e);
+		if(e.target.value){
+			setSearchQuery({ ...searchQuery, PaymentStatus:  Number(e.target.value) });
+		}
+		
 		
 	};
 
