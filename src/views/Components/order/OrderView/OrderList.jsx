@@ -21,13 +21,16 @@ const serviceDetail = ({row}) => {
 	);
 };
 
+
+
 const OrderList = ({orderDetail}) => {
 	const [order, setOrder] = useState(orderDetail);
 	const [orderData, setOrderData] = useState([]);
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const [orderId, setOrderId] = useState(null);
-	let history=useHistory()
+	let history=useHistory();
+	const [isAction, setIsAction] = useState(true);
 
 
 	useEffect(() => {
@@ -38,6 +41,11 @@ const OrderList = ({orderDetail}) => {
 
 	useEffect(() => {
 		setOrder(orderDetail);
+		if(orderDetail?.orderPatientDetails?.orderStatus == "Paid" || orderDetail?.orderPatientDetails?.orderStatus == "Expired"){
+			setIsAction(false)
+		}else{
+			setIsAction(true);
+		}
 	}, [orderDetail]);
 
 	useEffect(() => {
@@ -106,10 +114,10 @@ const OrderList = ({orderDetail}) => {
 				accessor: 'id', // accessor is the "key" in the data
 				disableSortBy: true,
 
-				Cell: OrderAction,
+				Cell: isAction? OrderAction:'',
 			},
 		],
-		[]
+		[isAction]
 	);
 
 	return (
@@ -123,7 +131,7 @@ const OrderList = ({orderDetail}) => {
 
 					<div className='col-md-6'>
 					{/* disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData } */}
-						<button className='btn btn-view-account ml-3 float-right'  disabled={ order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData.length } onClick={approveOrder}>
+						<button className='btn btn-view-account ml-3 float-right'  disabled={ order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData.length || !isAction} onClick={approveOrder}>
 							Approve
 						</button>
 					</div>
