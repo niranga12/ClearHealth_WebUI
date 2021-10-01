@@ -18,7 +18,7 @@ const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
 	searchTerm: '',
-	PaymentStatus:1
+	paymentStatus:1
 };
 
 const selectionListDropDown = [
@@ -86,7 +86,7 @@ function OrderActions({row}) {
 					{' '}
 					View Order
 				</div>
-				<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) } onClick={approveOrder}>
+				<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" } onClick={approveOrder}>
 					{' '}
 					Send Order
 				</button>
@@ -95,26 +95,26 @@ function OrderActions({row}) {
 	);
 }
 
-function OrderStatusValue({row}) {
-	const {orderStatus} = row.original;
+// function OrderStatusValue({row}) {
+// 	const {orderStatus} = row.original;
 
-	switch (orderStatus) {
-		case OrderStatus.Ordered:
-			return <div>Ordered</div>;
+// 	switch (orderStatus) {
+// 		case OrderStatus.Ordered:
+// 			return <div>Ordered</div>;
 
-		case OrderStatus.Cancelled:
-			return <div>Cancelled</div>;
+// 		case OrderStatus.Cancelled:
+// 			return <div>Cancelled</div>;
 
-		case OrderStatus.Completed:
-			return <div>Completed</div>;
+// 		case OrderStatus.Completed:
+// 			return <div>Completed</div>;
 
-		case OrderStatus.Pending:
-			return <div>Pending</div>;
-		default:
-			return <></>;
-		// break;
-	}
-}
+// 		case OrderStatus.Pending:
+// 			return <div>Pending</div>;
+// 		default:
+// 			return <></>;
+// 		// break;
+// 	}
+// }
 
 function HospitalOrderTable() {
 	const location = useLocation();
@@ -187,7 +187,7 @@ function HospitalOrderTable() {
 	const dropDownChange = (e) => {
 		// console.log(e);
 		if(e.target.value){
-			setSearchQuery({ ...searchQuery, PaymentStatus:  Number(e.target.value) });
+			setSearchQuery({ ...searchQuery, paymentStatus:  Number(e.target.value) });
 		}
 		
 		
@@ -242,7 +242,7 @@ function HospitalOrderTable() {
 			{
 				Header: 'Status',
 				accessor: 'orderStatus', // accessor is the "key" in the data
-				Cell: OrderStatusValue,
+				// Cell: OrderStatusValue,
 			},
 
 			{
