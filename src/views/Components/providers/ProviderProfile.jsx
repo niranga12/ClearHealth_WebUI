@@ -9,6 +9,7 @@ import { getHealthSystemList } from 'src/service/healthsystemService';
 import { getHospitalByPartyRoleId } from 'src/service/hospitalsService';
 import { getProviderByPartyRoleId, getSpecialityList } from 'src/service/providerService';
 import AdminTitle from 'src/views/common/adminTitle';
+import MetaTitles from 'src/views/common/metaTitles';
 import OnError from 'src/_helpers/onerror';
 import ProviderForm from './ProviderForm';
 
@@ -133,6 +134,8 @@ const ProviderProfile = () => {
 
 	return (
 		<div className="card  cover-content pt-2 ">
+			 {/* for addeing page metas  */}
+			 <MetaTitles title="Clear Health | Provider Profile" description=" Create update Providers  "/>
 			<AdminTitle title={editProfile ? 'Edit Provider' : 'Add Provider'} />
 
 			<ProviderForm defaultValues={providerData} stateList={stateList} isEdit={editProfile} partyRoleId={partyRoleId} healthSystemList={healthSystems} specialityData={specialityData} />

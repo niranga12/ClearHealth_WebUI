@@ -15,6 +15,7 @@ import { notify } from "reapop";
 // import history from "src/_helpers/history";
 import OnError from "src/_helpers/onerror";
 import { loaderHide, loaderShow } from "src/actions/loaderAction";
+import MetaTitles from "src/views/common/metaTitles";
 
 const schema = yup.object().shape({
   password: yup.string().required("Password is required"),
@@ -110,6 +111,8 @@ const resetForm=()=>{
 
   return (
     <SingleLayout>
+       {/* for addeing page metas  */}
+       <MetaTitles title="Clear Health | Reset Password " description=" Reset Password  "/>
       <h2 className="font-lato-bold">Reset password</h2>
      
      {isValid? resetForm() : <h4  className="font-lato-bold text-danger mt-3"> Invalid Request</h4>}

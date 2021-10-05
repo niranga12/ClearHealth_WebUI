@@ -9,6 +9,7 @@ import { getStateList } from 'src/service/commonService';
 import { getHealthSystemList } from 'src/service/healthsystemService';
 import { getHospitalByPartyRoleId, getOnboardinginfo } from 'src/service/hospitalsService';
 import AdminTitle from 'src/views/common/adminTitle';
+import MetaTitles from 'src/views/common/metaTitles';
 import OnError from 'src/_helpers/onerror';
 import HospitalForm from './HospitalForm';
 
@@ -139,6 +140,8 @@ const HospitalProfile = () => {
 
 	return (
 		<div className="card  cover-content pt-2 ">
+			 {/* for addeing page metas  */}
+			 <MetaTitles title="Clear Health | Hospital Profile" description=" add update Profile  "/>
 			<AdminTitle title={editProfile ? 'Edit Hospital' : 'Add Hospital'} />
 
 			<HospitalForm defaultValues={hospitalData} stateList={stateList} isEdit={editProfile} healthSystems={healthSystems} partyRoleId={partyRoleId} onboardingInfo={onboardingInfo} />

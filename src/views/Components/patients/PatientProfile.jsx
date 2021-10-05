@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import AdminTitle from 'src/views/common/adminTitle';
 import PatientForm from './PatientForm';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+import MetaTitles from 'src/views/common/metaTitles';
 
 
 const defalutFormValue = {
@@ -77,6 +78,8 @@ const PatientProfile = () => {
 
 	return (
 		<div className="card  cover-content pt-2 ">
+			 {/* for addeing page metas  */}
+			 <MetaTitles title="Clear Health | Patients Profile" description=" add update Patients  "/>
 			<AdminTitle title={editProfile ? 'Edit Patient' : 'Add Patient'} />
 
 			<PatientForm defaultValues={patientData} isEdit={editProfile} partyRoleId={partyRoleId} stateList={stateList} />

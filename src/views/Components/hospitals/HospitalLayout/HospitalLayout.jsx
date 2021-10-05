@@ -2,6 +2,7 @@ import CIcon from '@coreui/icons-react';
 import {CCol, CRow} from '@coreui/react';
 import React, {useEffect, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
+import MetaTitles from 'src/views/common/metaTitles';
 import HospitalSubCategories from './HospitalSubCategories';
 
 const HospitalLayout = () => {
@@ -26,6 +27,8 @@ const HospitalLayout = () => {
 
 	return (
 		<>
+		  {/* for addeing page metas  */}
+		  <MetaTitles title="Clear Health | Hospital View" description=" Hospital Views  "/>
 			<CRow>
 				<CCol xs='12' md='12'  className='h4 font-lato-bold m-0 cursor-pointer' >
 					<CIcon name='cilArrowLeft' size={'xl'}  onClick={redirectHospital}/>

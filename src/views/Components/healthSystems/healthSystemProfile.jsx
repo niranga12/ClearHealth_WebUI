@@ -8,6 +8,7 @@ import {getStateList} from 'src/service/commonService';
 // import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
 import {getHealthSystemByPartyRoleId} from 'src/service/healthsystemService';
 import AdminTitle from 'src/views/common/adminTitle';
+import MetaTitles from 'src/views/common/metaTitles';
 import OnError from 'src/_helpers/onerror';
 import HealthSystemForm from './healthSystemForm';
 
@@ -96,6 +97,8 @@ const HealthSystemProfile = () => {
 
 	return (
 		<div className='card  cover-content pt-2 '>
+			 {/* for addeing page metas  */}
+			 <MetaTitles title="Clear Health | Health system Profile" description=" Add update Health system profile  "/>
 			<AdminTitle title={editProfile ? 'Edit Health System' : 'Add Health System'} />
 
 			<HealthSystemForm stateList={stateList} defaultValues={healthSystemData} isEdit={editProfile} partyRoleId={partyRoleId} />

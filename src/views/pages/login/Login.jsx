@@ -15,6 +15,7 @@ import { login } from "src/actions/loginAction";
 import SingleLayout from "../singlelayout/singleLayout";
 // import history from "../../../_helpers/history";
 import { useHistory } from "react-router-dom";
+import MetaTitles from "src/views/common/metaTitles";
 
 const schema = yup.object().shape({
   username: yup.string().required("Email required"),
@@ -57,6 +58,8 @@ const Login = () => {
 
   return (
     <SingleLayout>
+       {/* for addeing page metas  */}
+       <MetaTitles title="Clear Health | Login" description=" Login  "/>
       {/* // <div className="container-fluid bg-login">
     //   <NotificationLayout/>
     //   <div className="row  ">

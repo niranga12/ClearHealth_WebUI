@@ -9,6 +9,7 @@ import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import {TheHeader} from 'src/containers';
 import {DateFormat, ServiceMsg} from 'src/reusable/enum';
 import {getPatientOrderDetailsByOrderId} from 'src/service/paymentService';
+import MetaTitles from 'src/views/common/metaTitles';
 import NotificationLayout from 'src/_helpers/notification';
 import OnError from 'src/_helpers/onerror';
 import PayStripe from '../Payment-Stripe/PayStripe';
@@ -155,6 +156,8 @@ const Payment = () => {
 
 	return (
 		<>
+		 {/* for addeing page metas  */}
+         <MetaTitles title="Clear Health | Payments" description=" Payments  "/>
 			<div className='c-app c-default-layout'>
 				<NotificationLayout />
 				<div className='c-wrapper'>

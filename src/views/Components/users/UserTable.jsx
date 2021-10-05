@@ -12,6 +12,7 @@ import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import {getUserList, getUserListCount} from 'src/service/userService';
 import PermissionButton from 'src/reusable/PermissionButton';
+import MetaTitles from 'src/views/common/metaTitles';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -163,6 +164,8 @@ const UserTable = () => {
 
 	return (
 		<>
+		 {/* for addeing page metas  */}
+         <MetaTitles title="Clear Health | Users" description=" Users  "/>
 			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewUser} placeholder='Search here..' buttonTitle='New User' title='Users' buttonHide={!addUsetPE} />
 			<DataTable columns={columns} data={userData} />
 			<div className='row'>
