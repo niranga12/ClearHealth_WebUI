@@ -185,7 +185,7 @@ function HospitalOrderTable() {
 	};
 
 	const dropDownChange = (e) => {
-		// console.log(e);
+
 		if(e.target.value){
 			setSearchQuery({ ...searchQuery, paymentStatus:  Number(e.target.value) ,pageNumber: 1});
 		}
