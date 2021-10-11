@@ -17,7 +17,7 @@ const PaymentValidation = ({verifyHandle, verificationMsg=null}) => {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
-
+		
 		const fetchData = async () => {
 			dispatch(loaderShow());
 			try {
@@ -33,6 +33,10 @@ const PaymentValidation = ({verifyHandle, verificationMsg=null}) => {
 
 		fetchData();
 	}, [location]);
+
+
+	
+
 
 	const verifyAccount = () => {
         if(fromDate){
@@ -51,7 +55,7 @@ const PaymentValidation = ({verifyHandle, verificationMsg=null}) => {
 						<div className='card boxshadow p-3 radius-1'>
 							<div className='row'>
 								<div className='col-md-12'>
-									<h3 className='text-center font-weight-bold'>Patient Information</h3>
+									<h3 className='text-center font-weight-bold'>Patient Verification</h3>
 									<p className='col-md-6 m-auto text-center p-2 font-lato-bold'>Please verify the patient's date of birth for secure access to payment details</p>
 									<div className='text-center pt-4 pb-2  '>Patient Name</div>
 									<div className='text-center font-weight-bold h5 mb-2'>{detail?.firstName + ' ' + detail?.lastName} </div>
@@ -59,7 +63,8 @@ const PaymentValidation = ({verifyHandle, verificationMsg=null}) => {
 
 								<div className='col-md-6  offset-md-3  text-center'>
 									<DateSelector className={'form-control-sm calendar-font '} selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true} />
-								<p className="text-danger">{verificationMsg && verificationMsg}</p>
+								      <p className="text-danger text-left mt-4">{verificationMsg && verificationMsg}</p>
+									
                                 	<button className='btn btn-primary  btn-lg  mt-3 mb-2' onClick={verifyAccount}>
 										Verify Patient
 									</button>

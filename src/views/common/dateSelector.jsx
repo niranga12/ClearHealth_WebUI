@@ -11,6 +11,7 @@ const DateSelector = ({handleDateChange,selectedDate,className,disableFuture=fal
            disableFuture={disableFuture}
            openTo="date"
            format="MM/dd/yyyy"
+           placeholder='MM/dd/yyyy'
            value={selectedDate}
            onChange={handleDateChange}
            className={className}

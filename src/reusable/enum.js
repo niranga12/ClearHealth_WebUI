@@ -132,8 +132,8 @@ export const HospitalTabList = {
 	Payment: 4,
 };
 export const ContactMethod = {
-	Email: 0,
-	Phone: 1,
+	Email: 1,
+	Phone: 2,
 };
 
 export const csvOptions = {
