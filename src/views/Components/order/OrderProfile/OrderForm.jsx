@@ -160,12 +160,18 @@ const handleClearSelection=()=>{
 			let result = await saveOrderData(data);
 			if (result.data.message == ServiceMsg.OK) {
 				dispatch(notify(`Successfully added`, 'success'));
+				// history.push({
+				// 	pathname: `/hospitals/hospital`,
+				// 	search: `?id=${hospitalId}&&name=${hospitalName}`,
+				// 	// state: { detail: 'some_value' }
+				// });
+
 				history.push({
-					pathname: `/hospitals/hospital`,
-					search: `?id=${hospitalId}&&name=${hospitalName}`,
+					pathname: `/order/view`,
+					search: `?orderId=${result.data.data}`,
 					// state: { detail: 'some_value' }
 				});
-			
+				// order/view?orderId=45
 			
 			}
 
