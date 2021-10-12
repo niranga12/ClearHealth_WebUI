@@ -168,7 +168,8 @@ const handleClearSelection=()=>{
 
 				history.push({
 					pathname: `/order/view`,
-					search: `?orderId=${result.data.data}`,
+					search: `?orderId=${result.data.data}&&hospitalId=${hospitalId}&&hospitalName=${hospitalName}`,
+
 					// state: { detail: 'some_value' }
 				});
 				// order/view?orderId=45
