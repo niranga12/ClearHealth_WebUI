@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import CIcon from '@coreui/icons-react';
 import { CCol, CRow } from '@coreui/react';
 import React, {useEffect, useState} from 'react';

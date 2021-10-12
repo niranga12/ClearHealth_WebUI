@@ -1,7 +1,5 @@
-import CIcon from '@coreui/icons-react';
-import { CCol, CRow } from '@coreui/react';
-import React from 'react'
-import { useHistory } from 'react-router';
+
+import React from 'react';
 import AdminTitle from 'src/views/common/adminTitle';
 import MetaTitles from 'src/views/common/metaTitles';
 import OrderForm from './OrderForm';

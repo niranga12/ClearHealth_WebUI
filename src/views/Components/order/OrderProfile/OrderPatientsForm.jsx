@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useEffect, useState} from 'react';
@@ -35,8 +36,9 @@ let schema = yup.object().shape({
 });
 
 const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
-	const {register, getValues, reset,setValue, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
+	const {register, getValues, reset, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
+	// eslint-disable-next-line no-unused-vars
 	const { isValid, errors} = formState;
 
 	 const [isMail, setIsmail] = useState(false);

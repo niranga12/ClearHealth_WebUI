@@ -42,6 +42,7 @@ const UserProfile = () => {
 			dispatch(loaderHide());
 		};
 		fetchData();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location]);
 
 	//updated form fields

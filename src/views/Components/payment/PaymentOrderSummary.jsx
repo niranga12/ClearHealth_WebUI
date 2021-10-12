@@ -7,6 +7,7 @@ const PaymentOrderSummary = ({orderDetail}) => {
 	const [CPTDetails, setCPTDetail] = useState([]);
 	const [orderCPTList, setOrderCPTList] = useState(null);
 	const [subTotal, setSubToal] = useState(0);
+	// eslint-disable-next-line no-unused-vars
 	const [tax, setTax] = useState(0);
 	const [total, setTotal] = useState(0);
 

@@ -26,7 +26,10 @@ function ActionUser({row}) {
 	let history = useHistory();
 
 	const [editPE, setEditPE] = useState(false);
+	
+	// eslint-disable-next-line no-unused-vars
 	const [deletePE, setdeletePE] = useState(false);
+	// @ts-ignore
 	let permissionList = useSelector((state) => state.Permission.UiPermissions);
 
 	useEffect(() => {
@@ -35,6 +38,7 @@ function ActionUser({row}) {
 
 		let deletePermission = PermissionButton(ScreenPermissions.UserManagement, ButtonPermissions.DeleteUser, permissionList);
 		setdeletePE(deletePermission);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const redirectToEdit = () => {
@@ -73,6 +77,7 @@ const UserTable = () => {
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 	// for button permission
 	const [addUsetPE, setAddUserPE] = useState(false);
+	// @ts-ignore
 	let permissionList = useSelector((state) => state.Permission.UiPermissions);
 
 	useEffect(() => {
@@ -106,6 +111,7 @@ const UserTable = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchQuery]);
 
+	// @ts-ignore
 	const pageChange = (event, value) => {
 		setSearchQuery({...searchQuery, pageNumber: value});
 	};

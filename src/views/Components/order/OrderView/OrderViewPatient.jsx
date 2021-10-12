@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, {useEffect, useState} from 'react';
 import 'font-awesome/css/font-awesome.min.css';

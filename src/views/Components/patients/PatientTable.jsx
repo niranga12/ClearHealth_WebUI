@@ -48,6 +48,7 @@ function CellAddress({row}) {
 function ActionPatient({ row }) {
 	let history = useHistory();
 	const [editPE, setEditPE] = useState(false);
+	// eslint-disable-next-line no-unused-vars
 	const [deletePE, setdeletePE] = useState(false);
 	let permissionList= useSelector((state) => state.Permission.UiPermissions);
 

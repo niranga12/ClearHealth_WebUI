@@ -158,6 +158,7 @@ const handleClearSelection=()=>{
 		try {
 			
 			let result = await saveOrderData(data);
+			// eslint-disable-next-line eqeqeq
 			if (result.data.message == ServiceMsg.OK) {
 				dispatch(notify(`Successfully added`, 'success'));
 				// history.push({

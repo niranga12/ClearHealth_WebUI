@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, {useEffect, useMemo, useState} from 'react';
 import DataTable from 'src/views/common/dataTable';
 import PropTypes from 'prop-types';
@@ -73,7 +74,7 @@ const OrderList = ({orderDetail}) => {
 			const result = await orderAprove(orderId);
 			if (result.data.message == ServiceMsg.OK) {
 				dispatch(notify(`Successfully updated`, 'success'));
-				debugger;
+				
 				if (hospitalId && hospitalName) {
 					history.push({
 						pathname: `/hospitals/hospital`,

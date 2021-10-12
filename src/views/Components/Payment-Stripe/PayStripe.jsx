@@ -1,9 +1,8 @@
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
+
 import React, {useEffect, useRef, useState} from 'react';
 
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
-import {useHistory, useLocation} from 'react-router';
+import {useHistory} from 'react-router';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {notify} from 'reapop';
@@ -40,6 +39,7 @@ const CARD_OPTIONS = {
 };
 
 const PayStripe = ({billingDetails, stKey, isValid,orderId}) => {
+	// eslint-disable-next-line no-unused-vars
 	const [billDet, setBillDet] = useState(null);
 	const [stripeKeySes, setStripeKeySes] = useState(null);
 	const [validDetail, setIsvalidDetail] = useState(false);
@@ -75,6 +75,7 @@ const PayStripe = ({billingDetails, stKey, isValid,orderId}) => {
 		// Get a reference to a mounted CardElement. Elements knows how
 		// to find your CardElement because there can only ever be one of
 		// each type of element.
+		// eslint-disable-next-line no-unused-vars
 		const cardElement = elements.getElement(CardElement);
 
 		// Use your card Element with other Stripe.js APIs

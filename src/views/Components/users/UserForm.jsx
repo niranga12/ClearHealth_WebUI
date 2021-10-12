@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
 import { saveUser, updateUserByPartyRoleId } from 'src/service/userService';
-import { getRoleList, getSpecificRoleList } from 'src/service/commonService';
+import {  getSpecificRoleList } from 'src/service/commonService';
 import FormatText from 'src/reusable/FormatText';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 
@@ -24,7 +26,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 	const {
 		register,
 		handleSubmit,
-		setValue,
+		
 		getValues,
 		reset,
 		control,
