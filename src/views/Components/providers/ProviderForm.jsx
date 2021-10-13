@@ -234,6 +234,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				lastName: data.lastName,
 				hospitalList: data.hospitalName,
 				speciality: data.speciality,
+				email:data.email,
 			},
 
 			postalAddress: [
@@ -305,13 +306,14 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			const updateProvider = {
 
 
-				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality) && {
+				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality || dirtyFields.email) && {
 					provider: {
 						firstName: getValues('firstName'),
 						middleName: getValues('middleName'),
 						lastName: getValues('lastName'),
 						hospitalList: getValues('hospitalName'),
 						speciality: getValues('speciality'),
+						email: getValues('email'),
 					}
 				}),
 
@@ -373,7 +375,17 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					const result = await updateProviderByPartyRoleId(partyRoleId, updateProvider);
 					if (result.data.message == ServiceMsg.OK) {
 						dispatch(notify(`Successfully updated`, 'success'));
+						// history.push('/providers');
+						// for redirecting parent page
+					if(tabId &&hospitalId ){
+						history.push({
+							pathname: `/hospitals/hospital`,
+							search: `?id=${hospitalId}&name=${hospitalName}&tap=${tabId}`,
+							
+						});
+					}else{
 						history.push('/providers');
+					}
 					}
 				} catch (error) {
 					OnError(error, dispatch);

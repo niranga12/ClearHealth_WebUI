@@ -218,15 +218,20 @@ function HospitalOrderTable() {
 			{
 				Header: 'Order Number',
 				accessor: 'orderNumber', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({value}) => <h5 className='font-weight-normal text-black'> {value} </h5>,
 			},
 			{
 				Header: 'Order Date',
 				accessor: 'orderDate', // accessor is the "key" in the data
+				disableSortBy: true,
+
 			},
 			{
 				Header: 'Procedure',
 				accessor: 'procedureDetail', // accessor is the "key" in the data
+				disableSortBy: true,
+
 				// Cell: ({row}) =>( <h5 className='font-weight-normal text-black'> {row.original.speciality} </h5>),
 			},
 			// {
@@ -237,11 +242,15 @@ function HospitalOrderTable() {
 			{
 				Header: 'Attempts',
 				accessor: 'attempts', // accessor is the "key" in the data
+				disableSortBy: true,
+
 				Cell: OrderAttempt,
 			},
 			{
 				Header: 'Status',
 				accessor: 'orderStatus', // accessor is the "key" in the data
+				disableSortBy: true,
+
 				// Cell: OrderStatusValue,
 			},
 

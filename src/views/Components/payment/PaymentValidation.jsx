@@ -60,7 +60,7 @@ const PaymentValidation = ({verifyHandle, verificationMsg=null}) => {
 									<h3 className='text-center font-weight-bold'>Patient Verification</h3>
 									<p className='col-md-6 m-auto text-center p-2 font-lato-bold'>Please verify the patient's date of birth for secure access to payment details</p>
 									<div className='text-center pt-4 pb-2  '>Patient Name</div>
-									<div className='text-center font-weight-bold h5 mb-2'>{detail?.firstName + ' ' + detail?.lastName} </div>
+									<div className='text-center font-weight-bold h5 mb-2'>{ detail && detail?.firstName }  {detail && detail?.lastName} </div>
 								</div>
 
 								<div className='col-md-6  offset-md-3  text-center'>
