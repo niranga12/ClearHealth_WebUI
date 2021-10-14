@@ -17,7 +17,7 @@ import logo from "../assets/images/2.svg";
 import {
   TheHeaderDropdown,
   
-  TheHeaderDropdownNotif,
+
   TheTittleUser,
 } from "./index";
 import TheHeaderDropdownImage from "./TheHeaderDropDownImage";

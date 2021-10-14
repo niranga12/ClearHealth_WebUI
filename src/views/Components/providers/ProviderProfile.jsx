@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import {  useLocation } from 'react-router-dom';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { Country } from 'src/reusable/enum';
 import { getStateList } from 'src/service/commonService';
@@ -9,6 +9,7 @@ import { getHealthSystemList } from 'src/service/healthsystemService';
 import { getHospitalByPartyRoleId } from 'src/service/hospitalsService';
 import { getProviderByPartyRoleId, getSpecialityList } from 'src/service/providerService';
 import AdminTitle from 'src/views/common/adminTitle';
+import Goback from 'src/views/common/Goback';
 import MetaTitles from 'src/views/common/metaTitles';
 import OnError from 'src/_helpers/onerror';
 import ProviderForm from './ProviderForm';
@@ -49,6 +50,10 @@ const ProviderProfile = () => {
 	const [providerData, setProviderData] = useState(defalutFormValue);
 	const [specialityData, setSpecialityData] = useState([]);
 	const dispatch = useDispatch();
+
+
+
+
 	//if this a edit form get the data
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
@@ -133,6 +138,9 @@ const ProviderProfile = () => {
 	};
 
 	return (
+		<>
+		<Goback/>
+		
 		<div className="card  cover-content pt-2 ">
 			 {/* for addeing page metas  */}
 			 <MetaTitles title="Clear Health | Provider Profile" description=" Create update Providers  "/>
@@ -140,6 +148,7 @@ const ProviderProfile = () => {
 
 			<ProviderForm defaultValues={providerData} stateList={stateList} isEdit={editProfile} partyRoleId={partyRoleId} healthSystemList={healthSystems} specialityData={specialityData} />
 		</div>
+		</>
 	);
 };
 

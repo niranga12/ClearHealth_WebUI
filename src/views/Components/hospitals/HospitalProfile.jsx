@@ -1,17 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { loaderHide, loaderShow } from 'src/actions/loaderAction';
-import { Country } from 'src/reusable/enum';
-import { getStateList } from 'src/service/commonService';
-import { getHealthSystemList } from 'src/service/healthsystemService';
-import { getHospitalByPartyRoleId, getOnboardinginfo } from 'src/service/hospitalsService';
+import React, {useEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {  useLocation} from 'react-router-dom';
+import {loaderHide, loaderShow} from 'src/actions/loaderAction';
+import {Country} from 'src/reusable/enum';
+import {getStateList} from 'src/service/commonService';
+import {getHealthSystemList} from 'src/service/healthsystemService';
+import {getHospitalByPartyRoleId, getOnboardinginfo} from 'src/service/hospitalsService';
 import AdminTitle from 'src/views/common/adminTitle';
 import MetaTitles from 'src/views/common/metaTitles';
 import OnError from 'src/_helpers/onerror';
 import HospitalForm from './HospitalForm';
+import Goback from 'src/views/common/Goback';
 
 const defalutFormValue = {
 	hospitalName: '',
@@ -47,12 +48,11 @@ const HospitalProfile = () => {
 	const [partyRoleId, setPartyRoleId] = useState(null);
 	const [editProfile, setEditProfile] = useState(false);
 
-	const [stateList, setstateList] = useState([])
-	const [onboardingInfo, setOnboarding] = useState([])
+	const [stateList, setstateList] = useState([]);
+	const [onboardingInfo, setOnboarding] = useState([]);
 	const [hospitalData, setHospitalData] = useState(defalutFormValue);
 	const [healthSystems, setHealthSystem] = useState([]);
 	const dispatch = useDispatch();
-
 
 	//if this a edit form get the data
 	useEffect(() => {
@@ -74,12 +74,11 @@ const HospitalProfile = () => {
 				setHealthSystem(res.data.data);
 				//getStateList
 				const stateResult = await getStateList(Country.USA);
-				setstateList(stateResult.data.data)
+				setstateList(stateResult.data.data);
 				//getOnboardinginfo
 				const onboarding = await getOnboardinginfo(id);
 				//const onboarding = await getOnboardinginfo(id);
-				setOnboarding(onboarding.data.data)
-
+				setOnboarding(onboarding.data.data);
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -94,18 +93,16 @@ const HospitalProfile = () => {
 				} catch (error) {
 					OnError(error, dispatch);
 				}
-
 			}
 			dispatch(loaderHide());
-
-
 		};
 		fetchData();
 	}, [location]);
 
+	
+
 	// updated form fields
 	const updateFormFields = (data) => {
-
 		const hospitalData = {
 			hospitalName: data.hospital.name,
 			healthSystemPartyRoleId: data.hospital.healthSystemPartyRoleId,
@@ -135,17 +132,20 @@ const HospitalProfile = () => {
 			// contactName: data.paymentInfo.name,
 		};
 		return hospitalData;
-
 	};
 
 	return (
-		<div className="card  cover-content pt-2 ">
-			 {/* for addeing page metas  */}
-			 <MetaTitles title="Clear Health | Hospital Profile" description=" add update Profile  "/>
-			<AdminTitle title={editProfile ? 'Edit Hospital' : 'Add Hospital'} />
+		<>
+						<Goback />
 
-			<HospitalForm defaultValues={hospitalData} stateList={stateList} isEdit={editProfile} healthSystems={healthSystems} partyRoleId={partyRoleId} onboardingInfo={onboardingInfo} />
-		</div>
+			<div className='card  cover-content pt-2 '>
+				{/* for addeing page metas  */}
+				<MetaTitles title='Clear Health | Hospital Profile' description=' add update Profile  ' />
+				<AdminTitle title={editProfile ? 'Edit Hospital' : 'Add Hospital'} />
+
+				<HospitalForm defaultValues={hospitalData} stateList={stateList} isEdit={editProfile} healthSystems={healthSystems} partyRoleId={partyRoleId} onboardingInfo={onboardingInfo} />
+			</div>
+		</>
 	);
 };
 

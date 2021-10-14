@@ -1,6 +1,7 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ButtonPermissions, PermissionType, ResourceType, ScreenPermissions, TableSettingsEnum } from 'src/reusable/enum';
+import { ButtonPermissions, ScreenPermissions, TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
 import { getHospitalsList, getHospitalsListCount } from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
@@ -82,6 +83,7 @@ function ActionHospital({ row }) {
 	useEffect(() => {
 		let Permission=PermissionButton(ScreenPermissions.Hospital,ButtonPermissions.EditHospital,permissionList);
 		setEditPE(Permission);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 

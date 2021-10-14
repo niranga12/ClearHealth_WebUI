@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -5,7 +6,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {notify} from 'reapop';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import { resetOrderTable } from 'src/actions/orderAction';
-import {OrderStatus, ServiceMsg, TableSettingsEnum} from 'src/reusable/enum';
+import { ServiceMsg, TableSettingsEnum} from 'src/reusable/enum';
 import {getOrderListByHospitalId, getOrderListCountByHospitalId} from 'src/service/hospitalsService';
 import {orderAprove} from 'src/service/orderService';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';

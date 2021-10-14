@@ -1,4 +1,4 @@
-import React from 'react'
+/* eslint-disable eqeqeq */
 
 const PermissionButton = (screenId,buttonId,permissionList) => {
     

@@ -6,6 +6,7 @@ import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import UserForm from './UserForm';
 import { getUserByPartyRoleId } from 'src/service/userService';
 import MetaTitles from 'src/views/common/metaTitles';
+import Goback from 'src/views/common/Goback';
 
 
 const defalutFormValue = {
@@ -62,6 +63,9 @@ const UserProfile = () => {
 	};
 
 	return (
+		<>
+					<Goback />
+
 		<div className="card  cover-content pt-2 ">
 			 {/* for addeing page metas  */}
 			 <MetaTitles title="Clear Health | User Profile" description=" Users Add  "/>
@@ -69,6 +73,7 @@ const UserProfile = () => {
 
 			<UserForm defaultValues={userData} isEdit={editProfile} partyRoleId={partyRoleId} />
 		</div>
+		</>
 	);
 };
 

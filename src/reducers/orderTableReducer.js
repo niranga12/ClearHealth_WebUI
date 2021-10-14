@@ -1,4 +1,4 @@
-const {  CHANGE_ORDER_Table, RESET_ORDER_Table} = require('src/constansts');
+const {   RESET_ORDER_Table} = require('src/constansts');
 
 const initialState = {
 	changeProgress: false,

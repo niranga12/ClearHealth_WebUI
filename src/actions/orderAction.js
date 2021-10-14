@@ -1,5 +1,5 @@
 
-import { CHANGE_ORDER_STATUS, RESET_ORDER_STATUS,CHANGE_ORDER_Table, RESET_ORDER_Table } from "src/constansts";
+import { CHANGE_ORDER_STATUS, RESET_ORDER_STATUS, RESET_ORDER_Table } from "src/constansts";
 
 
 export const changeOrder = () => {

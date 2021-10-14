@@ -1,4 +1,4 @@
-import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,17 +16,17 @@ const schema = yup.object().shape({
 const HospitalNotifyUser = ({ partyRoleId = null, isNotify,handleCancel }) => {
     const {
         register,
-        handleSubmit,
+        
         setValue,
         getValues,
-        reset,
-        control,
+        
+        
         formState: { errors },
     } = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
 
     const [modal, setModal] = useState(false);
-    const [email, setEmail] = useState();
+    // const [email, setEmail] = useState();
     useEffect(() => {
         setModal(isNotify)
 

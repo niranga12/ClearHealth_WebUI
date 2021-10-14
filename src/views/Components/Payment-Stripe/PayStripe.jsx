@@ -1,5 +1,6 @@
+/* eslint-disable eqeqeq */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
 import {useHistory} from 'react-router';
@@ -45,7 +46,7 @@ const PayStripe = ({billingDetails, stKey, isValid,orderId}) => {
 	const [validDetail, setIsvalidDetail] = useState(false);
 	const dispatch = useDispatch();
 	const history = useHistory();
-	let btnRef = useRef();
+	// let btnRef = useRef();
 
 	useEffect(() => {
 		// if (btnRef.current) {

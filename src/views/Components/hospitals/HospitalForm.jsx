@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
@@ -7,7 +8,6 @@ import { useDispatch } from 'react-redux';
 import { MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
 import { useHistory } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
-import { InvoiceReceiveMethod } from 'src/_helpers/CommonDataList';
 import { saveHospital, updateHospitalByPartyRoleId } from 'src/service/hospitalsService';
 import { notify } from 'reapop';
 import InputMask from 'react-input-mask';
@@ -616,7 +616,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>Update Link</label>
-							<a href={onboardingInfo.url} target="_blank" >
+							<a href={onboardingInfo.url} target="_blank" rel="noreferrer" >
 								{onboardingInfo.isOnboardingCompleted == '1' ? "Update Account" : "Complete Account"}</a>
 						</div>
 
