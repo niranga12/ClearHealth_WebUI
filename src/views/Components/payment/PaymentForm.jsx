@@ -11,6 +11,7 @@ import {DateFormat, ServiceMsg} from 'src/reusable/enum';
 import {getPatientOrderDetailsByOrderId} from 'src/service/paymentService';
 
 import OnError from 'src/_helpers/onerror';
+import PayBrainTree from '../Payment-BrainTree/PayBrainTree';
 import PayStripe from '../Payment-Stripe/PayStripe';
 import PaymentOrder from './PaymentOrder';
 import PaymentOrderSummary from './PaymentOrderSummary';
@@ -108,19 +109,47 @@ const PaymentForm = () => {
 	};
 
 	const formChange = (value) => {
+		debugger;
+
 		setPatientData(value);
 
 		let result = {
-			address: {
-				city: value.billingCity,
-				line1: value.billingAddress1,
-				line2: value.billingAddress2,
-				postal_code: value.billingZip,
-				state: value.billingState,
-			},
-			email: value.email,
-			name: value.patientName,
-			phone: value.contactPhone,
+			
+ 
+			
+			customer: {
+				patientName: value.patientName,
+				phone: value.contactPhone,
+				email: value.email
+			  },
+			// address: {
+			// 	city: value.billingCity,
+			// 	line1: value.billingAddress1,
+			// 	line2: value.billingAddress2,
+			// 	postal_code: value.billingZip,
+			// 	state: value.billingState,
+			// },
+
+
+			billing: {
+				firstName:  value.patientName,
+				streetAddress:value.billingAddress1,
+				extendedAddress: value.billingAddress2,
+				locality: value.billingState,
+				postalCode: value.billingZip,
+				// countryCodeAlpha2: "US"
+			  },
+			//   shipping: {
+			// 	firstName:  value.patientName,
+			// 	streetAddress:value.billingAddress1,
+			// 	extendedAddress: value.billingAddress2,
+			// 	locality: value.billingState,
+			// 	postalCode: value.billingZip,
+			// 	// countryCodeAlpha2: "US"
+			//   },
+			  options: {
+				submitForSettlement: true
+			  },
 		};
 
 		setBillingData(result);
@@ -133,9 +162,10 @@ const PaymentForm = () => {
 					<div className='col-md-8'>
 						<PaymentOrder patientOrder={patient} formChange={formChange} handleValid={formValid} />
 						<div className='component-header mt-4 mb-4 '>Payment Details </div>
-						<Elements stripe={stripePromise}>
+						{/* <Elements stripe={stripePromise}>
 							<PayStripe billingDetails={billingData} stKey={stKey} isValid={isValid} orderId={patientData?.orderId} />
-						</Elements>
+						</Elements> */}
+						<PayBrainTree billingDetails={billingData}  isValid={isValid} orderId={patientData?.orderId}/>
 					</div>
 					<div className='col-md-4'>
 						<PaymentOrderSummary orderDetail={orderDetail} />

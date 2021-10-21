@@ -265,7 +265,7 @@ const OrderViewPatient = ({patientDetail}) => {
 								{' '}
 								Phone {isPhone && <span className='text-danger font-weight-bold '>*</span>}	{' '}
 							</label>
-							{isEdit ? <InputMask {...register('patientForm.phoneNumber')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(!isEdit, getValues('patientForm.phoneNumber'))} className='form-control-sm' onBlur={() => setstateChange(!stateChange)}  /> :  orderPhone(patient?.phoneNumber)  }
+							{isEdit ? <InputMask {...register('patientForm.phoneNumber')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patientForm.phoneNumber'))} className='form-control-sm' onBlur={() => setstateChange(!stateChange)}  /> :  orderPhone(patient?.phoneNumber)  }
 							{isEdit && <div className='small text-danger  pb-2   '>{errors.patientForm?.phoneNumber?.message}</div>}
 						</div>
 					</div>
