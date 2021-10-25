@@ -1258,3 +1258,19 @@ border-radius: 0;
   border: none !important;
   box-shadow: 0 2px 20px 0 rgb(135 135 135 / 30%);
 }
+
+.rectangle-invoice{
+  box-sizing: border-box;
+  // height: 30px;
+  padding: 5px;
+  padding-right: 7px;
+  padding-left:7px;
+  width: fit-content;
+  //  min-width: 138px;
+  //  max-width: 250px;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  color: black;
+  font-size:0.8rem;
+  cursor: pointer;
+}

@@ -17,7 +17,7 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
     const dispatch = useDispatch();
 	const history = useHistory();
 	useEffect(() => {
-		debugger;
+		
 		// if (btnRef.current) {
 		// btnRef.current.removeAttribute('disabled');
 		// }
@@ -48,7 +48,7 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 
 		const {nonce} = await instance.requestPaymentMethod();
 		console.log(nonce);
-		let paymentData = {...billDet, paymentMethodNonce: nonce, orderId};
+		let paymentData = {...billDet, paymentMethodNonce: nonce};
 		// console.log(paymentData);
 
 		try {

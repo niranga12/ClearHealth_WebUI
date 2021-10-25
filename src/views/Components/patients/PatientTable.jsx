@@ -72,6 +72,14 @@ function ActionPatient({ row }) {
 		});
 	};
 
+	const redirectToOrder=()=>{
+		history.push({
+			pathname: `/patients/orders`,
+			search: `?id=${row.original.partyRoleId}`,
+			// state: { detail: 'some_value' }
+		});
+	}
+
 	return (
 		<>
 			<CDropdown>
@@ -82,6 +90,7 @@ function ActionPatient({ row }) {
 				</CDropdownToggle>
 				<CDropdownMenu>
 				{editPE && 	<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
+				<CDropdownItem onClick={redirectToOrder}>View Orders</CDropdownItem>
 
 				{/* {deletePE && <CDropdownItem >Delete</CDropdownItem> } */}
 					{/* <CDropdownItem onClick={redirectAccount}>Account</CDropdownItem> */}

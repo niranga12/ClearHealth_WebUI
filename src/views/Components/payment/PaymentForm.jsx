@@ -18,7 +18,7 @@ import PaymentOrderSummary from './PaymentOrderSummary';
 
 const PaymentForm = () => {
     const [orderDetail, setOrderDetails] = useState([]);
-	// const [orderId, setOrderId] = useState(null);
+	const [orderId, setOrderId] = useState(null);
 	const [patient, setPatient] = useState(null);
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const PaymentForm = () => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
 		// const key= params.get('key');
-		// setOrderId(id);
+		setOrderId(id);
 
 		const fetchData = async () => {
 			dispatch(loaderShow());
@@ -109,7 +109,7 @@ const PaymentForm = () => {
 	};
 
 	const formChange = (value) => {
-		debugger;
+		
 
 		setPatientData(value);
 
@@ -117,39 +117,19 @@ const PaymentForm = () => {
 			
  
 			
-			customer: {
-				patientName: value.patientName,
-				phone: value.contactPhone,
-				email: value.email
-			  },
-			// address: {
-			// 	city: value.billingCity,
-			// 	line1: value.billingAddress1,
-			// 	line2: value.billingAddress2,
-			// 	postal_code: value.billingZip,
-			// 	state: value.billingState,
-			// },
-
+			
+		
 
 			billing: {
-				firstName:  value.patientName,
-				streetAddress:value.billingAddress1,
-				extendedAddress: value.billingAddress2,
+				firstName:  value.patientName.split(" ")[0],
+				lastName:   value.patientName.split(" ")[1],
+				streetAddress:value.billingAddress1 + value.billingAddress2,
 				locality: value.billingState,
 				postalCode: value.billingZip,
-				// countryCodeAlpha2: "US"
+				region:"",
+			    countryCodeAlpha2: "US"
 			  },
-			//   shipping: {
-			// 	firstName:  value.patientName,
-			// 	streetAddress:value.billingAddress1,
-			// 	extendedAddress: value.billingAddress2,
-			// 	locality: value.billingState,
-			// 	postalCode: value.billingZip,
-			// 	// countryCodeAlpha2: "US"
-			//   },
-			  options: {
-				submitForSettlement: true
-			  },
+			  orderId: orderId,
 		};
 
 		setBillingData(result);
