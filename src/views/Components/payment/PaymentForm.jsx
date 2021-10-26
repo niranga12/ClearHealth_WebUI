@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import {Elements} from '@stripe/react-stripe-js';
+// import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
@@ -12,7 +12,7 @@ import {getPatientOrderDetailsByOrderId} from 'src/service/paymentService';
 
 import OnError from 'src/_helpers/onerror';
 import PayBrainTree from '../Payment-BrainTree/PayBrainTree';
-import PayStripe from '../Payment-Stripe/PayStripe';
+// import PayStripe from '../Payment-Stripe/PayStripe';
 import PaymentOrder from './PaymentOrder';
 import PaymentOrderSummary from './PaymentOrderSummary';
 
@@ -24,6 +24,7 @@ const PaymentForm = () => {
 	const dispatch = useDispatch();
 	const [patientData, setPatientData] = useState(null);
 	const [billingData, setBillingData] = useState(null);
+	// eslint-disable-next-line no-unused-vars
 	const [stKey, setSTKey] = useState(null);
 	const [isValid, setIsvalid] = useState(false);
 
@@ -35,6 +36,7 @@ const PaymentForm = () => {
 
 	// recreating the `Stripe` object on every render.
 	// const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
+	// eslint-disable-next-line no-unused-vars
 	const stripePromise = loadStripe('pk_test_51JKBypBOELX9tyniJrgYzR3SvXJDOusxZiuQ1wV60G8eJucn7p2hK1aKK0IPcktL6tTDh7fIeZL1lXQka7rZGpcz00oPjzhYRh');
 	// let pubKey=String(StripPublicKey) ;
 	// const stripePromise = loadStripe(pubKey);

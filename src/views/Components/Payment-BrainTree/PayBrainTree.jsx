@@ -8,8 +8,10 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { notify } from 'reapop';
 import OnError from 'src/_helpers/onerror';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 
 const PayBrainTree = ({billingDetails, isValid, orderId}) => {
+	// eslint-disable-next-line no-unused-vars
 	const [clientToken, setClientToken] = useState('sandbox_4xm898m8_3x38g8rmrxj3kbrj');
 	const [billDet, setBillDet] = useState(null);
 	const [validDetail, setIsvalidDetail] = useState(false);
@@ -47,20 +49,25 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 		// Send the nonce to your server
 
 		const {nonce} = await instance.requestPaymentMethod();
-		console.log(nonce);
+		// console.log(nonce);
 		let paymentData = {...billDet, paymentMethodNonce: nonce};
 		// console.log(paymentData);
 
 		try {
+			dispatch(loaderShow());
 			let result = await paymentCheckout(paymentData);
 			if (result.data.message === ServiceMsg.OK) {
+				dispatch(loaderHide());
 				dispatch(notify('Paid successfully', 'success'));
 				history.push('/main');
+				
 			} else {
 				dispatch(notify('Payment Failure', 'error'));
+				dispatch(loaderHide());
 			}
 		} catch (error) {
 			OnError(error, dispatch);
+			dispatch(loaderHide());
 		}
 
 		// await fetch(`server.test/purchase/${nonce}`);

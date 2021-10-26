@@ -5,10 +5,11 @@ import PatientTable from './PatientTable';
 
 const PatientGrid = () => {
     return (
+        
         <div className="card  cover-content pt-2 ">'
          {/* for addeing page metas  */}
          <MetaTitles title="Clear Health | Patients" description=" Patients  "/>
-            <PatientTable/>
+         <PatientTable/>
             
         </div>
     )

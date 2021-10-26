@@ -4,25 +4,12 @@ import DataTable from 'src/views/common/dataTable';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
+import { useHistory } from 'react-router-dom';
 
 function ActionPatientOrder({row}) {
-	// let history = useHistory();
-	// const [editPE, setEditPE] = useState(false);
-	// let permissionList= useSelector((state) => state.Permission.UiPermissions);
+	
 
-	// useEffect(() => {
-	// 	let Permission=PermissionButton(ScreenPermissions.Hospital,ButtonPermissions.EditHospital,permissionList);
-	// 	setEditPE(Permission);
-	// // eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [])
-
-	const redirectToEdit = () => {
-		// history.push({
-		// 	pathname: `/hospitals/profile`,
-		// 	search: `?id=${row.original.partyRoleId}`,
-		// 	// state: { detail: 'some_value' }
-		// });
-	};
+	
 
 	const redirectAccount = () => {
 		// history.push({
@@ -41,7 +28,7 @@ function ActionPatientOrder({row}) {
 					</div>
 				</CDropdownToggle>
 				<CDropdownMenu>
-					<CDropdownItem onClick={redirectToEdit}>Edit </CDropdownItem>
+					
 					<CDropdownItem onClick={redirectAccount}>View </CDropdownItem>
 				</CDropdownMenu>
 			</CDropdown>
@@ -50,9 +37,23 @@ function ActionPatientOrder({row}) {
 }
 
 const viewInvoice = ({row}) => {
+
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	let history = useHistory();
+
+	const redirectAccount = () => {
+		
+	history.push({
+			pathname: `/order/view`,
+			search: `?orderId=${row.original.orderId}`,
+			// state: { detail: 'some_value' }
+		});
+	}
+
+
 	return (
 		<>
-			<div className='rectangle-invoice'>View Invoice</div>
+			<div className='rectangle-invoice' onClick={redirectAccount}>View Invoice</div>
 		</>
 	);
 };
@@ -70,26 +71,26 @@ const PatientOrderTable = ({orderDetails}) => {
 	const columns = useMemo(
 		() => [
 			{
-				Header: 'orders',
+				Header: 'Orders',
 				accessor: 'orders', // accessor is the "key" in the data
 				Cell: ({row}) => <h5 className='font-weight-normal text-black ml-4'> {row.original.orders} </h5>,
 			},
 			{
-				Header: 'orderId',
+				Header: 'Order Id',
 				accessor: 'orderId',
 			},
 
 			{
-				Header: 'orderDate',
+				Header: 'Order Date',
 				accessor: 'orderDate',
 				Cell: ({row}) => <div className='font-weight-normal text-black '> {moment(row.original.orderDate).format('MM-DD-YYYY')} </div>,
 			},
 			{
-				Header: 'refferingProvider',
+				Header: 'Reffering Provider',
 				accessor: 'refferingProvider',
 			},
 			{
-				Header: 'status',
+				Header: 'Status',
 				accessor: 'status',
 			},
 			{

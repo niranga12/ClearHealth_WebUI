@@ -9,7 +9,7 @@ import PaginationTable from 'src/views/common/paginationTable';
 import OnError from 'src/_helpers/onerror';
 import 'font-awesome/css/font-awesome.min.css';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import PermissionButton from 'src/reusable/PermissionButton';
@@ -19,7 +19,8 @@ const initialSearch = {
 	pageNumber: 1,
 	searchTerm: '',
 	sortOrder:'desc',
-	orderBy:'id'
+	orderBy:'id',
+	healthSystemPartyRoleId:null
 };
 
 function CellContract({ row }) {
@@ -122,6 +123,9 @@ function ActionHospital({ row }) {
 
 const HospitalTable = () => {
 	let history = useHistory();
+	const location = useLocation();
+	// const [healthSystemPartyId, setHealthSystemPartyId] = useState(null);
+    // const [healthSystemName, setHealthSystemName] = useState(null)
 
 	const [hospitalData, setHospitalData] = useState([]);
 
@@ -138,6 +142,12 @@ const HospitalTable = () => {
 
 	useEffect(() => {
 		
+		const params = new URLSearchParams(location.search);
+		const id = params.get('id');
+		// const healthname=params.get('healthSystemName');
+		// setHealthSystemPartyId(id);
+		// setHealthSystemName(healthname)
+
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
@@ -146,13 +156,13 @@ const HospitalTable = () => {
 				let Permission=PermissionButton(ScreenPermissions.Hospital,ButtonPermissions.AddHospital,permissionList);
 				setAddHospital(Permission);
 				
+			let searchItemQuery= id?{...searchQuery, healthSystemPartyRoleId: id}:searchQuery
 
-
-				const result = await getHospitalsList(searchQuery);
+				const result = await getHospitalsList(searchItemQuery);
 				setHospitalData(result.data.data);
 
 
-				const countQuery = { searchTerm: searchQuery.searchTerm };
+				const countQuery = { searchTerm: searchQuery.searchTerm,healthSystemPartyRoleId: id? id: "" };
 				const resultCount = await getHospitalsListCount(countQuery);
 				setCount(resultCount.data.data.totalCount);
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
@@ -164,9 +174,19 @@ const HospitalTable = () => {
 				OnError(error, dispatch);
 			}
 		};
+
 		fetchData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchQuery]);
+	}, [searchQuery,location]);
+
+
+// useEffect(() => {
+// 	    const params = new URLSearchParams(location.search);
+// 		const id = params.get('id');
+// 		setHealthSystemPartyId(id);
+// 		setSearchQuery({ ...searchQuery, healthSystemPartyRoleId: id });
+// }, [location])
+
 
 
 

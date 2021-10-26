@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useLocation} from 'react-router-dom';
@@ -29,6 +30,7 @@ const PatientsOrderList = () => {
 			}
 		};
 		fetchData();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location]);
 
 	return (
