@@ -156,13 +156,13 @@ const HospitalTable = () => {
 				let Permission=PermissionButton(ScreenPermissions.Hospital,ButtonPermissions.AddHospital,permissionList);
 				setAddHospital(Permission);
 				
-			let searchItemQuery= id?{...searchQuery, healthSystemPartyRoleId: id}:searchQuery
+			let searchItemQuery= id?{...searchQuery, healthSystemPartyRoleId: [Number(id)]}:searchQuery
 
 				const result = await getHospitalsList(searchItemQuery);
 				setHospitalData(result.data.data);
 
 
-				const countQuery = { searchTerm: searchQuery.searchTerm,healthSystemPartyRoleId: id? id: "" };
+				const countQuery = { searchTerm: searchQuery.searchTerm,healthSystemPartyRoleId: id? [Number(id)]: "" };
 				const resultCount = await getHospitalsListCount(countQuery);
 				setCount(resultCount.data.data.totalCount);
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
