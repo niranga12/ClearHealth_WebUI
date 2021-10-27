@@ -76,6 +76,14 @@ function OrderActions({row}) {
 		}
 	};
 
+	const sendOrderButton=()=>{
+		return (
+			<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" } onClick={approveOrder}>
+			{' '}
+			Send Order
+		</button>
+		);
+	}
 	
 	
 
@@ -87,10 +95,8 @@ function OrderActions({row}) {
 					{' '}
 					View Order
 				</div>
-				<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" } onClick={approveOrder}>
-					{' '}
-					Send Order
-				</button>
+				{row.original.orderStatus==="Paid" ?<div className="text-right">{row.original.orderPaidDate} </div>    :sendOrderButton()}
+			
 			</div>
 		</>
 	);
