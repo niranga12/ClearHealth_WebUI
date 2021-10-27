@@ -11,17 +11,26 @@ import PropTypes from 'prop-types';
 import Goback from 'src/views/common/Goback';
 
 
+const initialSearch = {
+	itemsPerPage:null,
+	pageNumber: null,
+	searchTerm: ''
+};
+
+
 const PatientsOrderList = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const [orderDetails, setOrderDetail] = useState(null);
+	const [searchQuery, setSearchQuery] = useState(initialSearch);
+
 
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
 		const fetchData = async () => {
 			try {
-				let result = await getOrdersByPatientId(id);
+				let result = await getOrdersByPatientId(id,searchQuery);
 				if (result.data.message == ServiceMsg.OK) {
 					setOrderDetail(result.data.data[0]);
 				}
@@ -31,7 +40,13 @@ const PatientsOrderList = () => {
 		};
 		fetchData();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [location]);
+	}, [location, searchQuery]);
+
+
+	const searchTextChange=(val)=>{
+		setSearchQuery({...searchQuery,searchTerm: val});
+
+	}
 
 	return (
     <>
@@ -40,7 +55,7 @@ const PatientsOrderList = () => {
 
    <OrderViewPatient patientDetail={orderDetails?.patientInfo} />
    <div className='card  cover-content pt-2 '>
-   <PatientOrderTable orderDetails={orderDetails?.orderProcedureList} />
+   <PatientOrderTable orderDetails={orderDetails?.orderProcedureList} searchChange={searchTextChange} />
        </div>
    </div>
     </>

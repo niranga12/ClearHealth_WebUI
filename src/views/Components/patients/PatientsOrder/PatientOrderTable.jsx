@@ -58,14 +58,16 @@ const viewInvoice = ({row}) => {
 	);
 };
 
-const PatientOrderTable = ({orderDetails}) => {
+const PatientOrderTable = ({orderDetails,searchChange}) => {
 	const [orderDetail, setorderDetail] = useState(orderDetails);
 
 	useEffect(() => {
 		setorderDetail(orderDetails);
 	}, [orderDetails]);
 
-	const searchTextChange = () => {};
+	const searchTextChange = (e) => {
+		searchChange(e.target.value);
+	};
 
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
@@ -121,5 +123,6 @@ const PatientOrderTable = ({orderDetails}) => {
 
 PatientOrderTable.propTypes = {
 	orderDetails: PropTypes.any,
+	searchChange:PropTypes.func
 };
 export default PatientOrderTable;

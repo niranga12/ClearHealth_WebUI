@@ -19,5 +19,5 @@ export const validateOrderDob=(orderId,validationDetail)=>axiosInstance.post(`op
 
 export const getSMSOrderDetails=(orderId)=>axiosInstance.post(`openOrder/smscontent/${orderId}`,{});
 
-export const getOrdersByPatientId=(patientId)=>axiosInstance.get(`order/orderList/${patientId}`);
+export const getOrdersByPatientId=(patientId,searchQuery)=>axiosInstance.post(`order/orderList/${patientId}`,searchQuery);
 
