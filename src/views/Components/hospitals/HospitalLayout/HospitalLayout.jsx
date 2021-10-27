@@ -21,9 +21,14 @@ const HospitalLayout = () => {
 		setHospitalName(name);
 	}, [location]);
 
-  const redirectHospital = () => {
-		history.push('/hospitals');
-	};
+//   const redirectHospital = () => {
+// 		// history.push('/hospitals');
+// 		history.goBack();
+// 	};
+
+	const goBack=()=>{
+		history.goBack();
+	}
 
 	return (
 		<>
@@ -31,8 +36,8 @@ const HospitalLayout = () => {
 		  <MetaTitles title="Clear Health | Hospital View" description=" Hospital Views  "/>
 			<CRow>
 				<CCol xs='12' md='12'  className='h4 font-lato-bold m-0 cursor-pointer' >
-					<CIcon name='cilArrowLeft' size={'xl'}  onClick={redirectHospital}/>
-				   <span className="pl-3" onClick={redirectHospital}>Hospitals</span>	
+					<CIcon name='cilArrowLeft' size={'xl'}  onClick={goBack}/>
+				   <span className="pl-3" onClick={goBack}>Hospitals</span>	
 				</CCol>
 				<CCol xs='12' md='12' className='h2 font-lato-bold hospital-heading'>
 					{hospitalName}

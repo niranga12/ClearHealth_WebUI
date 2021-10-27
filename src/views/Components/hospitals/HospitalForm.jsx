@@ -245,7 +245,8 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				let result = await saveHospital(newHospital);
 				if (result.data.message === ServiceMsg.OK) {
 					dispatch(notify(`Successfully added`, 'success'));
-					history.push('/hospitals');
+					// history.push('/hospitals');
+					history.goBack();
 				}
 			}
 		} catch (error) {
@@ -325,7 +326,8 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					const result = await updateHospitalByPartyRoleId(partyRoleId, updateHospital);
 					if (result.data.message === ServiceMsg.OK) {
 						dispatch(notify(`Successfully updated`, 'success'));
-						history.push('/hospitals');
+						// history.push('/hospitals');
+						history.goBack();
 					}
 				} catch (error) {
 					OnError(error, dispatch);
