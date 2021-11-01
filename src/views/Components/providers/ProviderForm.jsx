@@ -24,7 +24,7 @@ const schema = yup.object().shape({
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
 	hospitalName: yup.string().required('Hospital name is required'),
 	providerGroup: yup.string(),
-    providerTypeId: yup.string(),
+	providerTypeId: yup.string(),
 	firstName: yup.string().required('First name is required'),
 	middleName: yup.string(),
 	lastName: yup.string().required('Last name is required'),
@@ -217,10 +217,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	}
 
 	const handleIndividualGroup = (event) => {
-		
+
 		setGroupSelection(event.target.value)
 		if (event.target.value == 'Group') {
-			debugger;
 			setshowResults(false);
 			setValue('firstName', getValues('firstName'), {
 				shouldValidate: false,
@@ -265,14 +264,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const addProvider = async (data) => {
 		// provider type ID can be 7 OR 13
 
-		
+
 		let providerTypeId;
 		if (groupSelection == "Individual") {
 			providerTypeId = 7
 		} else {
 			providerTypeId = 13
 		}
-		debugger
 		const newProvider = {
 			provider: {
 				providerTypeId: providerTypeId,
@@ -283,7 +281,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				email: data.email,
 				hospitalList: data.hospitalName,
 				speciality: data.speciality,
-				email:data.email,
+
 			},
 
 			postalAddress: [
@@ -363,7 +361,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						email: getValues('email'),
 						hospitalList: getValues('hospitalName'),
 						speciality: getValues('speciality'),
-						email: getValues('email'),
+
 					}
 				}),
 
@@ -427,15 +425,15 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						dispatch(notify(`Successfully updated`, 'success'));
 						// history.push('/providers');
 						// for redirecting parent page
-					if(tabId &&hospitalId ){
-						history.push({
-							pathname: `/hospitals/hospital`,
-							search: `?id=${hospitalId}&name=${hospitalName}&tap=${tabId}`,
-							
-						});
-					}else{
-						history.push('/providers');
-					}
+						if (tabId && hospitalId) {
+							history.push({
+								pathname: `/hospitals/hospital`,
+								search: `?id=${hospitalId}&name=${hospitalName}&tap=${tabId}`,
+
+							});
+						} else {
+							history.push('/providers');
+						}
 					}
 				} catch (error) {
 					OnError(error, dispatch);
@@ -706,7 +704,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Tax Id <span className='text-danger font-weight-bold '>{showResults ? '' :'*'}</span>
+								Tax Id <span className='text-danger font-weight-bold '>{showResults ? '' : '*'}</span>
 							</label>
 							<input type='text' className='form-control-sm' {...register('taxId')} />
 							<div className='small text-danger  pb-2   '> {errors.taxId?.message} </div>
@@ -716,7 +714,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						<div className='form-group'>
 							<label className='form-text'>
-								NPI <span className='text-danger font-weight-bold '>{showResults ? '*' :''}</span>
+								NPI <span className='text-danger font-weight-bold '>{showResults ? '*' : ''}</span>
 							</label>
 							<input type='text' className='form-control-sm' {...register('nip')} />
 							<div className='small text-danger  pb-2   '>{errors.nip?.message}</div>
