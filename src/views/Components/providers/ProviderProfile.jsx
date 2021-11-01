@@ -16,6 +16,8 @@ import ProviderForm from './ProviderForm';
 const defalutFormValue = {
 	hospitalName: '',
 	healthSystemPartyRoleId: '',
+	providerGroup: '',
+    providerTypeId: '',
 	firstName: '',
 	middleName: '',
 	lastName: '',
@@ -76,6 +78,7 @@ const ProviderProfile = () => {
 				if (id) {
 					const result = await getProviderByPartyRoleId(id);
 					const formatedData = await updateFormFields(result.data.data);
+					debugger;
 					setProviderData(formatedData);
 				}
 				else if (hospitalId) {
@@ -104,6 +107,8 @@ const ProviderProfile = () => {
 		const providerDetails = {
 			hospitalName: data.hopsitalPartyRoleId,
 			healthSystemPartyRoleId: data.healthsystemPartyRoleId,
+			providerGroup: '',
+            providerTypeId: '',
 			firstName: data.firstName,
 			middleName: data.middleName,
 			lastName: data.lastName,
