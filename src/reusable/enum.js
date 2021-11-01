@@ -218,3 +218,13 @@ export const RoleType={
 	HospitalStaff:11
 
 }
+
+export const Provider={
+
+	Provider:7,
+	GroupProvider:13,
+
+
+}
+
+	

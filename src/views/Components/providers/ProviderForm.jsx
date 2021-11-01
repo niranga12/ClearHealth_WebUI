@@ -5,7 +5,7 @@ import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
+import { MaskFormat, PartyTypeEnum, Provider, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
 import { useHistory, useLocation } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
@@ -267,9 +267,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 		let providerTypeId;
 		if (groupSelection == "Individual") {
-			providerTypeId = 7
+			providerTypeId = Provider.GroupProvider
 		} else {
-			providerTypeId = 13
+			providerTypeId = Provider.Provider
 		}
 		const newProvider = {
 			provider: {
