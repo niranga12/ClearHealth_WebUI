@@ -28,7 +28,7 @@ function CellPatient({ row }) {
 		<>
 			<div className='rectangle-intable'>
 				{' '}
-				<span className='fa fa-phone text-health-icon pr-1'></span> {PhoneNumberFormater(row.original.phone)}
+				<span className='fa fa-phone text-health-icon pr-1'></span> {PhoneNumberFormater(row.original.phoneNumber)}
 			</div>
 
 		</>
@@ -176,8 +176,8 @@ const PatientTable = () => {
 			{
 				Header: 'DOB',
 				disableSortBy: true,
-				accessor: 'dateOfBirth', // accessor is the "key" in the data
-				Cell: ({ row }) => <div className='max-celladdress'> {row.original.dateOfBirth}</div>,
+				accessor: 'DOB', // accessor is the "key" in the data
+				Cell: ({ row }) => <div className='max-celladdress'> {row.original.DOB}</div>,
 			},
 
 			{
@@ -189,7 +189,7 @@ const PatientTable = () => {
 			{
 				Header: 'Phone',
 				disableSortBy: true,
-				accessor: 'phone', // accessor is the "key" in the data
+				accessor: 'phoneNumber', // accessor is the "key" in the data
 				Cell: CellPatient,
 			},
 			{
