@@ -62,3 +62,8 @@ export const getOnboardinginfo=(partyRoleId)=>axiosInstance.get(`payment/onboard
 export const save=(data)=>axiosInstance.post(`hospital`,data);
 
 export const saveNotifyUser=(partyRoleId,data)=>axiosInstance.post(`payment/onboardingAlert/${partyRoleId}`,data);
+
+// {{URL}}/api/hospital/verified/senders
+
+export const getHospitalEmailSender=()=>axiosInstance.get(`hospital/verified/senders`);
+
