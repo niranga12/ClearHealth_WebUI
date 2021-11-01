@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, {useEffect, useState} from 'react';
 import 'font-awesome/css/font-awesome.min.css';
@@ -8,7 +9,7 @@ import {useForm} from 'react-hook-form';
 import InputMask from 'react-input-mask';
 import moment from 'moment';
 import {EnableMaskPhone} from 'src/reusable';
-import {MaskFormat, ServiceMsg} from 'src/reusable/enum';
+import {ContactMethod, MaskFormat, ServiceMsg} from 'src/reusable/enum';
 import DateSelector from 'src/views/common/dateSelector';
 import NormalizePhone from 'src/reusable/NormalizePhone';
 import {updatePatientByPartyRoleId} from 'src/service/patientService';
@@ -29,6 +30,7 @@ const schema = yup.object().shape({
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 		email: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 		DOB: yup.string(),
+		contactMethod: yup.string()
 		// enhancementOn:yup.string().required()
 	}),
 });
@@ -52,13 +54,18 @@ const OrderViewPatient = ({patientDetail}) => {
 		 formState
 	} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
-	const { isValid, errors} = formState;
+	const {  errors} = formState;
 
 
 	const [isEdit, setisEdit] = useState(false);
 	const [patient, setPatient] = useState(patientDetail);
 	const [fromDate, handlefromDateChange] = useState(null);
 	const dispatch = useDispatch();
+	const [stateChange, setstateChange] = useState(false);
+	const [isMail, setIsmail] = useState(false);
+	const [isPhone, setIsPhone] = useState(false);
+
+	const [isAviable, setIsAviable] = useState(false)
 
 	useEffect(() => {
 		setPatient(patientDetail);
@@ -72,6 +79,46 @@ const OrderViewPatient = ({patientDetail}) => {
 		}
 	}, [isEdit]);
 
+	useEffect(() => {
+		// let isAviable=false;
+		const formValue = getValues('patientForm');
+		let value=Number(formValue?.contactMethod)
+
+		if(value>-1){
+			if(value=== Number(ContactMethod.Email)){
+				setIsmail(true);
+				setIsPhone(false);
+				// schema.patient?. yup.object().shape({})
+			}else if(value=== Number(ContactMethod.Phone)){
+				setIsPhone(true);
+				setIsmail(false);
+			}
+		}
+		else{
+			setIsmail(false);
+			setIsPhone(false);
+		}
+
+		
+
+		
+		if( formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName  && Number(formValue?.contactMethod)>=0 && formValue?.lastName  && formValue?.email  ){
+			setIsAviable(true)
+			// isAviable=true;
+		} else if(formValue?.contactMethod == ContactMethod.Phone && fromDate  && formValue?.firstName  && formValue?.lastName && Number(formValue?.contactMethod)>=0  && formValue?.phoneNumber){
+			// isAviable=true;
+			setIsAviable(true)
+		}else{
+			// isAviable=false;
+			setIsAviable(false)
+		}
+		
+	}, [stateChange,fromDate]);
+
+
+
+
+
 	const update = async () => {
 		let updateDetail = getValues('patientForm');
 		let data = {
@@ -80,6 +127,7 @@ const OrderViewPatient = ({patientDetail}) => {
 				middleName: updateDetail?.middleName,
 				lastName: updateDetail.lastName,
 				email: updateDetail.email,
+				contactMethod: updateDetail.contactMethod,
 				dateOfBirth: moment(fromDate).format('MM-DD-YYYY'),
 				phone: NormalizePhone(updateDetail.phoneNumber),
 			},
@@ -90,7 +138,7 @@ const OrderViewPatient = ({patientDetail}) => {
 			let result = await updatePatientByPartyRoleId(patient.patientPartyRoleID, data);
 			if (result.data.message == ServiceMsg.OK) {
 				dispatch(notify(`Successfully updated`, 'success'));
-				let newData = {...patient, firstName: updateDetail.firstName, middleName: updateDetail?.middleName, lastName: updateDetail.lastName, email: updateDetail.email, DOB: moment(fromDate).format('MM-DD-YYYY'), phoneNumber: NormalizePhone(updateDetail.phoneNumber)};
+				let newData = {...patient, firstName: updateDetail.firstName, middleName: updateDetail?.middleName, lastName: updateDetail.lastName, email: updateDetail.email, DOB: moment(fromDate).format('MM-DD-YYYY'), phoneNumber: NormalizePhone(updateDetail.phoneNumber),contactMethod: updateDetail.contactMethod,};
 				setPatient(newData);
 				setisEdit(false);
 			}
@@ -111,7 +159,7 @@ const OrderViewPatient = ({patientDetail}) => {
 	const saveButton = () => {
 		return (
 			<>
-				<button className='btn btn-primary float-right ml-3 text-white' disabled={!isValid} onClick={() => update()}>
+				<button className='btn btn-primary float-right ml-3 text-white' disabled={!isAviable} onClick={() => update()}>
 					{' '}
 					<span className='fa fa-x fa-save pr-2'></span> <span>Update </span>
 				</button>
@@ -134,72 +182,90 @@ const OrderViewPatient = ({patientDetail}) => {
 			<div className='card-body pb-0'>
 				<div className='row'>
 					{/*First Name */}
-					<div className='col-md-2'>
+					<div className='col-md-3'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.firstName')} /> : <div className='h5'>{patient?.firstName}</div>}
+							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.firstName')} onBlur={() => setstateChange(!stateChange)} /> : <div className='h5'>{patient?.firstName}</div>}
 							{isEdit && <div className='small text-danger  pb-2'>{errors.patientForm?.firstName?.message}</div>}
 						</div>
 					</div>
 
 					{/*Middle Name */}
-					<div className='col-md-2'>
+					<div className='col-md-3'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
 								Middle Name {' '}
 							</label>
-							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.middleName')} /> : <div className='h5'>{patient?.middleName} </div>}
+							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.middleName')}   onBlur={() => setstateChange(!stateChange)}/> : <div className='h5'>{patient?.middleName} </div>}
 						
 						</div>
 					</div>
 
 					{/*Last Name */}
-					<div className='col-md-2'>
+					<div className='col-md-3'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.lastName')} /> : <div className='h5'> {patient?.lastName}</div>}
+							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.lastName')}  onBlur={() => setstateChange(!stateChange)} /> : <div className='h5'> {patient?.lastName}</div>}
 							{isEdit && 	<div className='small text-danger  pb-2   '>{errors.patientForm?.lastName?.message}</div>}
 						</div>
 					</div>
+					
+					{/* preferred contact method */}
+					<div className='col-md-3'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								 Contact Method <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							{isEdit ? <select name='' id='' className='form-control-sm' {...register('patientForm.contactMethod')}  onBlur={() => setstateChange(!stateChange)}   >
+							<option value="-1">Select</option>
+							<option value={ContactMethod.Email}>Email</option>
+							<option value={ContactMethod.Phone}>Phone</option>
+							</select>
+							: <div className='h5'> {patient?.contactMethod==ContactMethod.Email? "Email":"Phone"}</div>}
+							{isEdit && 	<div className='small text-danger  pb-2   '>{errors.patientForm?.contactMethod?.message}</div>}
+						</div>
+					</div>
+					
 
 					{/* Date Of Birth */}
 
-					<div className='col-md-2'>
+					<div className='col-md-3'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
 								Date Of Birth <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							{isEdit ? <DateSelector className='form-control-sm text-light-gray ' selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true} /> : <div className='h5'> {patient?.DOB}</div>}
+							{isEdit ? <DateSelector className='form-control-sm text-light-gray ' selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true}   /> : <div className='h5'> {patient?.DOB}</div>}
 						</div>
 					</div>
 
 					{/* Email*/}
-					<div className='col-md-2'>
+					<div className='col-md-3'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Email <span className='text-danger font-weight-bold '>*</span>{' '}
+								Email {isMail && <span className='text-danger font-weight-bold '>*</span> }	{' '}
 							</label>
-							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.email')} /> : <div className='h5'>{patient?.email}</div>}
+							{isEdit ? <input className='form-control-sm' type='text' {...register('patientForm.email')} onBlur={() => setstateChange(!stateChange)} /> : <div className='h5'>{patient?.email}</div>}
 							{isEdit && <div className='small text-danger  pb-2   '>{errors.patientForm?.email?.message}</div>}
 						</div>
 					</div>
 					{/* Phone*/}
-					<div className='col-md-2'>
+					<div className='col-md-3'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Phone <span className='text-danger font-weight-bold '>*</span>{' '}
+								Phone {isPhone && <span className='text-danger font-weight-bold '>*</span>}	{' '}
 							</label>
-							{isEdit ? <InputMask {...register('patientForm.phoneNumber')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(!isEdit, getValues('patientForm.phoneNumber'))} className='form-control-sm' /> :  orderPhone(patient?.phoneNumber)  }
+							{isEdit ? <InputMask {...register('patientForm.phoneNumber')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patientForm.phoneNumber'))} className='form-control-sm' onBlur={() => setstateChange(!stateChange)}  /> :  orderPhone(patient?.phoneNumber)  }
 							{isEdit && <div className='small text-danger  pb-2   '>{errors.patientForm?.phoneNumber?.message}</div>}
 						</div>
 					</div>

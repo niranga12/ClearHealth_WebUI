@@ -1,4 +1,4 @@
-import React from 'react'
+/* eslint-disable eqeqeq */
 
 const PermissionMenu = (screenId,permissionList) => {
     

@@ -83,10 +83,10 @@ useEffect(() => {
   const fetchPermission = async () => {
 
   let EditPermission= await PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.EditHealthSystem,permissionList);
-  setIsEditHealthPE(EditPermission);
+   setIsEditHealthPE(EditPermission);
 
   let DeletePermission=await PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.DeleteHealthSystem,permissionList);
-  setIsDeleteHealthPE(DeletePermission);
+   setIsDeleteHealthPE(DeletePermission);
   }
 
   fetchPermission();
@@ -103,6 +103,12 @@ useEffect(() => {
 		});
 	};
 
+  const redirectToHospital =()=>{
+    history.push({
+      pathname: `/hospitals`,
+			search: `?id=${row.original.partyRoleId}&&healthSystemName=${row.original.name}`,
+		});
+  }
 	
 
 	return (
@@ -113,9 +119,10 @@ useEffect(() => {
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
-				<CDropdownMenu>
+				<CDropdownMenu className={`${(!isEditHealthPE && !isDeleteHealthPE) ? 'hide':'' }`}>
 				{isEditHealthPE && <CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
-				{isDeleteHealthPE && <CDropdownItem >Delete</CDropdownItem>}	
+				{isDeleteHealthPE && <CDropdownItem >Delete</CDropdownItem>}
+        {<CDropdownItem  onClick={redirectToHospital} >View Hospital</CDropdownItem>}	
 				</CDropdownMenu>
 			</CDropdown>
 		</>

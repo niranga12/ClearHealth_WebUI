@@ -58,9 +58,9 @@ const TheHeaderDropdownMssg = () => {
             <div className="pt-3 mr-3 float-left">
               <div className="c-avatar">
                 <CImg
-                  src={'avatars/6.jpg'}
+                  src={'avatars/9.png'}
                   className="c-avatar-img"
-                  alt="admin@bootstrapmaster.com"
+                  
                 />
                 <span className="c-avatar-status bg-warning"></span>
               </div>

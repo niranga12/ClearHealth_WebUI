@@ -35,7 +35,7 @@ const HospitalProviderTable = () => {
 	let history = useHistory();
 	const [hospitalProviderData, setHospitalProviderData] = useState([]);
 	const [hospitalId, setHospitalId] = useState(null);
-	const [hospitalName, setHospitalName] = useState(null)
+	const [hospitalName, setHospitalName] = useState(null);
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
 
@@ -48,9 +48,9 @@ const HospitalProviderTable = () => {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('id');
-        const hosName=params.get('name');
+		const hosName = params.get('name');
 		setHospitalId(id);
-		setHospitalName(hosName)
+		setHospitalName(hosName);
 		// button Permission
 		let Permission = PermissionButton(ScreenPermissions.Hospital, ButtonPermissions.HospitalAddProviders, permissionList);
 		setIsAddProviderPE(Permission);
@@ -135,13 +135,25 @@ const HospitalProviderTable = () => {
 				search: `?providerId=${row.original.partyRoleId}&providerName=${row.original.firstName}&hospitalId=${id}&hospitalName=${name}`,
 			});
 		};
+
+		const editProcedure = () => {
+			history.push({
+				pathname: `/providers/profile`,
+				search: `?id=${row.original.partyRoleId}&&hospitalId=${id}&&hospitalName=${name}&&tap=${HospitalTabList.Providers}`,
+			});
+		};
+
 		return (
 			<>
+				<div className='btn btn-outline-secondary text-black-50 ml-3 float-right' onClick={editProcedure}>
+					Edit Provider
+				</div>
 				{AddPE && (
 					<div className='btn btn-outline-secondary text-black-50 ml-3 float-right' onClick={addProcedure}>
 						Add Procedures
 					</div>
 				)}
+
 				{ViewPE && (
 					<div className='btn btn-outline-secondary text-black-50 ml-3 float-right' {...row.getToggleRowExpandedProps()}>
 						{row.isExpanded ? 'Hide Procedures' : 'View Procedures'}{' '}

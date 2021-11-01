@@ -1,6 +1,7 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ButtonPermissions, PermissionType, ResourceType, ScreenPermissions, TableSettingsEnum } from 'src/reusable/enum';
+import { ButtonPermissions, ScreenPermissions, TableSettingsEnum } from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
 import { getHospitalsList, getHospitalsListCount } from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
@@ -8,7 +9,7 @@ import PaginationTable from 'src/views/common/paginationTable';
 import OnError from 'src/_helpers/onerror';
 import 'font-awesome/css/font-awesome.min.css';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import PermissionButton from 'src/reusable/PermissionButton';
@@ -18,7 +19,8 @@ const initialSearch = {
 	pageNumber: 1,
 	searchTerm: '',
 	sortOrder:'desc',
-	orderBy:'id'
+	orderBy:'id',
+	healthSystemPartyRoleId:null
 };
 
 function CellContract({ row }) {
@@ -82,6 +84,7 @@ function ActionHospital({ row }) {
 	useEffect(() => {
 		let Permission=PermissionButton(ScreenPermissions.Hospital,ButtonPermissions.EditHospital,permissionList);
 		setEditPE(Permission);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 
@@ -109,7 +112,7 @@ function ActionHospital({ row }) {
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
-				<CDropdownMenu>
+				<CDropdownMenu >
 				{editPE && <CDropdownItem onClick={redirectToEdit}>Edit Details</CDropdownItem>}	
 					<CDropdownItem onClick={redirectAccount}>View Account</CDropdownItem>
 				</CDropdownMenu>
@@ -120,6 +123,9 @@ function ActionHospital({ row }) {
 
 const HospitalTable = () => {
 	let history = useHistory();
+	const location = useLocation();
+	// const [healthSystemPartyId, setHealthSystemPartyId] = useState(null);
+    // const [healthSystemName, setHealthSystemName] = useState(null)
 
 	const [hospitalData, setHospitalData] = useState([]);
 
@@ -136,6 +142,12 @@ const HospitalTable = () => {
 
 	useEffect(() => {
 		
+		const params = new URLSearchParams(location.search);
+		const id = params.get('id');
+		// const healthname=params.get('healthSystemName');
+		// setHealthSystemPartyId(id);
+		// setHealthSystemName(healthname)
+
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
@@ -144,13 +156,13 @@ const HospitalTable = () => {
 				let Permission=PermissionButton(ScreenPermissions.Hospital,ButtonPermissions.AddHospital,permissionList);
 				setAddHospital(Permission);
 				
+			let searchItemQuery= id?{...searchQuery, healthSystemPartyRoleId: [Number(id)]}:searchQuery
 
-
-				const result = await getHospitalsList(searchQuery);
+				const result = await getHospitalsList(searchItemQuery);
 				setHospitalData(result.data.data);
 
 
-				const countQuery = { searchTerm: searchQuery.searchTerm };
+				const countQuery = { searchTerm: searchQuery.searchTerm,healthSystemPartyRoleId: id? [Number(id)]: "" };
 				const resultCount = await getHospitalsListCount(countQuery);
 				setCount(resultCount.data.data.totalCount);
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
@@ -162,9 +174,19 @@ const HospitalTable = () => {
 				OnError(error, dispatch);
 			}
 		};
+
 		fetchData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchQuery]);
+	}, [searchQuery,location]);
+
+
+// useEffect(() => {
+// 	    const params = new URLSearchParams(location.search);
+// 		const id = params.get('id');
+// 		setHealthSystemPartyId(id);
+// 		setSearchQuery({ ...searchQuery, healthSystemPartyRoleId: id });
+// }, [location])
+
 
 
 

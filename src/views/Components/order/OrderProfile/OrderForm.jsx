@@ -158,14 +158,22 @@ const handleClearSelection=()=>{
 		try {
 			
 			let result = await saveOrderData(data);
+			// eslint-disable-next-line eqeqeq
 			if (result.data.message == ServiceMsg.OK) {
 				dispatch(notify(`Successfully added`, 'success'));
+				// history.push({
+				// 	pathname: `/hospitals/hospital`,
+				// 	search: `?id=${hospitalId}&&name=${hospitalName}`,
+				// 	// state: { detail: 'some_value' }
+				// });
+
 				history.push({
-					pathname: `/hospitals/hospital`,
-					search: `?id=${hospitalId}&&name=${hospitalName}`,
+					pathname: `/order/view`,
+					search: `?orderId=${result.data.data}&&hospitalId=${hospitalId}&&hospitalName=${hospitalName}`,
+
 					// state: { detail: 'some_value' }
 				});
-			
+				// order/view?orderId=45
 			
 			}
 

@@ -1,24 +1,25 @@
-import CIcon from '@coreui/icons-react';
-import { CCol, CRow } from '@coreui/react';
-import React from 'react'
-import { useHistory } from 'react-router';
+
+import React from 'react';
 import AdminTitle from 'src/views/common/adminTitle';
+import Goback from 'src/views/common/Goback';
+import MetaTitles from 'src/views/common/metaTitles';
 import OrderForm from './OrderForm';
 
 const OrderProfile = () => {
-   
+	
 
+	return (
+		<>
+			<Goback step={-2}/>
+			{/* for addeing page metas  */}
+			<MetaTitles title='Clear Health | Order Profile' description=' Add Order  ' />
+			<div className='card  cover-content pt-2 '>
+				<AdminTitle title={'Create New Order'} />
 
-    return (
-        <>
-      
-        <div className="card  cover-content pt-2 ">
-        <AdminTitle title={ 'Create New Order'} />
-
-        <OrderForm />
-    </div>
-    </>
-    )
-}
+				<OrderForm />
+			</div>
+		</>
+	);
+};
 
 export default OrderProfile;

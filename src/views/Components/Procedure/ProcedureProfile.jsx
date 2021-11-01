@@ -10,6 +10,7 @@ import {HospitalTabList, ServiceMsg, ServiceType} from 'src/reusable/enum';
 import {getProcedureByProvideId, saveProcedureByProviderId} from 'src/service/providerService';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import DataTable from 'src/views/common/dataTable';
+import Goback from 'src/views/common/Goback';
 import OnError from 'src/_helpers/onerror';
 import ProcedureForm from './ProcedureForm';
 
@@ -178,6 +179,9 @@ const ProcedureProfile = () => {
 	);
 
 	return (
+		<>
+					<Goback/>
+
 		<div className='card  cover-content pt-2 '>
 			<AdminHeaderWithSearch title={providerName} handleAddNew={save} buttonDisable={savePrcoedureData.length < 1}  buttonTitle='Save' iconShow={false}  handleSearchChange={searchTextChange} selectionList={ServiceType.Types} handleDropDownChange={dropDownChange} placeholder='Search here..' selectionTitle='Service Type' subHeader='Provider Name' />
 			<div className='divider m-1'></div>
@@ -202,6 +206,7 @@ const ProcedureProfile = () => {
 				</div>
 			</div>
 		</div>
+		</>
 	);
 };
 

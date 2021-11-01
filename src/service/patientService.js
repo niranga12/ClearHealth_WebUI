@@ -5,3 +5,4 @@ export const getPatientListCount=(data) => axiosInstance.post(`patient/count`,da
 export const getPatientByPartyRoleId=(partyRoleId)=>axiosInstance.get(`patient/${partyRoleId}`);
 export const savePatient=(data)=>axiosInstance.post(`patient`,data);
 export const updatePatientByPartyRoleId=(partyRoleId,data)=>axiosInstance.put(`patient/${partyRoleId}`,data);
+

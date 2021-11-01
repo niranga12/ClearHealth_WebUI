@@ -41,6 +41,7 @@ const HospitalSubCategories = () => {
 
 		let dashboardPermission = PermissionButton(ScreenPermissions.Hospital, ButtonPermissions.DashboardTab, permissionList);
 		setDashboardPE(dashboardPermission);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location]);
 
 	return (

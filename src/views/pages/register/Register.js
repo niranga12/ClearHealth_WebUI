@@ -14,10 +14,13 @@ import {
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import MetaTitles from 'src/views/common/metaTitles'
 
 const Register = () => {
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
+       {/* for addeing page metas  */}
+       <MetaTitles title="Clear Health | Register" description=" Register  "/>
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md="9" lg="7" xl="6">

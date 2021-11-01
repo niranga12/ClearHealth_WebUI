@@ -6,6 +6,7 @@ import {notify} from 'reapop';
 
 import {FacilityPackageField, PackageItems, PhysicianPackageField, ServiceMsg} from 'src/reusable/enum';
 import {updateFacilityPackage, updateGlobalPackage, updatePhysicianPackage} from 'src/service/hospitalsService';
+import MetaTitles from 'src/views/common/metaTitles';
 import OnError from 'src/_helpers/onerror';
 import FacilityToolTable from './FacilityToolTable';
 import GlobalToolTable from './GlobalToolTable';
@@ -122,6 +123,8 @@ const PricingToolGrid = () => {
 
 	return (
 		<>
+		 {/* for addeing page metas  */}
+         <MetaTitles title="Clear Health | Pricing Tool " description=" Pricing Tools  "/>
 		  <div className={`${hospitalId ? "" : "card  cover-content pt-2 "}`}    >
 			<PricingToolFilter isNotGlobal={isNotGlobal} fieldsList={fieldsList} handleFilterChange={handleFilterChange} saveChange={saveChange} selectedPackage={selectedPackage} />
 			<PricingToolCategories handlePackageChange={handlePackageChange} />

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useEffect, useState} from 'react';
@@ -35,8 +36,9 @@ let schema = yup.object().shape({
 });
 
 const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
-	const {register, getValues, reset,setValue, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
+	const {register, getValues, reset, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
+	// eslint-disable-next-line no-unused-vars
 	const { isValid, errors} = formState;
 
 	 const [isMail, setIsmail] = useState(false);
@@ -83,9 +85,9 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 
 
 		
-		if( formValue?.contactMethod == ContactMethod.Email && formValue?.firstName  && Number(formValue?.contactMethod)>=0 && formValue?.lastName  && formValue?.email  ){
+		if( formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName  && Number(formValue?.contactMethod)>=0 && formValue?.lastName  && formValue?.email  ){
 			isAviable=true;
-		} else if(formValue?.contactMethod == ContactMethod.Phone  && formValue?.firstName  && formValue?.lastName && Number(formValue?.contactMethod)>=0  && formValue?.phone){
+		} else if(formValue?.contactMethod == ContactMethod.Phone && fromDate  && formValue?.firstName  && formValue?.lastName && Number(formValue?.contactMethod)>=0  && formValue?.phone){
 			isAviable=true;
 		}else{
 			isAviable=false;
@@ -158,7 +160,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
-								Date Of Birth<span className='text-danger font-weight-bold '>*</span>
+								Date Of Birth <span className='text-danger font-weight-bold '>*</span>
 							</label>
 							<DateSelector   className={` form-control-sm ${isEdit ? "disable" : ""}`}   selectedDate={fromDate} handleDateChange={handlefromDateChange}  disableFuture={true} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.dateOfBirth?.message}</div>

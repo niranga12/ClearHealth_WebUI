@@ -17,7 +17,7 @@ import logo from "../assets/images/2.svg";
 import {
   TheHeaderDropdown,
   
-  TheHeaderDropdownNotif,
+
   TheTittleUser,
 } from "./index";
 import TheHeaderDropdownImage from "./TheHeaderDropDownImage";
@@ -85,7 +85,7 @@ const TheHeader = () => {
 
       <CHeaderNav className="px-3">
      
-      { isPermission &&   <TheHeaderDropdownNotif/>}
+      {/* { isPermission &&   <TheHeaderDropdownNotif/>} */}
         
         {/* <div className="font-weight-bold">Name</div> */}
         {/* <TheHeaderDropdownTasks/>

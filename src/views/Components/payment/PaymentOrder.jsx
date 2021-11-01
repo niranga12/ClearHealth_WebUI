@@ -3,7 +3,7 @@ import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
-import {Country, MaskFormat, ValidationPatterns} from 'src/reusable/enum';
+import { MaskFormat, ValidationPatterns} from 'src/reusable/enum';
 import InputMask from 'react-input-mask';
 
 import PropTypes from 'prop-types';
@@ -47,11 +47,10 @@ const schema = yup.object().shape({
 const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 	const {
 		register,
-		handleSubmit,
-		setValue,
+	
 		getValues,
 		reset,
-		control,
+		
 		formState,
 	} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
@@ -87,6 +86,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 		// 	}
 
 		// 	fetchData();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [patientOrder]);
 
 	useEffect(() => {
@@ -100,6 +100,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 			
 		}
 		
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fieldChange])
 
 	return (

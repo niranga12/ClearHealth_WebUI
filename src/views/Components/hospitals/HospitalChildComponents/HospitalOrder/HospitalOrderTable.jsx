@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -5,7 +6,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {notify} from 'reapop';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import { resetOrderTable } from 'src/actions/orderAction';
-import {OrderStatus, ServiceMsg, TableSettingsEnum} from 'src/reusable/enum';
+import { ServiceMsg, TableSettingsEnum} from 'src/reusable/enum';
 import {getOrderListByHospitalId, getOrderListCountByHospitalId} from 'src/service/hospitalsService';
 import {orderAprove} from 'src/service/orderService';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
@@ -18,13 +19,15 @@ const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
 	searchTerm: '',
+	paymentStatus:1
 };
 
 const selectionListDropDown = [
-	{text: 'Select', value: ''},
-	{text: 'Outstanding', value: 'Outstanding'},
-	{text: 'Accepted', value: 'Accepted'},
-	{text: 'Expired', value: 'Expired'},
+	{text: 'All', value: '1'},
+	{text: 'Pending', value: '2'},
+	{text: 'Outstanding', value: '3'},
+	{text: 'Paid', value: '4'},
+	{text: 'Expired', value: '5'},
 
 ];
 
@@ -73,6 +76,14 @@ function OrderActions({row}) {
 		}
 	};
 
+	const sendOrderButton=()=>{
+		return (
+			<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" } onClick={approveOrder}>
+			{' '}
+			Send Order
+		</button>
+		);
+	}
 	
 	
 
@@ -84,35 +95,33 @@ function OrderActions({row}) {
 					{' '}
 					View Order
 				</div>
-				<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) } onClick={approveOrder}>
-					{' '}
-					Send Order
-				</button>
+				{row.original.orderStatus==="Paid" ?<div className="text-right">{row.original.orderPaidDate} </div>    :sendOrderButton()}
+			
 			</div>
 		</>
 	);
 }
 
-function OrderStatusValue({row}) {
-	const {orderStatus} = row.original;
+// function OrderStatusValue({row}) {
+// 	const {orderStatus} = row.original;
 
-	switch (orderStatus) {
-		case OrderStatus.Ordered:
-			return <div>Ordered</div>;
+// 	switch (orderStatus) {
+// 		case OrderStatus.Ordered:
+// 			return <div>Ordered</div>;
 
-		case OrderStatus.Cancelled:
-			return <div>Cancelled</div>;
+// 		case OrderStatus.Cancelled:
+// 			return <div>Cancelled</div>;
 
-		case OrderStatus.Completed:
-			return <div>Completed</div>;
+// 		case OrderStatus.Completed:
+// 			return <div>Completed</div>;
 
-		case OrderStatus.Pending:
-			return <div>Pending</div>;
-		default:
-			return <></>;
-		// break;
-	}
-}
+// 		case OrderStatus.Pending:
+// 			return <div>Pending</div>;
+// 		default:
+// 			return <></>;
+// 		// break;
+// 	}
+// }
 
 function HospitalOrderTable() {
 	const location = useLocation();
@@ -172,15 +181,22 @@ function HospitalOrderTable() {
 
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
-			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			// setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			setSearchQuery({...searchQuery, searchTerm: e.target.value, pageNumber: 1});
 			// eslint-disable-next-line eqeqeq
 		} else if (e.target.value.length == '') {
-			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			// setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			setSearchQuery({...searchQuery, searchTerm: e.target.value, pageNumber: 1});
 		} else {
 		}
 	};
 
 	const dropDownChange = (e) => {
+
+		if(e.target.value){
+			setSearchQuery({ ...searchQuery, paymentStatus:  Number(e.target.value) ,pageNumber: 1});
+		}
+		
 		
 	};
 
@@ -209,15 +225,20 @@ function HospitalOrderTable() {
 			{
 				Header: 'Order Number',
 				accessor: 'orderNumber', // accessor is the "key" in the data
+				disableSortBy: true,
 				Cell: ({value}) => <h5 className='font-weight-normal text-black'> {value} </h5>,
 			},
 			{
 				Header: 'Order Date',
 				accessor: 'orderDate', // accessor is the "key" in the data
+				disableSortBy: true,
+
 			},
 			{
 				Header: 'Procedure',
 				accessor: 'procedureDetail', // accessor is the "key" in the data
+				disableSortBy: true,
+
 				// Cell: ({row}) =>( <h5 className='font-weight-normal text-black'> {row.original.speciality} </h5>),
 			},
 			// {
@@ -228,12 +249,16 @@ function HospitalOrderTable() {
 			{
 				Header: 'Attempts',
 				accessor: 'attempts', // accessor is the "key" in the data
+				disableSortBy: true,
+
 				Cell: OrderAttempt,
 			},
 			{
 				Header: 'Status',
 				accessor: 'orderStatus', // accessor is the "key" in the data
-				Cell: OrderStatusValue,
+				disableSortBy: true,
+
+				// Cell: OrderStatusValue,
 			},
 
 			{

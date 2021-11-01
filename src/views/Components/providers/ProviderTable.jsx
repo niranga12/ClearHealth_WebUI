@@ -13,6 +13,7 @@ import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/
 import {getProvidersList, getProvidersListCount} from 'src/service/providerService';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import PermissionButton from 'src/reusable/PermissionButton';
+import MetaTitles from 'src/views/common/metaTitles';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
@@ -76,7 +77,7 @@ function ActionProvider({row}) {
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
-				<CDropdownMenu>
+				<CDropdownMenu className={`${(!isEditProviderPE && !isDeleteProviderPE) ? 'hide':'' }`}>
 				{isEditProviderPE && 	<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
 				{isDeleteProviderPE &&	<CDropdownItem >Delete</CDropdownItem>}
 					{/* <CDropdownItem onClick={redirectAccount}>Account</CDropdownItem> */}
@@ -188,6 +189,8 @@ const ProviderTable = () => {
 
 	return (
 		<>
+		 {/* for addeing page metas  */}
+         <MetaTitles title="Clear Health | Providers" description=" Providers  "/>
 			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewProvider} placeholder='Search here..' buttonTitle='New Provider' title='Providers' buttonHide={!isAddProviderPE} />
 			<DataTable columns={columns} data={providerData} sortingHandler={sortingHandler} />
 			<div className='row'>

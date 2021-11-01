@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, {useEffect, useMemo, useState} from 'react';
 import DataTable from 'src/views/common/dataTable';
 import PropTypes from 'prop-types';
@@ -27,34 +28,42 @@ const OrderList = ({orderDetail}) => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const [orderId, setOrderId] = useState(null);
-	let history=useHistory()
+	let history = useHistory();
+	const [isAction, setIsAction] = useState(true);
 
+	const [hospitalName, setHospitalName] = useState(null);
+	const [hospitalId, setHospitalId] = useState(null);
 
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('orderId');
+		const hospital_id = params.get('hospitalId');
+		const hospital_name = params.get('hospitalName');
+		setHospitalId(hospital_id);
+		setHospitalName(hospital_name);
 		setOrderId(id);
 	}, [location]);
 
 	useEffect(() => {
 		setOrder(orderDetail);
+		if (orderDetail?.orderPatientDetails?.orderStatus == 'Paid' || orderDetail?.orderPatientDetails?.orderStatus == 'Expired') {
+			setIsAction(false);
+		} else {
+			setIsAction(true);
+		}
 	}, [orderDetail]);
 
 	useEffect(() => {
 		try {
-			if(order?.orderDetails.length){
+			if (order?.orderDetails.length) {
 				let facilityName = order?.orderPatientDetails?.facilityName;
 				let result = order?.orderDetails?.map((x) => {
 					return {...x, facilityName};
 				});
-				setOrderData(result)
-			}
-			else{
+				setOrderData(result);
+			} else {
 				setOrderData([]);
 			}
-			
-			
-			
 		} catch (error) {
 			console.error(error);
 		}
@@ -62,12 +71,18 @@ const OrderList = ({orderDetail}) => {
 
 	const approveOrder = async () => {
 		try {
-			
 			const result = await orderAprove(orderId);
 			if (result.data.message == ServiceMsg.OK) {
 				dispatch(notify(`Successfully updated`, 'success'));
-				history.goBack();
-
+				
+				if (hospitalId && hospitalName) {
+					history.push({
+						pathname: `/hospitals/hospital`,
+						search: `?id=${hospitalId}&&name=${hospitalName}`
+					});
+				} else {
+					history.goBack();
+				}
 			}
 		} catch (error) {
 			OnError(error, dispatch);
@@ -106,10 +121,10 @@ const OrderList = ({orderDetail}) => {
 				accessor: 'id', // accessor is the "key" in the data
 				disableSortBy: true,
 
-				Cell: OrderAction,
+				Cell: isAction ? OrderAction : '',
 			},
 		],
-		[]
+		[isAction]
 	);
 
 	return (
@@ -118,12 +133,12 @@ const OrderList = ({orderDetail}) => {
 				<div className='row'>
 					<div className='col-md-6  '>
 						<div className='h4 mb-1 text-black'>Order #{order?.orderPatientDetails?.orderNumber}</div>
-						<div>{ moment(order?.orderPatientDetails?.orderDate).format('MM-DD-YYYY')}</div>
+						<div>{moment(order?.orderPatientDetails?.orderDate).format('MM-DD-YYYY')}</div>
 					</div>
 
 					<div className='col-md-6'>
-					{/* disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData } */}
-						<button className='btn btn-view-account ml-3 float-right'  disabled={ order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData.length } onClick={approveOrder}>
+						{/* disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData } */}
+						<button className='btn btn-view-account ml-3 float-right' disabled={order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts || !orderData.length || !isAction} onClick={approveOrder}>
 							Approve
 						</button>
 					</div>
