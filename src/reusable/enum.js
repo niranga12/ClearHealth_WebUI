@@ -208,3 +208,13 @@ export const PermissionType = {
 	View: 1,
 	NotAuthorized: 2,
 };
+
+export const RoleType={
+
+	ClearSystemAdmin:2,
+	ClearAdmin:8,
+	HealthSystemAdmin:9,
+	HospitalAdmin:10,
+	HospitalStaff:11
+
+}

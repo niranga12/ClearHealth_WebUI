@@ -15,6 +15,8 @@ const defalutFormValue = {
 	roleTypeId: '',
 	status: '',
 	email: '',
+	hospitalList:'',
+	healthSystemList:'',
 
 };
 
@@ -53,7 +55,9 @@ const UserProfile = () => {
 			lastName: data.lastName,
 			roleTypeId: data.roleTypeId,
 			status: data.status,
-			email: data.email
+			email: data.email,
+			hospitalList: data.hospitalList,
+			healthSystemList: data.healthSystemList,
 
 		};
 
