@@ -148,6 +148,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 
 			if (isEdit || defaultValues.healthSystemPartyRoleId) {
+				if (defaultValues.providerTypeId == Provider.Provider) {
+					setGroupSelection('Individual')
+					setshowResults(true);
+				} else if (defaultValues.providerTypeId == Provider.GroupProvider) {
+					setGroupSelection('Group');
+					setshowResults(false);
+				}
 
 				// defaultValuese
 				const hospitalList = await getHospitalsList();
@@ -238,6 +245,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				shouldDirty: true,
 			});
 		} else {
+			setshowResults(true);
 			setValue('providerGroup', getValues('providerGroup'), {
 				shouldValidate: false,
 				shouldDirty: true,

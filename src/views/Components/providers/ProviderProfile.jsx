@@ -112,8 +112,8 @@ const ProviderProfile = () => {
 		const providerDetails = {
 			hospitalName: data.hopsitalPartyRoleId,
 			healthSystemPartyRoleId: data.healthsystemPartyRoleId,
-			providerGroup: '',
-			providerTypeId: '',
+			providerGroup: data.providerGroup,
+			providerTypeId: data.providerTypeId,
 			firstName: data.firstName,
 			middleName: data.middleName,
 			lastName: data.lastName,
