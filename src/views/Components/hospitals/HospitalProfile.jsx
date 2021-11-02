@@ -7,7 +7,7 @@ import {loaderHide, loaderShow} from 'src/actions/loaderAction';
 import {Country} from 'src/reusable/enum';
 import {getStateList} from 'src/service/commonService';
 import {getHealthSystemList} from 'src/service/healthsystemService';
-import {getHospitalByPartyRoleId, getOnboardinginfo} from 'src/service/hospitalsService';
+import {getHospitalByPartyRoleId, getHospitalEmailSender, getOnboardinginfo} from 'src/service/hospitalsService';
 import AdminTitle from 'src/views/common/adminTitle';
 import MetaTitles from 'src/views/common/metaTitles';
 import OnError from 'src/_helpers/onerror';
@@ -31,6 +31,7 @@ const defalutFormValue = {
 	patientContactName: '',
 	patientContactPhone: '',
 	patientContactEmail: '',
+	emailSender:''
 	// consolidatedInvoice: false,
 	// applySAASTax: false,
 	// taxId: '',
@@ -52,6 +53,8 @@ const HospitalProfile = () => {
 	const [onboardingInfo, setOnboarding] = useState([]);
 	const [hospitalData, setHospitalData] = useState(defalutFormValue);
 	const [healthSystems, setHealthSystem] = useState([]);
+const [emailSenders, setEmailSenders] = useState([]);
+
 	const dispatch = useDispatch();
 
 	//if this a edit form get the data
@@ -75,6 +78,11 @@ const HospitalProfile = () => {
 				//getStateList
 				const stateResult = await getStateList(Country.USA);
 				setstateList(stateResult.data.data);
+
+				// getSenderList
+				const senderListResult=await getHospitalEmailSender();
+				setEmailSenders(senderListResult.data.data)
+
 				//getOnboardinginfo
 				const onboarding = await getOnboardinginfo(id);
 				//const onboarding = await getOnboardinginfo(id);
@@ -120,6 +128,7 @@ const HospitalProfile = () => {
 			patientContactName: data.primaryContact.name,
 			patientContactPhone: data.primaryContact.phone,
 			patientContactEmail: data.primaryContact.email,
+			emailSender:data.hospital.emailSender,
 			// consolidatedInvoice: data.paymentInfo.consolidatedInvoice == 1 ? true : false,
 			// applySAASTax: data.paymentInfo.applySAASTax == 1 ? true : false,
 			// taxId: data.paymentInfo.taxId,
@@ -143,7 +152,7 @@ const HospitalProfile = () => {
 				<MetaTitles title='Clear Health | Hospital Profile' description=' add update Profile  ' />
 				<AdminTitle title={editProfile ? 'Edit Hospital' : 'Add Hospital'} />
 
-				<HospitalForm defaultValues={hospitalData} stateList={stateList} isEdit={editProfile} healthSystems={healthSystems} partyRoleId={partyRoleId} onboardingInfo={onboardingInfo} />
+				<HospitalForm defaultValues={hospitalData} stateList={stateList} isEdit={editProfile} healthSystems={healthSystems}  emailSendersList={emailSenders} partyRoleId={partyRoleId} onboardingInfo={onboardingInfo} />
 			</div>
 		</>
 	);

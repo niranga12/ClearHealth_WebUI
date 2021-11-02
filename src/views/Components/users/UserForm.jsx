@@ -154,8 +154,8 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 			roleTypeId: data.roleTypeId,
 			status: data.status,
 			email: data.email,
-			hospitalList: selectedHealthSystem,
-			healthSystemList: selectedHospital,
+			healthSystemList	: selectedHealthSystem,
+			hospitalList	: selectedHospital,
 		};
 
 		try {
@@ -184,8 +184,8 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 					roleTypeId: getValues('roleTypeId'),
 					status: getValues('status'),
 					email: getValues('email'),
-					hospitalList: selectedHealthSystem,
-					healthSystemList: selectedHospital,
+					healthSystemList : selectedHealthSystem,
+					hospitalList: selectedHospital,
 				}),
 			};
 			if (Object.keys(updateUser).length == 0) {
