@@ -264,25 +264,31 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const addProvider = async (data) => {
 		// provider type ID can be 7 OR 13
 
-
 		let providerTypeId;
+		let providerDetails
 		if (groupSelection == "Individual") {
-			providerTypeId = Provider.GroupProvider
-		} else {
 			providerTypeId = Provider.Provider
-		}
-		const newProvider = {
-			provider: {
+			providerDetails = {
 				providerTypeId: providerTypeId,
-				providerGroup: data.providerGroup,
 				firstName: data.firstName,
 				middleName: data.middleName,
 				lastName: data.lastName,
 				email: data.email,
 				hospitalList: data.hospitalName,
 				speciality: data.speciality,
-
-			},
+			}
+		} else {
+			providerTypeId = Provider.GroupProvider
+			providerDetails = {
+				providerTypeId: providerTypeId,
+				providerGroup: data.providerGroup,
+				email: data.email,
+				hospitalList: data.hospitalName,
+				speciality: data.speciality,
+			}
+		}
+		const newProvider = {
+			provider: providerDetails,
 
 			postalAddress: [
 				{
