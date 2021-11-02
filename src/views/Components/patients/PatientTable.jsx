@@ -122,7 +122,7 @@ const PatientTable = () => {
 
 				// button Permission
 				let Permission=PermissionButton(ScreenPermissions.Patients,ButtonPermissions.AddPatient,permissionList);
-				setAddPatientPE(Permission);
+				// setAddPatientPE(Permission);
 				
 				dispatch(loaderShow());
 				const result = await getPatientList(searchQuery);
