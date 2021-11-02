@@ -46,7 +46,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 		reset,
 		control,
 		formState: { errors },
-	} = useForm({ resolver: yupResolver(schema) });
+	} = useForm({ resolver: yupResolver(schema), mode: 'all' });
 	var initMonth = new Date();
 	initMonth.setMonth(initMonth.getMonth() - 3);
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything

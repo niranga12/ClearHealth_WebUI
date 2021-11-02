@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {  useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { Country } from 'src/reusable/enum';
 import { getStateList } from 'src/service/commonService';
@@ -18,6 +18,8 @@ import ProviderForm from './ProviderForm';
 const defalutFormValue = {
 	hospitalName: '',
 	healthSystemPartyRoleId: '',
+	providerGroup: '',
+	providerTypeId: '',
 	firstName: '',
 	middleName: '',
 	lastName: '',
@@ -32,7 +34,7 @@ const defalutFormValue = {
 	billingState: '',
 	billingZip: '',
 	phone: '',
-	email:'',
+	email: '',
 	speciality: '',
 	taxId: '',
 	nip: '',
@@ -63,7 +65,7 @@ const ProviderProfile = () => {
 		id ? setEditProfile(true) : setEditProfile(false);
 
 		const fetchData = async () => {
-			
+
 			try {
 				dispatch(loaderShow());
 				const hsResult = await getHealthSystemList({});
@@ -78,7 +80,7 @@ const ProviderProfile = () => {
 
 
 			try {
-				
+
 				if (id) {
 					const result = await getProviderByPartyRoleId(id);
 					const formatedData = await updateFormFields(result.data.data);
@@ -91,7 +93,7 @@ const ProviderProfile = () => {
 					setProviderData(defautlSet);
 				}
 
-				
+
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -110,6 +112,8 @@ const ProviderProfile = () => {
 		const providerDetails = {
 			hospitalName: data.hopsitalPartyRoleId,
 			healthSystemPartyRoleId: data.healthsystemPartyRoleId,
+			providerGroup: data.providerGroup,
+			providerTypeId: data.providerTypeId,
 			firstName: data.firstName,
 			middleName: data.middleName,
 			lastName: data.lastName,
@@ -124,7 +128,7 @@ const ProviderProfile = () => {
 			billingState: data.secondaryState,
 			billingZip: data.secondaryZip,
 			phone: data.phone,
-			email:data.email,
+			email: data.email,
 			speciality: data.speciality,
 			taxId: data.taxId,
 			nip: data.NPI,
@@ -139,15 +143,15 @@ const ProviderProfile = () => {
 
 	return (
 		<>
-		<Goback/>
-		
-		<div className="card  cover-content pt-2 ">
-			 {/* for addeing page metas  */}
-			 <MetaTitles title="Clear Health | Provider Profile" description=" Create update Providers  "/>
-			<AdminTitle title={editProfile ? 'Edit Provider' : 'Add Provider'} />
+			<Goback />
 
-			<ProviderForm defaultValues={providerData} stateList={stateList} isEdit={editProfile} partyRoleId={partyRoleId} healthSystemList={healthSystems} specialityData={specialityData} />
-		</div>
+			<div className="card  cover-content pt-2 ">
+				{/* for addeing page metas  */}
+				<MetaTitles title="Clear Health | Provider Profile" description=" Create update Providers  " />
+				<AdminTitle title={editProfile ? 'Edit Provider' : 'Add Provider'} />
+
+				<ProviderForm defaultValues={providerData} stateList={stateList} isEdit={editProfile} partyRoleId={partyRoleId} healthSystemList={healthSystems} specialityData={specialityData} />
+			</div>
 		</>
 	);
 };
