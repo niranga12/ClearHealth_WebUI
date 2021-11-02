@@ -75,7 +75,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [tabId, setTabId] = useState(null);
 	const [hospitalName, setHospitalName] = useState(null);
 	const [hospitalId, setHospitalId] = useState(null);
-	const [showResults, setshowResults] = useState(true);
+	const [showResults, setShowResults] = useState(true);
+	const [showRadioButton, setShowRadioButton] = useState(true);
 	const [groupSelection, setGroupSelection] = useState("Individual");
 	//const [healthSystems, setHealthSystem] = useState([]);
 
@@ -150,12 +151,12 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			if (isEdit || defaultValues.healthSystemPartyRoleId) {
 				if (defaultValues.providerTypeId == Provider.Provider) {
 					setGroupSelection('Individual')
-					setshowResults(true);
+					setShowResults(true);
 				} else if (defaultValues.providerTypeId == Provider.GroupProvider) {
 					setGroupSelection('Group');
-					setshowResults(false);
+					setShowResults(false);
 				}
-
+				setShowRadioButton(false);
 				// defaultValuese
 				const hospitalList = await getHospitalsList();
 
@@ -227,7 +228,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 		setGroupSelection(event.target.value)
 		if (event.target.value == 'Group') {
-			setshowResults(false);
+			setShowResults(false);
 			setValue('firstName', getValues('firstName'), {
 				shouldValidate: false,
 				shouldDirty: true,
@@ -245,7 +246,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				shouldDirty: true,
 			});
 		} else {
-			setshowResults(true);
+			setShowResults(true);
 			setValue('providerGroup', getValues('providerGroup'), {
 				shouldValidate: false,
 				shouldDirty: true,
@@ -254,7 +255,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				shouldValidate: false,
 				shouldDirty: true,
 			});
-			setshowResults(true);
+			setShowResults(true);
 		}
 
 	}
@@ -504,14 +505,15 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					</div>
 				</div>
 
-				<div className='row mb-3'>
+				{showRadioButton ? <div className='row mb-3'>
 					<div className='col-md-4'>
 						<div className='mt-1 ml-4'>
 							<input type='radio' checked={groupSelection === "Individual"} value="Individual" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} /> <span className='ml-3 mr-5'>Individual</span>{' '}
 							<input type='radio' checked={groupSelection === "Group"} value="Group" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} /> <span className='ml-3 mr-3'>Group </span>{' '}
 						</div>
 					</div>
-				</div>
+				</div> : ''}
+				
 
 
 
