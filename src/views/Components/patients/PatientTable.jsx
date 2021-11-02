@@ -180,12 +180,12 @@ const PatientTable = () => {
 				Cell: ({ row }) => <div className='max-celladdress'> {row.original.DOB}</div>,
 			},
 
-			{
-				Header: 'Address',
-				disableSortBy: true,
-				accessor: 'address1', // accessor is the "key" in the data
-				Cell: CellAddress,
-			},
+			// {
+			// 	Header: 'Address',
+			// 	disableSortBy: true,
+			// 	accessor: 'address1', // accessor is the "key" in the data
+			// 	Cell: CellAddress,
+			// },
 			{
 				Header: 'Phone',
 				disableSortBy: true,
