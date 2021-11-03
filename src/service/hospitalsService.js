@@ -65,5 +65,5 @@ export const saveNotifyUser=(partyRoleId,data)=>axiosInstance.post(`payment/onbo
 
 // {{URL}}/api/hospital/verified/senders
 
-export const getHospitalEmailSender=()=>axiosInstance.get(`hospital/verified/senders`);
+export const getHospitalEmailSender=()=>axiosInstance.get(`hospital/verified/emailsender`);
 

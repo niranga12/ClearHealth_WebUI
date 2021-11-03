@@ -109,7 +109,7 @@ const ProviderTable = () => {
 				dispatch(loaderShow());
 				// button Permission
 				let Permission = PermissionButton(ScreenPermissions.Providers, ButtonPermissions.AddProviders, permissionList);
-				setIsAddProviderPE(Permission);
+				 setIsAddProviderPE(Permission);
 
 				const result = await getProvidersList(searchQuery);
 				seProviderData(result.data.data);
