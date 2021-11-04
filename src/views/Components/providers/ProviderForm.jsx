@@ -24,9 +24,9 @@ const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital name is required'),
 	providerGroup: yup.string(),
 	providerTypeId: yup.string(),
-	firstName: yup.string().required('First name is required'),
-	middleName: yup.string(),
-	lastName: yup.string().required('Last name is required'),
+	// firstName: yup.string(),
+	// middleName: yup.string(),
+	// lastName: yup.string(),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
@@ -76,6 +76,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [hospitalId, setHospitalId] = useState(null);
 	const [showResults, setShowResults] = useState(true);
 	const [showRadioButton, setShowRadioButton] = useState(true);
+	const [showFirstNameError, setShowFirstNameError] = useState(false);
+	const [showLastNameError, setShowLastNameError] = useState(false);
+	const [showGroupNameError, setShowGroupNameError] = useState(false);
 	const [groupSelection, setGroupSelection] = useState("Individual");
 	//const [healthSystems, setHealthSystem] = useState([]);
 
@@ -244,8 +247,26 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				shouldValidate: false,
 				shouldDirty: true,
 			});
+			setValue('providerGroup', getValues('providerGroup'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+
+
 		} else {
 			setShowResults(true);
+			setValue('firstName', getValues('firstName'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('middleName', getValues('middleName'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('lastName', getValues('lastName'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
 			setValue('providerGroup', getValues('providerGroup'), {
 				shouldValidate: false,
 				shouldDirty: true,
@@ -270,6 +291,12 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 	// save Provider
 	const addProvider = async (data) => {
+		setShowFirstNameError(false);
+		setShowLastNameError(false);
+		setShowGroupNameError(false)
+		let isFirstName=false;
+		let isLastName=false;
+		let isGroupName=false;
 		// provider type ID can be 7 OR 13
 
 		let providerTypeId;
@@ -285,6 +312,20 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				hospitalList: data.hospitalName,
 				speciality: data.speciality,
 			}
+			if (data.firstName == "") {
+				setShowFirstNameError(true);
+				isFirstName=true;
+			} else if (data.lastName == "") {
+				setShowLastNameError(true);
+				isLastName=true
+			} else {
+				setShowFirstNameError(false);
+				setShowLastNameError(false);
+				isFirstName=false;
+				isLastName=false;
+			}
+
+
 		} else {
 			providerTypeId = Provider.GroupProvider
 			providerDetails = {
@@ -294,6 +335,14 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				hospitalList: data.hospitalName,
 				speciality: data.speciality,
 			}
+			if (data.providerGroup == "") {
+				setShowGroupNameError(true);
+				isGroupName=true;
+			} else {
+				setShowGroupNameError(false);
+				isGroupName=false;
+			}
+
 		}
 		const newProvider = {
 			provider: providerDetails,
@@ -330,7 +379,23 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			},
 		};
 		try {
+			if (!isFirstName && !isLastName && showResults) {
+				saveProviders(newProvider)
 
+			} else if (!isGroupName && !showResults) {
+				saveProviders(newProvider)
+			}
+
+
+
+		} catch (error) {
+			OnError(error, dispatch);
+		}
+	};
+
+	const saveProviders = async (newProvider) => {
+
+		try {
 			if (newProvider) {
 				let result = await saveProvider(newProvider);
 				if (result.data.message === ServiceMsg.OK) {
@@ -341,7 +406,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						history.push({
 							pathname: `/hospitals/hospital`,
 							search: `?id=${hospitalId}&name=${hospitalName}&tap=${tabId}`,
-
 						});
 					} else {
 						history.push('/providers');
@@ -352,7 +416,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		} catch (error) {
 			OnError(error, dispatch);
 		}
+
 	};
+
+
 	const stateSelect = (event) => {
 		setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
@@ -512,7 +579,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						</div>
 					</div>
 				</div> : ''}
-				
+
 
 
 
@@ -527,7 +594,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
+							{showFirstNameError ? <div className='small text-danger  pb-2   '>First name is required</div> : ''}
 						</div>
 					</div>
 
@@ -549,7 +616,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
+							{showLastNameError ? <div className='small text-danger  pb-2   '>Last name is required</div> : ''}
 						</div>
 					</div>
 				</div> : <div className='row mb-3'>
@@ -560,7 +627,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								Group Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('providerGroup')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.providerGroup?.message}</div>
+							{showGroupNameError ? <div className='small text-danger  pb-2   '>Group name is required</div> : ''}
 						</div>
 					</div>
 				</div>}
