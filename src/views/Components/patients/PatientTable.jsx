@@ -35,15 +35,15 @@ function CellPatient({ row }) {
 	);
 }
 
-function CellAddress({row}) {
-	return (
-		<>
-			<div className='max-celladdress'>
-				{row.original.address1}, {row.original.address2},  {row.original.city}, {row.original.state}  {row.original.zip}
-			</div>
-		</>
-	);
-}
+// function CellAddress({row}) {
+// 	return (
+// 		<>
+// 			<div className='max-celladdress'>
+// 				{row.original.address1}, {row.original.address2},  {row.original.city}, {row.original.state}  {row.original.zip}
+// 			</div>
+// 		</>
+// 	);
+// }
 
 function ActionPatient({ row }) {
 	let history = useHistory();
@@ -111,8 +111,8 @@ const PatientTable = () => {
 	const dispatch = useDispatch();
 
 		// for button permission
-		const [addPatientPE, setAddPatientPE] = useState(false);
-		let permissionList= useSelector((state) => state.Permission.UiPermissions);
+		// const [addPatientPE, setAddPatientPE] = useState(false);
+		// let permissionList= useSelector((state) => state.Permission.UiPermissions);
 
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 
@@ -121,7 +121,7 @@ const PatientTable = () => {
 			try {
 
 				// button Permission
-				let Permission=PermissionButton(ScreenPermissions.Patients,ButtonPermissions.AddPatient,permissionList);
+				// let Permission=PermissionButton(ScreenPermissions.Patients,ButtonPermissions.AddPatient,permissionList);
 				// setAddPatientPE(Permission);
 				
 				dispatch(loaderShow());
@@ -205,7 +205,7 @@ const PatientTable = () => {
 
 	return (
 		<>
-			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown}   buttonHide={!addPatientPE} placeholder='Search here..' buttonTitle='New Patient' title='Patients' />
+			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewPatient} handleDropDownChange={dropDownChange} selectionList={selectionListDropDown}  buttonHide={true}  placeholder='Search here..' buttonTitle='New Patient' title='Patients' />
 			<DataTable columns={columns} data={patientData} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>
