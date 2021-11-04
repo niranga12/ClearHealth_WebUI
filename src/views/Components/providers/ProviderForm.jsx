@@ -18,7 +18,6 @@ import FormatText from 'src/reusable/FormatText';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { EnableMaskPhone } from 'src/reusable';
-import de from 'date-fns/esm/locale/de/index.js';
 
 const schema = yup.object().shape({
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),

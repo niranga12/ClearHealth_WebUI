@@ -196,6 +196,7 @@ export const ButtonPermissions = {
 	FeeScheduleTab: 17,
 	DashboardTab: 18,
 	PaymentTab: 19,
+	ViewHealthSystemHospital:34
 };
 
 export const ResourceType = {

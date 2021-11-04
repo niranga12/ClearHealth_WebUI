@@ -75,6 +75,7 @@ function ActionHealthSystem({row}) {
   // for permission
   const [isEditHealthPE, setIsEditHealthPE] = useState(false);
   const [isDeleteHealthPE, setIsDeleteHealthPE] = useState(false);
+  const [isViewHospital, setIsViewHospital] = useState(false);
 
   let permissionList= useSelector((state) => state.Permission.UiPermissions);
 
@@ -87,6 +88,9 @@ useEffect(() => {
 
   let DeletePermission=await PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.DeleteHealthSystem,permissionList);
    setIsDeleteHealthPE(DeletePermission);
+
+   let ViewHosptialPermission= await PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.ViewHealthSystemHospital,permissionList);
+   setIsViewHospital(ViewHosptialPermission);
   }
 
   fetchPermission();
@@ -119,10 +123,10 @@ useEffect(() => {
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
-				<CDropdownMenu className={`${(!isEditHealthPE && !isDeleteHealthPE) ? 'hide':'' }`}>
+				<CDropdownMenu className={`${(!isEditHealthPE && !isDeleteHealthPE && !isViewHospital) ? 'hide':'' }`}>
 				{isEditHealthPE && <CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
 				{isDeleteHealthPE && <CDropdownItem >Delete</CDropdownItem>}
-        {<CDropdownItem  onClick={redirectToHospital} >View Hospital</CDropdownItem>}	
+        {isViewHospital && <CDropdownItem  onClick={redirectToHospital} >View Hospital</CDropdownItem>}	
 				</CDropdownMenu>
 			</CDropdown>
 		</>
