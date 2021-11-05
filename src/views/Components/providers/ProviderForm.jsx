@@ -294,9 +294,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		setShowFirstNameError(false);
 		setShowLastNameError(false);
 		setShowGroupNameError(false)
-		let isFirstName=false;
-		let isLastName=false;
-		let isGroupName=false;
+		let isFirstName = false;
+		let isLastName = false;
+		let isGroupName = false;
 		// provider type ID can be 7 OR 13
 
 		let providerTypeId;
@@ -314,15 +314,15 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			}
 			if (data.firstName == "") {
 				setShowFirstNameError(true);
-				isFirstName=true;
+				isFirstName = true;
 			} else if (data.lastName == "") {
 				setShowLastNameError(true);
-				isLastName=true
+				isLastName = true
 			} else {
 				setShowFirstNameError(false);
 				setShowLastNameError(false);
-				isFirstName=false;
-				isLastName=false;
+				isFirstName = false;
+				isLastName = false;
 			}
 
 
@@ -337,10 +337,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			}
 			if (data.providerGroup == "") {
 				setShowGroupNameError(true);
-				isGroupName=true;
+				isGroupName = true;
 			} else {
 				setShowGroupNameError(false);
-				isGroupName=false;
+				isGroupName = false;
 			}
 
 		}
@@ -431,19 +431,33 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	// update Provider
 	const updateProviderInfo = async () => {
 		try {
+			let providerDetails
+
+			if (groupSelection == "Individual") {
+				providerDetails = {
+					providerTypeId: Provider.Provider,
+					firstName: getValues('firstName'),
+					middleName: getValues('middleName'),
+					lastName: getValues('lastName'),
+					email: getValues('email'),
+					hospitalList: getValues('hospitalName'),
+					speciality: getValues('speciality'),
+				}
+			} else {
+				providerDetails = {
+					providerTypeId: Provider.GroupProvider,
+					providerGroup: getValues('providerGroup'),
+					email: getValues('email'),
+					hospitalList: getValues('hospitalName'),
+					speciality: getValues('speciality'),
+				}
+			}
 			const updateProvider = {
 
 
-				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality || dirtyFields.email) && {
-					provider: {
-						firstName: getValues('firstName'),
-						middleName: getValues('middleName'),
-						lastName: getValues('lastName'),
-						email: getValues('email'),
-						hospitalList: getValues('hospitalName'),
-						speciality: getValues('speciality'),
+				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality || dirtyFields.email || dirtyFields.providerGroup) && {
 
-					}
+					provider: providerDetails
 				}),
 
 
