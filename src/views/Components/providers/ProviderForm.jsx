@@ -294,58 +294,48 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		setShowFirstNameError(false);
 		setShowLastNameError(false);
 		setShowGroupNameError(false)
-		let isFirstName=false;
-		let isLastName=false;
-		let isGroupName=false;
+		let isFirstName = false;
+		let isLastName = false;
+		let isGroupName = false;
 		// provider type ID can be 7 OR 13
 
-		let providerTypeId;
-		let providerDetails
 		if (groupSelection == "Individual") {
-			providerTypeId = Provider.Provider
-			providerDetails = {
-				providerTypeId: providerTypeId,
-				firstName: data.firstName,
-				middleName: data.middleName,
-				lastName: data.lastName,
-				email: data.email,
-				hospitalList: data.hospitalName,
-				speciality: data.speciality,
-			}
 			if (data.firstName == "") {
 				setShowFirstNameError(true);
-				isFirstName=true;
+				isFirstName = true;
 			} else if (data.lastName == "") {
 				setShowLastNameError(true);
-				isLastName=true
+				isLastName = true
 			} else {
 				setShowFirstNameError(false);
 				setShowLastNameError(false);
-				isFirstName=false;
-				isLastName=false;
+				isFirstName = false;
+				isLastName = false;
 			}
-
 
 		} else {
-			providerTypeId = Provider.GroupProvider
-			providerDetails = {
-				providerTypeId: providerTypeId,
-				providerGroup: data.providerGroup,
-				email: data.email,
-				hospitalList: data.hospitalName,
-				speciality: data.speciality,
-			}
+			
 			if (data.providerGroup == "") {
 				setShowGroupNameError(true);
-				isGroupName=true;
+				isGroupName = true;
 			} else {
 				setShowGroupNameError(false);
-				isGroupName=false;
+				isGroupName = false;
 			}
 
 		}
 		const newProvider = {
-			provider: providerDetails,
+			provider: {
+				email: data.email,
+				hospitalList: data.hospitalName,
+				speciality: data.speciality,
+				...(groupSelection == "Individual" && { firstName: data.firstName }),
+				...(groupSelection == "Individual" && { middleName: data.middleName }),
+				...(groupSelection == "Individual" && { lastName: data.lastName }),
+				...(groupSelection == "Individual" && { providerTypeId: Provider.Provider }),
+				...(groupSelection == "Group" && { providerGroup: data.providerGroup }),
+				...(groupSelection == "Group" && { providerTypeId: Provider.providerGroup }),
+			},
 
 			postalAddress: [
 				{
@@ -430,23 +420,23 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 	// update Provider
 	const updateProviderInfo = async () => {
+
 		try {
+
+
 			const updateProvider = {
-
-
-				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality || dirtyFields.email) && {
+				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality || dirtyFields.email || dirtyFields.providerGroup) && {
 					provider: {
-						firstName: getValues('firstName'),
-						middleName: getValues('middleName'),
-						lastName: getValues('lastName'),
+						providerTypeId: Provider.Provider,
 						email: getValues('email'),
 						hospitalList: getValues('hospitalName'),
 						speciality: getValues('speciality'),
-
+						...(groupSelection == "Individual" && { firstName: getValues('firstName') }),
+						...(groupSelection == "Individual" && { middleName: getValues('middleName') }),
+						...(groupSelection == "Individual" && { lastName: getValues('lastName') }),
+						...(groupSelection == "Group" && { providerGroup: getValues('providerGroup') }),
 					}
 				}),
-
-
 
 				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.billingAddress1 || dirtyFields.billingAddress2 || dirtyFields.billingCity || dirtyFields.billingState || dirtyFields.billingZip) && {
 					postalAddress: [
@@ -501,6 +491,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				dispatch(notify(`No record to update`, 'error'));
 			} else {
 				try {
+
 					const result = await updateProviderByPartyRoleId(partyRoleId, updateProvider);
 					if (result.data.message == ServiceMsg.OK) {
 						dispatch(notify(`Successfully updated`, 'success'));
