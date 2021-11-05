@@ -70,10 +70,16 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 				const RoleTypeList = await getSpecificRoleList();
 				setRoleTpeData(RoleTypeList.data.data);
-				reset(defaultValues);
-				setDefaultHospital(defaultValues.hospitalList);
-				setDefaultlHealth(defaultValues.healthSystemList);
 
+				reset(defaultValues);
+
+				if (defaultValues.healthSystemList.length > 0 && healthSystems.data.data.length > 0) {
+					let defaultHealth = await getSystemDefault(healthSystems.data.data, defaultValues.healthSystemList);
+					setDefaultlHealth(defaultHealth);
+					setselectedHealthSystem(defaultValues.healthSystemList);
+					setSelectedHospital(defaultValues.hospitalList);
+				}
+				// roleTypeChange(defaultValues.roleTypeId);
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -88,18 +94,33 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 					const searchQuery = {healthSystemPartyRoleId: selectedHealthSystem};
 					const result = await getHospitalsList(searchQuery);
 					sethospitalList(result.data.data);
+
+					if (defaultValues?.hospitalList.length > 0) {
+						let defaultHospital = await getSystemDefault(result.data.data, defaultValues.hospitalList);
+						setDefaultHospital(defaultHospital);
+						roleTypeChange(defaultValues.roleTypeId);
+					}
 				} catch (error) {}
 			}
 		};
 		fetchData();
 	}, [selectedHealthSystem]);
 
+	const getSystemDefault = (list, selectedId) => {
+		var filtered = list.filter(function (item) {
+			return selectedId.indexOf(item.partyRoleId) !== -1;
+		});
+		return filtered;
+	};
+
 	// role type selection
 	const roleTypeChange = (e) => {
-		switch (Number(e.target.value)) {
+		
+		switch (Number(e)) {
 			case RoleType.HealthSystemAdmin:
 				setHealthSystem(true);
-				setHospital(false);
+				setHospital(false);	
+			
 
 				break;
 			case RoleType.HospitalAdmin:
@@ -113,6 +134,7 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 			default:
 				setHealthSystem(false);
 				setHospital(false);
+				setDefaultlHealth([]);
 				break;
 		}
 	};
@@ -154,8 +176,8 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 			roleTypeId: data.roleTypeId,
 			status: data.status,
 			email: data.email,
-			healthSystemList	: selectedHealthSystem,
-			hospitalList	: selectedHospital,
+			healthSystemList: selectedHealthSystem,
+			hospitalList: selectedHospital,
 		};
 
 		try {
@@ -184,7 +206,7 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 					roleTypeId: getValues('roleTypeId'),
 					status: getValues('status'),
 					email: getValues('email'),
-					healthSystemList : selectedHealthSystem,
+					healthSystemList: selectedHealthSystem,
 					hospitalList: selectedHospital,
 				}),
 			};
@@ -241,7 +263,7 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 							<label className='form-text'>
 								Role Type <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<select name='roleTypeId' id='roleTypeId' className='form-control-sm' {...register('roleTypeId')} onChange={roleTypeChange}>
+							<select name='roleTypeId' id='roleTypeId' className='form-control-sm' {...register('roleTypeId')} onChange={(e) => roleTypeChange(e.target.value)}>
 								{roleTypeDta.map((item, index) => (
 									<option key={index} value={item.roleTypeId}>
 										{item.description}
@@ -260,7 +282,7 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								<label className='form-text'>
 									Health System <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<Select options={healthSystemList} defaultValue={defaultHealth}  closeMenuOnSelect={false} onChange={handleHealthSystemChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
+								<Select options={healthSystemList} defaultValue={defaultHealth} closeMenuOnSelect={false} onChange={handleHealthSystemChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
 							</div>
 						</div>
 					)}
@@ -271,7 +293,7 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								<label className='form-text'>
 									Hospital <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<Select options={hospitalList} defaultValue={defaultHospital}  closeMenuOnSelect={false} onChange={handleHospitalChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
+								<Select options={hospitalList} defaultValue={defaultHospital} closeMenuOnSelect={false} onChange={handleHospitalChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
 							</div>
 						</div>
 					)}
