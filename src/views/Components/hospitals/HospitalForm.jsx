@@ -57,7 +57,7 @@ const schema = yup.object().shape({
 	// contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact name should contain only characters'),
 });
 
-const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = [], onboardingInfo ,emailSendersList=[]}) => {
+const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = [], onboardingInfo ,emailSendersList=[],smsSendersList=[]}) => {
 	const {
 		register,
 		handleSubmit,
@@ -196,7 +196,8 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			hospital: {
 				healthSystemPartyRoleId: data.healthSystemPartyRoleId,
 				name: data.hospitalName,
-				emailSender:data.emailSender
+				emailSender:data.emailSender,
+				smsSender:data.smsSender
 			},
 			postalAddress: [
 				{
@@ -260,7 +261,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const updateHospitalInfo = async () => {
 		try {
 			const updateHospital = {
-				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.emailSender) && { hospital: { name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),emailSender:getValues('emailSender')} }),
+				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.emailSender || dirtyFields.smsSender) && { hospital: { name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),emailSender:getValues('emailSender') ,smsSender:getValues('smsSender')   } }),
 				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip) && {
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
@@ -383,13 +384,32 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Email Sender <span className='text-danger font-weight-bold '>*</span>{' '}
+								Email Sender {' '}
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('emailSender')}>
 								<option value=''>Select</option>
 								{emailSendersList.map((item, index) => (
 									<option key={index} value={item.id}>
 										{item.from_email}
+									</option>
+								))}
+								{/* <option value='test'>test</option> */}
+							</select>
+							{/* <div className='small text-danger  pb-2   '>{errors.healthSystemPartyRoleId?.message}</div> */}
+						</div>
+					</div>
+
+					<div className='col-md-6'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								Sms Sender {' '}
+							</label>
+							<select name='' id='' className='form-control-sm' {...register('smsSender')}>
+								<option value=''>Select</option>
+								{smsSendersList.map((item, index) => (
+									<option key={index} value={item}>
+										{item}
 									</option>
 								))}
 								{/* <option value='test'>test</option> */}
