@@ -158,7 +158,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					setGroupSelection('Group');
 					setShowResults(false);
 				}
-				setShowRadioButton(false);
+				//setShowRadioButton(false);
 				// defaultValuese
 				const hospitalList = await getHospitalsList();
 
