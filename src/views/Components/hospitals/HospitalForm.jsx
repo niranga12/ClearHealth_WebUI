@@ -389,7 +389,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<select name='' id='' className='form-control-sm' {...register('emailSender')}>
 								<option value=''>Select</option>
 								{emailSendersList.map((item, index) => (
-									<option key={index} value={item.id}>
+									<option key={index} value={item.from_email}>
 										{item.from_email}
 									</option>
 								))}
