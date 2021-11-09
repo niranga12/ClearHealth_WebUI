@@ -45,9 +45,9 @@ const schema = yup.object().shape({
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 
-	clearTransactionalFee: yup.string().required('clear Transactional Fee  is required'),
-	patientResponsibilityDiscount: yup.string().required('patient Responsibility Discount  is required'),
-	clearTransactionalFeeforPatientResponsibility: yup.string().required('clear Transactional Fee for Patient Responsibility  is required'),
+	clearTransactionalFee: yup.number().required('Clear Transactional Fee  is required').min(0, 'Min value 0.').max(100, 'Max value 100.'),
+	patientResponsibilityDiscount: yup.number().required('Patient Responsibility Discount  is required').min(0, 'Min value 0.').max(100, 'Max value 100.'),
+	clearTransactionalFeeforPatientResponsibility: yup.number().required('Clear Transactional Fee for Patient Responsibility  is required').min(0, 'Min value 0.').max(100, 'Max value 100.'),
 	
 });
 
@@ -395,7 +395,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								clear Transactional Fee <span className='text-danger font-weight-bold '>*</span>{' '}
+								Clear Transactional Fee <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='number' min="0" max="100"  {...register('clearTransactionalFee')} />
 							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFee?.message}</div>
@@ -406,7 +406,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								patient Responsibility Discount <span className='text-danger font-weight-bold '>*</span>{' '}
+								Patient Responsibility Discount <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='number'  min="0" max="100"  {...register('patientResponsibilityDiscount')}  />
 							<div className='small text-danger  pb-2   '>{errors.patientResponsibilityDiscount?.message}</div>
@@ -419,7 +419,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								clear Transactional Fee for Patient Responsibility <span className='text-danger font-weight-bold '>*</span>{' '}
+								Clear Transactional Fee for Patient Responsibility <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm'  type='number'  min="0" max="100" {...register('clearTransactionalFeeforPatientResponsibility')}  />
 							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFeeforPatientResponsibility?.message}</div>
