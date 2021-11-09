@@ -1,26 +1,25 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react';
-import { useForm, useFormState } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import React, {useEffect, useRef, useState} from 'react';
+import {useForm, useFormState} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
-import { useHistory } from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
+import {useHistory} from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
-import { saveHospital, updateHospitalByPartyRoleId } from 'src/service/hospitalsService';
-import { notify } from 'reapop';
+import {saveHospital, updateHospitalByPartyRoleId} from 'src/service/hospitalsService';
+import {notify} from 'reapop';
 import InputMask from 'react-input-mask';
 import NormalizePhone from 'src/reusable/NormalizePhone';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import useDebounce from 'src/reusable/debounce';
-import { getValidateOrganization } from 'src/service/commonService';
+import {getValidateOrganization} from 'src/service/commonService';
 import FormatText from 'src/reusable/FormatText';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { EnableMaskPhone } from 'src/reusable';
+import {EnableMaskPhone} from 'src/reusable';
 import HospitalNotifyUser from './HospitalNotifyUser';
-
 
 const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital name should contain only characters'),
@@ -45,19 +44,14 @@ const schema = yup.object().shape({
 		.required('Contact Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
-	// consolidatedInvoice: yup.bool(),
-	// applySAASTax: yup.bool(),
-	// taxId: yup.string(),
-	// invoiceReceiveMethod: yup.string(),
-	// accountNumber: yup.string(),
-	// routing: yup.string(),
-	// bankName: yup.string(),
-	// contactEmail: yup.string().email(' Email must be a valid email'),
-	// contactPhone: yup.string().test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	// contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact name should contain only characters'),
+
+	clearTransactionalFee: yup.string().required('clear Transactional Fee  is required'),
+	patientResponsibilityDiscount: yup.string().required('patient Responsibility Discount  is required'),
+	clearTransactionalFeeforPatientResponsibility: yup.string().required('clear Transactional Fee for Patient Responsibility  is required'),
+	
 });
 
-const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = [], onboardingInfo ,emailSendersList=[],smsSendersList=[]}) => {
+const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = [], onboardingInfo, emailSendersList = [], smsSendersList = []}) => {
 	const {
 		register,
 		handleSubmit,
@@ -65,14 +59,14 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		getValues,
 		reset,
 		control,
-		formState: { errors },
-	} = useForm({ resolver: yupResolver(schema), mode: 'all' });
+		formState: {errors},
+	} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
 	const [stateOption, setStateOption] = useState(defaultValues.state);
 	const [businessStateOption, setBusinessStateOption] = useState(defaultValues.businessState);
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
-	const { dirtyFields } = useFormState({ control });
+	const {dirtyFields} = useFormState({control});
 	const dispatch = useDispatch();
 	let history = useHistory();
 	let btnRef = useRef();
@@ -83,7 +77,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [isAlreadyExit, setIsAlreadyExit] = useState(false);
 	// ... so that we aren't hitting our API rapidly.
 	const debouncedName = useDebounce(hospitalName, 1000);
-	const [isNotify, setIsNotify] = useState(false)
+	const [isNotify, setIsNotify] = useState(false);
 	// validate organition name
 	useEffect(() => {
 		const fetchValidate = async () => {
@@ -93,7 +87,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					let data = {
 						roleTypeId: Organizations.Hospital,
 						organizationName: debouncedName,
-						...(isEdit && { partyRoleId }),
+						...(isEdit && {partyRoleId}),
 					};
 
 					const result = await getValidateOrganization(data);
@@ -105,12 +99,12 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					}
 					setIsSearching(false);
 					setIsAlreadyExit(!result.data.data);
-					setValue('hospitalName', debouncedName, { shouldValidate: true, shouldDirty: true });
+					setValue('hospitalName', debouncedName, {shouldValidate: true, shouldDirty: true});
 				} else {
 					setIsSearching(false);
 					setIsAlreadyExit(false);
 				}
-			} catch (error) { }
+			} catch (error) {}
 		};
 		fetchValidate();
 	}, [debouncedName]);
@@ -149,17 +143,15 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	};
 
 	const stateSelect = (event) => {
-		setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
+		setValue('state', event.target.innerText, {shouldValidate: true, shouldDirty: true});
 	};
 	const businessStateSelect = (event) => {
-		setValue('businessState', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
+		setValue('businessState', event.target.innerText, {shouldValidate: true, shouldDirty: true});
 	};
-
 
 	// set default form values
 	useEffect(() => {
 		try {
-			
 			reset(defaultValues);
 			setStateOption(defaultValues.state); //set state dropdown value
 			setBusinessStateOption(defaultValues.businessState);
@@ -185,10 +177,9 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		setIsNotify(!isNotify);
 	};
 
-	const modelCancel=() =>{
+	const modelCancel = () => {
 		setIsNotify(!isNotify);
 	};
-
 
 	// save hospital
 	const addHospital = async (data) => {
@@ -196,8 +187,12 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			hospital: {
 				healthSystemPartyRoleId: data.healthSystemPartyRoleId,
 				name: data.hospitalName,
-				emailSender:data.emailSender,
-				smsSender:data.smsSender
+				alertSenderEmail: data.alertSenderEmail,
+				alertSenderSMS: data.alertSenderSMS,
+
+				clearTransactionalFee: data.clearTransactionalFee,
+				patientResponsibilityDiscount: data.patientResponsibilityDiscount,
+				clearTransactionalFeeforPatientResponsibility: data.clearTransactionalFeeforPatientResponsibility,
 			},
 			postalAddress: [
 				{
@@ -226,25 +221,11 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				phone: NormalizePhone(data.patientContactPhone),
 				email: data.patientContactEmail,
 			},
-			// paymentInfo: {
-			// 	name: data.contactName,
-			// 	phone: NormalizePhone(data.contactPhone),
-			// 	email: data.contactEmail,
-			// 	taxId: data.taxId,
-			// 	bankName: data.bankName,
-			// 	routing: data.routing,
-			// 	accountNumber: data.accountNumber,
-			// 	invoiceReceiveMethod: data.invoiceReceiveMethod,
-			// 	applySAASTax: data.applySAASTax ? 1 : 0,
-			// 	consolidatedInvoice: data.consolidatedInvoice ? 1 : 0,
-			// },
+			
 		};
-
-
 
 		try {
 			if (newHospital) {
-			
 				let result = await saveHospital(newHospital);
 				if (result.data.message === ServiceMsg.OK) {
 					dispatch(notify(`Successfully added`, 'success'));
@@ -261,33 +242,43 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const updateHospitalInfo = async () => {
 		try {
 			const updateHospital = {
-				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.emailSender || dirtyFields.smsSender) && { hospital: { name: getValues('hospitalName'), healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),emailSender:getValues('emailSender') ,smsSender:getValues('smsSender')   } }),
+				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.alertSenderEmail || dirtyFields.alertSenderSMS) && {
+					hospital: {
+						name: getValues('hospitalName'),
+						healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
+						alertSenderEmail: getValues('alertSenderEmail'),
+						alertSenderSMS: getValues('alertSenderSMS'),
+						clearTransactionalFee: getValues('clearTransactionalFee'),
+						patientResponsibilityDiscount: getValues('patientResponsibilityDiscount'),
+						clearTransactionalFeeforPatientResponsibility: getValues('clearTransactionalFeeforPatientResponsibility'),
+					},
+				}),
 				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip) && {
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
 							? [
-								{
-									partyContactTypeId: PartyTypeEnum.primary,
-									address1: getValues('address1'),
-									address2: getValues('address2'),
-									city: getValues('city'),
-									state: getValues('state'),
-									zip: getValues('zip'),
-								},
-							]
+									{
+										partyContactTypeId: PartyTypeEnum.primary,
+										address1: getValues('address1'),
+										address2: getValues('address2'),
+										city: getValues('city'),
+										state: getValues('state'),
+										zip: getValues('zip'),
+									},
+							  ]
 							: []),
 
 						...(dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip
 							? [
-								{
-									partyContactTypeId: PartyTypeEnum.shipping,
-									address1: getValues('businessAddress1'),
-									address2: getValues('businessAddress2'),
-									city: getValues('businessCity'),
-									state: getValues('businessState'),
-									zip: getValues('businessZip'),
-								},
-							]
+									{
+										partyContactTypeId: PartyTypeEnum.shipping,
+										address1: getValues('businessAddress1'),
+										address2: getValues('businessAddress2'),
+										city: getValues('businessCity'),
+										state: getValues('businessState'),
+										zip: getValues('businessZip'),
+									},
+							  ]
 							: []),
 					],
 				}),
@@ -304,20 +295,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						number: NormalizePhone(getValues('phone')),
 					},
 				}),
-				// ...((dirtyFields.contactName || dirtyFields.contactPhone || dirtyFields.contactEmail || dirtyFields.taxId || dirtyFields.bankName || dirtyFields.routing || dirtyFields.accountNumber || dirtyFields.invoiceReceiveMethod || dirtyFields.applySAASTax || dirtyFields.consolidatedInvoice) && {
-				// 	paymentInfo: {
-				// 		name: getValues('contactName'),
-				// 		phone: NormalizePhone(getValues('contactPhone')),
-				// 		email: getValues('contactEmail'),
-				// 		taxId: getValues('taxId'),
-				// 		bankName: getValues('bankName'),
-				// 		routing: getValues('routing'),
-				// 		accountNumber: getValues('accountNumber'),
-				// 		invoiceReceiveMethod: getValues('invoiceReceiveMethod'),
-				// 		applySAASTax: getValues('applySAASTax') ? 1 : 0,
-				// 		consolidatedInvoice: getValues('consolidatedInvoice') ? 1 : 0,
-				// 	},
-				// }),
+				
 			};
 			if (Object.keys(updateHospital).length === 0) {
 				dispatch(notify(`No record to update`, 'error'));
@@ -326,7 +304,6 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				// btnRef.current.remove("disabled", "disabled");
 			} else {
 				try {
-					
 					const result = await updateHospitalByPartyRoleId(partyRoleId, updateHospital);
 					if (result.data.message === ServiceMsg.OK) {
 						dispatch(notify(`Successfully updated`, 'success'));
@@ -382,11 +359,8 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 					<div className='col-md-6'>
 						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Email Sender {' '}
-							</label>
-							<select name='' id='' className='form-control-sm' {...register('emailSender')}>
+							<label className='form-text'> Email Sender </label>
+							<select name='' id='' className='form-control-sm' {...register('alertSenderEmail')}>
 								<option value=''>Select</option>
 								{emailSendersList.map((item, index) => (
 									<option key={index} value={item.from_email}>
@@ -401,11 +375,8 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 					<div className='col-md-6'>
 						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Sms Sender {' '}
-							</label>
-							<select name='' id='' className='form-control-sm' {...register('smsSender')}>
+							<label className='form-text'> Sms Sender </label>
+							<select name='' id='' className='form-control-sm' {...register('alertSenderSMS')}>
 								<option value=''>Select</option>
 								{smsSendersList.map((item, index) => (
 									<option key={index} value={item}>
@@ -419,6 +390,43 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					</div>
 
 
+
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								clear Transactional Fee <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							<input className='form-control-sm' type='number' min="0" max="100"  {...register('clearTransactionalFee')} />
+							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFee?.message}</div>
+						</div>
+					</div>
+
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								patient Responsibility Discount <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							<input className='form-control-sm' type='number'  min="0" max="100"  {...register('patientResponsibilityDiscount')}  />
+							<div className='small text-danger  pb-2   '>{errors.patientResponsibilityDiscount?.message}</div>
+							
+							
+						</div>
+					</div>
+
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								clear Transactional Fee for Patient Responsibility <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							<input className='form-control-sm'  type='number'  min="0" max="100" {...register('clearTransactionalFeeforPatientResponsibility')}  />
+							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFeeforPatientResponsibility?.message}</div>
+							
+							
+						</div>
+					</div>
 				</div>
 
 				<div className='row mb-3'>
@@ -576,117 +584,38 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					</div>
 				</div>
 
-				{/* payment info */}
-				{/* <h5 className='font-weight-bold mt-1'>Payment Info </h5>
-
-				<div className='row'>
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'> Contact Name</label>
-							<input type='text' className='form-control-sm' {...register('contactName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '> {errors.contactName?.message} </div>
-						</div>
-
-						<div className='form-group'>
-							<label className='form-text'> Phone</label>
-							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('contactPhone'))} className='form-control-sm' />
-
-							
-							<div className='small text-danger  pb-2   '> {errors.contactPhone?.message} </div>
-						</div>
-
-						<div className='form-group'>
-							<label className='form-text'> Email</label>
-							<input type='text' className='form-control-sm' {...register('contactEmail')} />
-							<div className='small text-danger  pb-2   '> {errors.contactEmail?.message} </div>
-						</div>
-					</div>
-
-					
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'> Bank Name</label>
-							<input type='text' className='form-control-sm' {...register('bankName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '> {errors.bankName?.message} </div>
-						</div>
-
-						<div className='form-group'>
-							<label className='form-text'>Routing</label>
-							<input type='text' className='form-control-sm' {...register('routing')} />
-							<div className='small text-danger  pb-2   '> {errors.routing?.message} </div>
-						</div>
-
-						<div className='form-group'>
-							<label className='form-text'>Account</label>
-							<input type='text' className='form-control-sm' {...register('accountNumber')} />
-							<div className='small text-danger  pb-2   '> {errors.accountNumber?.message} </div>
-						</div>
-					</div>
-
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'> Invoice Receive Method</label>
-							<select name='' id='' className='form-control-sm' {...register('invoiceReceiveMethod')}>
-								<option value=''>Select</option>
-								{InvoiceReceiveMethod.map((item) => (
-									<option key={item.id} value={item.name}>
-										{item.name}
-									</option>
-								))}
-							</select>
-
-							<div className='small text-danger  pb-2   '> {errors.invoiceReceiveMethod?.message} </div>
-						</div>
-
-						<div className='form-group'>
-							<label className='form-text'> Tax Id</label>
-							<input type='text' className='form-control-sm' {...register('taxId')} />
-							<div className='small text-danger  pb-2   '> {errors.taxId?.message} </div>
-						</div>
-
-						<div className='form-group pl-4'>
-							<input type='checkbox' name='applySAASTax' {...register('applySAASTax')} className='mr-2 form-check-input' />
-							<label className='form-check-label'>Apply SASS Tax</label>
-						</div>
-						<div className='form-group pl-4'>
-							<input type='checkbox' name='consolidatedInvoice' {...register('consolidatedInvoice')} className='form-check-input' />
-							<label className='form-check-label'>Consolidated Invoice</label>
-						</div>
-					</div>
-				</div> */}
+				
 
 				{/* Stripe */}
-				{ isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null }
-				
-				{ isEdit ? <div className='row'>
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>Update Link</label>
-							<a href={onboardingInfo.url} target="_blank" rel="noreferrer" >
-								{onboardingInfo.isOnboardingCompleted == '1' ? "Update Account" : "Complete Account"}</a>
-						</div>
+				{isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null}
 
-
-					</div>
-
-					<div className='col-md-4 row'>
-						<div className='form-group'>
-							<label className='form-text'>Status</label>
-							{onboardingInfo.isOnboardingCompleted == '1' ? <div className='font-weight-bold font-green'>Complete</div> : <div className='font-weight-bold font-red'>Pending</div>}
-						</div>
-
-						<div className='form-group'>
-							<div className='ml-5 mt-4'>
-							<div  onClick={notifyUser} className='btn btn-secondary m-0'>
-								Notify User
-							</div>
+				{isEdit ? (
+					<div className='row'>
+						<div className='col-md-4'>
+							<div className='form-group'>
+								<label className='form-text'>Update Link</label>
+								<a href={onboardingInfo.url} target='_blank' rel='noreferrer'>
+									{onboardingInfo.isOnboardingCompleted == '1' ? 'Update Account' : 'Complete Account'}
+								</a>
 							</div>
 						</div>
+
+						<div className='col-md-4 row'>
+							<div className='form-group'>
+								<label className='form-text'>Status</label>
+								{onboardingInfo.isOnboardingCompleted == '1' ? <div className='font-weight-bold font-green'>Complete</div> : <div className='font-weight-bold font-red'>Pending</div>}
+							</div>
+
+							<div className='form-group'>
+								<div className='ml-5 mt-4'>
+									<div onClick={notifyUser} className='btn btn-secondary m-0'>
+										Notify User
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>: null }
-
-				
-
+				) : null}
 
 				<div className='row'>
 					<div className='col-md-12'>
@@ -697,8 +626,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				</div>
 			</form>
 
-			<HospitalNotifyUser partyRoleId={partyRoleId} isNotify={isNotify} handleCancel={modelCancel}/>
-
+			<HospitalNotifyUser partyRoleId={partyRoleId} isNotify={isNotify} handleCancel={modelCancel} />
 		</div>
 	);
 };

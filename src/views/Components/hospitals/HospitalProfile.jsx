@@ -31,8 +31,13 @@ const defalutFormValue = {
 	patientContactName: '',
 	patientContactPhone: '',
 	patientContactEmail: '',
-	emailSender:'',
-	smsSender:''
+	alertSenderEmail:'',
+	alertSenderSMS:'',
+clearTransactionalFee:'',
+patientResponsibilityDiscount:'',
+clearTransactionalFeeforPatientResponsibility:''
+
+
 	// consolidatedInvoice: false,
 	// applySAASTax: false,
 	// taxId: '',
@@ -134,8 +139,11 @@ const [smsSenders, setSmsSenders] = useState([]);
 			patientContactName: data.primaryContact.name,
 			patientContactPhone: data.primaryContact.phone,
 			patientContactEmail: data.primaryContact.email,
-			emailSender:data.hospital.emailSender,
-			smsSender:data.hospital.smsSender
+			alertSenderEmail:data.hospital.alertSenderEmail,
+			alertSenderSMS:data.hospital.alertSenderSMS,
+clearTransactionalFee:data.hospital.clearTransactionalFee,
+patientResponsibilityDiscount:data.hospital.patientResponsibilityDiscount,
+clearTransactionalFeeforPatientResponsibility:data.hospital.clearTransactionalFeeforPatientResponsibility
 			// consolidatedInvoice: data.paymentInfo.consolidatedInvoice == 1 ? true : false,
 			// applySAASTax: data.paymentInfo.applySAASTax == 1 ? true : false,
 			// taxId: data.paymentInfo.taxId,

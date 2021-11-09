@@ -53,13 +53,15 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 	const [isHealthSystem, setHealthSystem] = useState(false);
 	const [isHospital, setHospital] = useState(false);
 
+	const [dirtySelect, setDirtySelect] = useState(false);
+
 	const [healthSystemList, setHealthSystemList] = useState([]);
 	const [selectedHealthSystem, setselectedHealthSystem] = useState(null);
 	const [selectedHospital, setSelectedHospital] = useState(null);
 
 	const [hospitalList, sethospitalList] = useState(null);
 
-	const [defaultHospital, setDefaultHospital] = useState(null);
+	// const [defaultHospital, setDefaultHospital] = useState(null);
 	const [defaultHealth, setDefaultlHealth] = useState(null);
 
 	useEffect(() => {
@@ -77,7 +79,8 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 					let defaultHealth = await getSystemDefault(healthSystems.data.data, defaultValues.healthSystemList);
 					setDefaultlHealth(defaultHealth);
 					setselectedHealthSystem(defaultValues.healthSystemList);
-					setSelectedHospital(defaultValues.hospitalList);
+					// setSelectedHospital(defaultValues.hospitalList);
+					// setSelectedHospital(defaultHealth);
 				}
 				// roleTypeChange(defaultValues.roleTypeId);
 			} catch (error) {
@@ -91,14 +94,21 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 		const fetchData = async () => {
 			if (selectedHealthSystem?.length > 0) {
 				try {
+
 					const searchQuery = {healthSystemPartyRoleId: selectedHealthSystem};
 					const result = await getHospitalsList(searchQuery);
 					sethospitalList(result.data.data);
+	  
+				
 
-					if (defaultValues?.hospitalList.length > 0) {
+					if (defaultValues?.hospitalList.length > 0  ) {
 						let defaultHospital = await getSystemDefault(result.data.data, defaultValues.hospitalList);
-						setDefaultHospital(defaultHospital);
+						// setDefaultHospital(defaultHospital);
 						roleTypeChange(defaultValues.roleTypeId);
+						defaultValues.healthSystemList == selectedHealthSystem ? setSelectedHospital(defaultHospital):setSelectedHospital(null);
+						
+					
+
 					}
 				} catch (error) {}
 			}
@@ -126,10 +136,13 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 			case RoleType.HospitalAdmin:
 				setHealthSystem(true);
 				setHospital(true);
+				
 				break;
 			case RoleType.HospitalStaff:
 				setHealthSystem(true);
 				setHospital(true);
+				
+
 				break;
 			default:
 				setHealthSystem(false);
@@ -142,20 +155,28 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 	// health sytem change
 	const handleHealthSystemChange = (newValue: any, actionMeta: any) => {
 		let selHealthSys = [];
+		setSelectedHospital(null);
 		newValue.forEach((x) => {
 			selHealthSys.push(Number(x.partyRoleId));
 		});
 		setselectedHealthSystem(selHealthSys);
+		setDirtySelect(true);
+		
+		
+		
 		// console.log(selHealthSys);
 	};
 
 	const handleHospitalChange = (newValue: any, actionMeta: any) => {
 		// console.log(newValue);
-		let setHospitalVal = [];
-		newValue.forEach((x) => {
-			setHospitalVal.push(Number(x.partyRoleId));
-		});
-		setSelectedHospital(setHospitalVal);
+		// let setHospitalVal = [];
+		// newValue.forEach((x) => {
+		// 	setHospitalVal.push(Number(x.partyRoleId));
+		// });
+		// setSelectedHospital(setHospitalVal);
+		setSelectedHospital(newValue);
+		setDirtySelect(true);
+
 	};
 
 	// form submit
@@ -167,9 +188,20 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 		}
 	};
 
+
+const selectedHospitalIds=()=>{
+	let SelectedHospitalVal = [];
+		selectedHospital.forEach((x) => {
+			SelectedHospitalVal.push(Number(x.partyRoleId));
+		});
+		return SelectedHospitalVal;
+}
+
 	// save User
 	const addUser = async (data) => {
 		dispatch(loaderShow());
+		
+
 		const newUser = {
 			firstName: data.firstName,
 			lastName: data.lastName,
@@ -177,10 +209,11 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 			status: data.status,
 			email: data.email,
 			healthSystemList: selectedHealthSystem,
-			hospitalList: selectedHospital,
+			hospitalList: selectedHospitalIds(),
 		};
 
 		try {
+			
 			if (newUser) {
 				let result = await saveUser(newUser);
 				if (result.data.message === ServiceMsg.OK) {
@@ -200,19 +233,20 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 		try {
 			dispatch(loaderShow());
 			const updateUser = {
-				...((dirtyFields.firstName || dirtyFields.lastName || dirtyFields.roleTypeId || dirtyFields.status || dirtyFields.email) && {
+				...((dirtyFields.firstName || dirtyFields.lastName || dirtyFields.roleTypeId || dirtyFields.status || dirtyFields.email || dirtySelect) && {
 					firstName: getValues('firstName'),
 					lastName: getValues('lastName'),
 					roleTypeId: getValues('roleTypeId'),
 					status: getValues('status'),
 					email: getValues('email'),
 					healthSystemList: selectedHealthSystem,
-					hospitalList: selectedHospital,
+					hospitalList: selectedHospitalIds(),
 				}),
 			};
 			if (Object.keys(updateUser).length == 0) {
 				dispatch(notify(`No record to update`, 'error'));
 			} else {
+			
 				try {
 					const result = await updateUserByPartyRoleId(partyRoleId, updateUser);
 					if (result.data.message == ServiceMsg.OK) {
@@ -282,7 +316,7 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								<label className='form-text'>
 									Health System <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<Select options={healthSystemList} defaultValue={defaultHealth} closeMenuOnSelect={false} onChange={handleHealthSystemChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
+								<Select options={healthSystemList}  defaultValue={defaultHealth} closeMenuOnSelect={false} onChange={handleHealthSystemChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
 							</div>
 						</div>
 					)}
@@ -293,7 +327,9 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 								<label className='form-text'>
 									Hospital <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<Select options={hospitalList} defaultValue={defaultHospital} closeMenuOnSelect={false} onChange={handleHospitalChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
+								{/* <Select         value={value} options={hospitalList} isClearable defaultValue={defaultHospital} closeMenuOnSelect={false} onChange={handleHospitalChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} /> */}
+								<Select         value={selectedHospital} options={hospitalList} isClearable  closeMenuOnSelect={false} onChange={handleHospitalChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
+						
 							</div>
 						</div>
 					)}

@@ -80,10 +80,10 @@ const OrderForm = () => {
 				firstName: value.firstName,
 				middleName: value.middleName,
 				lastName: value.lastName,
-				dateOfBirth: value.dateOfBirth,
+				dateOfBirth: value.DOB,
 				contactMethod:value.contactMethod,
 				email: value.email,
-				phone: value.phone,
+				phone: value.phoneNumber,
 				partyRoleId: value.partyRoleId,
 			},
 		};
