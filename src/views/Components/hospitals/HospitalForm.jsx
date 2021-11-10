@@ -242,7 +242,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 	const updateHospitalInfo = async () => {
 		try {
 			const updateHospital = {
-				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.alertSenderEmail || dirtyFields.alertSenderSMS) && {
+				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.alertSenderEmail || dirtyFields.alertSenderSMS || dirtyFields.clearTransactionalFee  || dirtyFields.patientResponsibilityDiscount ||dirtyFields.clearTransactionalFeeforPatientResponsibility     ) && {
 					hospital: {
 						name: getValues('hospitalName'),
 						healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
