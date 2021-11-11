@@ -228,4 +228,9 @@ export const Provider={
 
 }
 
+
+export const OrderType={
+	ClearPackage:1,
+	PatientResponsibility:2
+}
 	

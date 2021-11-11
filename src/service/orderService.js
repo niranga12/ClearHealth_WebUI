@@ -21,3 +21,7 @@ export const getSMSOrderDetails=(orderId)=>axiosInstance.post(`openOrder/smscont
 
 export const getOrdersByPatientId=(patientId,searchQuery)=>axiosInstance.post(`order/orderList/${patientId}`,searchQuery);
 
+export const getOrderType=()=>axiosInstance.get(`order/orderType`);
+
+
+

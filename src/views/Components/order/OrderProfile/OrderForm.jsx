@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import OrderPatientsForm from './OrderPatientsForm';
@@ -5,9 +6,9 @@ import OrderProcedureSelect from './OrderProcedureSelect';
 import AsyncSelect from 'react-select/async';
 import {getPatientsDetailsByHospital} from 'src/service/hospitalsService';
 import {saveOrderData} from 'src/service/orderService';
-import { ServiceMsg } from 'src/reusable/enum';
-import { useDispatch } from 'react-redux';
-import { notify } from 'reapop';
+import {OrderType, ServiceMsg} from 'src/reusable/enum';
+import {useDispatch} from 'react-redux';
+import {notify} from 'reapop';
 import OnError from 'src/_helpers/onerror';
 import 'font-awesome/css/font-awesome.min.css';
 import NormalizePhone from 'src/reusable/NormalizePhone';
@@ -30,11 +31,13 @@ const OrderForm = () => {
 	const [SelectedCpt, setSelectedCpt] = useState([]);
 	const [patientDetail, setPatientDetail] = useState(null);
 
+	const [isCPT, setisCPT] = useState(false);
+
 	// on location change get hospitalId
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get('hospitalId');
-		const name=params.get('name');
+		const name = params.get('name');
 		setHospitalId(id);
 		setHospitalName(name);
 		if (btnRef.current) {
@@ -44,12 +47,12 @@ const OrderForm = () => {
 
 	const handleCPTChange = (value) => {
 		setSelectedCpt(value);
-	
+
 		// CheckAvilableBtn();
 	};
 
 	// const CheckAvilableBtn = () => {
-	
+
 	// 	if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) ) {
 	// 		btnRef.current.removeAttribute('disabled');
 	// 	} else {
@@ -57,13 +60,13 @@ const OrderForm = () => {
 	// 	}
 	// };
 
- useEffect(() => {
-	if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) ) {
-		btnRef.current.removeAttribute('disabled');
-	} else {
-		btnRef.current.setAttribute('disabled', 'disabled');
-	}
- }, [SelectedCpt,patientDetail,selectedValue])
+	useEffect(() => {
+		if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) || patientDetail?.orderType == OrderType.PatientResponsibility) {
+			btnRef.current.removeAttribute('disabled');
+		} else {
+			btnRef.current.setAttribute('disabled', 'disabled');
+		}
+	}, [SelectedCpt, patientDetail, selectedValue]);
 
 	// asyncoption
 
@@ -72,7 +75,6 @@ const OrderForm = () => {
 		setValue(value);
 	};
 
-	
 	// handle selection
 	const handleChange = (value) => {
 		let result = {
@@ -81,19 +83,18 @@ const OrderForm = () => {
 				middleName: value.middleName,
 				lastName: value.lastName,
 				dateOfBirth: value.DOB,
-				contactMethod:value.contactMethod,
+				contactMethod: value.contactMethod,
 				email: value.email,
 				phone: value.phoneNumber,
 				partyRoleId: value.partyRoleId,
 			},
 		};
 		setSelectedFormValue(result);
-		
+
 		//    result.partyRoleId ? setIsEdit(true) :setIsEdit(false);
 		setIsEdit(true);
 		setSelectedValue(value);
 		// CheckAvilableBtn();
-
 	};
 
 	// load options using API call
@@ -106,34 +107,40 @@ const OrderForm = () => {
 	};
 
 	const patientsFormDetail = (value) => {
-		 
+		if (value?.orderType == OrderType.ClearPackage) {
+			setisCPT(true);
+		} else {
+			setisCPT(false);
+			setSelectedCpt([]);
+		}
+
+		// value?.orderType==OrderType.ClearPackage ? setisCPT(true):setisCPT(false);
+
 		setPatientDetail(value);
 		// CheckAvilableBtn();
 	};
 
+	const handleClearSelection = () => {
+		let result = {
+			patient: {
+				firstName: '',
+				middleName: '',
+				lastName: '',
+				contactMethod: '',
+				email: '',
+				phone: '',
+				partyRoleId: '',
+			},
+		};
+		setSelectedFormValue(result);
 
+		//    result.partyRoleId ? setIsEdit(true) :setIsEdit(false);
+		setIsEdit(false);
 
-const handleClearSelection=()=>{
-	let result = {
-		patient: {
-			firstName: "",
-			middleName: "",
-			lastName: "",
-			contactMethod:"",
-			email:"",
-			phone:"",
-			partyRoleId: "",
-		},
+		setSelectedValue(null);
+		// CheckAvilableBtn();
+		btnRef.current.setAttribute('disabled', 'disabled');
 	};
-	setSelectedFormValue(result);
-	
-	//    result.partyRoleId ? setIsEdit(true) :setIsEdit(false);
-	setIsEdit(false);
-
-	setSelectedValue(null);
-	// CheckAvilableBtn();
-	btnRef.current.setAttribute('disabled', 'disabled');
-}
 
 	const saveOrder = async () => {
 		if (btnRef.current) {
@@ -144,19 +151,34 @@ const handleClearSelection=()=>{
 		if (selectedValue?.partyRoleId && SelectedCpt.length > 0) {
 			data = {
 				hospitalPartyRoleId: hospitalId,
+				patientResponsibilityAmount:null,
 				patientPartyRoleId: selectedValue.partyRoleId,
 				procedures: SelectedCpt,
+				orderTypeId: patientDetail?.orderType,
+
 			};
 		} else if (SelectedCpt.length > 0 && patientDetail) {
 			data = {
 				hospitalPartyRoleId: hospitalId,
-				patient: {...patientDetail,phone:NormalizePhone(patientDetail.phone)},
+				patientResponsibilityAmount:null,
+				orderTypeId: patientDetail?.orderType,
+				patient: {...patientDetail, phone: NormalizePhone(patientDetail.phone)},
 				procedures: SelectedCpt,
+			};
+		} else if (patientDetail?.orderType == OrderType.PatientResponsibility) {
+			data = {
+				hospitalPartyRoleId: hospitalId,
+				patientResponsibilityAmount:patientDetail?.patientResponsibilityAmount,
+				orderTypeId: patientDetail?.orderType,
+				patient: {...patientDetail, phone: NormalizePhone(patientDetail.phone)},
+				procedures: [],
 			};
 		}
 
+		
+
 		try {
-			
+
 			let result = await saveOrderData(data);
 			// eslint-disable-next-line eqeqeq
 			if (result.data.message == ServiceMsg.OK) {
@@ -174,7 +196,7 @@ const handleClearSelection=()=>{
 					// state: { detail: 'some_value' }
 				});
 				// order/view?orderId=45
-			
+
 			}
 
 		} catch (error) {
@@ -189,15 +211,20 @@ const handleClearSelection=()=>{
 					<label className=' float-left mr-3 pt-1 font-weight-bold'>Select Patient</label>
 					{/* <Select options={options} onChange={selectPatient} /> */}
 
-					<AsyncSelect cacheOptions defaultOptions value={selectedValue} getOptionLabel={(e) => e.firstName + ' '+ e.lastName} getOptionValue={(e) => e.partyRoleId} loadOptions={loadOptions} onInputChange={handleInputChange} onChange={handleChange} />
-				
+					<AsyncSelect cacheOptions defaultOptions value={selectedValue} getOptionLabel={(e) => e.firstName + ' ' + e.lastName} getOptionValue={(e) => e.partyRoleId} loadOptions={loadOptions} onInputChange={handleInputChange} onChange={handleChange} />
 				</div>
-				<div className="col-md-4 pt-3">
-				{isEdit? <div className="fa fa-close float-left mr-5 text-danger cursor-point " onClick={handleClearSelection}> Clear</div>:""}
+				<div className='col-md-4 pt-3'>
+					{isEdit ? (
+						<div className='fa fa-close float-left mr-5 text-danger cursor-point ' onClick={handleClearSelection}>
+							{' '}
+							Clear
+						</div>
+					) : (
+						''
+					)}
 				</div>
 				<div className='col-md-12 mb-2 pt-1'>
-				
-					<h5 className="float-left">If not, Please fill the below fields</h5>
+					<h5 className='float-left'>If not, Please fill the below fields</h5>
 				</div>
 			</div>
 
@@ -205,9 +232,9 @@ const handleClearSelection=()=>{
 			<OrderPatientsForm defaultValues={selectedFormValue} isEdit={isEdit} handleForm={patientsFormDetail} />
 			<div className='border-bottom'></div>
 
-			<h5 className='font-weight-bold mt-3 mb-3'>Procedures </h5>
+			{isCPT && <h5 className='font-weight-bold mt-3 mb-3'>Procedures </h5>}
 
-			<OrderProcedureSelect handleCPTChange={handleCPTChange} />
+			{isCPT && <OrderProcedureSelect handleCPTChange={handleCPTChange} />}
 
 			<div className='row'>
 				<div className='col-md-12 mt-1'>

@@ -3,7 +3,7 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {ContactMethod, MaskFormat, ValidationPatterns} from 'src/reusable/enum';
+import {ContactMethod, MaskFormat, OrderType, ValidationPatterns} from 'src/reusable/enum';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import DateSelector from 'src/views/common/dateSelector';
 import * as yup from 'yup';
@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import {EnableMaskPhone} from 'src/reusable';
 import moment from 'moment';
 import FormatText from 'src/reusable/FormatText';
-
+import {getOrderType} from 'src/service/orderService';
 
 let schema = yup.object().shape({
 	patient: yup.object().shape({
@@ -23,11 +23,12 @@ let schema = yup.object().shape({
 		lastName: yup.string().required(' Last Name is required').matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
 		dateOfBirth: yup.string(),
 		contactMethod: yup.string().required('Contact Method is required'),
-	    email: yup.string().email(' Please enter a valid email').required('Email is required'),
+		email: yup.string().email(' Please enter a valid email').required('Email is required'),
 		phone: yup
 			.string()
 			.required('Phone is required')
 			.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+		orderType: yup.string(),
 		// email: yup.string().email(' Please enter a valid email'),
 		// phone: yup
 		// 	.string()
@@ -36,27 +37,36 @@ let schema = yup.object().shape({
 });
 
 const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
-	const {register, getValues, reset, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
+	const {register,unregister, getValues, reset, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
 	// eslint-disable-next-line no-unused-vars
-	const { isValid, errors} = formState;
+	const {isValid, errors} = formState;
 
-	 const [isMail, setIsmail] = useState(false);
-	 const [isPhone, setIsPhone] = useState(false);
+	const [isMail, setIsmail] = useState(false);
+	const [isPhone, setIsPhone] = useState(false);
 
 	const [fromDate, handlefromDateChange] = useState(Date.now());
 
 	const [stateChange, setstateChange] = useState(false);
-	
+    const [isClearPackage, setisClearPackage] = useState(false);
+	const [orderTypeList, setorderTypeList] = useState([]);
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const result = await getOrderType();
+				setorderTypeList(result.data.data);
+			} catch (error) {
+				OnError(error, dispatch);
+			}
+		};
+
 		try {
+			fetchData();
 			reset(defaultValues);
 			handlefromDateChange(defaultValues?.patient?.dateOfBirth);
-
-			
-
 		} catch (error) {
 			OnError(error, dispatch);
 		}
@@ -64,54 +74,60 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 	}, [defaultValues]);
 
 	useEffect(() => {
-		let isAviable=false;
+		let isAviable = false;
 		const formValue = getValues('patient');
-		let value=Number(formValue?.contactMethod)
+		let value = Number(formValue?.contactMethod);
+		formValue?.orderType==OrderType.ClearPackage?	setisClearPackage(true):setisClearPackage(false);
+		formValue?.orderType==OrderType.ClearPackage? unregister('patient.patientResponsibilityAmount') :register('patient.patientResponsibilityAmount');
 
-		if(value>-1){
-			if(value=== Number(ContactMethod.Email)){
+
+		if (value > -1) {
+			if (value === Number(ContactMethod.Email)) {
 				setIsmail(true);
 				setIsPhone(false);
 				// schema.patient?. yup.object().shape({})
-			}else if(value=== Number(ContactMethod.Phone)){
+			} else if (value === Number(ContactMethod.Phone)) {
 				setIsPhone(true);
 				setIsmail(false);
 			}
-		}
-		else{
+		} else {
 			setIsmail(false);
 			setIsPhone(false);
 		}
 
-
-		
-		if( formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName  && Number(formValue?.contactMethod)>=0 && formValue?.lastName  && formValue?.email  ){
-			isAviable=true;
-		} else if(formValue?.contactMethod == ContactMethod.Phone && fromDate  && formValue?.firstName  && formValue?.lastName && Number(formValue?.contactMethod)>=0  && formValue?.phone){
-			isAviable=true;
-		}else{
-			isAviable=false;
+		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) >-1) {
+			isAviable = true;
+		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) >-1) {
+			isAviable = true;
+		} else {
+			isAviable = false;
 		}
-		
 
-
-
-
-		 if (isAviable ) {
+		if (isAviable) {
 			// if ( isValid && !errors.hasOwnProperty('patient')  ) {
 			const formValue = getValues('patient');
 			let newValue = {...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY')};
 			handleForm(newValue);
-		}else{
+		} else {
 			handleForm(null);
 		}
-	}, [stateChange,fromDate]);
+	}, [stateChange, fromDate]);
+
+
+
+// 	const orderTypeOnchange=(e)=>{
+// debugger;
+// 	e.target.value==OrderType.ClearPackage?	setisClearPackage(true):setisClearPackage(false);
+
+// 	}
+
+	// useEffect(() => {
+	// 	const formValue = getValues('patient.');
+	
+	// }, [orderTypeChange])
 
 	// const contactMethodChange =(value)=>{
-	
-		
-	
-		
+
 	// setstateChange(!stateChange)
 
 	// }
@@ -132,7 +148,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 							<label className='form-text'>
 								First Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('patient.firstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('patient.firstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.firstName?.message}</div>
 						</div>
 					</div>
@@ -140,7 +156,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>Middle Name</label>
-							<input className='form-control-sm' type='text' {...register('patient.middleName')} readOnly={isEdit}  onBlur={() => setstateChange(!stateChange)}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('patient.middleName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.middleName?.message}</div>
 						</div>
 					</div>
@@ -150,7 +166,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 							<label className='form-text'>
 								Last Name <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<input className='form-control-sm' type='text' {...register('patient.lastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  onInput={(e) => (e.target.value = FormatText(e.target.value))}/>
+							<input className='form-control-sm' type='text' {...register('patient.lastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.lastName?.message}</div>
 						</div>
 					</div>
@@ -162,7 +178,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 							<label className='form-text'>
 								Date Of Birth <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<DateSelector   className={` form-control-sm ${isEdit ? "disable" : ""}`}   selectedDate={fromDate} handleDateChange={handlefromDateChange}  disableFuture={true} />
+							<DateSelector className={` form-control-sm ${isEdit ? 'disable' : ''}`} selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.dateOfBirth?.message}</div>
 						</div>
 					</div>
@@ -173,12 +189,12 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 								{' '}
 								Preferred Contact Method <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<select name='' id='' className='form-control-sm' {...register('patient.contactMethod')}  onBlur={() => setstateChange(!stateChange)}   >
-								<option value="-1">Select</option>
+							<select name='' id='' className='form-control-sm' {...register('patient.contactMethod')} onBlur={() => setstateChange(!stateChange)}>
+								<option value='-1'>Select</option>
 								<option value={ContactMethod.Email}>Email</option>
 								<option value={ContactMethod.Phone}>Phone</option>
-								</select>
-						
+							</select>
+
 							{/* <input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} /> */}
 							<div className='small text-danger  pb-2   '>{errors.patient?.contactMethod?.message}</div>
 						</div>
@@ -186,10 +202,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 
 					<div className='col-md-4'>
 						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Email 	{isMail && <span className='text-danger font-weight-bold '>*</span> }	
-							</label>
+							<label className='form-text'> Email {isMail && <span className='text-danger font-weight-bold '>*</span>}</label>
 							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.email?.message}</div>
 						</div>
@@ -197,15 +210,46 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 
 					<div className='col-md-4'>
 						<div className='form-group'>
-							<label className='form-text'>
-								{' '}
-								Phone {isPhone && <span className='text-danger font-weight-bold '>*</span>}	
-							</label>
+							<label className='form-text'> Phone {isPhone && <span className='text-danger font-weight-bold '>*</span>}</label>
 							<InputMask {...register('patient.phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patient.phone'))} className='form-control-sm' readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
 							{/* <InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={false} className='form-control-sm' /> */}
 							<div className='small text-danger  pb-2   '>{errors.patient?.phone?.message}</div>
 						</div>
 					</div>
+
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								OrderType <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							<select name='' id='' className='form-control-sm' {...register('patient.orderType')} onBlur={() => setstateChange(!stateChange)} >
+								<option value='-1'>Select</option>
+
+								{orderTypeList.map((item, index) => (
+									<option key={index} value={item.orderTypeId}>
+										{item.description}
+									</option>
+								))}
+							</select>
+
+							{/* <input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} /> */}
+							<div className='small text-danger  pb-2   '>{errors.patient?.orderType?.message}</div>
+						</div>
+					</div>
+
+
+					{!isClearPackage &&
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>
+							Patient Responsibility Amount <span className='text-danger font-weight-bold '>*</span>
+							</label>
+							<input className='form-control-sm' type='number' {...register('patient.patientResponsibilityAmount')}  onBlur={() => setstateChange(!stateChange)}  />
+							<div className='small text-danger  pb-2   '>{errors.patient?.patientResponsibilityAmount?.message}</div>
+						</div>
+					</div>
+}
 				</div>
 			</form>
 		</>
