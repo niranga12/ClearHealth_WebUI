@@ -66,6 +66,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 
 	const [stateChange, setstateChange] = useState(false);
 	const [isClearPackage, setisClearPackage] = useState(false);
+	const [isPatientResponsibility, setisPatientResponsibility] = useState(false)
 	const [orderTypeList, setorderTypeList] = useState([]);
 
 	const dispatch = useDispatch();
@@ -95,6 +96,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 		const formValue = getValues('patient');
 		let value = Number(formValue?.contactMethod);
 		formValue?.orderType == OrderType.ClearPackage ? setisClearPackage(true) : setisClearPackage(false);
+		formValue?.orderType == OrderType.PatientResponsibility ? setisPatientResponsibility(true) : setisPatientResponsibility(false);
 		formValue?.orderType == OrderType.ClearPackage ? unregister('patient.patientResponsibilityAmount') : register('patient.patientResponsibilityAmount');
 
 		if (value > -1) {
@@ -252,7 +254,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 						</div>
 					</div>
 
-					{!isClearPackage && (
+					{isPatientResponsibility && (
 						<div className='col-md-4'>
 							<div className='form-group'>
 								<label className='form-text'>
