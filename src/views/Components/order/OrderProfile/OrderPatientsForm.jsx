@@ -16,28 +16,45 @@ import moment from 'moment';
 import FormatText from 'src/reusable/FormatText';
 import {getOrderType} from 'src/service/orderService';
 
-let schema = yup.object().shape({
-	patient: yup.object().shape({
-		firstName: yup.string().required(' First Name is required').matches(ValidationPatterns.onlyCharacters, ' Name should contain only characters'),
-		// middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
-		lastName: yup.string().required(' Last Name is required').matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
-		dateOfBirth: yup.string(),
-		contactMethod: yup.string().required('Contact Method is required'),
-		email: yup.string().email(' Please enter a valid email').required('Email is required'),
-		phone: yup
-			.string()
-			.required('Phone is required')
-			.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-		orderType: yup.string(),
-		// email: yup.string().email(' Please enter a valid email'),
-		// phone: yup
-		// 	.string()
-		// 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	}),
-});
+let schema = yup
+	.object()
+	.shape({
+		patient: yup.object().shape({
+			firstName: yup.string().required(' First Name is required').matches(ValidationPatterns.onlyCharacters, ' Name should contain only characters'),
+			// middleName: yup.string().matches(ValidationPatterns.onlyCharacters, ' Middle Name  should contain only characters'),
+			lastName: yup.string().required(' Last Name is required').matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
+			dateOfBirth: yup.string(),
+			contactMethod: yup.string().required('Contact Method is required'),
+			// email: yup.string().email(' Please enter a valid email').required('Email is required'),
+			// phone: yup
+			// 	.string()
+			// 	.required('Phone is required')
+			// 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+			orderType: yup.string(),
+			// email: yup.string().email(' Please enter a valid email'),
+			// phone: yup
+			// 	.string()
+			// 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+		}).when((values, schema) => {
+			if (values.contactMethod == '1' ) {
+				return schema.shape({
+					email: yup.string().email(' Please enter a valid email').required('Email is required'),
+				});
+			}
+			else if(values.contactMethod =='2' ){
+				return schema.shape({
+					phone: yup
+				.string()
+				.required('Phone is required')
+				.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+				});
+			}
+		}),
+	})
+	
 
 const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
-	const {register,unregister, getValues, reset, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
+	const {register, unregister, getValues, reset, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
 	// eslint-disable-next-line no-unused-vars
 	const {isValid, errors} = formState;
@@ -48,7 +65,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 	const [fromDate, handlefromDateChange] = useState(Date.now());
 
 	const [stateChange, setstateChange] = useState(false);
-    const [isClearPackage, setisClearPackage] = useState(false);
+	const [isClearPackage, setisClearPackage] = useState(false);
 	const [orderTypeList, setorderTypeList] = useState([]);
 
 	const dispatch = useDispatch();
@@ -77,9 +94,8 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 		let isAviable = false;
 		const formValue = getValues('patient');
 		let value = Number(formValue?.contactMethod);
-		formValue?.orderType==OrderType.ClearPackage?	setisClearPackage(true):setisClearPackage(false);
-		formValue?.orderType==OrderType.ClearPackage? unregister('patient.patientResponsibilityAmount') :register('patient.patientResponsibilityAmount');
-
+		formValue?.orderType == OrderType.ClearPackage ? setisClearPackage(true) : setisClearPackage(false);
+		formValue?.orderType == OrderType.ClearPackage ? unregister('patient.patientResponsibilityAmount') : register('patient.patientResponsibilityAmount');
 
 		if (value > -1) {
 			if (value === Number(ContactMethod.Email)) {
@@ -95,9 +111,9 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 			setIsPhone(false);
 		}
 
-		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) >-1) {
+		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) > -1) {
 			isAviable = true;
-		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) >-1) {
+		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) > -1) {
 			isAviable = true;
 		} else {
 			isAviable = false;
@@ -113,17 +129,15 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 		}
 	}, [stateChange, fromDate]);
 
+	// 	const orderTypeOnchange=(e)=>{
+	// debugger;
+	// 	e.target.value==OrderType.ClearPackage?	setisClearPackage(true):setisClearPackage(false);
 
-
-// 	const orderTypeOnchange=(e)=>{
-// debugger;
-// 	e.target.value==OrderType.ClearPackage?	setisClearPackage(true):setisClearPackage(false);
-
-// 	}
+	// 	}
 
 	// useEffect(() => {
 	// 	const formValue = getValues('patient.');
-	
+
 	// }, [orderTypeChange])
 
 	// const contactMethodChange =(value)=>{
@@ -223,7 +237,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 								{' '}
 								OrderType <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<select name='' id='' className='form-control-sm' {...register('patient.orderType')} onBlur={() => setstateChange(!stateChange)} >
+							<select name='' id='' className='form-control-sm' {...register('patient.orderType')} onBlur={() => setstateChange(!stateChange)}>
 								<option value='-1'>Select</option>
 
 								{orderTypeList.map((item, index) => (
@@ -238,18 +252,17 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 						</div>
 					</div>
 
-
-					{!isClearPackage &&
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-							Patient Responsibility Amount <span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<input className='form-control-sm' type='number' {...register('patient.patientResponsibilityAmount')}  onBlur={() => setstateChange(!stateChange)}  />
-							<div className='small text-danger  pb-2   '>{errors.patient?.patientResponsibilityAmount?.message}</div>
+					{!isClearPackage && (
+						<div className='col-md-4'>
+							<div className='form-group'>
+								<label className='form-text'>
+									Patient Responsibility Amount <span className='text-danger font-weight-bold '>*</span>
+								</label>
+								<input className='form-control-sm' type='number' {...register('patient.patientResponsibilityAmount')} onBlur={() => setstateChange(!stateChange)} />
+								<div className='small text-danger  pb-2   '>{errors.patient?.patientResponsibilityAmount?.message}</div>
+							</div>
 						</div>
-					</div>
-}
+					)}
 				</div>
 			</form>
 		</>
