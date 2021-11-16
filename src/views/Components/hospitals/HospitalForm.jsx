@@ -21,6 +21,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import {EnableMaskPhone} from 'src/reusable';
 import HospitalNotifyUser from './HospitalNotifyUser';
 
+
 const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital name should contain only characters'),
 	healthSystemPartyRoleId: yup.string().required('Health System is required'),
@@ -44,10 +45,9 @@ const schema = yup.object().shape({
 		.required('Contact Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
-
-	clearTransactionalFee: yup.number().required('Clear Transactional Fee  is required').min(0, 'Min value 0.').max(100, 'Max value 100.'),
-	patientResponsibilityDiscount: yup.number().required('Patient Responsibility Discount  is required').min(0, 'Min value 0.').max(100, 'Max value 100.'),
-	clearTransactionalFeeforPatientResponsibility: yup.number().required('Clear Transactional Fee for Patient Responsibility  is required').min(0, 'Min value 0.').max(100, 'Max value 100.'),
+	clearTransactionalFee: yup.number().required('Clear Transactional Fee percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee percentage is required.'),
+	patientResponsibilityDiscount: yup.number().required('Patient Responsibility Discount percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee percentage is required.'),
+	clearTransactionalFeeforPatientResponsibility: yup.number().required('Clear Transactional Fee for patient responsibility percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee percentage is required.'),
 	
 });
 
@@ -397,7 +397,10 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								{' '}
 								Clear Transactional Fee <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='number' min="0" max="100"  {...register('clearTransactionalFee')} />
+							
+<div className='rt-input-input w-100' >
+							<input className='form-control-sm ' type='number' min="0" max="100"  {...register('clearTransactionalFee')} />
+							</div>
 							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFee?.message}</div>
 						</div>
 					</div>
@@ -408,7 +411,9 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								{' '}
 								Patient Responsibility Discount <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
+							<div className='rt-input-input w-100' >
 							<input className='form-control-sm' type='number'  min="0" max="100"  {...register('patientResponsibilityDiscount')}  />
+							</div>
 							<div className='small text-danger  pb-2   '>{errors.patientResponsibilityDiscount?.message}</div>
 							
 							
@@ -421,7 +426,9 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								{' '}
 								Clear Transactional Fee for Patient Responsibility <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
+							<div className='rt-input-input w-100' >
 							<input className='form-control-sm'  type='number'  min="0" max="100" {...register('clearTransactionalFeeforPatientResponsibility')}  />
+							</div>
 							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFeeforPatientResponsibility?.message}</div>
 							
 							

@@ -1274,3 +1274,20 @@ border-radius: 0;
   font-size:0.8rem;
   cursor: pointer;
 }
+
+.rt-input-input {
+  position: relative;
+  display: inline-block;
+}
+
+.rt-input-input::after {
+  content: '%';
+  font-family: sans-serif;
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  top: 45%;
+  right: 5px;
+  
+  transform: translateY(-50%);
+}
