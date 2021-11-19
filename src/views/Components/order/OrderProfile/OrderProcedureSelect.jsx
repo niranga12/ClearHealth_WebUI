@@ -15,6 +15,8 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 	const [selectedCPT, setSelectedCPT] = useState([]);
 	const [cptList, setCptList] = useState([]);
 
+	const [changedTable, setchangedTable] = useState([])
+
 	const handleChange = (newValue: any, actionMeta: any) => {
 		setSelectedCPT(newValue);
 		handleCPTChange(newValue);
@@ -35,6 +37,42 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 		fetchData();
 	}, [location]);
 
+	useEffect(() => {
+	// console.log(changedTable);
+	setSelectedCPT(changedTable);
+	handleCPTChange(changedTable);
+	}, [changedTable])
+
+	const providerSelect=({ row,data })=>{
+		
+	const 	handleProviderChange=(e)=>{
+	
+		
+		let updateData= data.map(x => (x.Id === row.original.Id ? { ...x ,providerPartyRoleID:e.target.value } : x))
+		setchangedTable(updateData)
+
+
+
+		}
+
+		return (
+			<>
+				<select name='' id='' className='form-control-sm' onChange={handleProviderChange} >
+								<option value=''>Select</option>
+								{row.original.providers.map((item, index) => (
+									<option key={index} value={item.partyRoleId}>
+										{item.firstName} 	{item.lastName}
+									</option>
+								))}
+								{/* <option value='test'>test</option> */}
+							</select>
+			</>
+		)
+
+	}
+
+
+
 	//SETTING COLUMNS NAMES
 	const columns = useMemo(
 		() => [
@@ -48,6 +86,12 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 				Header: 'CPT Name',
 				accessor: 'description', // accessor is the "key" in the data
 				disableSortBy: true,
+			},
+			{
+				Header: 'Providers',
+				accessor: '', // accessor is the "key" in the data
+				disableSortBy: true,
+				Cell:providerSelect
 			},
 		],
 		[]

@@ -8,7 +8,7 @@ import OnError from 'src/_helpers/onerror';
 import {useHistory, useLocation} from 'react-router-dom';
 import {notify} from 'reapop';
 import {orderAprove} from 'src/service/orderService';
-import {ServiceMsg} from 'src/reusable/enum';
+import {OrderType, ServiceMsg} from 'src/reusable/enum';
 import moment from 'moment';
 
 const serviceDetail = ({row}) => {
@@ -45,6 +45,7 @@ const OrderList = ({orderDetail}) => {
 	}, [location]);
 
 	useEffect(() => {
+	
 		setOrder(orderDetail);
 		if (orderDetail?.orderPatientDetails?.orderStatus == 'Paid' || orderDetail?.orderPatientDetails?.orderStatus == 'Expired') {
 			setIsAction(false);
@@ -103,6 +104,11 @@ const OrderList = ({orderDetail}) => {
 				Header: 'CPT Code',
 				accessor: 'code',
 			},
+			{
+				Header: 'Provider',
+				accessor: 'providerFirstName',
+				Cell: ({row}) => <h6 className='font-weight-normal text-black '> {row.original.providerFirstName} {row.original.providerLastName}</h6>,
+			},
 			// {
 			// 	Header: 'Acc. Num',
 			// 	accessor: 'EHRAccNum',
@@ -134,18 +140,20 @@ const OrderList = ({orderDetail}) => {
 					<div className='col-md-6  '>
 						<div className='h4 mb-1 text-black'>Order #{order?.orderPatientDetails?.orderNumber}</div>
 						<div>{moment(order?.orderPatientDetails?.orderDate).format('MM-DD-YYYY')}</div>
+						<div>OrderType : {order?.orderSummary[0]?.orderTypeDescription}</div>
+					{order?.orderSummary[0]?.orderTypeId===OrderType.PatientResponsibility && <div>Order Total : {order?.orderSummary[0]?.orderTotal}	</div>}
 					</div>
 
 					<div className='col-md-6'>
 						{/* disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData } */}
-						<button className='btn btn-view-account ml-3 float-right' disabled={order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts || !orderData.length || !isAction} onClick={approveOrder}>
+						<button className='btn btn-view-account ml-3 float-right' disabled={order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts || !isAction} onClick={approveOrder}>
 							Approve
 						</button>
 					</div>
 				</div>
 			</div>
 
-			<div className='card-body p-0'>{orderData && <DataTable columns={columns} data={orderData} />}</div>
+			<div className='card-body p-0'>{orderData && order?.orderSummary[0]?.orderTypeId===OrderType.ClearPackage && <DataTable columns={columns} data={orderData} />}</div>
 		</div>
 	);
 };

@@ -78,7 +78,8 @@ function OrderActions({row}) {
 
 	const sendOrderButton=()=>{
 		return (
-			<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" } onClick={approveOrder}>
+			// <button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" } onClick={approveOrder}>
+			<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts  || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" } onClick={approveOrder}>
 			{' '}
 			Send Order
 		</button>
