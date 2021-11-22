@@ -46,8 +46,8 @@ const schema = yup.object().shape({
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 	clearTransactionalFee: yup.number().required('Clear Transactional Fee percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee percentage is required.'),
-	patientResponsibilityDiscount: yup.number().required('Patient Responsibility Discount percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee percentage is required.'),
-	clearTransactionalFeeforPatientResponsibility: yup.number().required('Clear Transactional Fee for patient responsibility percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee percentage is required.'),
+	patientResponsibilityDiscount: yup.number().required('Patient Responsibility Discount percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Patient Responsibility Discount percentage is required.'),
+	clearTransactionalFeeforPatientResponsibility: yup.number().required('Clear Transactional Fee for patient responsibility percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee for patient responsibility percentage is required.'),
 	
 });
 
