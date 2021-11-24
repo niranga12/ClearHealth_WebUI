@@ -334,7 +334,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				...(groupSelection == "Individual" && { lastName: data.lastName }),
 				...(groupSelection == "Individual" && { providerTypeId: Provider.Provider }),
 				...(groupSelection == "Group" && { providerGroup: data.providerGroup }),
-				...(groupSelection == "Group" && { providerTypeId: Provider.providerGroup }),
+				...(groupSelection == "Group" && { providerTypeId: Provider.GroupProvider }),
 			},
 
 			postalAddress: [
