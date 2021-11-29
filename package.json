@@ -46,6 +46,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.9.1",
     "date-fns": "^2.23.0",
+    "env-cmd": "^10.1.0",
     "enzyme": "^3.11.0",
     "export-to-csv": "^0.2.1",
     "font-awesome": "^4.7.0",
