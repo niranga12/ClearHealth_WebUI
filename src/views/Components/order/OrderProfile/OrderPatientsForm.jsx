@@ -132,7 +132,6 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 	}, [stateChange, fromDate]);
 
 	// 	const orderTypeOnchange=(e)=>{
-	// debugger;
 	// 	e.target.value==OrderType.ClearPackage?	setisClearPackage(true):setisClearPackage(false);
 
 	// 	}

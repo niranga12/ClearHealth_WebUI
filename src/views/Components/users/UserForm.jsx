@@ -1,21 +1,21 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
-import {useForm, useFormState} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+import React, { useEffect, useState } from 'react';
+import { useForm, useFormState } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {useDispatch} from 'react-redux';
-import {ActiveList, RoleType, ServiceMsg} from 'src/reusable/enum';
-import {useHistory} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { ActiveList, RoleType, ServiceMsg } from 'src/reusable/enum';
+import { useHistory } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
-import {notify} from 'reapop';
-import {saveUser, updateUserByPartyRoleId} from 'src/service/userService';
-import {getSpecificRoleList} from 'src/service/commonService';
+import { notify } from 'reapop';
+import { saveUser, updateUserByPartyRoleId } from 'src/service/userService';
+import { getSpecificRoleList } from 'src/service/commonService';
 import FormatText from 'src/reusable/FormatText';
-import {loaderHide, loaderShow} from 'src/actions/loaderAction';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import Select from 'react-select';
-import {getHealthSystemList} from 'src/service/healthsystemService';
-import {getHospitalsList} from 'src/service/hospitalsService';
+import { getHealthSystemList } from 'src/service/healthsystemService';
+import { getHospitalsList } from 'src/service/hospitalsService';
 
 const initialSearch = {
 	itemsPerPage: '',
@@ -33,7 +33,7 @@ const schema = yup.object().shape({
 	email: yup.string().required('Email is required').email('Email must be a valid email'),
 });
 
-const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
+const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 	const {
 		register,
 		handleSubmit,
@@ -41,11 +41,11 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 		getValues,
 		reset,
 		control,
-		formState: {errors},
-	} = useForm({resolver: yupResolver(schema)});
+		formState: { errors },
+	} = useForm({ resolver: yupResolver(schema) });
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
-	const {dirtyFields} = useFormState({control});
+	const { dirtyFields } = useFormState({ control });
 	const dispatch = useDispatch();
 	let history = useHistory();
 	const [roleTypeDta, setRoleTpeData] = useState([]);
@@ -95,22 +95,22 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 			if (selectedHealthSystem?.length > 0) {
 				try {
 
-					const searchQuery = {healthSystemPartyRoleId: selectedHealthSystem};
+					const searchQuery = { healthSystemPartyRoleId: selectedHealthSystem };
 					const result = await getHospitalsList(searchQuery);
 					sethospitalList(result.data.data);
-	  
-				
 
-					if (defaultValues?.hospitalList.length > 0  ) {
+
+
+					if (defaultValues?.hospitalList.length > 0) {
 						let defaultHospital = await getSystemDefault(result.data.data, defaultValues.hospitalList);
 						// setDefaultHospital(defaultHospital);
 						roleTypeChange(defaultValues.roleTypeId);
-						defaultValues.healthSystemList == selectedHealthSystem ? setSelectedHospital(defaultHospital):setSelectedHospital(null);
-						
-					
+						defaultValues.healthSystemList == selectedHealthSystem ? setSelectedHospital(defaultHospital) : setSelectedHospital(null);
+
+
 
 					}
-				} catch (error) {}
+				} catch (error) { }
 			}
 		};
 		fetchData();
@@ -125,23 +125,23 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 
 	// role type selection
 	const roleTypeChange = (e) => {
-		
+
 		switch (Number(e)) {
 			case RoleType.HealthSystemAdmin:
 				setHealthSystem(true);
-				setHospital(false);	
-			
+				setHospital(false);
+
 
 				break;
 			case RoleType.HospitalAdmin:
 				setHealthSystem(true);
 				setHospital(true);
-				
+
 				break;
 			case RoleType.HospitalStaff:
 				setHealthSystem(true);
 				setHospital(true);
-				
+
 
 				break;
 			default:
@@ -161,9 +161,9 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 		});
 		setselectedHealthSystem(selHealthSys);
 		setDirtySelect(true);
-		
-		
-		
+
+
+
 		// console.log(selHealthSys);
 	};
 
@@ -189,31 +189,38 @@ const UserForm = ({defaultValues, isEdit = false, partyRoleId = null}) => {
 	};
 
 
-const selectedHospitalIds=()=>{
-	let SelectedHospitalVal = [];
-		selectedHospital.forEach((x) => {
-			SelectedHospitalVal.push(Number(x.partyRoleId));
-		});
-		return SelectedHospitalVal;
-}
+	const selectedHospitalIds = () => {
+		try {
+			let SelectedHospitalVal = [];
+			selectedHospital.forEach((x) => {
+				SelectedHospitalVal.push(Number(x.partyRoleId));
+			});
+			return SelectedHospitalVal;
+		} catch (error) {
+			console.error(error)
+		}
+
+
+	}
 
 	// save User
 	const addUser = async (data) => {
 		dispatch(loaderShow());
-		
-
+		let healthPermission = data.roleTypeId == RoleType.ClearAdmin || data.roleTypeId == RoleType.ClearSystemAdmin ? false : true;
+		let hospitalPermission = data.roleTypeId == RoleType.ClearAdmin || data.roleTypeId  == RoleType.ClearSystemAdmin || data.roleTypeId  == RoleType.HealthSystemAdmin ? false : true;
 		const newUser = {
 			firstName: data.firstName,
 			lastName: data.lastName,
 			roleTypeId: data.roleTypeId,
 			status: data.status,
 			email: data.email,
-			healthSystemList: selectedHealthSystem,
-			hospitalList: selectedHospitalIds(),
+			...(healthPermission && { healthSystemList: selectedHealthSystem }),
+			...(hospitalPermission && { hospitalList: selectedHospitalIds() }),
+			// healthSystemList:  selectedHealthSystem,
+			// hospitalList: selectedHospitalIds(),
 		};
-
 		try {
-			
+
 			if (newUser) {
 				let result = await saveUser(newUser);
 				if (result.data.message === ServiceMsg.OK) {
@@ -246,7 +253,7 @@ const selectedHospitalIds=()=>{
 			if (Object.keys(updateUser).length == 0) {
 				dispatch(notify(`No record to update`, 'error'));
 			} else {
-			
+
 				try {
 					const result = await updateUserByPartyRoleId(partyRoleId, updateUser);
 					if (result.data.message == ServiceMsg.OK) {
@@ -316,7 +323,7 @@ const selectedHospitalIds=()=>{
 								<label className='form-text'>
 									Health System <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<Select options={healthSystemList}  defaultValue={defaultHealth} closeMenuOnSelect={false} onChange={handleHealthSystemChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
+								<Select options={healthSystemList} defaultValue={defaultHealth} closeMenuOnSelect={false} onChange={handleHealthSystemChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
 							</div>
 						</div>
 					)}
@@ -328,8 +335,8 @@ const selectedHospitalIds=()=>{
 									Hospital <span className='text-danger font-weight-bold '>*</span>
 								</label>
 								{/* <Select         value={value} options={hospitalList} isClearable defaultValue={defaultHospital} closeMenuOnSelect={false} onChange={handleHospitalChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} /> */}
-								<Select         value={selectedHospital} options={hospitalList} isClearable  closeMenuOnSelect={false} onChange={handleHospitalChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
-						
+								<Select value={selectedHospital} options={hospitalList} isClearable closeMenuOnSelect={false} onChange={handleHospitalChange} isMulti getOptionLabel={(option) => `${option.name}`} getOptionValue={(option) => `${option.partyRoleId}`} />
+
 							</div>
 						</div>
 					)}
