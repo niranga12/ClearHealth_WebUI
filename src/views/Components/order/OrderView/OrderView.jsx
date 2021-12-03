@@ -10,6 +10,7 @@ import {resetOrder} from 'src/actions/orderAction';
 import {getOrderByOrderId} from 'src/service/orderService';
 import MetaTitles from 'src/views/common/metaTitles';
 import OnError from 'src/_helpers/onerror';
+import OrderCheckEligibity from './OrderCheckEligibity/OrderCheckEligibity';
 import OrderList from './OrderList';
 import OrderViewPatient from './OrderViewPatient';
 
@@ -82,7 +83,7 @@ const OrderView = () => {
 		<div className="mt-3">
 			  
 			<OrderViewPatient patientDetail={orderList?.orderPatientDetails} />
-
+			<OrderCheckEligibity/>
 			<OrderList orderDetail={orderList} />
 			{/* <OrderList/> */}
 		</div>

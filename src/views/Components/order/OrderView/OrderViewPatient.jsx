@@ -271,7 +271,18 @@ const OrderViewPatient = ({patientDetail}) => {
 					</div>
 				</div>
 			</div>
+
+
+
+
+
+			
 		</div>
+
+
+
+
+		
 	);
 };
 

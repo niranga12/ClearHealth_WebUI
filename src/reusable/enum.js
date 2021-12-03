@@ -224,13 +224,22 @@ export const Provider={
 
 	Provider:7,
 	GroupProvider:13,
-
-
 }
-
 
 export const OrderType={
 	ClearPackage:1,
 	PatientResponsibility:2
 }
+
+export const HealthBenefitTabList = {
+	OutofPocket:0,
+	Deductible:1
+};
+
+export const HospitalInpatientTabList = {
+	Copayment:0,
+	Coinsurance:1,
+	Deductible:2
+};
+	
 	
