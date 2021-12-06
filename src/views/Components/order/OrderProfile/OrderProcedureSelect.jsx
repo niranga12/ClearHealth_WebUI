@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useMemo, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {useLocation} from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
-import {getCPTCodesByHospital} from 'src/service/hospitalsService';
+import { getCPTCodesByHospital } from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
 import OnError from 'src/_helpers/onerror';
 import PropTypes from 'prop-types';
 
-const OrderProcedureSelect = ({handleCPTChange}) => {
+const OrderProcedureSelect = ({ handleCPTChange }) => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 
@@ -18,12 +18,19 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 	const [changedTable, setchangedTable] = useState([])
 
 	const handleChange = (newValue: any, actionMeta: any) => {
+		let updateData = newValue.map(x => {
+			let previousSelect = selectedCPT.find(y => y.partyRoleId == x.partyRoleId);
+			if (previousSelect) {
+				return previousSelect
+			} else {
+				return x;
+			}
 
-	
-// newValue.map(x=>({}))
-		let updateData= newValue.map(x => ( { ...x ,providerPartyRoleID:'' } ))
+
+		});
+		// console.log(updateData);
 		setSelectedCPT(updateData);
-		handleCPTChange(newValue);
+		handleCPTChange(updateData);
 	};
 
 	useEffect(() => {
@@ -42,30 +49,30 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 	}, [location]);
 
 	useEffect(() => {
-	// console.log(changedTable);
-	setSelectedCPT(changedTable);
-	handleCPTChange(changedTable);
+		// console.log(changedTable);
+		setSelectedCPT(changedTable);
+		handleCPTChange(changedTable);
 	}, [changedTable])
 
-	const providerSelect=({ row,data })=>{
-		
-	const 	handleProviderChange=(e)=>{
+	const providerSelect = ({ row, data }) => {
 
-		let updateData= data.map(x => (x.Id === row.original.Id ? { ...x ,providerPartyRoleID:e.target.value } : x))
-		setchangedTable(updateData)
+		const handleProviderChange = (e) => {
+
+			let updateData = data.map(x => (x.Id === row.original.Id ? { ...x, providerPartyRoleID: e.target.value } : x))
+			setchangedTable(updateData)
 		}
 
 		return (
 			<>
 				<select name='' id='' className='form-control-sm' onChange={handleProviderChange} >
-								<option value=''>Select</option>
-								{row.original.providers.map((item, index) => (
-									<option key={index} value={item.partyRoleId}>
-										{item.firstName} 	{item.lastName}
-									</option>
-								))}
-								{/* <option value='test'>test</option> */}
-							</select>
+					<option value=''>Select</option>
+					{row.original.providers.map((item, index) => (
+						<option key={index} value={item.partyRoleId}>
+							{item.firstName} 	{item.lastName}
+						</option>
+					))}
+					{/* <option value='test'>test</option> */}
+				</select>
 			</>
 		)
 
@@ -80,7 +87,7 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 				Header: 'CPT Code',
 				accessor: 'code', // accessor is the "key" in the data
 				disableSortBy: true,
-				Cell: ({value}) => <h6 className='font-weight-normal text-black ml-4'> {value} </h6>,
+				Cell: ({ value }) => <h6 className='font-weight-normal text-black ml-4'> {value} </h6>,
 			},
 			{
 				Header: 'CPT Name',
@@ -91,7 +98,7 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 				Header: 'Providers',
 				accessor: '', // accessor is the "key" in the data
 				disableSortBy: true,
-				Cell:providerSelect
+				Cell: providerSelect
 			},
 		],
 		[]

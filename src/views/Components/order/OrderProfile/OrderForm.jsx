@@ -65,8 +65,9 @@ const OrderForm = () => {
 
 	useEffect(() => {
 		if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) || patientDetail?.orderType == OrderType.PatientResponsibility) {
-			//btnRef.current.removeAttribute('disabled');
+			btnRef.current.removeAttribute('disabled');
 			if (SelectedCpt.length > 0) {
+
 				let isProviderPartyRoleId = false;
 				SelectedCpt.forEach(element => {
 				
@@ -78,11 +79,11 @@ const OrderForm = () => {
 						isProviderPartyRoleId = true;
 	
 					} else {
-	
+						
 					}
 	
 				});
-				if (isProviderPartyRoleId) {
+				if (isProviderPartyRoleId && SelectedCpt.length > 0) {
 					btnRef.current.setAttribute('disabled', 'disabled');
 				} else {
 					btnRef.current.removeAttribute('disabled');
