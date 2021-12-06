@@ -36,6 +36,15 @@ let schema = yup
 			// 	.string()
 			// 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 		}).when((values, schema) => {
+			if(values.orderType==OrderType.PatientResponsibility){
+				return schema.shape({
+					patientResponsibilityAmount: yup
+				.string()
+				.required('Patient Responsibility Amount is required')
+				});
+			}
+
+
 			if (values.contactMethod == '1' ) {
 				return schema.shape({
 					email: yup.string().email(' Please enter a valid email').required('Email is required'),
@@ -48,7 +57,11 @@ let schema = yup
 				.required('Phone is required')
 				.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 				});
+			}else{
+
 			}
+
+
 		}),
 	})
 	
@@ -114,9 +127,9 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 		}
 
 		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) > -1) {
-			isAviable = true;
+			isAviable = ((formValue?.orderType==OrderType.PatientResponsibility && formValue.patientResponsibilityAmount ) || (formValue?.orderType==OrderType.ClearPackage))?true:false;
 		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) > -1) {
-			isAviable = true;
+			isAviable = ((formValue?.orderType==OrderType.PatientResponsibility && formValue.patientResponsibilityAmount ) || (formValue?.orderType==OrderType.ClearPackage))?true:false;
 		} else {
 			isAviable = false;
 		}

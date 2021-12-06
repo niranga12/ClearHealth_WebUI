@@ -18,7 +18,11 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 	const [changedTable, setchangedTable] = useState([])
 
 	const handleChange = (newValue: any, actionMeta: any) => {
-		setSelectedCPT(newValue);
+
+	
+// newValue.map(x=>({}))
+		let updateData= newValue.map(x => ( { ...x ,providerPartyRoleID:'' } ))
+		setSelectedCPT(updateData);
 		handleCPTChange(newValue);
 	};
 
@@ -46,13 +50,9 @@ const OrderProcedureSelect = ({handleCPTChange}) => {
 	const providerSelect=({ row,data })=>{
 		
 	const 	handleProviderChange=(e)=>{
-	
-		
+
 		let updateData= data.map(x => (x.Id === row.original.Id ? { ...x ,providerPartyRoleID:e.target.value } : x))
 		setchangedTable(updateData)
-
-
-
 		}
 
 		return (

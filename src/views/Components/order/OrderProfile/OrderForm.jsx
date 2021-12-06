@@ -1,14 +1,14 @@
 /* eslint-disable eqeqeq */
-import React, {useEffect, useRef, useState} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import OrderPatientsForm from './OrderPatientsForm';
 import OrderProcedureSelect from './OrderProcedureSelect';
 import AsyncSelect from 'react-select/async';
-import {getPatientsDetailsByHospital} from 'src/service/hospitalsService';
-import {saveOrderData} from 'src/service/orderService';
-import {OrderType, ServiceMsg} from 'src/reusable/enum';
-import {useDispatch} from 'react-redux';
-import {notify} from 'reapop';
+import { getPatientsDetailsByHospital } from 'src/service/hospitalsService';
+import { saveOrderData } from 'src/service/orderService';
+import { OrderType, ServiceMsg } from 'src/reusable/enum';
+import { useDispatch } from 'react-redux';
+import { notify } from 'reapop';
 import OnError from 'src/_helpers/onerror';
 import 'font-awesome/css/font-awesome.min.css';
 import NormalizePhone from 'src/reusable/NormalizePhone';
@@ -46,10 +46,13 @@ const OrderForm = () => {
 	}, [location]);
 
 	const handleCPTChange = (value) => {
+		
 		setSelectedCpt(value);
-
 		// CheckAvilableBtn();
 	};
+
+
+
 
 	// const CheckAvilableBtn = () => {
 
@@ -62,7 +65,30 @@ const OrderForm = () => {
 
 	useEffect(() => {
 		if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) || patientDetail?.orderType == OrderType.PatientResponsibility) {
-			btnRef.current.removeAttribute('disabled');
+			//btnRef.current.removeAttribute('disabled');
+			if (SelectedCpt.length > 0) {
+				let isProviderPartyRoleId = false;
+				SelectedCpt.forEach(element => {
+				
+					if (!element.hasOwnProperty('providerPartyRoleID')) {
+					
+						isProviderPartyRoleId = true;
+	
+					} else if (element.providerPartyRoleID == '') {
+						isProviderPartyRoleId = true;
+	
+					} else {
+	
+					}
+	
+				});
+				if (isProviderPartyRoleId) {
+					btnRef.current.setAttribute('disabled', 'disabled');
+				} else {
+					btnRef.current.removeAttribute('disabled');
+				}
+	
+			}
 		} else {
 			btnRef.current.setAttribute('disabled', 'disabled');
 		}
@@ -100,10 +126,10 @@ const OrderForm = () => {
 	// load options using API call
 	const loadOptions = async (inputValue) => {
 		try {
-			let data = {searchTerm: inputValue};
+			let data = { searchTerm: inputValue };
 			let result = await getPatientsDetailsByHospital(hospitalId, data);
 			return result.data.data;
-		} catch (error) {}
+		} catch (error) { }
 	};
 
 	const patientsFormDetail = (value) => {
@@ -151,7 +177,7 @@ const OrderForm = () => {
 		if (selectedValue?.partyRoleId && SelectedCpt.length > 0) {
 			data = {
 				hospitalPartyRoleId: hospitalId,
-				patientResponsibilityAmount:null,
+				patientResponsibilityAmount: null,
 				patientPartyRoleId: selectedValue.partyRoleId,
 				procedures: SelectedCpt,
 				orderTypeId: patientDetail?.orderType,
@@ -160,26 +186,25 @@ const OrderForm = () => {
 		} else if (SelectedCpt.length > 0 && patientDetail) {
 			data = {
 				hospitalPartyRoleId: hospitalId,
-				patientResponsibilityAmount:null,
+				patientResponsibilityAmount: null,
 				orderTypeId: patientDetail?.orderType,
-				patient: {...patientDetail, phone: NormalizePhone(patientDetail.phone)},
+				patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
 				procedures: SelectedCpt,
 			};
 		} else if (patientDetail?.orderType == OrderType.PatientResponsibility) {
 			data = {
 				hospitalPartyRoleId: hospitalId,
-				patientResponsibilityAmount:patientDetail?.patientResponsibilityAmount,
+				patientResponsibilityAmount: patientDetail?.patientResponsibilityAmount,
 				orderTypeId: patientDetail?.orderType,
-				patient: {...patientDetail, phone: NormalizePhone(patientDetail.phone)},
+				patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
 				procedures: [],
 			};
 		}
 
-		
+
 
 		try {
 
-		
 
 			let result = await saveOrderData(data);
 			// eslint-disable-next-line eqeqeq
