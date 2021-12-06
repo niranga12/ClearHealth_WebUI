@@ -67,10 +67,8 @@ const OrderForm = () => {
 		if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) || patientDetail?.orderType == OrderType.PatientResponsibility) {
 			btnRef.current.removeAttribute('disabled');
 			if (SelectedCpt.length > 0) {
-
 				let isProviderPartyRoleId = false;
 				SelectedCpt.forEach(element => {
-				
 					if (!element.hasOwnProperty('providerPartyRoleID')) {
 					
 						isProviderPartyRoleId = true;

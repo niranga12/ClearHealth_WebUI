@@ -19,7 +19,7 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
 
 	const handleChange = (newValue: any, actionMeta: any) => {
 		let updateData = newValue.map(x => {
-			let previousSelect = selectedCPT.find(y => y.partyRoleId == x.partyRoleId);
+			let previousSelect = selectedCPT.find(y => y.Id == x.Id);
 			if (previousSelect) {
 				return previousSelect
 			} else {
