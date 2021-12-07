@@ -107,7 +107,8 @@ const OrderList = ({orderDetail}) => {
 			{
 				Header: 'Provider',
 				accessor: 'providerFirstName',
-				Cell: ({row}) => <h6 className='font-weight-normal text-black '> {row.original.providerFirstName} {row.original.providerLastName}</h6>,
+				//Cell: ({row}) => <h6 className='font-weight-normal text-black '> {row.original.providerFirstName} {row.original.providerLastName}</h6>,
+				Cell: ({row}) => <h6 className='font-weight-normal text-black '> {row.original.providerFirstName}</h6>,
 			},
 			// {
 			// 	Header: 'Acc. Num',

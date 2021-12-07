@@ -1,20 +1,20 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import {yupResolver} from '@hookform/resolvers/yup';
-import React, {useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {ContactMethod, MaskFormat, OrderType, ValidationPatterns} from 'src/reusable/enum';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ContactMethod, MaskFormat, OrderType, ValidationPatterns } from 'src/reusable/enum';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import DateSelector from 'src/views/common/dateSelector';
 import * as yup from 'yup';
 import InputMask from 'react-input-mask';
 import OnError from 'src/_helpers/onerror';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import {EnableMaskPhone} from 'src/reusable';
+import { EnableMaskPhone } from 'src/reusable';
 import moment from 'moment';
 import FormatText from 'src/reusable/FormatText';
-import {getOrderType} from 'src/service/orderService';
+import { getOrderType } from 'src/service/orderService';
 
 let schema = yup
 	.object()
@@ -36,41 +36,41 @@ let schema = yup
 			// 	.string()
 			// 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 		}).when((values, schema) => {
-			if(values.orderType==OrderType.PatientResponsibility){
+			if (values.orderType == OrderType.PatientResponsibility) {
 				return schema.shape({
 					patientResponsibilityAmount: yup
-				.string()
-				.required('Patient Responsibility Amount is required')
+						.string()
+						.required('Patient Responsibility Amount is required')
 				});
 			}
 
 
-			if (values.contactMethod == '1' ) {
+			if (values.contactMethod == '1') {
 				return schema.shape({
 					email: yup.string().email(' Please enter a valid email').required('Email is required'),
 				});
 			}
-			else if(values.contactMethod =='2' ){
+			else if (values.contactMethod == '2') {
 				return schema.shape({
 					phone: yup
-				.string()
-				.required('Phone is required')
-				.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+						.string()
+						.required('Phone is required')
+						.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 				});
-			}else{
+			} else {
 
 			}
 
 
 		}),
 	})
-	
 
-const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
-	const {register, unregister, getValues, reset, formState} = useForm({resolver: yupResolver(schema), mode: 'all'});
+
+const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
+	const { register, unregister, getValues, reset, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
 	// eslint-disable-next-line no-unused-vars
-	const {isValid, errors} = formState;
+	const { isValid, errors } = formState;
 
 	const [isMail, setIsmail] = useState(false);
 	const [isPhone, setIsPhone] = useState(false);
@@ -81,8 +81,25 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 	const [isClearPackage, setisClearPackage] = useState(false);
 	const [isPatientResponsibility, setisPatientResponsibility] = useState(false)
 	const [orderTypeList, setorderTypeList] = useState([]);
-
 	const dispatch = useDispatch();
+	const [value, setValue] = useState('')
+	const [numValue, setNumValue] = useState();
+
+
+	const changeHandler = ({ target }) => {
+		setValue(target.value.toLowerCase())
+	}
+
+	const onChange = ({ target }) => {
+		if (Number(target.value)>=0) {
+			setNumValue(target.value);
+		  }else{
+			setNumValue(null);
+		  }
+	}
+	
+
+
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -101,6 +118,8 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 		} catch (error) {
 			OnError(error, dispatch);
 		}
+
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [defaultValues]);
 
@@ -127,9 +146,9 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 		}
 
 		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) > -1) {
-			isAviable = ((formValue?.orderType==OrderType.PatientResponsibility && formValue.patientResponsibilityAmount ) || (formValue?.orderType==OrderType.ClearPackage))?true:false;
+			isAviable = ((formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) || (formValue?.orderType == OrderType.ClearPackage)) ? true : false;
 		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) > -1) {
-			isAviable = ((formValue?.orderType==OrderType.PatientResponsibility && formValue.patientResponsibilityAmount ) || (formValue?.orderType==OrderType.ClearPackage))?true:false;
+			isAviable = ((formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) || (formValue?.orderType == OrderType.ClearPackage)) ? true : false;
 		} else {
 			isAviable = false;
 		}
@@ -137,12 +156,16 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 		if (isAviable) {
 			// if ( isValid && !errors.hasOwnProperty('patient')  ) {
 			const formValue = getValues('patient');
-			let newValue = {...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY')};
+			let newValue = { ...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY') };
 			handleForm(newValue);
 		} else {
 			handleForm(null);
 		}
+
+
 	}, [stateChange, fromDate]);
+
+
 
 	// 	const orderTypeOnchange=(e)=>{
 	// 	e.target.value==OrderType.ClearPackage?	setisClearPackage(true):setisClearPackage(false);
@@ -231,7 +254,7 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'> Email {isMail && <span className='text-danger font-weight-bold '>*</span>}</label>
-							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} />
+							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} value={value} readOnly={isEdit} onChange={changeHandler} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.email?.message}</div>
 						</div>
 					</div>
@@ -272,13 +295,13 @@ const OrderPatientsForm = ({defaultValues, isEdit = false, handleForm}) => {
 								<label className='form-text'>
 									Patient Responsibility Amount <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input className='form-control-sm' type='number' {...register('patient.patientResponsibilityAmount')} onBlur={() => setstateChange(!stateChange)} />
+								<input className='form-control-sm' type='number' pattern="^[0-9]*$" {...register('patient.patientResponsibilityAmount')} onBlur={() => setstateChange(!stateChange)} onChange={onChange} value={numValue || ''} />
 								<div className='small text-danger  pb-2   '>{errors.patient?.patientResponsibilityAmount?.message}</div>
 							</div>
 						</div>
 					)}
 				</div>
-			
+
 			</form>
 		</>
 	);

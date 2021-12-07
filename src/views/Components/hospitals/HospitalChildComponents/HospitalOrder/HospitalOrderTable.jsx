@@ -64,9 +64,10 @@ function OrderActions({ row }) {
 			const result = await orderAprove(row.original.orderId);
 			if (result.data.message == ServiceMsg.OK) {
 				dispatch(notify(`Successfully updated`, 'success'));
-				setLoading(false);
+				
 				// history.go(0)
 				setTimeout(() => {
+					setLoading(false);
 					dispatch(resetOrderTable(orderChanges));
 				}, 1000);
 			}
