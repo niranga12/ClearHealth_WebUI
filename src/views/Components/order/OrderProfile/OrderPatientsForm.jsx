@@ -36,6 +36,15 @@ let schema = yup
 			// 	.string()
 			// 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 		}).when((values, schema) => {
+			if (values.orderType == OrderType.PatientResponsibility) {
+				return schema.shape({
+					patientResponsibilityAmount: yup
+						.string()
+						.required('Patient Responsibility Amount is required')
+				});
+			}
+
+
 			if (values.contactMethod == '1') {
 				return schema.shape({
 					email: yup.string().email(' Please enter a valid email').required('Email is required'),
@@ -48,7 +57,11 @@ let schema = yup
 						.required('Phone is required')
 						.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 				});
+			} else {
+
 			}
+
+
 		}),
 	})
 
@@ -68,18 +81,34 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 	const [isClearPackage, setisClearPackage] = useState(false);
 	const [isPatientResponsibility, setisPatientResponsibility] = useState(false)
 	const [orderTypeList, setorderTypeList] = useState([]);
-	const [relationshipList, setRelationshipList] = useState([]);
-	const [insuranceList, setInsuranceList] = useState([]);
 	const dispatch = useDispatch();
+	const [value, setValue] = useState('')
+	const [numValue, setNumValue] = useState();
+
+
+	const changeHandler = ({ target }) => {
+		setValue(target.value.toLowerCase())
+	}
+
+	const onChange = ({ target }) => {
+		if (Number(target.value)>=0) {
+			setNumValue(target.value);
+		  }else{
+			setNumValue(null);
+		  }
+	}
+	
+
+
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				setRelationshipList([{id:"Self",name:"Self"},{id:"Spouse",name:"Spouse"},
-				{id:"Dependant",name:"Dependant"},{id:"Other",name:"Other"}])
-				setInsuranceList([{id:"1",name:"1199 NATIONAL BENEFIT FUND"},
-				{id:"2",name:"137654 CALIFORNIA INCORPORATED"},
-				{id:"3",name:"1ST AUTO AND CASUALTY"},{id:"Other",name:"Other"}])
+				// setRelationshipList([{id:"Self",name:"Self"},{id:"Spouse",name:"Spouse"},
+				// {id:"Dependant",name:"Dependant"},{id:"Other",name:"Other"}])
+				// setInsuranceList([{id:"1",name:"1199 NATIONAL BENEFIT FUND"},
+				// {id:"2",name:"137654 CALIFORNIA INCORPORATED"},
+				// {id:"3",name:"1ST AUTO AND CASUALTY"},{id:"Other",name:"Other"}])
 				const result = await getOrderType();
 				setorderTypeList(result.data.data);
 			} catch (error) {
@@ -94,6 +123,8 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 		} catch (error) {
 			OnError(error, dispatch);
 		}
+
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [defaultValues]);
 
@@ -121,9 +152,9 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 		}
 
 		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) > -1) {
-			isAviable = true;
+			isAviable = ((formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) || (formValue?.orderType == OrderType.ClearPackage)) ? true : false;
 		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) > -1) {
-			isAviable = true;
+			isAviable = ((formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) || (formValue?.orderType == OrderType.ClearPackage)) ? true : false;
 		} else {
 			isAviable = false;
 		}
@@ -136,7 +167,11 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 		} else {
 			handleForm(null);
 		}
+
+
 	}, [stateChange, fromDate]);
+
+
 
 	// 	const orderTypeOnchange=(e)=>{
 	// 	e.target.value==OrderType.ClearPackage?	setisClearPackage(true):setisClearPackage(false);
@@ -225,7 +260,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'> Email {isMail && <span className='text-danger font-weight-bold '>*</span>}</label>
-							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} />
+							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} value={value} readOnly={isEdit} onChange={changeHandler} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.email?.message}</div>
 						</div>
 					</div>
@@ -266,148 +301,11 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 								<label className='form-text'>
 									Patient Responsibility Amount <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input className='form-control-sm' type='number' {...register('patient.patientResponsibilityAmount')} onBlur={() => setstateChange(!stateChange)} />
+								<input className='form-control-sm' type='number' pattern="^[0-9]*$" {...register('patient.patientResponsibilityAmount')} onBlur={() => setstateChange(!stateChange)} onChange={onChange} value={numValue || ''} />
 								<div className='small text-danger  pb-2   '>{errors.patient?.patientResponsibilityAmount?.message}</div>
 							</div>
 						</div>
 					)}
-				</div>
-				<div className='hr-row'></div>
-				<h5 className='font-weight-bold mt-2'>Insurance Details</h5>
-
-				<div className='row'>
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								Insurance Company <span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<select name='' id='' className='form-control-sm' {...register('patient.orderType')} onBlur={() => setstateChange(!stateChange)}>
-								<option value='-1'>Select</option>
-
-								{insuranceList.map((item, index) => (
-									<option key={index} value={item.id}>
-										{item.name}
-									</option>
-								))}
-							</select>
-							<div className='small text-danger  pb-2   '>{errors.patient?.firstName?.message}</div>
-						</div>
-					</div>
-
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>Relationship to Subscriber</label>
-							<select name='' id='' className='form-control-sm' {...register('patient.orderType')} onBlur={() => setstateChange(!stateChange)}>
-								<option value='-1'>Select</option>
-
-								{relationshipList.map((item, index) => (
-									<option key={index} value={item.id}>
-										{item.name}
-									</option>
-								))}
-							</select>
-							<div className='small text-danger  pb-2   '>{errors.patient?.middleName?.message}</div>
-						</div>
-					</div>
-				</div>
-				<h5 className='font-weight-bold mt-1'>Subscriber Details </h5>
-
-				<div className='row'>
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								Subscriber ID<span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<input className='form-control-sm' type='text' {...register('patient.firstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.patient?.firstName?.message}</div>
-						</div>
-					</div>
-
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>Provider NPI<span className='text-danger font-weight-bold '>*</span></label>
-							<input className='form-control-sm' type='text' {...register('patient.middleName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.patient?.middleName?.message}</div>
-						</div>
-					</div>
-
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								Group ID<span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<input className='form-control-sm' type='text' {...register('patient.lastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.patient?.lastName?.message}</div>
-						</div>
-					</div>
-				</div>
-
-				<div className='row'>
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								First Name <span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<input className='form-control-sm' type='text' {...register('patient.firstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.patient?.firstName?.message}</div>
-						</div>
-					</div>
-
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>Middle Name</label>
-							<input className='form-control-sm' type='text' {...register('patient.middleName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.patient?.middleName?.message}</div>
-						</div>
-					</div>
-
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								Last Name <span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<input className='form-control-sm' type='text' {...register('patient.lastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.patient?.lastName?.message}</div>
-						</div>
-					</div>
-				</div>
-
-				<div className='hr-row'></div>
-				<h5 className='font-weight-bold mt-1'>Procedures</h5>
-				<div className='row'>
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>CTP Code</label>
-							<select name='' id='' className='form-control-sm' {...register('patient.orderType')} onBlur={() => setstateChange(!stateChange)}>
-								<option value='-1'>Select</option>
-
-								{orderTypeList.map((item, index) => (
-									<option key={index} value={item.orderTypeId}>
-										{item.description}
-									</option>
-								))}
-							</select>
-							<div className='small text-danger  pb-2   '>{errors.patient?.middleName?.message}</div>
-						</div>
-					</div>
-
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>CPT Code</label>
-							<input className='form-control-sm' type='text' {...register('patient.middleName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.patient?.middleName?.message}</div>
-						</div>
-					</div>
-
-					<div className='col-md-4'>
-						<div className='form-group'>
-							<label className='form-text'>
-								CPT Name <span className='text-danger font-weight-bold '>*</span>
-							</label>
-							<input className='form-control-sm' type='text' {...register('patient.lastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.patient?.lastName?.message}</div>
-						</div>
-					</div>
 				</div>
 			</form>
 		</>

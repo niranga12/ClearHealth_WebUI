@@ -399,7 +399,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 							</label>
 							
 <div className='rt-input-input w-100' >
-							<input className='form-control-sm ' type='number' min="0" max="100"  {...register('clearTransactionalFee')} />
+							<input className='form-control-sm remove-percentage' type='number' min="0" max="100"  {...register('clearTransactionalFee')} />
 							</div>
 							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFee?.message}</div>
 						</div>
@@ -412,7 +412,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								Patient Responsibility Discount <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<div className='rt-input-input w-100' >
-							<input className='form-control-sm' type='number'  min="0" max="100"  {...register('patientResponsibilityDiscount')}  />
+							<input className='form-control-sm remove-percentage' type='number'  min="0" max="100"  {...register('patientResponsibilityDiscount')}  />
 							</div>
 							<div className='small text-danger  pb-2   '>{errors.patientResponsibilityDiscount?.message}</div>
 							
@@ -427,7 +427,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 								Clear Transactional Fee for Patient Responsibility <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<div className='rt-input-input w-100' >
-							<input className='form-control-sm'  type='number'  min="0" max="100" {...register('clearTransactionalFeeforPatientResponsibility')}  />
+							<input className='form-control-sm remove-percentage'  type='number'  min="0" max="100" {...register('clearTransactionalFeeforPatientResponsibility')}  />
 							</div>
 							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFeeforPatientResponsibility?.message}</div>
 							
