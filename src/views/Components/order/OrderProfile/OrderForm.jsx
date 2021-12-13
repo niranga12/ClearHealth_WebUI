@@ -12,6 +12,7 @@ import { notify } from 'reapop';
 import OnError from 'src/_helpers/onerror';
 import 'font-awesome/css/font-awesome.min.css';
 import NormalizePhone from 'src/reusable/NormalizePhone';
+import OrderInsurance from './OrderInsurance';
 
 const OrderForm = () => {
 	let btnRef = useRef();
@@ -29,9 +30,11 @@ const OrderForm = () => {
 
 	const [selectedFormValue, setSelectedFormValue] = useState(null);
 	const [SelectedCpt, setSelectedCpt] = useState([]);
+	const [SelectedInsuranceDetails, setInsuranceDetails] = useState([]);
 	const [patientDetail, setPatientDetail] = useState(null);
 
 	const [isCPT, setisCPT] = useState(false);
+	const [showInsurance, setShowInsurance] = useState(false);
 
 	// on location change get hospitalId
 	useEffect(() => {
@@ -46,7 +49,8 @@ const OrderForm = () => {
 	}, [location]);
 
 	const handleCPTChange = (value) => {
-		
+
+
 		setSelectedCpt(value);
 		// CheckAvilableBtn();
 	};
@@ -70,23 +74,23 @@ const OrderForm = () => {
 				let isProviderPartyRoleId = false;
 				SelectedCpt.forEach(element => {
 					if (!element.hasOwnProperty('providerPartyRoleID')) {
-					
+
 						isProviderPartyRoleId = true;
-	
+
 					} else if (element.providerPartyRoleID == '') {
 						isProviderPartyRoleId = true;
-	
+
 					} else {
-						
+
 					}
-	
+
 				});
 				if (isProviderPartyRoleId && SelectedCpt.length > 0) {
 					btnRef.current.setAttribute('disabled', 'disabled');
 				} else {
 					btnRef.current.removeAttribute('disabled');
 				}
-	
+
 			}
 		} else {
 			btnRef.current.setAttribute('disabled', 'disabled');
@@ -139,6 +143,12 @@ const OrderForm = () => {
 			setSelectedCpt([]);
 		}
 
+		if (value?.showInsurance == "1") {
+			setShowInsurance(true);
+		} else {
+			setShowInsurance(false);
+		}
+
 		// value?.orderType==OrderType.ClearPackage ? setisCPT(true):setisCPT(false);
 
 		setPatientDetail(value);
@@ -166,6 +176,16 @@ const OrderForm = () => {
 		// CheckAvilableBtn();
 		btnRef.current.setAttribute('disabled', 'disabled');
 	};
+
+
+
+
+	const insuranceFormDetail = (value) => {
+		setInsuranceDetails(value)
+	}
+
+
+
 
 	const saveOrder = async () => {
 		if (btnRef.current) {
@@ -262,6 +282,7 @@ const OrderForm = () => {
 
 			{isCPT && <OrderProcedureSelect handleCPTChange={handleCPTChange} />}
 
+			{showInsurance && <OrderInsurance handleInsuranceForm={insuranceFormDetail} />}
 			<div className='row'>
 				<div className='col-md-12 mt-1'>
 					<button type='submit' onClick={saveOrder} ref={btnRef} className='btn btn-primary btn-lg float-right'>

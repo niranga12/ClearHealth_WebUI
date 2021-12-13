@@ -60,8 +60,6 @@ let schema = yup
 			} else {
 
 			}
-
-
 		}),
 	})
 
@@ -71,12 +69,9 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 
 	// eslint-disable-next-line no-unused-vars
 	const { isValid, errors } = formState;
-
 	const [isMail, setIsmail] = useState(false);
 	const [isPhone, setIsPhone] = useState(false);
-
 	const [fromDate, handlefromDateChange] = useState(Date.now());
-
 	const [stateChange, setstateChange] = useState(false);
 	const [isClearPackage, setisClearPackage] = useState(false);
 	const [isPatientResponsibility, setisPatientResponsibility] = useState(false)
@@ -86,29 +81,29 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 	const [numValue, setNumValue] = useState();
 
 
-	const changeHandler = ({ target }) => {
-		setValue(target.value.toLowerCase())
-	}
+	// const changeHandler = ({ target }) => {
+	// 	setValue(target.value.toLowerCase())
+	// }
 
-	const onChange = ({ target }) => {
-		if (Number(target.value)>=0) {
-			setNumValue(target.value);
-		  }else{
-			setNumValue(null);
-		  }
-	}
-	
+	// const onChange = ({ target }) => {
+	// 	if (Number(target.value) >= 0) {
+	// 		setNumValue(target.value);
+	// 	} else {
+	// 		setNumValue(null);
+	// 	}
+	// }
+
 
 
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				// setRelationshipList([{id:"Self",name:"Self"},{id:"Spouse",name:"Spouse"},
-				// {id:"Dependant",name:"Dependant"},{id:"Other",name:"Other"}])
-				// setInsuranceList([{id:"1",name:"1199 NATIONAL BENEFIT FUND"},
-				// {id:"2",name:"137654 CALIFORNIA INCORPORATED"},
-				// {id:"3",name:"1ST AUTO AND CASUALTY"},{id:"Other",name:"Other"}])
+				// setRelationshipList([{ id: "Self", name: "Self" }, { id: "Spouse", name: "Spouse" },
+				// { id: "Dependant", name: "Dependant" }, { id: "Other", name: "Other" }])
+				// setInsuranceList([{ id: "1", name: "1199 NATIONAL BENEFIT FUND" },
+				// { id: "2", name: "137654 CALIFORNIA INCORPORATED" },
+				// { id: "3", name: "1ST AUTO AND CASUALTY" }, { id: "Other", name: "Other" }])
 				const result = await getOrderType();
 				setorderTypeList(result.data.data);
 			} catch (error) {
@@ -129,7 +124,6 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 	}, [defaultValues]);
 
 	useEffect(() => {
-	
 		let isAviable = false;
 		const formValue = getValues('patient');
 		let value = Number(formValue?.contactMethod);
@@ -150,7 +144,6 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 			setIsmail(false);
 			setIsPhone(false);
 		}
-
 		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) > -1) {
 			isAviable = ((formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) || (formValue?.orderType == OrderType.ClearPackage)) ? true : false;
 		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) > -1) {
@@ -158,8 +151,8 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 		} else {
 			isAviable = false;
 		}
-
 		if (isAviable) {
+
 			// if ( isValid && !errors.hasOwnProperty('patient')  ) {
 			const formValue = getValues('patient');
 			let newValue = { ...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY') };
@@ -171,28 +164,6 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 
 	}, [stateChange, fromDate]);
 
-
-
-	// 	const orderTypeOnchange=(e)=>{
-	// 	e.target.value==OrderType.ClearPackage?	setisClearPackage(true):setisClearPackage(false);
-
-	// 	}
-
-	// useEffect(() => {
-	// 	const formValue = getValues('patient.');
-
-	// }, [orderTypeChange])
-
-	// const contactMethodChange =(value)=>{
-
-	// setstateChange(!stateChange)
-
-	// }
-
-	// useEffect(() => {
-	// 	setValue("patient?.dateOfBirth",  moment(fromDate).format('MM-DD-YYYY'));
-
-	// }, [fromDate])
 
 	return (
 		<>
@@ -256,11 +227,11 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 							<div className='small text-danger  pb-2   '>{errors.patient?.contactMethod?.message}</div>
 						</div>
 					</div>
-
+					{/* onChange={changeHandler}  */}
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'> Email {isMail && <span className='text-danger font-weight-bold '>*</span>}</label>
-							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} value={value} readOnly={isEdit} onChange={changeHandler} />
+							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} />
 							<div className='small text-danger  pb-2   '>{errors.patient?.email?.message}</div>
 						</div>
 					</div>
@@ -295,18 +266,46 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 						</div>
 					</div>
 
+
+					{/* onChange={onChange} value={numValue || ''}  pattern="^[0-9]*$" */}
 					{isPatientResponsibility && (
 						<div className='col-md-4'>
 							<div className='form-group'>
 								<label className='form-text'>
 									Patient Responsibility Amount <span className='text-danger font-weight-bold '>*</span>
 								</label>
-								<input className='form-control-sm' type='number' pattern="^[0-9]*$" {...register('patient.patientResponsibilityAmount')} onBlur={() => setstateChange(!stateChange)} onChange={onChange} value={numValue || ''} />
+								<input className='form-control-sm' type='number'  {...register('patient.patientResponsibilityAmount')} onBlur={() => setstateChange(!stateChange)} />
 								<div className='small text-danger  pb-2   '>{errors.patient?.patientResponsibilityAmount?.message}</div>
 							</div>
 						</div>
 					)}
+
+
+
+
 				</div>
+
+				<div className="row">
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								Collect Insurance Details ? <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							<select name='' id='' className='form-control-sm' {...register('patient.showInsurance')} onBlur={() => setstateChange(!stateChange)}>
+								<option value='-1'>Select</option>
+								<option value='1'>Yes</option>
+								<option value='0'>No</option>
+
+							</select>
+
+							{/* <input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} /> */}
+							<div className='small text-danger  pb-2   '>{errors.patient?.showInsurance?.message}</div>
+						</div>
+					</div>
+				</div>
+
+
 			</form>
 		</>
 	);
