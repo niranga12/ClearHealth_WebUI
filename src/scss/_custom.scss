@@ -1301,3 +1301,22 @@ border-radius: 0;
   -webkit-appearance: none;
   margin: 0;
 }
+
+.button-width{
+  width: 95%;
+}
+
+.box-border{
+  border:solid  #5b4dfd 2px;
+  border-radius:6px;
+  -moz-border-radius:6px;
+  padding: 10px;
+}
+
+.sms-heading-align{
+  text-align: right; padding-right: 29px;padding-top: 9px;
+}
+
+.procedure-text{
+  padding: 5px;color: #aeb1b3;
+}
