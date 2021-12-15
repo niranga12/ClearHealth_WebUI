@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { TheHeader } from 'src/containers';
-import { ServiceMsg } from 'src/reusable/enum';
+import { OrderType, ServiceMsg } from 'src/reusable/enum';
 import { getSMSOrderDetails } from 'src/service/orderService';
 import OnError from 'src/_helpers/onerror';
 import PaymentContent from './PaymentContent';
@@ -30,8 +30,9 @@ const PaymentMobileLink = () => {
 			try {
 				const result = await getSMSOrderDetails(id);
 				if (result.data.message == ServiceMsg.OK) {
-					setOrderDetail(result.data.data);
+					debugger;
 
+					setOrderDetail(result.data.data);
 
 				}
 
@@ -104,7 +105,7 @@ const PaymentMobileLink = () => {
 									<div className='card-content'>
 										<div className='row'>
 											<div className='col-md-12'>
-												<div className='pt-2 pl-2 procedure-text'>Procedure</div>
+											{orderDetail?.orderDetails.orderType == OrderType.ClearPackage && <div className='pt-2 pl-2 procedure-text'>Procedure</div>}
 												{ProcedureDetails()}
 												{/* <h4 className='p-2 font-weight-bold'> MRI Neck Without Contrast</h4> */}
 											</div>
