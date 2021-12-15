@@ -285,7 +285,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 
 				</div>
 
-				<div className="row">
+				{/* <div className="row">
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
@@ -298,12 +298,10 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 								<option value='0'>No</option>
 
 							</select>
-
-							{/* <input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} /> */}
 							<div className='small text-danger  pb-2   '>{errors.patient?.showInsurance?.message}</div>
 						</div>
 					</div>
-				</div>
+				</div> */}
 
 
 			</form>

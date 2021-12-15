@@ -83,7 +83,7 @@ const OrderView = () => {
 		<div className="mt-3">
 			  
 			<OrderViewPatient patientDetail={orderList?.orderPatientDetails} />
-			<OrderCheckEligibity/>
+			{/* <OrderCheckEligibity/> */}
 			<OrderList orderDetail={orderList} />
 			{/* <OrderList/> */}
 		</div>
