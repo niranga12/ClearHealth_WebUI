@@ -8,6 +8,7 @@ import { TheHeader } from 'src/containers';
 import { ServiceMsg } from 'src/reusable/enum';
 import { getSMSOrderDetails } from 'src/service/orderService';
 import OnError from 'src/_helpers/onerror';
+import PaymentContent from './PaymentContent';
 
 const PaymentMobileLink = () => {
 
@@ -29,6 +30,7 @@ const PaymentMobileLink = () => {
 			try {
 				const result = await getSMSOrderDetails(id);
 				if (result.data.message == ServiceMsg.OK) {
+					debugger;
 					setOrderDetail(result.data.data);
 
 
@@ -84,18 +86,8 @@ const PaymentMobileLink = () => {
 						<div className='row mt-5 pt-5'>
 							<div className='col-md-7'>
 								<h4>Dear {orderDetail?.orderDetails.firstName}</h4>
-								<p>Your provider has requested a diagnostic imaging scan as a necessary part of your care. In reviewing your payment responsibility for this procedure, it has been determined that you will owe 100% of the costs out-of-pocket.</p>
-								<p>This could be due to one of the following reasons:</p>
-								<ul className='list-unstyled'>
-									<li> - You are currently without a health insurance plan </li>
-									<li> - You have not yet met your annual deductible or </li>
-									<li> - Your insurance company has denied payment for the procedure</li>
-								</ul>
-								<p>would like to offer you a discounted, all-inclusive rate to pay for your procedure if you pay in advance of your care. Through a partnership with Clear Health, the hospital fee and all associated physician fees are included in this discounted rate, and you should not receive any further bills related to this procedure unless additional care is required.</p>
-								<p>To take advantage of this offer, you must pay the full discounted price prior to your procedure. You may view your discounted package price and simplify your billing now.</p>
-								<p>Your provider has decided further care is a necessary part of your care. In reviewing your payment responsibility for this procedure, it has been determined that you do have a deductible patient responsibility amount due.</p>
-								<p> {orderDetail?.orderDetails.facilityName} would like to offer you a discount to pay for your deductible if you pay in advance of your care. To take advantage of this offer, you must pay prior to your procedure. You may view your discounted patient responsibility and simplify your billing now.</p>
-
+								 <PaymentContent details={orderDetail}/>
+						
 								<div>Thank you</div>
 								<h6 className='font-weight-bold'>Customer Support Team </h6>
 							</div>
