@@ -30,8 +30,6 @@ const PaymentMobileLink = () => {
 			try {
 				const result = await getSMSOrderDetails(id);
 				if (result.data.message == ServiceMsg.OK) {
-					debugger;
-
 					setOrderDetail(result.data.data);
 
 				}
