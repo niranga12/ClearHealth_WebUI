@@ -254,7 +254,7 @@ const OrderForm = () => {
 		<div className='p-4'>
 			<div className='row'>
 				<div className='col-md-4 mb-4'>
-					<label className=' float-left mr-3 pt-1 font-weight-bold'>Select Patient</label>
+					<label className=' float-left mr-3 pt-1 font-weight-bold'>Select Existing Patient</label>
 					{/* <Select options={options} onChange={selectPatient} /> */}
 
 					<AsyncSelect cacheOptions defaultOptions value={selectedValue} getOptionLabel={(e) => e.firstName + ' ' + e.lastName} getOptionValue={(e) => e.partyRoleId} loadOptions={loadOptions} onInputChange={handleInputChange} onChange={handleChange} />
@@ -282,7 +282,7 @@ const OrderForm = () => {
 
 			{isCPT && <OrderProcedureSelect handleCPTChange={handleCPTChange} />}
 
-			{showInsurance && <OrderInsurance handleInsuranceForm={insuranceFormDetail} />}
+			{/* {showInsurance && <OrderInsurance handleInsuranceForm={insuranceFormDetail} />} */}
 			<div className='row'>
 				<div className='col-md-12 mt-1'>
 					<button type='submit' onClick={saveOrder} ref={btnRef} className='btn btn-primary btn-lg float-right'>

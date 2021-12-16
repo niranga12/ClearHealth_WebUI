@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
-import { MaskFormat, ValidationPatterns} from 'src/reusable/enum';
+import { MaskFormat, ValidationPatterns } from 'src/reusable/enum';
 import InputMask from 'react-input-mask';
 
 import PropTypes from 'prop-types';
@@ -28,7 +28,7 @@ const schema = yup.object().shape({
 			.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 		email: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
 		// referringProviderName: yup.string().required('Provider name is required'),
-		// dateOfBirth: yup.string(),
+		dateOfBirth: yup.string(),
 
 		// address1: yup.string().required('Address Line 1 is required'),
 		// address2: yup.string(),
@@ -44,17 +44,17 @@ const schema = yup.object().shape({
 	}),
 });
 
-const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
+const PaymentOrder = ({ patientOrder, formChange, handleValid }) => {
 	const {
 		register,
-	
+
 		getValues,
 		reset,
-		
-		formState,
-	} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
-	const { isValid, errors} = formState;
+		formState,
+	} = useForm({ resolver: yupResolver(schema), mode: 'all' });
+
+	const { isValid, errors } = formState;
 
 	const [fieldChange, setFieldChange] = useState(false);
 	const [fromDate, handlefromDateChange] = useState(Date.now());
@@ -62,45 +62,46 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 	// const [businessStateOption, setBusinessStateOption] = useState('');
 	// const [stateOption, setStateOption] = useState('');
 
-	
+
 	// const stateSelect = (event) => {
 	// 	setValue('order.state', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
 	// };
 	// const businessStateSelect = (event) => {
 	// 	setValue('order.billingState', event.target.innerText, {	shouldValidate: true,shouldDirty: true,	});
 	// };
-	
+
 
 	useEffect(() => {
 		reset(patientOrder);
-
+		if (patientOrder != null) {
+			handlefromDateChange(patientOrder.order.dateOfBirth)
+		}
 
 		// const fetchData = async () => {
 		// 	try {
 		// 		const stateResult=await getStateList(Country.USA);
 		// 	setstateList(stateResult.data.data)
 		// 	} catch (error) {
-				
+
 		// 	}
-			
+
 		// 	}
 
 		// 	fetchData();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [patientOrder]);
 
 	useEffect(() => {
-		
-	
+
+
 		handleValid(isValid);
-		if(isValid){
-			let value=getValues("order")
-			let newValue = {...value, dateOfBirth: moment(fromDate).format('MM-DD-YYYY')};
+		if (isValid) {
+			let value = getValues("order")
+			let newValue = { ...value, dateOfBirth: moment(fromDate).format('MM-DD-YYYY') };
 			formChange(newValue);
-			
 		}
-		
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fieldChange])
 
 	return (
@@ -130,7 +131,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 							<label className='form-text'>
 								Order <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('order.orderId')}  readOnly/>
+							<input className='form-control-sm' type='text' {...register('order.orderId')} readOnly />
 						</div>
 					</div>
 					<div className='col-md-6'>
@@ -138,7 +139,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 							<label className='form-text'>
 								Order Date <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('order.orderDate')}  readOnly/>
+							<input className='form-control-sm' type='text' {...register('order.orderDate')} readOnly />
 						</div>
 					</div>
 				</div>
@@ -155,7 +156,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 							<label className='form-text'>
 								Patient Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('order.patientName')}  onBlur={() => setFieldChange(!fieldChange)}  />
+							<input className='form-control-sm' type='text' {...register('order.patientName')} onBlur={() => setFieldChange(!fieldChange)} />
 							<div className='small text-danger  pb-2   '>{errors?.order?.patientName?.message}</div>
 						</div>
 					</div>
@@ -174,7 +175,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 							<label className='form-text'>
 								Email Address <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('order.email')} onBlur={() => setFieldChange(!fieldChange)}  />
+							<input className='form-control-sm' type='text' {...register('order.email')} onBlur={() => setFieldChange(!fieldChange)} />
 							<div className='small text-danger  pb-2   '>{errors?.order?.email?.message}</div>
 						</div>
 					</div>
@@ -191,7 +192,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 							<label className='form-text'>
 								Date of Birth <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<DateSelector   className={` form-control-sm `}   selectedDate={fromDate} handleDateChange={handlefromDateChange}  disableFuture={true} />
+							<DateSelector className={` form-control-sm `} selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true} />
 							{/* <input className='form-control-sm' type='text' {...register('order.dateOfBirth')} onBlur={() => setFieldChange(!fieldChange)}  /> */}
 						</div>
 					</div>
@@ -253,7 +254,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 							<label className='form-text'>
 								Address Line 1 <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('order.billingAddress1')}  onBlur={() => setFieldChange(!fieldChange)} />
+							<input className='form-control-sm' type='text' {...register('order.billingAddress1')} onBlur={() => setFieldChange(!fieldChange)} />
 							<div className='small text-danger  pb-2   '>{errors?.order?.billingAddress1?.message}</div>
 						</div>
 					</div>
@@ -261,7 +262,7 @@ const PaymentOrder = ({patientOrder,formChange, handleValid}) => {
 					<div className='col-md-6'>
 						<div className='form-group'>
 							<label className='form-text'>
-								Address Line 2 <span className='text-danger font-weight-bold '>*</span>{' '}
+								Address Line 2 {' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('order.billingAddress2')} onBlur={() => setFieldChange(!fieldChange)} />
 							<div className='small text-danger  pb-2   '>{errors?.order?.billingAddress2?.message}</div>

@@ -15,6 +15,7 @@ const DateSelector = ({handleDateChange,selectedDate,className,disableFuture=fal
            value={selectedDate}
            onChange={handleDateChange}
            className={className}
+           autoOk={true}
           />
        {/* <DatePicker
         disableFuture={disableFuture}

@@ -23,9 +23,9 @@ const PaymentOrderSummary = ({orderDetail}) => {
 			let list = CPTDetails.map((x, index) => {
 				return (
 					<tr key={index}>
-						<td className='pay-summary-name p-2'>{ x.description }</td>
+						{/* <td className='pay-summary-name p-2'>{ x.description }</td> */}
 						{/* <td className='pay-summary-name p-2 text-right'>{x.packagePrice}</td> */}
-						<td className='pay-summary-name p-2 text-right'>${x.discountedPrice}</td>
+						{/* <td className='pay-summary-name p-2 text-right'>${x.discountedPrice}</td> */}
 					</tr>
 				);
 			});
@@ -64,16 +64,16 @@ const PaymentOrderSummary = ({orderDetail}) => {
 						</tr>
 
 						<tr>
-							<td className='pt-3'>Sub Total</td>
-							<td className='pt-3 text-right'>${subTotal}</td>
+							<td className='pt-3 col-width'>Sub Total</td>
+							<td className='pt-3 text-right col-width'>$ {subTotal}</td>
 						</tr>
 						<tr>
-							<td className='pt-3'>Tax</td>
-							<td className='pt-3 text-right'>${tax}</td>
+							<td className='pt-3 col-width'>Tax</td>
+							<td className='pt-3 text-right col-width'>$ {tax}</td>
 						</tr>
 						<tr className='pay-summary-name'>
-							<td className='pt-3'>Order Total</td>
-							<td className='pt-3 text-right'>$ {total}</td>
+							<td className='pt-3 col-width'>Order Total</td>
+							<td className='pt-3 text-right col-width'>$ {total}</td>
 						</tr>
 					</tbody>
 				</table>

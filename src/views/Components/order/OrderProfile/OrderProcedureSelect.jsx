@@ -57,7 +57,7 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
 	const providerSelect = ({ row, data }) => {
 
 		const handleProviderChange = (e) => {
-
+			
 			let updateData = data.map(x => (x.Id === row.original.Id ? { ...x, providerPartyRoleID: e.target.value } : x))
 			setchangedTable(updateData)
 		}
