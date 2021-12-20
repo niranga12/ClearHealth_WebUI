@@ -223,8 +223,6 @@ const OrderForm = () => {
 
 
 		try {
-
-
 			let result = await saveOrderData(data);
 			// eslint-disable-next-line eqeqeq
 			if (result.data.message == ServiceMsg.OK) {

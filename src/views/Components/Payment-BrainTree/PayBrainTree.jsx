@@ -9,6 +9,7 @@ import { useHistory } from 'react-router';
 import { notify } from 'reapop';
 import OnError from 'src/_helpers/onerror';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+import PaymentCompletedAlert from '../payment/PaymentCompletedAlert';
 
 const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 	// eslint-disable-next-line no-unused-vars
@@ -18,32 +19,20 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 	const [instance, setInstance] = useState(null);
     const dispatch = useDispatch();
 	const history = useHistory();
+	const [isNotify, setIsNotify] = useState(false);
 	useEffect(() => {
 		
-		// if (btnRef.current) {
-		// btnRef.current.removeAttribute('disabled');
-		// }
-		//  console.log(billingDetails);
 		setBillDet(billingDetails);
 
 		setIsvalidDetail(isValid);
 	}, [billingDetails, isValid]);
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		// dispatch(loaderShow());
 
-	// 		try {
-	// 			const result = await getPaymentToken();
 
-	// 		} catch (error) {}
-
-	// 		// dispatch(loaderHide());
-	// 	};
-
-	//     fetchData();
-	// }, []);
-
+	const modelCancel = () => {
+		setIsNotify(!isNotify);
+		history.push('/main');
+	}
 	const buy = async () => {
 		
 		// Send the nonce to your server
@@ -59,7 +48,8 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 			if (result.data.message === ServiceMsg.OK) {
 				dispatch(loaderHide());
 				dispatch(notify('Paid successfully', 'success'));
-				history.push('/main');
+				// history.push('/main');
+				setIsNotify(!isNotify);
 				
 			} else {
 				dispatch(notify('Payment Failure', 'error'));
@@ -79,6 +69,7 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 			<button onClick={buy} className='btn btn-primary' disabled={!validDetail}>
 				Pay Now
 			</button>
+			<PaymentCompletedAlert  isNotify={isNotify} handleCancel={modelCancel}/>
 		</div>
 	);
 };

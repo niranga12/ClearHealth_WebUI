@@ -25,12 +25,13 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
 			} else {
 				return x;
 			}
-
-
 		});
-		// console.log(updateData);
-		setSelectedCPT(updateData);
-		handleCPTChange(updateData);
+		//setting default  provoider first value
+		let defalultProviderData = updateData.map(x => {
+			return { ...x, providerPartyRoleID: x.providers[0].partyRoleId }
+		})
+		setSelectedCPT(defalultProviderData);
+		handleCPTChange(defalultProviderData);
 	};
 
 	useEffect(() => {
@@ -57,15 +58,15 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
 	const providerSelect = ({ row, data }) => {
 
 		const handleProviderChange = (e) => {
-			
+
 			let updateData = data.map(x => (x.Id === row.original.Id ? { ...x, providerPartyRoleID: e.target.value } : x))
-			setchangedTable(updateData)
+			setchangedTable(updateData);
 		}
 
 		return (
 			<>
 				<select name='' id='' className='form-control-sm' onChange={handleProviderChange} >
-					<option value=''>Select</option>
+					{/* <option value=''>Select</option> */}
 					{row.original.providers.map((item, index) => (
 						<option key={index} value={item.partyRoleId}>
 							{item.firstName} 	{item.lastName}
