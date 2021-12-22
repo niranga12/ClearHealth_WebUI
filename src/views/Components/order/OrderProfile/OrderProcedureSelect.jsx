@@ -28,7 +28,12 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
 		});
 		//setting default  provoider first value
 		let defalultProviderData = updateData.map(x => {
-			return { ...x, providerPartyRoleID: x.providers[0].partyRoleId }
+
+			
+
+			return { ...x,...(x.providers.length>0 && {
+				providerPartyRoleID: x.providers[0]?.partyRoleId
+			}),  }
 		})
 		setSelectedCPT(defalultProviderData);
 		handleCPTChange(defalultProviderData);
@@ -66,13 +71,11 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
 		return (
 			<>
 				<select name='' id='' className='form-control-sm' onChange={handleProviderChange} >
-					{/* <option value=''>Select</option> */}
 					{row.original.providers.map((item, index) => (
 						<option key={index} value={item.partyRoleId}>
 							{item.firstName} 	{item.lastName}
 						</option>
 					))}
-					{/* <option value='test'>test</option> */}
 				</select>
 			</>
 		)

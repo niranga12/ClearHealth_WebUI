@@ -53,6 +53,9 @@ export const updateGlobalPackage=(hospitalId,data)=>axiosInstance.put(`hospital/
 //get CPT Codes By  hospitalId
 export const getCPTCodesByHospital=(hospitalId,data)=>axiosInstance.post(`hospital/${hospitalId}/procedurecodes`,data);
 
+//Add CPT code
+export const addCPTCodesByHospital=(orderId,data)=>axiosInstance.put(`order/addCPT/${orderId}`,data);
+
 // get patients details by hospitalId
 export const getPatientsDetailsByHospital=(hospitalId,data)=>axiosInstance.post(`hospital/${hospitalId}/patients`,data);
 

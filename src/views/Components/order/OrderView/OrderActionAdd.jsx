@@ -1,4 +1,6 @@
-
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getCPTCodesByHospital } from 'src/service/hospitalsService';
@@ -8,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 
 const schema = yup.object().shape({
 	cptDetail: yup.object().shape({
@@ -19,27 +22,22 @@ const schema = yup.object().shape({
 });
 
 
-const OrderActionEdit = ({ data, handleChangeCpt }) => {
+const OrderActionAdd = ({ data, handleChangeCpt }) => {
 	const [cptList, setCptList] = useState([]);
 	const [providersList, setProvidersList] = useState([]);
 	const [defaultValue, setDefaultValue] = useState([]);
 	const [editDetail, seteditDetail] = useState(data);
 	const dispatch = useDispatch();
 	const { register, reset, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
-
-
-
-	const [selectedCPT, setSelectedCPT] = useState([]);
+	//const [selectedCPT, setSelectedCPT] = useState([]);
 
 
 	const handleChange = (newValue: any, actionMeta: any) => {
-		setSelectedCPT(newValue);
+		//setSelectedCPT(newValue);
 
 		setProvidersList(newValue.providers);
-
-		
 		let changeValue = { ...editDetail, ...newValue, codeId: newValue.Id,providerPartyRoleId:newValue.providers[0].partyRoleId }
-
+		// delete changeValue['Id'];
 		let formDetail = {
 			cptDetail: { ...changeValue }
 		}
@@ -53,12 +51,12 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-
-				let result = await getCPTCodesByHospital(data.hospitalPartyRoleId, {});
-				let selected = result.data.data.filter(x => x.Id == data.codeId);
+			
+				let result = await getCPTCodesByHospital(data.orderPatientDetails.hospitalPartyRoleId, {});
+				//let selected = result.data.data.filter(x => x.Id == data.codeId);
 				setCptList(result.data.data);
-				setProvidersList(selected[0].providers);
-				setDefaultValue(selected);
+				// setProvidersList(selected[0].providers);
+				//setDefaultValue(selected);
 			
 
 				let formDetail = {
@@ -81,7 +79,7 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
 
 				<div className='col-md-12 mb-3'>
 					<label className='mr-4 float-left pt-2'>CPT Code </label>
-					{cptList.length > 0 && defaultValue.length > 0 && <Select options={cptList} defaultValue={defaultValue[0]} onChange={handleChange} getOptionLabel={(option) => `${option.code} - ${option.description}`} getOptionValue={(option) => `${option.Id}`} />}
+					{cptList.length > 0 && <Select options={cptList} defaultValue={defaultValue[0]} onChange={handleChange} getOptionLabel={(option) => `${option.code} - ${option.description}`} getOptionValue={(option) => `${option.Id}`} />}
 				</div>
 
 				<div className='col-md-6'>
@@ -135,10 +133,10 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
 };
 
 
-OrderActionEdit.propTypes = {
+OrderActionAdd.propTypes = {
 	handleChangeCpt: PropTypes.func,
 	data: PropTypes.any
 };
 
 
-export default OrderActionEdit;
+export default OrderActionAdd;
