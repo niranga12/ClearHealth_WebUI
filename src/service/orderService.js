@@ -23,5 +23,7 @@ export const getOrdersByPatientId=(patientId,searchQuery)=>axiosInstance.post(`o
 
 export const getOrderType=()=>axiosInstance.get(`order/orderType`);
 
+export const getViewReceipt=(orderId)=>axiosInstance.post(`openorder/viewReceipt`,orderId);
+
 
 

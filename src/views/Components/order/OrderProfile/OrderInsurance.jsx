@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { ValidationPatterns } from 'src/reusable/enum';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import FormatText from 'src/reusable/FormatText';
@@ -26,7 +25,7 @@ let schema = yup
 
 const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) => {
 
-    const { register, unregister, getValues, reset, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
+    const { register, getValues, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
     // eslint-disable-next-line no-unused-vars
     const { isValid, errors } = formState;
     const [relationshipList, setRelationshipList] = useState([]);

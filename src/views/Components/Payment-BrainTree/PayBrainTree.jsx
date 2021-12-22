@@ -49,7 +49,7 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 				dispatch(loaderHide());
 				dispatch(notify('Paid successfully', 'success'));
 				// history.push('/main');
-				setIsNotify(!isNotify);
+				setIsNotify(true);
 				
 			} else {
 				dispatch(notify('Payment Failure', 'error'));
@@ -69,7 +69,7 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 			<button onClick={buy} className='btn btn-primary' disabled={!validDetail}>
 				Pay Now
 			</button>
-			<PaymentCompletedAlert  isNotify={isNotify} handleCancel={modelCancel}/>
+			<PaymentCompletedAlert  isNotify={isNotify} handleCancel={modelCancel} orderId={billingDetails?.orderId}/>
 		</div>
 	);
 };
