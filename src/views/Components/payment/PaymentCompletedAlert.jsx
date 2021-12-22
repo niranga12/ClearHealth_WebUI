@@ -19,11 +19,9 @@ const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel }) => {
     const downlaodPdf = async () => {
 
         try {
-debugger;
             let result = await getViewReceipt({
                 orderId: orderId
             });
-            debugger;
         } catch (error) {
 
         }
