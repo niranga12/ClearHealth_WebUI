@@ -38,8 +38,8 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
 		setProvidersList(newValue.providers);
 
 		
-		//let changeValue = { ...editDetail, ...newValue, codeId: newValue.Id,providerPartyRoleId:newValue.providers[0].partyRoleId }
-		let changeValue = { ...editDetail, ...newValue, codeId: newValue.Id,}
+		let changeValue = { ...editDetail, ...newValue, codeId: newValue.Id,providerPartyRoleId:newValue.providers[0].partyRoleId }
+	//	let changeValue = { ...editDetail, ...newValue, codeId: newValue.Id,}
 		let formDetail = {
 			cptDetail: { ...changeValue }
 		}
@@ -112,7 +112,7 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
 					</div>
 				</div>
 
-				{/* <div className='col-md-6'>
+				 <div className='col-md-6'>
 					<div className='form-group'>
 						<label className='form-text'>
 							Provider
@@ -127,7 +127,7 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
 						
 						</select>
 					</div>
-				</div> */}
+				</div> 
 
 			</div>
 		</>
