@@ -26,7 +26,7 @@ const serviceDetail = ({ row }) => {
 	);
 };
 
-const OrderList = ({ orderDetail }) => {
+const OrderList = ({ orderDetail,handleAddCPT }) => {
 	const [order, setOrder] = useState(orderDetail);
 	const [orderData, setOrderData] = useState([]);
 	const dispatch = useDispatch();
@@ -96,6 +96,8 @@ const OrderList = ({ orderDetail }) => {
 		}
 	};
 
+	
+
 	const AddCPTCode = async () => {
 		setIsNotify(true)
 	};
@@ -106,12 +108,12 @@ const OrderList = ({ orderDetail }) => {
 	};
 
 	const addCPTtoDB = async (detail) => {
-	
-	
+
 		let result = await addCPTCodesByHospital(orderId, addDetails);
 		if (result.data.message == ServiceMsg.OK) {
 			dispatch(notify(`Successfully added`, 'success'));
-			setIsNotify(false)
+			handleAddCPT(true)
+			setIsNotify(false);
 		
 		}
 	};
@@ -207,5 +209,6 @@ const OrderList = ({ orderDetail }) => {
 
 OrderList.propTypes = {
 	orderDetail: PropTypes.any,
+	handleAddCPT: PropTypes.func,
 };
 export default OrderList;
