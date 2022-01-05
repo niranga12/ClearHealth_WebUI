@@ -24,6 +24,7 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
 	const [providersList, setProvidersList] = useState([]);
 	const [defaultValue, setDefaultValue] = useState([]);
 	const [editDetail, seteditDetail] = useState(data);
+	const [tempSelectCPT, setTempSelectCPT] = useState([]);
 	const dispatch = useDispatch();
 	const { register, reset, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
@@ -46,26 +47,35 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
 
 		reset(formDetail)
 		handleChangeCpt(formDetail.cptDetail);
+		setTempSelectCPT(formDetail.cptDetail)
 
+	};
 
+	const providerChange = (event) => {
+	
+	
+		let	changeValue={...tempSelectCPT,providerPartyRoleId:event.target.value}
+	
+		
+		handleChangeCpt(changeValue);
+			
+			
 	};
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-
 				let result = await getCPTCodesByHospital(data.hospitalPartyRoleId, {});
 				let selected = result.data.data.filter(x => x.Id == data.codeId);
 				setCptList(result.data.data);
 				setProvidersList(selected[0].providers);
 				setDefaultValue(selected);
-			
-
 				let formDetail = {
 					cptDetail: { ...data }
 				}
 
-				reset(formDetail)
+				reset(formDetail);
+				setTempSelectCPT(formDetail.cptDetail)
 
 			} catch (error) {
 				OnError(error, dispatch);
@@ -118,7 +128,7 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
 							Provider
 						</label>
 						
-						<select name='' id='' className='form-control-sm'  {...register('cptDetail.providerPartyRoleId')} >
+						<select name='' id='' className='form-control-sm'  {...register('cptDetail.providerPartyRoleId')} onChange={providerChange}>
 							{providersList.map((item, index) => (
 								<option key={index} value={item.partyRoleId}>
 									{item.firstName} 	{item.lastName}

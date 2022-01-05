@@ -38,6 +38,7 @@ const OrderList = ({ orderDetail,handleAddCPT }) => {
 	const [hospitalName, setHospitalName] = useState(null);
 	const [hospitalId, setHospitalId] = useState(null);
 	const [addDetails, setAddDetails] = useState(null);
+	const [visible, setVisible] = useState(false)
 	//const [modelCancel, setModelCancel] = useState(null);
 	//let btnRef = useRef();
 	useEffect(() => {
@@ -187,7 +188,7 @@ const OrderList = ({ orderDetail,handleAddCPT }) => {
 
 			<div className='card-body p-0'>{orderData && order?.orderSummary[0]?.orderTypeId === OrderType.ClearPackage && <DataTable columns={columns} data={orderData} />}</div>
 			{/* onClose={() => setPrimary(!primary)} */}
-			<CModal show={isNotify}  >
+			<CModal show={isNotify}  onClose={() => setIsNotify(false)} >
 				<CModalHeader closeButton>
 					<CModalTitle>Add CPT code</CModalTitle>
 				</CModalHeader>

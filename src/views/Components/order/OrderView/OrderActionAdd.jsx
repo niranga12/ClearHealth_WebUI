@@ -27,15 +27,17 @@ const OrderActionAdd = ({ data, handleChangeCpt }) => {
 	const [providersList, setProvidersList] = useState([]);
 	const [defaultValue, setDefaultValue] = useState([]);
 	const [editDetail, seteditDetail] = useState(data);
+	const [selectedCPT, setSelectedCPT] = useState(data);
 	const dispatch = useDispatch();
-	const { register, reset, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
+	const { register,getValues, reset, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
 	//const [selectedCPT, setSelectedCPT] = useState([]);
 
 
 	const handleChange = (newValue: any, actionMeta: any) => {
-		//setSelectedCPT(newValue);
+		
 
 		setProvidersList(newValue.providers);
+
 		let changeValue = { ...editDetail, ...newValue, codeId: newValue.Id,providerPartyRoleId:newValue.providers[0].partyRoleId }
 		// delete changeValue['Id'];
 		let formDetail = {
@@ -44,9 +46,20 @@ const OrderActionAdd = ({ data, handleChangeCpt }) => {
 
 		reset(formDetail)
 		handleChangeCpt(formDetail.cptDetail);
-
+		setSelectedCPT(formDetail.cptDetail)
 
 	};
+
+
+
+	const providerChange = (event) => {
+	let	changeValue={...selectedCPT,providerPartyRoleId:event.target.value}
+	handleChangeCpt(changeValue);
+		
+		// console.log(event.target.value);
+
+		
+};
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -116,7 +129,7 @@ const OrderActionAdd = ({ data, handleChangeCpt }) => {
 							Provider
 						</label>
 						
-						<select name='' id='' className='form-control-sm'  {...register('cptDetail.providerPartyRoleId')} >
+						<select name='' id='' className='form-control-sm'  {...register('cptDetail.providerPartyRoleId')}  onChange={providerChange} >
 							{providersList.map((item, index) => (
 								<option key={index} value={item.partyRoleId}>
 									{item.firstName} 	{item.lastName}
