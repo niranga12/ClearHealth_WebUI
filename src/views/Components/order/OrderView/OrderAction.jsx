@@ -1,17 +1,18 @@
 /* eslint-disable eqeqeq */
-import React, {useEffect, useRef, useState} from 'react';
-import {CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle} from '@coreui/react';
-import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
-import {useLocation} from 'react-router';
-import {deleteOrderCpt, updateOrder} from 'src/service/orderService';
-import {ServiceMsg} from 'src/reusable/enum';
-import {useDispatch} from 'react-redux';
-import {notify} from 'reapop';
+import React, { useEffect, useRef, useState } from 'react';
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react';
+import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
+import { useLocation } from 'react-router';
+import { deleteOrderCpt, updateOrder } from 'src/service/orderService';
+import { ServiceMsg } from 'src/reusable/enum';
+import { useDispatch } from 'react-redux';
+import { notify } from 'reapop';
 import OnError from 'src/_helpers/onerror';
-import {changeOrder} from 'src/actions/orderAction';
+import { changeOrder } from 'src/actions/orderAction';
 import OrderActionEdit from './OrderActionEdit';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 
-const OrderAction = ({row}) => {
+const OrderAction = ({ row }) => {
 	const [modal, setModal] = useState(false);
 	const [primary, setPrimary] = useState(false);
 	const [updateData, setUpdateData] = useState(null);
@@ -26,9 +27,9 @@ const OrderAction = ({row}) => {
 		const id = params.get('orderId');
 		setOrderId(id);
 		if (btnRef.current) {
-		btnRef.current.removeAttribute('disabled');
+			btnRef.current.removeAttribute('disabled');
 		}
-		
+
 	}, [location]);
 
 	const deleteOrder = async () => {
@@ -54,11 +55,11 @@ const OrderAction = ({row}) => {
 			btnRef.current.setAttribute('disabled', 'disabled');
 		}
 		try {
-			
-				// btnRef.current.setAttribute('disabled', 'disabled');
-			
+			dispatch(loaderShow());
+			// btnRef.current.setAttribute('disabled', 'disabled');
 			let result = await updateOrder(orderId, updateData);
 			if (result.data.message == ServiceMsg.OK) {
+				dispatch(loaderHide());
 				dispatch(notify(`Successfully updated`, 'success'));
 				dispatch(changeOrder());
 				setPrimary(false);

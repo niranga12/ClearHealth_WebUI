@@ -24,9 +24,11 @@ const schema = yup.object().shape({
 		patientName: yup.string().required('Contact name is required'),
 		contactPhone: yup
 			.string()
-			.required('Contact Phone is required')
+			//.required('Contact Phone is required')
 			.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-		email: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
+		email: yup.string()
+		//.required('Contact Email is required')
+		.email('Contact Email must be a valid email'),
 		// referringProviderName: yup.string().required('Provider name is required'),
 		dateOfBirth: yup.string(),
 
@@ -163,7 +165,9 @@ const PaymentOrder = ({ patientOrder, formChange, handleValid }) => {
 					<div className='col-md-6'>
 						<div className='form-group'>
 							<label className='form-text'>
-								Contact Number <span className='text-danger font-weight-bold '>*</span>{' '}
+								Contact Number 
+								{/* <span className='text-danger font-weight-bold '>*</span> */}
+								{' '}
 							</label>
 							<InputMask {...register('order.contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(true, getValues('order.contactPhone'))} className='form-control-sm' />
 							{/* <input className='form-control-sm' type='text' {...register('order.contactPhone')}  onBlur={() => setFieldChange(!fieldChange)} /> */}
@@ -173,7 +177,9 @@ const PaymentOrder = ({ patientOrder, formChange, handleValid }) => {
 					<div className='col-md-6'>
 						<div className='form-group'>
 							<label className='form-text'>
-								Email Address <span className='text-danger font-weight-bold '>*</span>{' '}
+								Email Address 
+								{/* <span className='text-danger font-weight-bold '>*</span> */}
+								{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('order.email')} onBlur={() => setFieldChange(!fieldChange)} />
 							<div className='small text-danger  pb-2   '>{errors?.order?.email?.message}</div>

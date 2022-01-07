@@ -54,7 +54,7 @@ const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel }) => {
 
     return (
         <CModal show={modal} onClose={setModal} >
-            <CModalHeader closeButton>
+            <CModalHeader>
                 <CModalBody>
                     <div className="row m-2">
                         <FontAwesomeIcon

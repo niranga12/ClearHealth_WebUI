@@ -16,6 +16,7 @@ const DateSelector = ({handleDateChange,selectedDate,className,disableFuture=fal
            onChange={handleDateChange}
            className={className}
            autoOk={true}
+           maxDateMessage="Invalid date"
           />
        {/* <DatePicker
         disableFuture={disableFuture}
