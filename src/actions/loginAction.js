@@ -15,7 +15,7 @@ import {notify} from 'reapop'
 // import history from "../_helpers/history";
 // import onError from "src/_helpers/onerror";
 import {userLogin} from "../service/userService";
-import { PermissionType, ResourceType } from "src/reusable/enum";
+import { Organizations, PermissionType, ResourceType } from "src/reusable/enum";
 import { getMenu } from "src/service/commonService";
 
 
@@ -45,7 +45,17 @@ export const login = (loginDetail,history) => async (dispatch) => {
 
               
               dispatch(notify('Logged in successfully', 'success'))
-              history.push("/main");
+              if(loginUser.roleTypeId ==Organizations.HospitalAdmin || loginUser.roleTypeId ==Organizations.HospitalStaff ){
+                if(loginUser.hospitalId && loginUser.hospitalName){
+                  history.push(`/hospitals/hospital?id=${loginUser.hospitalId}&&name=${loginUser.hospitalName}`);
+                }else{
+                  history.push(`hospitals`);
+                }
+        
+              }else{
+                history.push("/main");
+              }
+              // history.push("/main");
           }
       ).catch( error=>  dispatch(notify('Invalid Email or Password ', 'error'))
         //  onError(error, dispatch) 

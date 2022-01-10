@@ -16,6 +16,7 @@ import SingleLayout from "../singlelayout/singleLayout";
 // import history from "../../../_helpers/history";
 import { useHistory } from "react-router-dom";
 import MetaTitles from "src/views/common/metaTitles";
+import { Organizations } from "src/reusable/enum";
 
 const schema = yup.object().shape({
   username: yup.string().required("Email required"),
@@ -36,10 +37,22 @@ const Login = () => {
   const disPatch = useDispatch();
   const history = useHistory();
   let keepMeSignIN = useSelector((state) => state.Login.keepMeSignIn);
+  let userDetail=useSelector((state) => state.Login);
 
   useEffect(() => {
+
     if(keepMeSignIN){
-      history.push("/main");
+      if(userDetail.roleTypeId ==Organizations.HospitalAdmin || userDetail.roleTypeId ==Organizations.HospitalStaff ){
+        if(userDetail.hospitalId && userDetail.hospitalName){
+          history.push(`/hospitals/hospital?id=${userDetail.hospitalId}&&name=${userDetail.hospitalName}`);
+        }else{
+          history.push(`hospitals`);
+        }
+
+      }else{
+        history.push("/main");
+      }
+    
     }
     
   }, [])

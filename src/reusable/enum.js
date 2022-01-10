@@ -39,6 +39,12 @@ export const Organizations = {
 	Hospital: 5,
 	PaymentContact: 6,
 	Provider: 7,
+    ClearAdmin: 8,
+    HealthSystemAdmin: 9,
+    HospitalAdmin: 10,
+    HospitalStaff: 11,
+    Patient: 12,
+    GroupProvider: 13
 };
 
 export const OrderStatus = {
