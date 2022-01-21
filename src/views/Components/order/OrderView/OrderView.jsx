@@ -34,7 +34,7 @@ const OrderView = () => {
 		try {
 
 			dispatch(loaderShow());
-			const result = await getOrderByOrderId('342');
+			const result = await getOrderByOrderId(id);
 			setOrderList(result.data.data[0]);
 
 

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import FormatText from 'src/reusable/FormatText';
 import { getPayerList } from 'src/service/orderService';
 import AsyncSelect from 'react-select/async';
+import { RelationshipList } from 'src/reusable/enum';
 
 
 let schema = yup
@@ -17,12 +18,12 @@ let schema = yup
             subscriberId: yup.string(),
             providerNpi: yup.string(),
             groupNumber: yup.string(),
-            subscriberFirstName:yup.string(),
-            patientFirstName:yup.string(),
-            patientMiddleName:yup.string(),
-            patientLastName:yup.string(),
-            patientGender:yup.string(),
-            memberId:yup.string(),
+            subscriberFirstName: yup.string(),
+            patientFirstName: yup.string(),
+            patientMiddleName: yup.string(),
+            patientLastName: yup.string(),
+            patientGender: yup.string(),
+            memberId: yup.string(),
         })
     })
 
@@ -33,44 +34,31 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
     const { register, getValues, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
     // eslint-disable-next-line no-unused-vars
     const { isValid, errors } = formState;
-    const [relationshipList, setRelationshipList] = useState([]);
     const [stateChange, setstateChange] = useState(false);
     const [inputValue, setValue] = useState('');
     const [selectedPayerId, setPayerId] = useState(null);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setRelationshipList([{ id: "Self", name: "Self" }, { id: "Spouse", name: "Spouse" },
-                { id: "Dependant", name: "Dependant" }, { id: "Other", name: "Other" }])
-
-            } catch (error) {
-
-            }
-        };
-        fetchData();
-       
-    }, []);
+    const relationshipList = RelationshipList;
 
     const loadOptions = async (inputValue) => {
-		try {
+        try {
             let data = { searchTerm: inputValue };
             let result = await getPayerList(data);
-			return result.data.data;
-		} catch (error) { }
-	};
+            return result.data.data;
+        } catch (error) { }
+    };
 
     const handleInputChange = (value) => {
-		setValue(value);
-	};
+        setValue(value);
+    };
 
     const handleChange = (value) => {
-		setPayerId(value)
-	};
+        setPayerId(value)
+    };
 
     useEffect(() => {
         const formValue = getValues('insurance');
 
-        handleInsuranceForm({...formValue,payerId:selectedPayerId?.payerID});
+        handleInsuranceForm({ ...formValue, payerId: selectedPayerId?.payerID });
 
     }, [stateChange])
 
@@ -86,9 +74,9 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                         <label className='form-text'>
                             Insurance Company <span className='text-danger font-weight-bold '>*</span>
                         </label>
-                    
-                        <AsyncSelect cacheOptions defaultOptions getOptionLabel={(e) => e.payerID + ' - ' + e.payerName} 
-                        getOptionValue={(e) => e.payerID} loadOptions={loadOptions} {...register('insurance.payerId')}  onBlur={() => setstateChange(!stateChange)} onInputChange={handleInputChange} onChange={handleChange} />
+
+                        <AsyncSelect cacheOptions defaultOptions getOptionLabel={(e) => e.payerID + ' - ' + e.payerName}
+                            getOptionValue={(e) => e.payerID} loadOptions={loadOptions} {...register('insurance.payerId')} onBlur={() => setstateChange(!stateChange)} onInputChange={handleInputChange} onChange={handleChange} />
                         <div className='small text-danger pb-2'>{errors.insurance?.payerId?.message}</div>
                     </div>
                 </div>
@@ -183,13 +171,13 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                 <div className='col-md-4'>
                     <div className='form-group'>
                         <label className='form-text'>
-                        Gender <span className='text-danger font-weight-bold '>*</span>
+                            Gender <span className='text-danger font-weight-bold '>*</span>
                         </label>
                         <select name='' id='' className='form-control-sm' {...register('insurance.patientGender')} onBlur={() => setstateChange(!stateChange)}>
                             <option value='0'>Select</option>
                             <option value='M'>Male</option>
                             <option value='F'>Female</option>
-                           
+
                         </select>
                         <div className='small text-danger  pb-2   '>{errors.insurance?.patientGender?.message}</div>
                     </div>
