@@ -176,7 +176,10 @@ const OrderList = ({ orderDetail,handleAddCPT }) => {
 
 					<div className='col-md-6'>
 						{/* disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData } */}
-						{order?.orderDetails.length!=0 &&<button className='btn btn-view-account ml-3 float-right' disabled={order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts || !isAction} onClick={approveOrder}>
+						{ order?.orderSummary[0]?.orderTypeId==OrderType.ClearPackage  && order?.orderDetails.length!=0 &&<button className='btn btn-view-account ml-3 float-right' disabled={order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts || !isAction} onClick={approveOrder}>
+							Approve
+						</button>}
+						{ order?.orderSummary[0]?.orderTypeId==OrderType.PatientResponsibility && <button className='btn btn-view-account ml-3 float-right' disabled={order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts || !isAction} onClick={approveOrder}>
 							Approve
 						</button>}
 						 {order?.orderSummary[0]?.orderTypeId==OrderType.ClearPackage && <button className='btn btn-view-account ml-3 float-right' disabled={order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts || order?.orderPatientDetails?.attempts>0} onClick={AddCPTCode}>

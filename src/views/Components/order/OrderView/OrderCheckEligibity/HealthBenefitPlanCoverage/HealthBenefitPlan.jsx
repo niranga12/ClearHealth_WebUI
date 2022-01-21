@@ -7,7 +7,8 @@ import OutofPocket from './OutofPocket';
 
 
 
-const HealthBenefitPlan = () => {
+const HealthBenefitPlan = ({healthBenefitPlan}) => {
+    
     const [active, setActive] = useState(HealthBenefitTabList.OutofPocket);
 
 	// for tab Permission
@@ -15,23 +16,10 @@ const HealthBenefitPlan = () => {
 	const [deductible, setDeductible] = useState(true);
 	
 
-	// useEffect(() => {
-	// 	const params = new URLSearchParams(location.search);
-	// 	const tap = Number(params.get('tap'));
-	// 	if (tap) {
-	// 		setActive(tap);
-	// 	}
+    useEffect(() => {
+     
+    }, [HealthBenefitPlan])
 
-    // // tab permission
-	// 	let orderPermission = PermissionButton(ScreenPermissions.Hospital, ButtonPermissions.OrdersTab, permissionList);
-	// 	setOrdersPE(orderPermission);
-
-	// 	let providerPermission = PermissionButton(ScreenPermissions.Hospital, ButtonPermissions.ViewProvidersTab, permissionList);
-	// 	setProviderPE(providerPermission);
-
-		
-
-	// }, [location]);
 
 
     return (
@@ -61,8 +49,8 @@ const HealthBenefitPlan = () => {
                        
                     </CNav>
                     <CTabContent>
-                        <CTabPane>{active === HealthBenefitTabList.OutofPocket && outofPocket ? <OutofPocket /> : ''}</CTabPane>
-                        <CTabPane>{active === HealthBenefitTabList.deductible && deductible ? <Dedectible /> : ''}</CTabPane>
+                        <CTabPane>{active === HealthBenefitTabList.OutofPocket && outofPocket ? <OutofPocket value={healthBenefitPlan.amounts.outOfPocket}/> : ''}</CTabPane>
+                        <CTabPane>{active === HealthBenefitTabList.Deductible && deductible ? <Dedectible value={healthBenefitPlan.amounts.deductibles}/> : ''}</CTabPane>
                        
                         
                     </CTabContent>

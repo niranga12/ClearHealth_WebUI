@@ -25,5 +25,5 @@ export const getOrderType=()=>axiosInstance.get(`order/orderType`);
 
 export const getViewReceipt=(orderId)=>axiosInstance.post(`openorder/viewReceipt`,orderId);
 
-
+export const getPayerList=(search)=>axiosInstance.post(`order/payerList`,search);
 

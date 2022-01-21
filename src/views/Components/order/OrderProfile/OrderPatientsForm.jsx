@@ -285,7 +285,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 
 				</div>
 
-				{/* <div className="row">
+				<div className="row">
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
@@ -301,7 +301,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 							<div className='small text-danger  pb-2   '>{errors.patient?.showInsurance?.message}</div>
 						</div>
 					</div>
-				</div> */}
+				</div>
 
 
 			</form>

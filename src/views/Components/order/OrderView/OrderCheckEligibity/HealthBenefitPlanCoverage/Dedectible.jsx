@@ -1,35 +1,71 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Dedectible = () => {
-    return (
-        <div>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Total In Network</th>
-                        <th scope="col">Remaining In Network</th>
-                        <th scope="col">Remaining Out of Network</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">Family</th>
-                        <td>$ 14,500,00</td>
-                        <td>$ 14,500,00</td>
-                        <td>$ 14,500,00</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Individual</th>
-                        <td>$ 14,500,00</td>
-                        <td>$ 14,500,00</td>
-                        <td>$ 14,500,00</td>
-                    </tr>
+const Dedectible = ({value}) => {
 
-                </tbody>
-            </table>
-        </div>
-    )
+ 
+const inNetworkTableData = value.inNetwork.map(function(obj) {
+  return <tr>
+     <td>InNetwork</td>
+     <td>{obj.levelCode}</td>
+     <td>{obj.Total}</td>
+     <td>{obj.Remaining}</td>
+
+    
+   
+   
+    </tr>
+ });
+
+
+ const noNetworkTableData = value.noNetwork.map(function(obj) {
+  return <tr>
+     <td>noNetwork</td>
+     <td>{obj.levelCode}</td>
+     <td>{obj.Total}</td>
+     <td>{obj.Remaining}</td>
+    
+   
+   
+    </tr>
+ });
+
+ const outOfNetworkTableData = value.outOfNetwork.map(function(obj) {
+  return <tr>
+     <td>outOfNetwork</td>
+     <td>{obj.levelCode}</td>
+     <td>{obj.Total}</td>
+     <td>{obj.Remaining}</td>
+    
+   
+   
+    </tr>
+ });
+
+
+
+  return (
+      <div>
+          <table className="table">
+<thead>
+  <tr>
+
+    <th scope="col"></th>
+    <th scope="col">Level Code</th>
+    <th scope="col">Total</th>
+    <th scope="col">Remaining</th>
+    
+  </tr>
+</thead>
+<tbody>
+ {inNetworkTableData}
+ {noNetworkTableData}
+ {outOfNetworkTableData}
+ 
+</tbody>
+</table>
+      </div>
+  )
 }
+
 
 export default Dedectible

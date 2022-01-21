@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import HealthBenefitPlan from './HealthBenefitPlanCoverage/HealthBenefitPlan'
 import HospitalInPatient from './HospitalInPatient/HospitalInPatient'
+import PropTypes from 'prop-types';
 
 
 
+const OrderCheckEligibity = ({ orderDetail }) => {
+    const [benefitPlan, setHealthBenefitPlan] = useState(null);
+    const [inPatient, setHospitalInPatient] = useState(null);
 
-const OrderCheckEligibity = () => {
+    useEffect(() => {
+      console.log(orderDetail.insuranceInfo)
+      let planA=  orderDetail.insuranceInfo[0].find(x=>x.type=="50");
+      let PlanB=  orderDetail.insuranceInfo[0].find(x=>x.type==30);
+     setHospitalInPatient(planA);
+     setHealthBenefitPlan(PlanB);
+    }, [orderDetail])
+
     return (
 
 
@@ -22,19 +33,23 @@ const OrderCheckEligibity = () => {
 
 
 
-                    <HealthBenefitPlan />
+                  {benefitPlan && <HealthBenefitPlan healthBenefitPlan={benefitPlan}/>}  
 
                 </div>
                 <div className='row'>
 
 
 
-                    <HospitalInPatient />
+                   {inPatient && <HospitalInPatient hospitalInPatient={inPatient}/>}
                 </div>
             </div>
         </div>
 
     )
 }
+OrderCheckEligibity.propTypes = {
+    orderDetail: PropTypes.any,
+
+};
 
 export default OrderCheckEligibity

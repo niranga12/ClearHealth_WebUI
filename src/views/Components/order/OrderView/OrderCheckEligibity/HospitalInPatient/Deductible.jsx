@@ -1,50 +1,72 @@
 import React from 'react'
 
-const Deductible = props => {
+const Deductible = ({value}) => {
+  const inNetworkTableData = value.inNetwork.map(function(obj) {
+    return <tr>
+       <td>InNetwork</td>
+       <td>{obj.payerNotes}</td>
+       <td>{obj.amount}</td>
+       <td>{obj.level}</td>
+       <td>{obj.units}</td>
+      <td>{obj.authorizationRequired}</td>
+      <td>{obj.amountTimePeriod}</td>
+      
+     
+     
+      </tr>
+   });
+
+
+   const noNetworkTableData = value.noNetwork.map(function(obj) {
+    return <tr>
+       <td>noNetwork</td>
+       <td>{obj.payerNotes}</td>
+       <td>{obj.amount}</td>
+       <td>{obj.level}</td>
+       <td>{obj.units}</td>
+      <td>{obj.authorizationRequired}</td>
+      <td>{obj.amountTimePeriod}</td>
+      
+     
+     
+      </tr>
+   });
+
+   const outOfNetworkTableData = value.outOfNetwork?.map(function(obj) {
+    return <tr>
+       <td>outOfNetwork</td>
+       <td>{obj.payerNotes}</td>
+       <td>{obj.amount}</td>
+       <td>{obj.level}</td>
+       <td>{obj.units}</td>
+      <td>{obj.authorizationRequired}</td>
+      <td>{obj.amountTimePeriod}</td>
+      
+     
+     
+      </tr>
+   });
+
+
+  
     return (
         <div>
             <table className="table">
   <thead>
     <tr>
+    <th scope="col"></th>
       <th scope="col"></th>
-      <th scope="col">Physician Benefit</th>
-      <th scope="col">Facility Benefit In network</th>
-      <th scope="col">Physician Benefit Out of Network</th>
-      <th scope="col">Facility Benefit out of network</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Unit</th>
+      <th scope="col">Level</th>
+      <th scope="col">Auth Required</th>
+      <th scope="col">Amount Time peroid</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">Amount</th>
-      <td></td>
-      <td></td>
-      <td></td><td></td>
-    </tr>
-    <tr>
-      <th scope="row">Unit</th>
-      <td></td>
-      <td></td>
-      <td></td><td></td>
-    </tr>
-    <tr>
-      <th scope="row">Level</th>
-      <td></td>
-      <td></td>
-      <td></td><td></td>
-    </tr>
-    <tr>
-      <th scope="row">Auth Required</th>
-      <td></td>
-      <td></td>
-      <td></td><td></td>
-    </tr>
-    <tr>
-      <th scope="row">Amount Time Period</th>
-      <td></td>
-      <td></td>
-      <td></td><td></td>
-
-    </tr>
+   {inNetworkTableData}
+   {noNetworkTableData}
+   {outOfNetworkTableData}
   </tbody>
 </table>
         </div>

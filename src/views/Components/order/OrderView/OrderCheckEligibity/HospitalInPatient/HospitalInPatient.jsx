@@ -4,8 +4,9 @@ import CIcon from '@coreui/icons-react';
 import { HospitalInpatientTabList } from 'src/reusable/enum';
 import CoPaymentPage from './CoPayment';
 import CoInsurancePage from './CoInsurance';
-import DeductiblePage from './CoPayment';
-const HospitalInPatient = () => {
+import DeductiblePage from './Deductible';
+const HospitalInPatient = ({hospitalInPatient}) => {
+
         const [active, setActive] = useState(HospitalInpatientTabList.Copayment);
 
         // for tab Permission
@@ -46,13 +47,12 @@ const HospitalInPatient = () => {
                                     )}
                                 </CNavItem>
 
-
-
+    
                             </CNav>
                             <CTabContent>
-                                <CTabPane>{active === HospitalInpatientTabList.Copayment && CoPayment ? <CoPaymentPage /> : ''}</CTabPane>
-                                <CTabPane>{active === HospitalInpatientTabList.Coinsurance && CoInsurance ? <CoInsurancePage /> : ''}</CTabPane>
-                                <CTabPane>{active === HospitalInpatientTabList.Deductible && Deductible ? <DeductiblePage /> : ''}</CTabPane>
+                                <CTabPane>{active === HospitalInpatientTabList.Copayment && CoPayment ? <CoPaymentPage value={hospitalInPatient.amounts.coPayment}/> : ''}</CTabPane>
+                                <CTabPane>{active === HospitalInpatientTabList.Coinsurance && CoInsurance ? <CoInsurancePage value={hospitalInPatient.amounts.coInsurance}/> : ''}</CTabPane>
+                                <CTabPane>{active === HospitalInpatientTabList.Deductible && Deductible ? <DeductiblePage value={hospitalInPatient.amounts.Deductible}/> : ''}</CTabPane>
 
                             </CTabContent>
                         </CTabs>

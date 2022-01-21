@@ -200,6 +200,7 @@ const OrderForm = () => {
 				patientPartyRoleId: selectedValue.partyRoleId,
 				procedures: SelectedCpt,
 				orderTypeId: patientDetail?.orderType,
+				...(patientDetail.showInsurance == "1" ? { insuranceInfo: { ...SelectedInsuranceDetails,dateOfBirth:selectedValue.dateOfBirth } } : {})
 
 			};
 		} else if (SelectedCpt.length > 0 && patientDetail) {
@@ -209,6 +210,7 @@ const OrderForm = () => {
 				orderTypeId: patientDetail?.orderType,
 				patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
 				procedures: SelectedCpt,
+				...(patientDetail.showInsurance == "1" ? { insuranceInfo: { ...SelectedInsuranceDetails,dateOfBirth:patientDetail.dateOfBirth } } : {})
 			};
 		} else if (patientDetail?.orderType == OrderType.PatientResponsibility) {
 			data = {
@@ -217,79 +219,79 @@ const OrderForm = () => {
 				orderTypeId: patientDetail?.orderType,
 				patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
 				procedures: [],
-			};
-		}
-
-
-
-		try {
-			let result = await saveOrderData(data);
-			// eslint-disable-next-line eqeqeq
-			if (result.data.message == ServiceMsg.OK) {
-				dispatch(notify(`Successfully added`, 'success'));
-				// history.push({
-				// 	pathname: `/hospitals/hospital`,
-				// 	search: `?id=${hospitalId}&&name=${hospitalName}`,
-				// 	// state: { detail: 'some_value' }
-				// });
-
-				history.push({
-					pathname: `/order/view`,
-					search: `?orderId=${result.data.data}&&hospitalId=${hospitalId}&&hospitalName=${hospitalName}`,
-
-					// state: { detail: 'some_value' }
-				});
-				// order/view?orderId=45
-
+				...(patientDetail.showInsurance == "1" ? { insuranceInfo: { ...SelectedInsuranceDetails,dateOfBirth:patientDetail.dateOfBirth } } : {})
 			}
-
-		} catch (error) {
-			OnError(error, dispatch);
 		}
+
+			try {
+				let result = await saveOrderData(data);
+				// eslint-disable-next-line eqeqeq
+				if (result.data.message == ServiceMsg.OK) {
+					dispatch(notify(`Successfully added`, 'success'));
+					// history.push({
+					// 	pathname: `/hospitals/hospital`,
+					// 	search: `?id=${hospitalId}&&name=${hospitalName}`,
+					// 	// state: { detail: 'some_value' }
+					// });
+
+					history.push({
+						pathname: `/order/view`,
+						search: `?orderId=${result.data.data}&&hospitalId=${hospitalId}&&hospitalName=${hospitalName}`,
+
+						// state: { detail: 'some_value' }
+					});
+					// order/view?orderId=45
+
+				}
+
+			} catch (error) {
+				OnError(error, dispatch);
+			}
+		};
+
+		return (
+			<div className='p-4'>
+				<div className='row'>
+					<div className='col-md-4 mb-4'>
+						<label className=' float-left mr-3 pt-1 font-weight-bold'>Select Existing Patient</label>
+						{/* <Select options={options} onChange={selectPatient} /> */}
+
+						<AsyncSelect cacheOptions defaultOptions value={selectedValue} getOptionLabel={(e) => e.firstName + ' ' + e.lastName} 
+						getOptionValue={(e) => e.partyRoleId} loadOptions={loadOptions} onInputChange={handleInputChange} onChange={handleChange} />
+					</div>
+					<div className='col-md-4 pt-3'>
+						{isEdit ? (
+							<div className='fa fa-close float-left mr-5 text-danger cursor-point ' onClick={handleClearSelection}>
+								{' '}
+								Clear
+							</div>
+						) : (
+							''
+						)}
+					</div>
+					<div className='col-md-12 mb-2 pt-1'>
+						<h5 className='float-left'>If not, Please fill the below fields</h5>
+					</div>
+				</div>
+
+				<div className='border-bottom mb-3'></div>
+				<OrderPatientsForm defaultValues={selectedFormValue} isEdit={isEdit} handleForm={patientsFormDetail} />
+				<div className='border-bottom'></div>
+
+				{showInsurance && <OrderInsurance handleInsuranceForm={insuranceFormDetail} />}
+
+				{isCPT && <h5 className='font-weight-bold mt-3 mb-3'>Procedures </h5>}
+
+				{isCPT && <OrderProcedureSelect handleCPTChange={handleCPTChange} />}
+				<div className='row'>
+					<div className='col-md-12 mt-1'>
+						<button type='submit' onClick={saveOrder} ref={btnRef} className='btn btn-primary btn-lg float-right'>
+							Save
+						</button>
+					</div>
+				</div>
+			</div>
+		);
 	};
 
-	return (
-		<div className='p-4'>
-			<div className='row'>
-				<div className='col-md-4 mb-4'>
-					<label className=' float-left mr-3 pt-1 font-weight-bold'>Select Existing Patient</label>
-					{/* <Select options={options} onChange={selectPatient} /> */}
-
-					<AsyncSelect cacheOptions defaultOptions value={selectedValue} getOptionLabel={(e) => e.firstName + ' ' + e.lastName} getOptionValue={(e) => e.partyRoleId} loadOptions={loadOptions} onInputChange={handleInputChange} onChange={handleChange} />
-				</div>
-				<div className='col-md-4 pt-3'>
-					{isEdit ? (
-						<div className='fa fa-close float-left mr-5 text-danger cursor-point ' onClick={handleClearSelection}>
-							{' '}
-							Clear
-						</div>
-					) : (
-						''
-					)}
-				</div>
-				<div className='col-md-12 mb-2 pt-1'>
-					<h5 className='float-left'>If not, Please fill the below fields</h5>
-				</div>
-			</div>
-
-			<div className='border-bottom mb-3'></div>
-			<OrderPatientsForm defaultValues={selectedFormValue} isEdit={isEdit} handleForm={patientsFormDetail} />
-			<div className='border-bottom'></div>
-
-			{isCPT && <h5 className='font-weight-bold mt-3 mb-3'>Procedures </h5>}
-
-			{isCPT && <OrderProcedureSelect handleCPTChange={handleCPTChange} />}
-
-			{/* {showInsurance && <OrderInsurance handleInsuranceForm={insuranceFormDetail} />} */}
-			<div className='row'>
-				<div className='col-md-12 mt-1'>
-					<button type='submit' onClick={saveOrder} ref={btnRef} className='btn btn-primary btn-lg float-right'>
-						Save
-					</button>
-				</div>
-			</div>
-		</div>
-	);
-};
-
-export default OrderForm;
+	export default OrderForm;

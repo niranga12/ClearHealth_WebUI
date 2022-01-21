@@ -19,6 +19,7 @@ const OrderView = () => {
 	const location = useLocation();
 	const [orderId, setOrderId] = useState(null);
 	const [orderList, setOrderList] = useState(null);
+
 	//  const orderStatus = useSelector(state => state.Order.changeOrderProgress)
 	let orderStatus = useSelector((state) => state.Order.changeOrderProgress);
 
@@ -33,7 +34,7 @@ const OrderView = () => {
 		try {
 
 			dispatch(loaderShow());
-			const result = await getOrderByOrderId(id);
+			const result = await getOrderByOrderId('342');
 			setOrderList(result.data.data[0]);
 
 
@@ -43,8 +44,11 @@ const OrderView = () => {
 
 		} catch (error) {
 			OnError(error, dispatch);
+			dispatch(loaderHide());
 		}
 	};
+
+
 
 
 	const addCPT = async (val) => {
@@ -89,7 +93,7 @@ const OrderView = () => {
 			<div className="mt-3">
 
 				<OrderViewPatient patientDetail={orderList?.orderPatientDetails} />
-				{/* <OrderCheckEligibity/> */}
+				{orderList && <OrderCheckEligibity orderDetail={orderList} />}
 				<OrderList orderDetail={orderList} handleAddCPT={addCPT} />
 				{/* <OrderList/> */}
 			</div>
