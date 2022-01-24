@@ -102,7 +102,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                         <label className='form-text'>
                             Member ID<span className='text-danger font-weight-bold '>*</span>
                         </label>
-                        <input className='form-control-sm' type='text' {...register('insurance.memberId')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+                        <input className='form-control-sm' type='text' {...register('insurance.memberId')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.memberId?.message}</div>
                     </div>
                 </div>
