@@ -65,7 +65,7 @@ const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel }) => {
 
                     <div className="text-center pb-2 font-weight-bold"><h3>Successfully Completed</h3></div>
                     <div className="text-center">Thank you for completing your order with Regional Media Center. A copy of your order will be emailed to you shortly.
-                        If you're not already scheduled for your procedure, you will be receiving a call from hospital to schedule</div>
+                        If you're not already scheduled for your procedure, you will be receiving a call from hospital to schedule. </div>
 
                     <div className="row  m-2 pt-3">
                         <button type='button' className='btn btn-primary btn-lg col-md-6 m-auto' onClick={downlaodPdf} >

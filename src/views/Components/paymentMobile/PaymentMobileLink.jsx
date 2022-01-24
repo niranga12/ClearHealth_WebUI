@@ -117,7 +117,7 @@ const PaymentMobileLink = () => {
 											</div>
 											<div className='col-md-6'>
 												<div className='pay-mobile-right m-auto'>
-													<h5 className='font-weight-bold'>Estimated Cost at time of Procedure</h5>
+													<h5 className='font-weight-bold'>Estimated Cost at Time of Procedure</h5>
 													<h2 className='text-amount-blue'>$ {orderDetail?.orderDetails.total}</h2>
 													<div className='pay-italic'>Facility price only, you may receive separate bills for provider(s) </div>
 												</div>

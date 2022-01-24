@@ -86,7 +86,7 @@ const Login = () => {
     //           <div className="col-md-12 text-center">
     //             <FontAwesomeIcon icon={faEnvelope} className="pr-2 fa-x" />
     //             <span className="text-black-light">
-    //               support@clearhealth.com
+    //              support@clearhealthinc.com
     //             </span>
     //           </div>
     //           <div className="col-md-12 text-center pt-1">

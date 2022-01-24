@@ -63,12 +63,12 @@ const SingleLayout = ({ children }) => {
                 <div className="col-md-6">
                   <span className="email"></span>{" "}
                   <span className="support-clearhealth pad-20">
-                    support@clearhealth.com
+                  support@clearhealthinc.com
                   </span>
                 </div>
                 <div className="col-md-6 log-foot-phone">
                   <span className="phone"></span>{" "}
-                  <span className="support-clearhealth">(800) 229-01528</span>
+                  <span className="support-clearhealth">(888) 918-2522</span>
                 </div>
               </div>
             </div>

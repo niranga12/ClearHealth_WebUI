@@ -91,7 +91,8 @@ const OrderAction = ({ row }) => {
 				<CModalHeader closeButton>
 					<CModalTitle>Delete</CModalTitle>
 				</CModalHeader>
-				<CModalBody>Are you Sure Delete this item {row.original.description}?</CModalBody>
+				{/* <CModalBody>Are you Sure Delete this item {row.original.description}?</CModalBody> */}
+				<CModalBody>Are you sure you wish to delete this item {row.original.description}?</CModalBody>
 				<CModalFooter>
 					<CButton color='danger' onClick={deleteOrder}>
 						Delete
