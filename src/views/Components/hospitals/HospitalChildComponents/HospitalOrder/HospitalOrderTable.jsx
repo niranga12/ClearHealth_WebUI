@@ -8,13 +8,14 @@ import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { resetOrderTable } from 'src/actions/orderAction';
 import { ServiceMsg, TableSettingsEnum } from 'src/reusable/enum';
 import { getOrderListByHospitalId, getOrderListCountByHospitalId } from 'src/service/hospitalsService';
-import { orderAprove } from 'src/service/orderService';
+import { getOrderByOrderId, orderAprove } from 'src/service/orderService';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import DataTable from 'src/views/common/dataTable';
 import PaginationTable from 'src/views/common/paginationTable';
 import RatingView from 'src/views/common/ratingView';
 import OnError from 'src/_helpers/onerror';
-
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react'
+import OrderCheckEligibity from 'src/views/Components/order/OrderView/OrderCheckEligibity/OrderCheckEligibity';
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
@@ -50,6 +51,9 @@ function OrderActions({ row }) {
 	const orderChanges = useSelector((state) => state.mainOrder.changeProgress);
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
+	const [modal, setModal] = useState(false);
+	const [orderList, setOrderList] = useState(null);
+
 	const actionLink = () => {
 		history.push({
 			pathname: `/order/view`,
@@ -57,14 +61,40 @@ function OrderActions({ row }) {
 			// state: { detail: 'some_value' }
 		});
 	};
+
+	useEffect(() => {
+
+		const fetchData = async () => {
+			try {
+
+				const order = await getOrderByOrderId(row.original.orderId);
+				setOrderList(order.data.data[0]);
+			} catch (error) {
+				OnError(error, dispatch);
+			}
+		};
+		fetchData();
+	}, []);
+
+
+
+
+
+
+	const checkEligibity = () => {
+		setModal(true);
+	};
+
+
 	const approveOrder = async () => {
 		try {
 			// dispatch(changeOrderTable());
 			setLoading(true);
 			const result = await orderAprove(row.original.orderId);
+
 			if (result.data.message == ServiceMsg.OK) {
 				dispatch(notify(`Successfully updated`, 'success'));
-				
+
 				// history.go(0)
 				setTimeout(() => {
 					setLoading(false);
@@ -86,6 +116,10 @@ function OrderActions({ row }) {
 		);
 	}
 
+	const handleCancel = () => {
+		setModal(false);
+	}
+
 
 
 
@@ -96,9 +130,30 @@ function OrderActions({ row }) {
 					{' '}
 					View Order
 				</div>
+				<div className='btn btn-view-account ml-3 float-right' onClick={checkEligibity}>
+					{' '}
+					Check Eligibity
+				</div>
 				{row.original.orderStatus === "Paid" ? <div className="text-right">{row.original.orderPaidDate} </div> : sendOrderButton()}
 
 			</div>
+
+
+			<CModal size="xl" show={modal} onClose={setModal} >
+
+
+
+				{orderList && <OrderCheckEligibity orderDetail={orderList} />}
+				
+				<CModalFooter>
+
+					<CButton color='secondary' onClick={handleCancel}>
+						Cancel
+					</CButton>
+				</CModalFooter>
+			</CModal>
+
+
 		</>
 	);
 }

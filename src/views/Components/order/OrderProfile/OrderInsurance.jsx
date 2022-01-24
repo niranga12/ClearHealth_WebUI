@@ -123,7 +123,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                 <div className='col-md-4'>
                     <div className='form-group'>
                         <label className='form-text'>Provider NPI<span className='text-danger font-weight-bold '>*</span></label>
-                        <input className='form-control-sm' type='text' {...register('insurance.providerNpi')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+                        <input className='form-control-sm'  value='1104918564' type='text' {...register('insurance.providerNpi')} readOnly={true} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.providerNpi?.message}</div>
                     </div>
                 </div>

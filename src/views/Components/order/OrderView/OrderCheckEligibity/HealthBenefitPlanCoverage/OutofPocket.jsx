@@ -45,24 +45,24 @@ const inNetworkTableData = value.inNetwork.map(function(obj) {
 
   return (
       <div>
-          <table className="table">
-<thead>
-  <tr>
+      <table className="table tb-res">
+        <thead>
+          <tr>
 
-    <th scope="col"></th>
-    <th scope="col">Level Code</th>
-    <th scope="col">Total</th>
-    <th scope="col">Remaining</th>
-    
-  </tr>
-</thead>
-<tbody>
- {inNetworkTableData}
- {noNetworkTableData}
- {outOfNetworkTableData}
- 
-</tbody>
-</table>
+            <th scope="col"></th>
+            <th scope="col">Level Code</th>
+            <th scope="col">Total</th>
+            <th scope="col">Remaining</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {inNetworkTableData}
+          {noNetworkTableData}
+          {outOfNetworkTableData}
+
+        </tbody>
+      </table>
       </div>
   )
 }

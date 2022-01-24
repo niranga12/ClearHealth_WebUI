@@ -45,7 +45,7 @@ const inNetworkTableData = value.inNetwork.map(function(obj) {
 
   return (
       <div>
-          <table className="table">
+          <table className="table tb-res">
 <thead>
   <tr>
 
