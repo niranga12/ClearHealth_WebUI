@@ -125,10 +125,10 @@ export const PhysicianPackageField = [
 	{text: 'Physician Collection', value: 'physicianCollectionFee', id: 2},
 ];
 
-export const RelationshipList = [{ id: "Self", name: "Self" },
-{ id: "Spouse", name: "Spouse" },
-{ id: "Dependant", name: "Dependant" },
-{ id: "Other", name: "Other" }]
+export const RelationshipList = [{ id: "18", name: "Self" },
+{ id: "19", name: "Spouse" },
+{ id: "20", name: "Dependant" },
+{ id: "21", name: "Other" }]
 
 export const EnhancementPercentage = [
 	{text: '6.5%', value: '6.5'},
