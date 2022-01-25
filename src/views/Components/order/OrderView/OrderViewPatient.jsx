@@ -83,7 +83,7 @@ const OrderViewPatient = ({patientDetail}) => {
 		// let isAviable=false;
 		const formValue = getValues('patientForm');
 		let value=Number(formValue?.contactMethod)
-
+		
 		if(value>-1){
 			if(value=== Number(ContactMethod.Email)){
 				setIsmail(true);

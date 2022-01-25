@@ -5,14 +5,13 @@ import { faCheckCircle, faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
 // import greenTick from '../../assets/images/icons/greentick.png';
 import greenTick from '../../../assets/images/icons/greentick.png';
 import { getViewReceipt } from 'src/service/orderService';
-const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel }) => {
-
-
+const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel,orderDetail=null, }) => {
 
     const [modal, setModal] = useState(false);
-
+    const [facilityName, setFacilityName] = useState(null);
     useEffect(() => {
-        setModal(isNotify)
+        setModal(isNotify);
+        setFacilityName(orderDetail.orderPatientDetails.facilityName)
 
     }, [isNotify])
 
@@ -64,7 +63,7 @@ const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel }) => {
                     </div>
 
                     <div className="text-center pb-2 font-weight-bold"><h3>Successfully Completed</h3></div>
-                    <div className="text-center">Thank you for completing your order with Regional Media Center. A copy of your order will be emailed to you shortly.
+                    <div className="text-center">Thank you for completing your order with {facilityName}. A copy of your order will be emailed to you shortly.
                         If you're not already scheduled for your procedure, you will be receiving a call from hospital to schedule. </div>
 
                     <div className="row  m-2 pt-3">

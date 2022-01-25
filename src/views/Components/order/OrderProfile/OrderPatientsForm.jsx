@@ -231,7 +231,8 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'> Email {isMail && <span className='text-danger font-weight-bold '>*</span>}</label>
-							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} />
+							<input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)}/>
+							{/* <input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} /> */}
 							<div className='small text-danger  pb-2   '>{errors.patient?.email?.message}</div>
 						</div>
 					</div>
@@ -239,7 +240,8 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'> Phone {isPhone && <span className='text-danger font-weight-bold '>*</span>}</label>
-							<InputMask {...register('patient.phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patient.phone'))} className='form-control-sm' readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
+							<InputMask {...register('patient.phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patient.phone'))} className='form-control-sm'  onBlur={() => setstateChange(!stateChange)} />
+							{/* <InputMask {...register('patient.phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patient.phone'))} className='form-control-sm' readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} /> */}
 							{/* <InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={false} className='form-control-sm' /> */}
 							<div className='small text-danger  pb-2   '>{errors.patient?.phone?.message}</div>
 						</div>

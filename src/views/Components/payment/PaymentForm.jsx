@@ -133,7 +133,6 @@ const PaymentForm = () => {
 			  },
 			  orderId: orderId,
 		};
-
 		setBillingData(result);
 	};
 
@@ -147,7 +146,7 @@ const PaymentForm = () => {
 						{/* <Elements stripe={stripePromise}>
 							<PayStripe billingDetails={billingData} stKey={stKey} isValid={isValid} orderId={patientData?.orderId} />
 						</Elements> */}
-						<PayBrainTree billingDetails={billingData}  isValid={isValid} orderId={patientData?.orderId}/>
+						<PayBrainTree billingDetails={billingData}  isValid={isValid} orderId={patientData?.orderId} orderDetail={orderDetail} />
 					</div>
 					<div className='col-md-4'>
 						<PaymentOrderSummary orderDetail={orderDetail} />

@@ -11,7 +11,7 @@ import OnError from 'src/_helpers/onerror';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import PaymentCompletedAlert from '../payment/PaymentCompletedAlert';
 
-const PayBrainTree = ({billingDetails, isValid, orderId}) => {
+const PayBrainTree = ({billingDetails, isValid, orderId, orderDetail}) => {
 	// eslint-disable-next-line no-unused-vars
 	const [clientToken, setClientToken] = useState('sandbox_4xm898m8_3x38g8rmrxj3kbrj');
 	const [billDet, setBillDet] = useState(null);
@@ -21,7 +21,6 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 	const history = useHistory();
 	const [isNotify, setIsNotify] = useState(false);
 	useEffect(() => {
-		
 		setBillDet(billingDetails);
 
 		setIsvalidDetail(isValid);
@@ -69,7 +68,7 @@ const PayBrainTree = ({billingDetails, isValid, orderId}) => {
 			<button onClick={buy} className='btn btn-primary' disabled={!validDetail}>
 				Pay Now
 			</button>
-			<PaymentCompletedAlert  isNotify={isNotify} handleCancel={modelCancel} orderId={billingDetails?.orderId}/>
+			<PaymentCompletedAlert  isNotify={isNotify} handleCancel={modelCancel} orderId={billingDetails?.orderId} orderDetail={orderDetail}/>
 		</div>
 	);
 };
