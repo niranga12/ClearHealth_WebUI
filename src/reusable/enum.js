@@ -125,7 +125,8 @@ export const PhysicianPackageField = [
 	{text: 'Physician Collection', value: 'physicianCollectionFee', id: 2},
 ];
 
-export const RelationshipList = [{ id: "18", name: "Self" },
+export const RelationshipList =
+ [{ id: "18", name: "Self" },
 { id: "19", name: "Spouse" },
 { id: "20", name: "Dependant" },
 { id: "21", name: "Other" }]
