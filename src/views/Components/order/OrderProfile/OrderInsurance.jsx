@@ -145,7 +145,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                         <label className='form-text'>
                             First Name <span className='text-danger font-weight-bold '>*</span>
                         </label>
-                        <input className='form-control-sm' type='text' {...register('insurance.patientFirstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+                        <input className='form-control-sm' type='text' {...register('insurance.patientFirstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.patientFirstName?.message}</div>
                     </div>
                 </div>
@@ -153,7 +153,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                 <div className='col-md-4'>
                     <div className='form-group'>
                         <label className='form-text'>Middle Name</label>
-                        <input className='form-control-sm' type='text' {...register('insurance.patientMiddleName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+                        <input className='form-control-sm' type='text' {...register('insurance.patientMiddleName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.patientMiddleName?.message}</div>
                     </div>
                 </div>
@@ -163,7 +163,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                         <label className='form-text'>
                             Last Name <span className='text-danger font-weight-bold '>*</span>
                         </label>
-                        <input className='form-control-sm' type='text' {...register('insurance.patientLastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+                        <input className='form-control-sm' type='text' {...register('insurance.patientLastName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.patientLastName?.message}</div>
                     </div>
                 </div>
