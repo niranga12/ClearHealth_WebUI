@@ -27,8 +27,6 @@ let schema = yup
         })
     })
 
-
-
 const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) => {
 
     const { register, getValues, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
