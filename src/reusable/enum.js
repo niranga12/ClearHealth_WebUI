@@ -130,6 +130,8 @@ export const RelationshipList = [{ id: "18", name: "Self" },
 { id: "20", name: "Dependant" },
 { id: "21", name: "Other" }]
 
+
+
 export const EnhancementPercentage = [
 	{text: '6.5%', value: '6.5'},
 	{text: '15%', value: '15'},
