@@ -278,7 +278,7 @@ const OrderForm = () => {
 				<OrderPatientsForm defaultValues={selectedFormValue} isEdit={isEdit} handleForm={patientsFormDetail} />
 				<div className='border-bottom'></div>
 
-				{showInsurance && <OrderInsurance handleInsuranceForm={insuranceFormDetail} />}
+				{showInsurance && <OrderInsurance handleInsuranceForm={insuranceFormDetail} patientDetail={patientDetail} />}
 
 				{isCPT && <h5 className='font-weight-bold mt-3 mb-3'>Procedures </h5>}
 

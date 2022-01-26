@@ -27,13 +27,12 @@ let schema = yup
         })
     })
 
-const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) => {
-
-    const { register, getValues, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' });
+const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, patientDetail }) => {
+    const { register, getValues, formState, setValue, } = useForm({ resolver: yupResolver(schema), mode: 'all' });
     // eslint-disable-next-line no-unused-vars
     const { isValid, errors } = formState;
     const [stateChange, setstateChange] = useState(false);
-    const [inputValue, setValue] = useState('');
+    const [inputValue, setInputValue] = useState('');
     const [selectedPayerId, setPayerId] = useState(null);
     const relationshipList = RelationshipList;
 
@@ -46,7 +45,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
     };
 
     const handleInputChange = (value) => {
-        setValue(value);
+        setInputValue(value);
     };
 
     const handleChange = (value) => {
@@ -54,6 +53,17 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
     };
 
     useEffect(() => {
+        let details = patientDetail;
+        const subscriberRelationship = getValues('insurance.subscriberRelationship');
+        if (subscriberRelationship == '18') {
+            setValue('insurance.patientFirstName', details.firstName);
+            setValue('insurance.patientMiddleName', details.middleName);
+            setValue('insurance.patientLastName', details.lastName);
+        } else {
+            setValue('insurance.patientFirstName', '');
+            setValue('insurance.patientMiddleName', '');
+            setValue('insurance.patientLastName', '');
+        }
         const formValue = getValues('insurance');
 
         handleInsuranceForm({ ...formValue, payerId: selectedPayerId?.payerID });
@@ -100,7 +110,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                         <label className='form-text'>
                             Member ID<span className='text-danger font-weight-bold '>*</span>
                         </label>
-                        <input className='form-control-sm' type='text' {...register('insurance.memberId')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  />
+                        <input className='form-control-sm' type='text' {...register('insurance.memberId')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.memberId?.message}</div>
                     </div>
                 </div>
@@ -121,7 +131,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                 <div className='col-md-4'>
                     <div className='form-group'>
                         <label className='form-text'>Provider NPI<span className='text-danger font-weight-bold '>*</span></label>
-                        <input className='form-control-sm'  value='1104918564' type='text' {...register('insurance.providerNpi')} readOnly={true} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+                        <input className='form-control-sm' value='1104918564' type='text' {...register('insurance.providerNpi')} readOnly={true} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.providerNpi?.message}</div>
                     </div>
                 </div>
@@ -143,7 +153,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm }) 
                         <label className='form-text'>
                             First Name <span className='text-danger font-weight-bold '>*</span>
                         </label>
-                        <input className='form-control-sm' type='text' {...register('insurance.patientFirstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)}  />
+                        <input className='form-control-sm' type='text' {...register('insurance.patientFirstName')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.patientFirstName?.message}</div>
                     </div>
                 </div>

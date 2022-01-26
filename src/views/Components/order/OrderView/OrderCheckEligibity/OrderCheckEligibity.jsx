@@ -10,14 +10,13 @@ const OrderCheckEligibity = ({ orderDetail }) => {
     const [inPatient, setHospitalInPatient] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
     useEffect(() => {
-
         if (Object.entries(orderDetail.insuranceInfo).length !== 0) {
-            if (orderDetail.insuranceInfo[0].name != 'Error' && Object.entries(orderDetail.insuranceInfo)[0][0]!='0') {
+           // if (orderDetail.insuranceInfo[0].name != 'Error' && Object.entries(orderDetail.insuranceInfo)[0][0]!='0') {
+                if (orderDetail.insuranceInfo[0].name != 'Error' ) {
                 let planA = orderDetail.insuranceInfo[0].find(x => x.type == "50");
                 let PlanB = orderDetail.insuranceInfo[0].find(x => x.type == 30);
                 setHospitalInPatient(planA);
                 setHealthBenefitPlan(PlanB);
-                
             }else{
                 setShowAlert(true)
             }
