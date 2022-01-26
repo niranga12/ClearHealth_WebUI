@@ -57,8 +57,8 @@ const Deductible = ({value}) => {
     <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col">Amount</th>
-      <th scope="col">Unit</th>
       <th scope="col">Level</th>
+      <th scope="col">Unit</th>
       <th scope="col">Auth Required</th>
       <th scope="col">Amount Time peroid</th>
     </tr>
