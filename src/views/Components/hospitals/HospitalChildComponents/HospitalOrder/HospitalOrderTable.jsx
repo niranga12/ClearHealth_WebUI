@@ -278,12 +278,12 @@ function HospitalOrderTable() {
 					</h5>
 				),
 			},
-			{
-				Header: 'Order Number',
-				accessor: 'orderNumber', // accessor is the "key" in the data
-				disableSortBy: true,
-				Cell: ({ value }) => <h5 className='font-weight-normal text-black'> {value} </h5>,
-			},
+			// {
+			// 	Header: 'Order Number',
+			// 	accessor: 'orderNumber', // accessor is the "key" in the data
+			// 	disableSortBy: true,
+			// 	Cell: ({ value }) => <h5 className='font-weight-normal text-black'> {value} </h5>,
+			// },
 			{
 				Header: 'Order Date',
 				accessor: 'orderDate', // accessor is the "key" in the data
