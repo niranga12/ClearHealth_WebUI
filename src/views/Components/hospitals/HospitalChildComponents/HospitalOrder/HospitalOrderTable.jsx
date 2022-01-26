@@ -289,6 +289,8 @@ function HospitalOrderTable() {
 				accessor: 'orderDate', // accessor is the "key" in the data
 				disableSortBy: true,
 
+				
+
 			},
 			{
 				Header: 'Procedure',
