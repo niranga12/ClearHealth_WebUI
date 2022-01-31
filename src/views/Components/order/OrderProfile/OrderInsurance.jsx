@@ -17,7 +17,7 @@ let schema = yup
         insurance: yup.object().shape({
             payerId: yup.string(),
             subscriberRelationship: yup.string(),
-           // subscriberId: yup.string(),
+            // subscriberId: yup.string(),
             providerNpi: yup.string(),
             groupNumber: yup.string(),
             subscriberFirstName: yup.string(),
@@ -66,11 +66,31 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
             let data = { ...formValue, payerId: selectedPayerId?.payerID, patientBirthDate: moment(fromDate).format('YYYY-MM-DD') }
 
             let result = await verifyInsuranceDetails(data);
-            if (result.data.data.statusCode == 400 || result.data.data.statusCode=='19' || result.data.data.statusCode=='3') {
+            if (result.data.data.statusCode == 400 || result.data.data.statusCode == '19' || result.data.data.statusCode == '3') {
                 setAlertMessage(result.data.data.message)
                 setfieldMessage(result.data.data.data.map(function (obj) {
+                    debugger
+                    if (obj.field == "patientLastName") {
+                        obj.field = "Patient Last Name"
+                    } else if (obj.field == "patientFirstName") {
+                        obj.field = "Patient First Name"
+                    } else if (obj.field == "patientBirthDate") {
+                        obj.field = "Patient BirthDate"
+                    } else if (obj.field == "subscriberRelationship") {
+                        obj.field = "Relationship to Subscriber"
+                    } else if (obj.field == "payerId") {
+                        obj.field = "Payer Id"
+                    } else if (obj.field == "memberId") {
+                        obj.field = "Member Id"
+                    } else if (obj.field == "patientGender") {
+                        obj.field = "Patient Gender"
+                    } else if (obj.field == "patient") {
+                        obj.field = "Patient"
+                    } else if (obj.field == "providerNpi") {
+                        obj.field = "Provider Npi"
+                    }
                     return <div>
-                        <div>{obj.field}:  {obj.errorMessage}</div>
+                        <span>{obj.field}</span> <span>{obj.field != undefined && ':'}</span><span>  {obj.errorMessage}</span>
                     </div>
                 }))
             } else if (result.data.data.statusCode == "Complete") {
@@ -104,7 +124,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
             }
             const formValue = getValues('insurance');
 
-            handleInsuranceForm({ ...formValue, payerId: selectedPayerId?.payerID,patientBirthDate: moment(fromDate).format('YYYY-MM-DD') });
+            handleInsuranceForm({ ...formValue, payerId: selectedPayerId?.payerID, patientBirthDate: moment(fromDate).format('YYYY-MM-DD') });
 
         }, [stateChange])
 

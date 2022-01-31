@@ -10,7 +10,6 @@ const OrderCheckEligibility = ({ orderDetail }) => {
     const [inPatient, setHospitalInPatient] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
     useEffect(() => {
-       
         if (orderDetail.insuranceInfo.length == 1) {
           let planA = orderDetail.insuranceInfo[0].data.find(x => x.type == "50");
                 let PlanB = orderDetail.insuranceInfo[0].data.find(x => x.type == "30");
