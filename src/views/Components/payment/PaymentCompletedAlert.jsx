@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { CButton, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react'
+import { CModal, CModalBody, CModalHeader } from '@coreui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 // import greenTick from '../../assets/images/icons/greentick.png';
-import greenTick from '../../../assets/images/icons/greentick.png';
 import { getViewReceipt } from 'src/service/orderService';
 const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel,orderDetail=null, }) => {
 

@@ -39,12 +39,12 @@ export const Organizations = {
 	Hospital: 5,
 	PaymentContact: 6,
 	Provider: 7,
-    ClearAdmin: 8,
-    HealthSystemAdmin: 9,
-    HospitalAdmin: 10,
-    HospitalStaff: 11,
-    Patient: 12,
-    GroupProvider: 13
+	ClearAdmin: 8,
+	HealthSystemAdmin: 9,
+	HospitalAdmin: 10,
+	HospitalStaff: 11,
+	Patient: 12,
+	GroupProvider: 13
 };
 
 export const OrderStatus = {
@@ -68,26 +68,26 @@ export const DateFormat = {
 
 export const ServiceType = {
 	Types: [
-		{value: '', text: 'Select'},
-		{value: 1, text: 'Radiology'},
-		{value: 2, text: 'OB/GYN'},
-		{value: 3, text: 'Labs'},
-		{value: 4, text: 'General Surgery'},
-		{value: 5, text: 'Gastroenterology'},
-		{value: 6, text: 'Cardiac Imaging'},
+		{ value: '', text: 'Select' },
+		{ value: 1, text: 'Radiology' },
+		{ value: 2, text: 'OB/GYN' },
+		{ value: 3, text: 'Labs' },
+		{ value: 4, text: 'General Surgery' },
+		{ value: 5, text: 'Gastroenterology' },
+		{ value: 6, text: 'Cardiac Imaging' },
 	],
 };
 
 export const selectionListDropDown = [
-	{text: 'Select', value: ''},
-	{text: 'Most Recent', value: 'recent'},
-	{text: 'All', value: 'all'},
-	{text: 'Deleted', value: 'deleted'},
+	{ text: 'Select', value: '' },
+	{ text: 'Most Recent', value: 'recent' },
+	{ text: 'All', value: 'all' },
+	{ text: 'Deleted', value: 'deleted' },
 ];
 
 export const ActiveList = [
-	{text: 'Active', value: 'Active'},
-	{text: 'Inactive', value: 'Inactive'},
+	{ text: 'Active', value: 'Active' },
+	{ text: 'Inactive', value: 'Inactive' },
 ];
 
 export const ServiceTypeEnum = {
@@ -108,34 +108,58 @@ export const PackageItems = {
 };
 
 export const Packages = [
-	{name: 'Global Package', id: 1},
-	{name: 'Facility', id: 2},
-	{name: 'Physician', id: 3},
-	{name: 'Anesthesia', id: 4},
-	{name: 'Pathology', id: 5},
+	{ name: 'Global Package', id: 1 },
+	{ name: 'Facility', id: 2 },
+	{ name: 'Physician', id: 3 },
+	{ name: 'Anesthesia', id: 4 },
+	{ name: 'Pathology', id: 5 },
 ];
 
 export const FacilityPackageField = [
-	{text: 'Medicare Rate', value: 'medicareRate', id: 1},
-	{text: 'Hospital Collection', value: 'hospitalCollectionFee', id: 2},
+	{ text: 'Medicare Rate', value: 'medicareRate', id: 1 },
+	{ text: 'Hospital Collection', value: 'hospitalCollectionFee', id: 2 },
 ];
 
 export const PhysicianPackageField = [
-	{text: 'Medicare Rate', value: 'medicareRate', id: 1},
-	{text: 'Physician Collection', value: 'physicianCollectionFee', id: 2},
+	{ text: 'Medicare Rate', value: 'medicareRate', id: 1 },
+	{ text: 'Physician Collection', value: 'physicianCollectionFee', id: 2 },
 ];
 
 export const RelationshipList =
- [{ id: "18", name: "Self" },
-{ id: "19", name: "Spouse" },
-{ id: "20", name: "Dependant" },
-{ id: "21", name: "Other" }]
+	[
+
+		{ id: "1", name: "Spouse" },
+		{ id: "4", name: "Grandfather or Grandmother" },
+		{ id: "5", name: "Grandson or Grandaughter" },
+		{ id: "7", name: "Nephew or Niece" },
+		{ id: "10", name: "Foster Child" },
+		{ id: "15", name: "Ward of the Court" },
+		{ id: "17", name: "Stepson or Stepdaughter" },
+		{ id: "18", name: "Self" },
+		{ id: "19", name: "Child" },
+		{ id: "20", name: "Employee" },
+		{ id: "21", name: "Unknown" },
+		{ id: "22", name: "Handicapped/Dependent" },
+		{ id: "23", name: "Sponsored Dependent" },
+		{ id: "24", name: "Dependent of Minor Dependent" },
+		{ id: "29", name: "Significant Other" },
+		{ id: "32", name: "Mother" },
+		{ id: "33", name: "Father" },
+		{ id: "36", name: "Emancipated Minor" },
+		{ id: "39", name: "Organ Donor" },
+		{ id: "40", name: "Cadaver Donor" },
+		{ id: "32", name: "Injured Plaintiff" },
+		{ id: "43", name: "Child Where Insured Has No Financial Responsibility" },
+		{ id: "53", name: "Life Partner" },
+		{ id: "G8", name: "Other Relationship" }
+	
+	]
 
 
 
 export const EnhancementPercentage = [
-	{text: '6.5%', value: '6.5'},
-	{text: '15%', value: '15'},
+	{ text: '6.5%', value: '6.5' },
+	{ text: '15%', value: '15' },
 ];
 
 export const HospitalTabList = {
@@ -171,7 +195,7 @@ export const Roleclassificationtype = {
 };
 
 export const ScreenPermissions = {
-	Main:0,
+	Main: 0,
 	Home: 1,
 	Hospital: 2,
 	HealthSystem: 3,
@@ -210,7 +234,7 @@ export const ButtonPermissions = {
 	FeeScheduleTab: 17,
 	DashboardTab: 18,
 	PaymentTab: 19,
-	ViewHealthSystemHospital:34
+	ViewHealthSystemHospital: 34
 };
 
 export const ResourceType = {
@@ -224,36 +248,35 @@ export const PermissionType = {
 	NotAuthorized: 2,
 };
 
-export const RoleType={
+export const RoleType = {
 
-	ClearSystemAdmin:2,
-	ClearAdmin:8,
-	HealthSystemAdmin:9,
-	HospitalAdmin:10,
-	HospitalStaff:11
+	ClearSystemAdmin: 2,
+	ClearAdmin: 8,
+	HealthSystemAdmin: 9,
+	HospitalAdmin: 10,
+	HospitalStaff: 11
 
 }
 
-export const Provider={
+export const Provider = {
 
-	Provider:7,
-	GroupProvider:13,
+	Provider: 7,
+	GroupProvider: 13,
 }
 
-export const OrderType={
-	ClearPackage:1,
-	PatientResponsibility:2
+export const OrderType = {
+	ClearPackage: 1,
+	PatientResponsibility: 2
 }
 
 export const HealthBenefitTabList = {
-	OutofPocket:0,
-	Deductible:1
+	OutofPocket: 0,
+	Deductible: 1
 };
 
 export const HospitalInpatientTabList = {
-	Copayment:0,
-	Coinsurance:1,
-	Deductible:2
+	Copayment: 0,
+	Coinsurance: 1,
+	Deductible: 2
 };
-	
-	
+

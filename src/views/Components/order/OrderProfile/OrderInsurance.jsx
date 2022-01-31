@@ -4,9 +4,11 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import FormatText from 'src/reusable/FormatText';
-import { getPayerList } from 'src/service/orderService';
+import { getPayerList, verifyInsuranceDetails } from 'src/service/orderService';
 import AsyncSelect from 'react-select/async';
 import { RelationshipList } from 'src/reusable/enum';
+import DateSelector from 'src/views/common/dateSelector';
+import moment from 'moment';
 
 
 let schema = yup
@@ -15,7 +17,7 @@ let schema = yup
         insurance: yup.object().shape({
             payerId: yup.string(),
             subscriberRelationship: yup.string(),
-            subscriberId: yup.string(),
+           // subscriberId: yup.string(),
             providerNpi: yup.string(),
             groupNumber: yup.string(),
             subscriberFirstName: yup.string(),
@@ -35,6 +37,10 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
     const [inputValue, setInputValue] = useState('');
     const [selectedPayerId, setPayerId] = useState(null);
     const relationshipList = RelationshipList;
+    const [fromDate, handlefromDateChange] = useState(Date.now());
+    const [alertMessage, setAlertMessage] = useState(null);
+    const [fieldMessage, setfieldMessage] = useState([]);
+    const [successAlert, setSuccessAlert] = useState('');
 
     const loadOptions = async (inputValue) => {
         try {
@@ -51,24 +57,56 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
     const handleChange = (value) => {
         setPayerId(value)
     };
+    const verifyInsurance = async () => {
+        try {
+            setAlertMessage('')
+            setfieldMessage([])
+            setSuccessAlert('')
+            const formValue = getValues('insurance');
+            let data = { ...formValue, payerId: selectedPayerId?.payerID, patientBirthDate: moment(fromDate).format('YYYY-MM-DD') }
 
-    useEffect(() => {
-        let details = patientDetail;
-        const subscriberRelationship = getValues('insurance.subscriberRelationship');
-        if (subscriberRelationship == '18') {
-            setValue('insurance.patientFirstName', details.firstName);
-            setValue('insurance.patientMiddleName', details.middleName);
-            setValue('insurance.patientLastName', details.lastName);
-        } else {
-            setValue('insurance.patientFirstName', '');
-            setValue('insurance.patientMiddleName', '');
-            setValue('insurance.patientLastName', '');
+            let result = await verifyInsuranceDetails(data);
+            if (result.data.data.statusCode == 400 || result.data.data.statusCode=='19' || result.data.data.statusCode=='3') {
+                setAlertMessage(result.data.data.message)
+                setfieldMessage(result.data.data.data.map(function (obj) {
+                    return <div>
+                        <div>{obj.field}:  {obj.errorMessage}</div>
+                    </div>
+                }))
+            } else if (result.data.data.statusCode == "Complete") {
+                setAlertMessage('')
+                setfieldMessage([])
+                setSuccessAlert("Complete")
+            } else if (result.data.data.statusCode == "0") {
+                setAlertMessage('')
+                setfieldMessage([])
+                setSuccessAlert("In Progress")
+            }
+        } catch (error) {
+            console.log(error)
         }
-        const formValue = getValues('insurance');
+    }
 
-        handleInsuranceForm({ ...formValue, payerId: selectedPayerId?.payerID });
 
-    }, [stateChange])
+    const table =
+
+        useEffect(() => {
+            let details = patientDetail;
+            const subscriberRelationship = getValues('insurance.subscriberRelationship');
+            if (subscriberRelationship == '18') {
+                setValue('insurance.patientFirstName', details.firstName);
+                setValue('insurance.patientMiddleName', details.middleName);
+                setValue('insurance.patientLastName', details.lastName);
+            } else {
+                // setValue('insurance.patientFirstName', '');
+                // setValue('insurance.patientMiddleName', '');
+                // setValue('insurance.patientLastName', '');
+            }
+            const formValue = getValues('insurance');
+
+            handleInsuranceForm({ ...formValue, payerId: selectedPayerId?.payerID,patientBirthDate: moment(fromDate).format('YYYY-MM-DD') });
+
+        }, [stateChange])
 
 
     return (
@@ -118,7 +156,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
             <h5 className='font-weight-bold mt-1'>Subscriber Details </h5>
 
             <div className='row'>
-                <div className='col-md-4'>
+                {/* <div className='col-md-4'>
                     <div className='form-group'>
                         <label className='form-text'>
                             Subscriber ID<span className='text-danger font-weight-bold '>*</span>
@@ -126,7 +164,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
                         <input className='form-control-sm' type='text' {...register('insurance.subscriberId')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.subscriberId?.message}</div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className='col-md-4'>
                     <div className='form-group'>
@@ -146,6 +184,8 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
                     </div>
                 </div>
             </div>
+
+            <h6 className='font-weight-bold mt-1'>If patient is not the subscriber fill below subscriber details.</h6>
 
             <div className='row'>
                 <div className='col-md-4'>
@@ -179,6 +219,16 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
                 <div className='col-md-4'>
                     <div className='form-group'>
                         <label className='form-text'>
+                            Date Of Birth <span className='text-danger font-weight-bold '>*</span>
+                        </label>
+                        <DateSelector className={` form-control-sm ${isEdit ? 'disable' : ''}`} selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true} />
+                        <div className='small text-danger  pb-2   '>{errors.insurance?.dateOfBirth?.message}</div>
+                    </div>
+                </div>
+
+                <div className='col-md-4'>
+                    <div className='form-group'>
+                        <label className='form-text'>
                             Gender <span className='text-danger font-weight-bold '>*</span>
                         </label>
                         <select name='' id='' className='form-control-sm' {...register('insurance.patientGender')} onBlur={() => setstateChange(!stateChange)}>
@@ -192,6 +242,17 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
                 </div>
             </div>
 
+            <div className='row'>
+                <div className='btn btn-view-account ml-3 float-right' onClick={verifyInsurance}>
+                    {' '}
+                    Verify Insurance
+                </div>
+                <div className='mr-3 ml-3 pt-2 font-weight-bold text-danger'>{alertMessage}</div>
+                <div className='mr-3 ml-3 pt-2 font-weight-bold text-success'>{successAlert}</div>
+            </div>
+            <div className='row'>
+                {fieldMessage != [] && <div className='mr-3 ml-3 pt-2 font-weight-bold text-danger'>{fieldMessage}</div>}
+            </div>
         </div>
     )
 }

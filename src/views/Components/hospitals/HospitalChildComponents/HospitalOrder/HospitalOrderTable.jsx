@@ -15,7 +15,7 @@ import PaginationTable from 'src/views/common/paginationTable';
 import RatingView from 'src/views/common/ratingView';
 import OnError from 'src/_helpers/onerror';
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react'
-import OrderCheckEligibity from 'src/views/Components/order/OrderView/OrderCheckEligibity/OrderCheckEligibity';
+import OrderCheckEligibility from 'src/views/Components/order/OrderView/OrderCheckEligibility/OrderCheckEligibility';
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
@@ -69,6 +69,9 @@ function OrderActions({ row }) {
 
 				const order = await getOrderByOrderId(row.original.orderId);
 				setOrderList(order.data.data[0]);
+
+
+				// console.log(Object.keys(order.data.data[0].insuranceInfo[0])) 
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -81,7 +84,7 @@ function OrderActions({ row }) {
 
 
 
-	const checkEligibity = () => {
+	const checkEligibility = () => {
 		setModal(true);
 	};
 
@@ -106,10 +109,12 @@ function OrderActions({ row }) {
 		}
 	};
 
+
+
 	const sendOrderButton = () => {
 		return (
 			// <button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <=row.original.attempts || !(row.original.cptCount > 0) || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" } onClick={approveOrder}>
-			<button className='btn btn-primary  float-right' disabled={row.original.totalAttempts <= row.original.attempts || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" || loading} onClick={approveOrder}>
+			<button className='btn btn-primary col-11  float-right' disabled={row.original.totalAttempts <= row.original.attempts || row.original.orderStatus == "Paid" || row.original.orderStatus == "Expired" || loading} onClick={approveOrder}>
 				{' '}
 				Send Order
 			</button>
@@ -125,26 +130,58 @@ function OrderActions({ row }) {
 
 	return (
 		<>
-			<div>
-				<div className='btn btn-view-account ml-3 float-right' onClick={actionLink}>
-					{' '}
-					View Order
+			{orderList != null && <div className="container">
+				<div className="row">
+				
+					<div className="col-4 p-0">
+						<div className='btn btn-view-account float-right' onClick={actionLink}>
+							{' '}
+							View Order
+						</div>
+					</div>
+					<div className="col-4 p-0">
+						 <button className='btn btn-view-account float-right'  onClick={checkEligibility} disabled={orderList?.insuranceInfo.length != 1}>
+							{' '}
+							Check Eligibility
+						</button>
+					</div>
+					<div className="col-4 p-0">
+						{row.original.orderStatus === "Paid" ? <div className="text-right">{row.original.orderPaidDate} </div> : sendOrderButton()}
+					</div>
 				</div>
-				<div className='btn btn-view-account ml-3 float-right' onClick={checkEligibity}>
-					{' '}
-					Check Eligibity
-				</div>
-				{row.original.orderStatus === "Paid" ? <div className="text-right">{row.original.orderPaidDate} </div> : sendOrderButton()}
-
 			</div>
+			} 
+
+
+
+
+			{/* {orderList != null && <div>
+			
+						<div className='btn btn-view-account float-right' onClick={actionLink}>
+							{' '}
+							View Order
+						</div>
+					
+						{orderList?.insuranceInfo.length == 1 && <div className='btn btn-view-account float-right' onClick={checkEligibility}>
+							{' '}
+							Check Eligibility
+						</div>}
+					
+						{row.original.orderStatus === "Paid" ? <div className="text-right">{row.original.orderPaidDate} </div> : sendOrderButton()}
+					
+				
+			</div>
+			} */}
+
+
 
 
 			<CModal size="xl" show={modal} onClose={setModal} >
 
 
 
-				{orderList && <OrderCheckEligibity orderDetail={orderList} />}
-				
+				{orderList && <OrderCheckEligibility orderDetail={orderList} />}
+
 				<CModalFooter>
 
 					<CButton color='secondary' onClick={handleCancel}>
@@ -289,7 +326,7 @@ function HospitalOrderTable() {
 				accessor: 'orderDate', // accessor is the "key" in the data
 				disableSortBy: true,
 
-				
+
 
 			},
 			{

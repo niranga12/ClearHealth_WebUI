@@ -27,3 +27,5 @@ export const getViewReceipt=(orderId)=>axiosInstance.post(`openorder/viewReceipt
 
 export const getPayerList=(search)=>axiosInstance.post(`order/payerList`,search);
 
+export const verifyInsuranceDetails=(insurancDetails)=>axiosInstance.post(`order/verifyInsurance`,insurancDetails);
+

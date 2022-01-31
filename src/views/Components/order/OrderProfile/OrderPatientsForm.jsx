@@ -25,6 +25,7 @@ let schema = yup
 			lastName: yup.string().required(' Last Name is required').matches(ValidationPatterns.onlyCharacters, ' Last Name  should contain only characters'),
 			dateOfBirth: yup.string(),
 			contactMethod: yup.string().required('Contact Method is required'),
+			showInsurance: yup.string().required('Please Select insurance'),
 			// email: yup.string().email(' Please enter a valid email').required('Email is required'),
 			// phone: yup
 			// 	.string()
@@ -144,9 +145,9 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 			setIsmail(false);
 			setIsPhone(false);
 		}
-		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) > -1) {
+		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) > -1 && formValue?.showInsurance > -1 ) {
 			isAviable = ((formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) || (formValue?.orderType == OrderType.ClearPackage)) ? true : false;
-		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) > -1) {
+		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) > -1 && formValue?.showInsurance > -1 ) {
 			isAviable = ((formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) || (formValue?.orderType == OrderType.ClearPackage)) ? true : false;
 		} else {
 			isAviable = false;
@@ -294,7 +295,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 								{' '}
 								Collect Insurance Details ? <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<select name='' id='' className='form-control-sm' {...register('patient.showInsurance')} onBlur={() => setstateChange(!stateChange)}>
+							<select name='showInsurance' id='showInsurance' className='form-control-sm' {...register('patient.showInsurance')} onBlur={() => setstateChange(!stateChange)}>
 								<option value='-1'>Select</option>
 								<option value='1'>Yes</option>
 								<option value='0'>No</option>

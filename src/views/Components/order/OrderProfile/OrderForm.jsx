@@ -200,7 +200,7 @@ const OrderForm = () => {
 				patientPartyRoleId: selectedValue.partyRoleId,
 				procedures: SelectedCpt,
 				orderTypeId: patientDetail?.orderType,
-				...(patientDetail.showInsurance == "1" ? { insuranceInfo: { ...SelectedInsuranceDetails,patientBirthDate:selectedValue.dateOfBirth } } : {})
+				...(patientDetail.showInsurance == "1" ? { insuranceInfo: { ...SelectedInsuranceDetails} } : {})
 
 			};
 		} else if (SelectedCpt.length > 0 && patientDetail) {
@@ -210,7 +210,7 @@ const OrderForm = () => {
 				orderTypeId: patientDetail?.orderType,
 				patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
 				procedures: SelectedCpt,
-				...(patientDetail.showInsurance == "1" ? { insuranceInfo: { ...SelectedInsuranceDetails,patientBirthDate:patientDetail.dateOfBirth } } : {})
+				...(patientDetail.showInsurance == "1" ? { insuranceInfo: { ...SelectedInsuranceDetails } } : {})
 			};
 		} else if (patientDetail?.orderType == OrderType.PatientResponsibility) {
 			data = {
@@ -219,7 +219,7 @@ const OrderForm = () => {
 				orderTypeId: patientDetail?.orderType,
 				patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
 				procedures: [],
-				...(patientDetail.showInsurance == "1" ? { insuranceInfo: { ...SelectedInsuranceDetails,patientBirthDate:patientDetail.dateOfBirth } } : {})
+				...(patientDetail.showInsurance == "1" ? { insuranceInfo: { ...SelectedInsuranceDetails } } : {})
 			}
 		}
 
