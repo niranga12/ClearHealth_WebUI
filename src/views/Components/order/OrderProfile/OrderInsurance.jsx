@@ -69,7 +69,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
             if (result.data.data.statusCode == 400 || result.data.data.statusCode == '19' || result.data.data.statusCode == '3') {
                 setAlertMessage(result.data.data.message)
                 setfieldMessage(result.data.data.data.map(function (obj) {
-                    debugger
+
                     if (obj.field == "patientLastName") {
                         obj.field = "Patient Last Name"
                     } else if (obj.field == "patientFirstName") {
