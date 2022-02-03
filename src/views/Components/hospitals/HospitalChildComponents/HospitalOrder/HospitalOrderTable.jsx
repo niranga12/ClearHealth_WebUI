@@ -176,7 +176,7 @@ function OrderActions({ row }) {
 
 
 
-			<CModal size="xl" show={modal} onClose={setModal} >
+			<CModal size="xl" show={modal} onClose={setModal} closeOnBackdrop={false}>
 
 
 

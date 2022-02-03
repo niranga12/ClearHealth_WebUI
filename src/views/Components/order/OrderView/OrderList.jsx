@@ -191,7 +191,7 @@ const OrderList = ({ orderDetail,handleAddCPT }) => {
 
 			<div className='card-body p-0'>{orderData && order?.orderSummary[0]?.orderTypeId === OrderType.ClearPackage && <DataTable columns={columns} data={orderData} />}</div>
 			{/* onClose={() => setPrimary(!primary)} */}
-			<CModal show={isNotify}  onClose={() => setIsNotify(false)} >
+			<CModal show={isNotify}  onClose={() => setIsNotify(false)} closeOnBackdrop={false}>
 				<CModalHeader closeButton>
 					<CModalTitle>Add CPT code</CModalTitle>
 				</CModalHeader>

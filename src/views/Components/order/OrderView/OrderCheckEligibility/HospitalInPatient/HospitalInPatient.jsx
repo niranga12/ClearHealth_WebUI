@@ -18,8 +18,9 @@ const HospitalInPatient = ({hospitalInPatient}) => {
 
         return (
             <div>
+                <h5><div className='font-weight-bold'>Hospital - Inpatient (Active)</div></h5>
                 <CRow>
-                    <CCol xs='12' md='12' className='mb-4 p-4'>
+                    <CCol xs='12' md='12' className='mb-0 p-3'>
                         <CTabs activeTab={active} onActiveTabChange={(idx) => setActive(idx)}>
                             <CNav variant='tabs' className='h5 font-weight-bold'>
                                 <CNavItem>

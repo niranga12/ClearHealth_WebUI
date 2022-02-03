@@ -32,6 +32,7 @@ let schema = yup
 			// 	.required('Phone is required')
 			// 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 			orderType: yup.string(),
+			gender: yup.string().required('Please select gender'),
 			// email: yup.string().email(' Please enter a valid email'),
 			// phone: yup
 			// 	.string()
@@ -211,6 +212,21 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 							<div className='small text-danger  pb-2   '>{errors.patient?.dateOfBirth?.message}</div>
 						</div>
 					</div>
+
+					<div className='col-md-4'>
+                    <div className='form-group'>
+                        <label className='form-text'>
+                            Gender <span className='text-danger font-weight-bold '>*</span>
+                        </label>
+                        <select name='' id='' className='form-control-sm' {...register('patient.gender')} onBlur={() => setstateChange(!stateChange)}>
+                            <option value='0'>Select</option>
+                            <option value='M'>Male</option>
+                            <option value='F'>Female</option>
+
+                        </select>
+                        <div className='small text-danger  pb-2   '>{errors.patient?.gender?.message}</div>
+                    </div>
+                </div>
 
 					<div className='col-md-4'>
 						<div className='form-group'>

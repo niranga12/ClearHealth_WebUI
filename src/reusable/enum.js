@@ -127,32 +127,32 @@ export const PhysicianPackageField = [
 
 export const RelationshipList =
 	[
-
-		{ id: "1", name: "Spouse" },
+		{ id: "40", name: "Cadaver Donor" },
+		{ id: "19", name: "Child" },
+		{ id: "24", name: "Dependent of Minor Dependent" },
+		{ id: "36", name: "Emancipated Minor" },
+		{ id: "20", name: "Employee" },
+		{ id: "33", name: "Father" },
+		{ id: "10", name: "Foster Child" },
 		{ id: "4", name: "Grandfather or Grandmother" },
 		{ id: "5", name: "Grandson or Grandaughter" },
+		{ id: "22", name: "Handicapped/Dependent" },
+		{ id: "32", name: "Injured Plaintiff" },
+		{ id: "53", name: "Life Partner" },
+		{ id: "32", name: "Mother" },
 		{ id: "7", name: "Nephew or Niece" },
-		{ id: "10", name: "Foster Child" },
-		{ id: "15", name: "Ward of the Court" },
+		{ id: "G8", name: "Other Relationship" },
+		{ id: "39", name: "Organ Donor" },
+		{ id: "1", name: "Spouse" },
 		{ id: "17", name: "Stepson or Stepdaughter" },
 		{ id: "18", name: "Self" },
-		{ id: "19", name: "Child" },
-		{ id: "20", name: "Employee" },
-		{ id: "21", name: "Unknown" },
-		{ id: "22", name: "Handicapped/Dependent" },
 		{ id: "23", name: "Sponsored Dependent" },
-		{ id: "24", name: "Dependent of Minor Dependent" },
 		{ id: "29", name: "Significant Other" },
-		{ id: "32", name: "Mother" },
-		{ id: "33", name: "Father" },
-		{ id: "36", name: "Emancipated Minor" },
-		{ id: "39", name: "Organ Donor" },
-		{ id: "40", name: "Cadaver Donor" },
-		{ id: "32", name: "Injured Plaintiff" },
-		{ id: "43", name: "Child Where Insured Has No Financial Responsibility" },
-		{ id: "53", name: "Life Partner" },
-		{ id: "G8", name: "Other Relationship" }
-	
+		{ id: "21", name: "Unknown" },
+		{ id: "15", name: "Ward of the Court" },
+
+
+
 	]
 
 

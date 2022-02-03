@@ -50,6 +50,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
         } catch (error) { }
     };
 
+
     const handleInputChange = (value) => {
         setInputValue(value);
     };
@@ -58,12 +59,13 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
         setPayerId(value)
     };
     const verifyInsurance = async () => {
+
         try {
             setAlertMessage('')
             setfieldMessage([])
             setSuccessAlert('')
             const formValue = getValues('insurance');
-            let data = { ...formValue, payerId: selectedPayerId?.payerID, patientBirthDate: moment(fromDate).format('YYYY-MM-DD') }
+            let data = { ...formValue, payerId: selectedPayerId?.payerID, patientBirthDate: patientDetail.dateOfBirth, patientGender: patientDetail.gender }
 
             let result = await verifyInsuranceDetails(data);
             if (result.data.data.statusCode == 400 || result.data.data.statusCode == '19' || result.data.data.statusCode == '3') {
@@ -96,7 +98,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
             } else if (result.data.data.statusCode == "Complete") {
                 setAlertMessage('')
                 setfieldMessage([])
-                setSuccessAlert("Complete")
+                setSuccessAlert("Successfully Verified")
             } else if (result.data.data.statusCode == "0") {
                 setAlertMessage('')
                 setfieldMessage([])
@@ -108,25 +110,25 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
     }
 
 
-    const table =
 
-        useEffect(() => {
-            let details = patientDetail;
-            const subscriberRelationship = getValues('insurance.subscriberRelationship');
-            if (subscriberRelationship == '18') {
-                setValue('insurance.patientFirstName', details.firstName);
-                setValue('insurance.patientMiddleName', details.middleName);
-                setValue('insurance.patientLastName', details.lastName);
-            } else {
-                // setValue('insurance.patientFirstName', '');
-                // setValue('insurance.patientMiddleName', '');
-                // setValue('insurance.patientLastName', '');
-            }
-            const formValue = getValues('insurance');
 
-            handleInsuranceForm({ ...formValue, payerId: selectedPayerId?.payerID, patientBirthDate: moment(fromDate).format('YYYY-MM-DD') });
+    useEffect(() => {
+        let details = patientDetail;
+        const subscriberRelationship = getValues('insurance.subscriberRelationship');
+        if (subscriberRelationship == '18') {
+            setValue('insurance.patientFirstName', details.firstName);
+            setValue('insurance.patientMiddleName', details.middleName);
+            setValue('insurance.patientLastName', details.lastName);
+        } else {
+            // setValue('insurance.patientFirstName', '');
+            // setValue('insurance.patientMiddleName', '');
+            // setValue('insurance.patientLastName', '');
+        }
+        const formValue = getValues('insurance');
 
-        }, [stateChange])
+        handleInsuranceForm({ ...formValue, payerId: selectedPayerId?.payerID, patientBirthDate: patientDetail.dateOfBirth, patientGender: patientDetail.gender });
+
+    }, [stateChange])
 
 
     return (
@@ -153,7 +155,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
                         <select name='' id='' className='form-control-sm' {...register('insurance.subscriberRelationship')} onBlur={() => setstateChange(!stateChange)}>
                             <option value='-1'>Select</option>
 
-                            {relationshipList.map((item, index) => (
+                            {relationshipList.sort().map((item, index) => (
                                 <option key={index} value={item.id}>
                                     {item.name}
                                 </option>
@@ -236,7 +238,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
                     </div>
                 </div>
 
-                <div className='col-md-4'>
+                {/* <div className='col-md-4'>
                     <div className='form-group'>
                         <label className='form-text'>
                             Date Of Birth <span className='text-danger font-weight-bold '>*</span>
@@ -244,9 +246,9 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
                         <DateSelector className={` form-control-sm ${isEdit ? 'disable' : ''}`} selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true} />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.dateOfBirth?.message}</div>
                     </div>
-                </div>
+                </div> */}
 
-                <div className='col-md-4'>
+                {/* <div className='col-md-4'>
                     <div className='form-group'>
                         <label className='form-text'>
                             Gender <span className='text-danger font-weight-bold '>*</span>
@@ -259,7 +261,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
                         </select>
                         <div className='small text-danger  pb-2   '>{errors.insurance?.patientGender?.message}</div>
                     </div>
-                </div>
+                </div> */}
             </div>
 
             <div className='row'>

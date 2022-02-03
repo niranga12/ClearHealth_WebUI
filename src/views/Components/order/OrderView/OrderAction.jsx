@@ -87,9 +87,9 @@ const OrderAction = ({ row }) => {
 				</CDropdownMenu>
 			</CDropdown>
 
-			<CModal show={modal} onClose={setModal} >
+			<CModal show={modal} onClose={setModal}  closeOnBackdrop={false}>
 				<CModalHeader closeButton>
-					<CModalTitle>Delete</CModalTitle>
+					<CModalTitle>Delete  tt</CModalTitle>
 				</CModalHeader>
 				{/* <CModalBody>Are you Sure Delete this item {row.original.description}?</CModalBody> */}
 				<CModalBody><div className="text-center">Are you sure you wish to delete this item ?</div><div className="text-center">{row.original.description}</div> </CModalBody>
@@ -103,7 +103,7 @@ const OrderAction = ({ row }) => {
 				</CModalFooter>
 			</CModal>
 
-			<CModal show={primary} onClose={() => setPrimary(!primary)} >
+			<CModal show={primary} onClose={() => setPrimary(!primary)} closeOnBackdrop={false}>
 				<CModalHeader closeButton>
 					<CModalTitle>Update</CModalTitle>
 				</CModalHeader>

@@ -55,7 +55,7 @@ const HospitalNotifyUser = ({ partyRoleId = null, isNotify,handleCancel }) => {
 
 return (
 
-    <CModal show={modal} onClose={setModal} >
+    <CModal show={modal} onClose={setModal} closeOnBackdrop={false}>
         <CModalHeader closeButton>
 
         </CModalHeader>

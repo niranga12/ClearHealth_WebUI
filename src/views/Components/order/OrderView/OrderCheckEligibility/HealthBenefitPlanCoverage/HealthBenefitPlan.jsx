@@ -25,7 +25,7 @@ const HealthBenefitPlan = ({healthBenefitPlan}) => {
     return (
         <div>
         <CRow>
-            <CCol xs='12' md='12' className='mb-4 p-4'>
+            <CCol xs='12' md='12' className='mb-0 p34'>
                 <CTabs activeTab={active} onActiveTabChange={(idx) => setActive(idx)}>
                     <CNav variant='tabs' className='h5 font-weight-bold'>
                         <CNavItem>

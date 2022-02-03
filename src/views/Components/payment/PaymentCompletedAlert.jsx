@@ -51,7 +51,7 @@ const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel,orderDet
 
 
     return (
-        <CModal show={modal} onClose={setModal} >
+        <CModal show={modal} onClose={setModal} closeOnBackdrop={false}>
             <CModalHeader>
                 <CModalBody>
                     <div className="row m-2">

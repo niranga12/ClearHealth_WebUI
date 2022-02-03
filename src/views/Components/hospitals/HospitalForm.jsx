@@ -594,7 +594,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 				
 
 				{/* Stripe */}
-				{isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null}
+				{/* {isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null}
 
 				{isEdit ? (
 					<div className='row'>
@@ -622,7 +622,7 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 							</div>
 						</div>
 					</div>
-				) : null}
+				) : null} */}
 
 				<div className='row'>
 					<div className='col-md-12'>
