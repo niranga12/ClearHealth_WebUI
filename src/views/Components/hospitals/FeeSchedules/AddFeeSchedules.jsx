@@ -18,8 +18,9 @@ const schema = yup.object().shape({
 
 
 const AddFeeSchedules = ({ data = null, isFeeSchedule, handleCancel, }) => {
+    //let submittedFile = [];
     let btnRef = useRef();
-    let submittedFile = [];
+   
     const {
         register,
         handleSubmit,
@@ -31,6 +32,7 @@ const AddFeeSchedules = ({ data = null, isFeeSchedule, handleCancel, }) => {
     } = useForm({ resolver: yupResolver(schema), mode: 'all' });
     const [modal, setModal] = useState(false);
     const [specialityData, setSpecialityData] = useState([]);
+    const [submittedFile, setSubmittedFile] = useState([]);
     const [fileData, setFileData] = useState();
     const [selectedFile, setSelectedFile] = useState();
     const [selectedSpeciality, setSelectedSpeciality] = useState();
