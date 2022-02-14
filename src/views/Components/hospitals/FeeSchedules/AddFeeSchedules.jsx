@@ -15,11 +15,11 @@ const schema = yup.object().shape({
     file: yup.string().required('File is required'),
 
 });
-let submittedFile = [];
+
 
 const AddFeeSchedules = ({ data = null, isFeeSchedule, handleCancel, }) => {
     let btnRef = useRef();
-
+    let submittedFile = [];
     const {
         register,
         handleSubmit,
@@ -99,8 +99,8 @@ const AddFeeSchedules = ({ data = null, isFeeSchedule, handleCancel, }) => {
                 <a onClick={()=>onClickDelete(obj)}  >
                     <i className="fa fa-times"></i>
                 </a>
-                <div><i className="fa fa-times" aria-hidden="true"></i>
-                </div>
+                {/* <div><i className="fa fa-times" aria-hidden="true"></i>
+                </div> */}
 
             </div>
         });

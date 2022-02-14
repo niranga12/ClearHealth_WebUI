@@ -240,13 +240,13 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 		try {
 			if (newHospital) {
-				// let result = await saveHospital(newHospital);
-				// if (result.data.message === ServiceMsg.OK) {
-				// 	dispatch(notify(`Successfully added`, 'success'));
+				let result = await saveHospital(newHospital);
+				if (result.data.message === ServiceMsg.OK) {
+				 	dispatch(notify(`Successfully added`, 'success'));
 					// history.push('/hospitals');
 					onOpenFeeSchedule();
 					//history.goBack();
-				//}
+				}
 			}
 		} catch (error) {
 			OnError(error, dispatch);
