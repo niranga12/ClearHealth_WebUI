@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import OrderPatientsForm from './OrderPatientsForm';
 import OrderProcedureSelect from './OrderProcedureSelect';
+// @ts-ignore
 import AsyncSelect from 'react-select/async';
 import { getPatientsDetailsByHospital } from 'src/service/hospitalsService';
 import { saveOrderData } from 'src/service/orderService';
@@ -23,6 +24,7 @@ const OrderForm = () => {
 	const [hospitalId, setHospitalId] = useState(null);
 	// const [selectedPatient, setselectedPatient] = useState(null);
 	// eslint-disable-next-line no-unused-vars
+	// @ts-ignore
 	const [inputValue, setValue] = useState('');
 	const [selectedValue, setSelectedValue] = useState(null);
 	const [isEdit, setIsEdit] = useState(false);
@@ -44,6 +46,7 @@ const OrderForm = () => {
 		setHospitalId(id);
 		setHospitalName(name);
 		if (btnRef.current) {
+			// @ts-ignore
 			btnRef.current.setAttribute('disabled', 'disabled');
 		}
 	}, [location]);
@@ -69,6 +72,7 @@ const OrderForm = () => {
 
 	useEffect(() => {
 		if ((SelectedCpt.length > 0 && patientDetail) || (SelectedCpt.length > 0 && selectedValue?.partyRoleId) || patientDetail?.orderType == OrderType.PatientResponsibility) {
+			// @ts-ignore
 			btnRef.current.removeAttribute('disabled');
 			if (SelectedCpt.length > 0) {
 				let isProviderPartyRoleId = false;
@@ -86,13 +90,16 @@ const OrderForm = () => {
 
 				});
 				if (isProviderPartyRoleId && SelectedCpt.length > 0) {
+					// @ts-ignore
 					btnRef.current.setAttribute('disabled', 'disabled');
 				} else {
+					// @ts-ignore
 					btnRef.current.removeAttribute('disabled');
 				}
 
 			}
 		} else {
+			// @ts-ignore
 			btnRef.current.setAttribute('disabled', 'disabled');
 		}
 	}, [SelectedCpt, patientDetail, selectedValue]);
@@ -174,6 +181,7 @@ const OrderForm = () => {
 
 		setSelectedValue(null);
 		// CheckAvilableBtn();
+		// @ts-ignore
 		btnRef.current.setAttribute('disabled', 'disabled');
 	};
 
@@ -189,6 +197,7 @@ const OrderForm = () => {
 
 	const saveOrder = async () => {
 		if (btnRef.current) {
+			// @ts-ignore
 			btnRef.current.setAttribute('disabled', 'disabled');
 		}
 
