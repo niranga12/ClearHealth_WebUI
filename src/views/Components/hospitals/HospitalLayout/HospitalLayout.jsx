@@ -49,7 +49,7 @@ const HospitalLayout = () => {
 
 	useEffect(() => {
 		if (roleTypeId == RoleType.HospitalAdmin || roleTypeId == RoleType.HospitalStaff) {
-			if (hospitalData.length > 0) {
+			if (hospitalData.length > 1) {
 				setIsGoBack(true)
 			} else {
 				setIsGoBack(false)
