@@ -21,6 +21,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { EnableMaskPhone } from 'src/reusable';
 import HospitalNotifyUser from './HospitalNotifyUser';
 import AddFeeSchedules from './FeeSchedules/AddFeeSchedules';
+import EditFeeSchedules from './FeeSchedules/EditFeeSchedules';
 
 
 const schema = yup.object().shape({
@@ -80,10 +81,12 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const debouncedName = useDebounce(hospitalName, 1000);
 	const [isNotify, setIsNotify] = useState(false);
 	const [isFeeSchedule, setFeeSchedule] = useState(false);
+	const [hospitalId, setHospitalId] = useState(null);
 	// validate organition name
 	useEffect(() => {
 		const fetchValidate = async () => {
 			try {
+				
 				setIsSearching(true);
 				if (debouncedName) {
 					let data = {
@@ -91,7 +94,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						organizationName: debouncedName,
 						...(isEdit && { partyRoleId }),
 					};
-
+				
 					const result = await getValidateOrganization(data);
 
 					if (result.data.data) {
@@ -185,15 +188,16 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 	const onCancelFeeSchedule = () => {
 		setFeeSchedule(false);
-		
+
 	}
 
-	const onOpenFeeSchedule = () => {
+	const onOpenFeeSchedule = (result) => {
+		setHospitalId(result)
 		setFeeSchedule(true);
-		
+
 	}
 
-	
+
 
 	// save hospital
 	const addHospital = async (data) => {
@@ -242,10 +246,10 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			if (newHospital) {
 				let result = await saveHospital(newHospital);
 				if (result.data.message === ServiceMsg.OK) {
-				 	dispatch(notify(`Successfully added`, 'success'));
-					// history.push('/hospitals');
-					onOpenFeeSchedule();
-					//history.goBack();
+				dispatch(notify(`Successfully added`, 'success'));
+				// history.push('/hospitals');
+				onOpenFeeSchedule(result.data.data);
+				//history.goBack();
 				}
 			}
 		} catch (error) {
@@ -607,6 +611,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				</div>
 
 
+				{partyRoleId != null && <EditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} />}
 
 				{/* Stripe */}
 				{/* {isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null}
@@ -655,7 +660,8 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 			<HospitalNotifyUser partyRoleId={partyRoleId} isNotify={isNotify} handleCancel={modelCancel} />
 
-			<AddFeeSchedules data={""} isFeeSchedule={isFeeSchedule} handleCancel={undefined} />
+			{isFeeSchedule==true && <AddFeeSchedules edit={isEdit} partyRoleId={hospitalId} isFeeSchedule={isFeeSchedule}  />}
+
 		</div>
 	);
 };

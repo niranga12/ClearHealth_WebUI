@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faSortDown, faTimesCircle, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 // import greenTick from '../../assets/images/icons/greentick.png';
 import { getViewReceipt } from 'src/service/orderService';
 import { getSpecialityList } from 'src/service/providerService';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { saveFeeSchedule } from 'src/service/hospitalsService';
+
 
 
 const schema = yup.object().shape({
@@ -17,10 +19,10 @@ const schema = yup.object().shape({
 });
 
 
-const AddFeeSchedules = ({ data = null, isFeeSchedule, handleCancel, }) => {
+const AddFeeSchedules = ({ edit,partyRoleId, isFeeSchedule }) => {
     //let submittedFile = [];
     let btnRef = useRef();
-   
+
     const {
         register,
         handleSubmit,
@@ -74,8 +76,27 @@ const AddFeeSchedules = ({ data = null, isFeeSchedule, handleCancel, }) => {
     }
 
     const onClickDelete = (event) => {
-        //setFeeSchedule(true);
+        let index = submittedFile.findIndex (x => x.speciality === event.speciality);
+        submittedFile.splice(index,1)
+        setSubmittedFile(submittedFile);
 
+        let data = submittedFile.map(function (obj) {
+            let selected = specialityData.filter(x => x.ID == obj.speciality);
+
+            return <div key={obj} className='row ml-2 '>
+
+                <div className='col-5'>{selected[0].speciality}</div>
+
+                <div className='col-5'>{obj.file.name} </div>
+                <div className='col-2'>
+                    <div onClick={() => onClickDelete(obj)}  >
+                    <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
+                    </div>
+                </div>
+            </div>
+        });
+
+        setTable(data)
     }
 
     const onChangeFile = (event) => {
@@ -87,23 +108,20 @@ const AddFeeSchedules = ({ data = null, isFeeSchedule, handleCancel, }) => {
         setSelectedSpeciality(event.target.value);
         //	setIsSelected(true);
     };
-    const handleSubmission = () => {
+    const handleSubmission = async () => {
         submittedFile.push({ 'speciality': selectedSpeciality, file: selectedFile })
-
-
         let data = submittedFile.map(function (obj) {
             let selected = specialityData.filter(x => x.ID == obj.speciality);
-            return <div className='row ml-2 '>
+            return <div key={obj.speciality} className='row ml-2 '>
 
                 <div className='col-5'>{selected[0].speciality}</div>
 
-                <div className='col-5'>{obj.file.name}</div>
-                <a onClick={()=>onClickDelete(obj)}  >
-                    <i className="fa fa-times"></i>
-                </a>
-                {/* <div><i className="fa fa-times" aria-hidden="true"></i>
-                </div> */}
-
+                <div className='col-5'>{obj.file.name} </div>
+                <div className='col-2'>
+                    <div onClick={() => onClickDelete(obj)}  >
+                    <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
+                    </div>
+                </div>
             </div>
         });
         setSelectedFile(null);
@@ -112,24 +130,12 @@ const AddFeeSchedules = ({ data = null, isFeeSchedule, handleCancel, }) => {
         setValue('speciality', '');
         setValue('file', '');
         setTable(data)
-        // const formData = new FormData();
+        const formData = new FormData();
+        submittedFile.forEach(file => {
+            formData.append(file.speciality, file.file);
+        });
+        let result = await saveFeeSchedule(partyRoleId,formData);
 
-        // formData.append('File', selectedFile);
-
-        // fetch(
-        //     'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',
-        //     {
-        //         method: 'POST',
-        //         body: formData,
-        //     }
-        // )
-        //     .then((response) => response.json())
-        //     .then((result) => {
-        //         console.log('Success:', result);
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     });
     };
 
 
@@ -189,17 +195,12 @@ const AddFeeSchedules = ({ data = null, isFeeSchedule, handleCancel, }) => {
                 </div>}
                 {table}
 
-              
+
 
 
             </CModalBody>
             <CModalFooter>
-                <CButton color='primary' onClick={onClickAdd} >
-                    Add
-                </CButton>{' '}
-                <CButton color='secondary' onClick={handleCancel}>
-                    Cancel
-                </CButton>
+            
             </CModalFooter>
 
         </CModal>

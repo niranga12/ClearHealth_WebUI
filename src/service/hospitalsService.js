@@ -18,11 +18,6 @@ export const getOrderListByHospitalId=(hospitalId,data) =>axiosInstance.post(`ho
 
 export const getOrderListCountByHospitalId=(hospitalId,data) =>axiosInstance.post(`hospital/${hospitalId}/orders/count`,data);
 
-
-
-
-
-
 export const getHospitalDashboard=(data)=>axiosInstance.post(`dashboard`,data);
 
 export const getProcedureByHospitalId=(hospitalId,data)=>axiosInstance.post(`hospital/${hospitalId}/procedures`, data);
@@ -69,4 +64,9 @@ export const saveNotifyUser=(partyRoleId,data)=>axiosInstance.post(`payment/onbo
 // {{URL}}/api/hospital/verified/senders
 
 export const getHospitalEmailSender=()=>axiosInstance.get(`hospital/verified/emailsender`);
+
 export const getHospitalSmsSender=()=>axiosInstance.get(`hospital/verified/smssender`);
+
+export const saveFeeSchedule=(hospitalId,data) =>axiosInstance.post(`hospital/saveFacilityProcedure/${hospitalId}`,data);
+
+export const getFeeSchedule=(hospitalId) =>axiosInstance.get(`hospital/feeSchedule/${hospitalId}`);
