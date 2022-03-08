@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
+import { CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faSortDown, faTimesCircle, faWindowClose } from '@fortawesome/free-solid-svg-icons';
-// import greenTick from '../../assets/images/icons/greentick.png';
-import { getViewReceipt } from 'src/service/orderService';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { getSpecialityList } from 'src/service/providerService';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { saveFeeSchedule } from 'src/service/hospitalsService';
-
-
 
 const schema = yup.object().shape({
     speciality: yup.string().required('Speciality is required'),
@@ -18,11 +14,9 @@ const schema = yup.object().shape({
 
 });
 
+const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
 
-const AddFeeSchedules = ({ edit,partyRoleId, isFeeSchedule }) => {
-    //let submittedFile = [];
     let btnRef = useRef();
-
     const {
         register,
         handleSubmit,
@@ -35,17 +29,14 @@ const AddFeeSchedules = ({ edit,partyRoleId, isFeeSchedule }) => {
     const [modal, setModal] = useState(false);
     const [specialityData, setSpecialityData] = useState([]);
     const [submittedFile, setSubmittedFile] = useState([]);
-    const [fileData, setFileData] = useState();
     const [selectedFile, setSelectedFile] = useState();
     const [selectedSpeciality, setSelectedSpeciality] = useState();
-    const [isFilePicked, setIsFilePicked] = useState(false);
     const [table, setTable] = useState([]);
-    //   const [facilityName, setFacilityName] = useState(null);
+
     useEffect(() => {
-        //   if (btnRef.current) {
+
         // @ts-ignore
         btnRef.current.setAttribute('disabled', 'disabled');
-        //    }
 
         const fetchData = async () => {
             setModal(isFeeSchedule);
@@ -54,43 +45,30 @@ const AddFeeSchedules = ({ edit,partyRoleId, isFeeSchedule }) => {
 
         };
         fetchData();
-        //   setFacilityName(orderDetail.orderPatientDetails.facilityName)
 
     }, [isFeeSchedule])
 
 
     useEffect(() => {
 
-
-
         if (selectedSpeciality != undefined && selectedFile != undefined) {
+            // @ts-ignore
             btnRef.current.removeAttribute('disabled');
         }
-
-
     }, [selectedFile, selectedSpeciality])
 
-    const onClickAdd = () => {
-        //setFeeSchedule(true);
-
-    }
-
     const onClickDelete = (event) => {
-        let index = submittedFile.findIndex (x => x.speciality === event.speciality);
-        submittedFile.splice(index,1)
+        let index = submittedFile.findIndex(x => x.speciality === event.speciality);
+        submittedFile.splice(index, 1)
         setSubmittedFile(submittedFile);
-
         let data = submittedFile.map(function (obj) {
             let selected = specialityData.filter(x => x.ID == obj.speciality);
-
             return <div key={obj} className='row ml-2 '>
-
                 <div className='col-5'>{selected[0].speciality}</div>
-
                 <div className='col-5'>{obj.file.name} </div>
                 <div className='col-2'>
                     <div onClick={() => onClickDelete(obj)}  >
-                    <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
+                        <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
                     </div>
                 </div>
             </div>
@@ -101,40 +79,38 @@ const AddFeeSchedules = ({ edit,partyRoleId, isFeeSchedule }) => {
 
     const onChangeFile = (event) => {
         setSelectedFile(event.target.files[0]);
-        //	setIsSelected(true);
     };
 
     const onChangeSpeciality = (event) => {
         setSelectedSpeciality(event.target.value);
-        //	setIsSelected(true);
     };
+
     const handleSubmission = async () => {
-        submittedFile.push({ 'speciality': selectedSpeciality, file: selectedFile })
-        let data = submittedFile.map(function (obj) {
-            let selected = specialityData.filter(x => x.ID == obj.speciality);
-            return <div key={obj.speciality} className='row ml-2 '>
-
-                <div className='col-5'>{selected[0].speciality}</div>
-
-                <div className='col-5'>{obj.file.name} </div>
-                <div className='col-2'>
-                    <div onClick={() => onClickDelete(obj)}  >
-                    <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
+        const formData = new FormData();
+        formData.append(selectedSpeciality, selectedFile);
+        let result = await saveFeeSchedule(partyRoleId, formData);
+        if (result.data.message == 'OK') {
+            submittedFile.push({ 'speciality': selectedSpeciality, file: selectedFile })
+            let data = submittedFile.map(function (obj) {
+                let selected = specialityData.filter(x => x.ID == obj.speciality);
+                return <div key={obj.speciality} className='row ml-2 '>
+                    <div className='col-5'>{selected[0].speciality}</div>
+                    <div className='col-5'>{obj.file.name} </div>
+                    <div className='col-2'>
+                        <div onClick={() => onClickDelete(obj)}  >
+                            <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
+                        </div>
                     </div>
                 </div>
-            </div>
-        });
-        setSelectedFile(null);
-        setSelectedSpeciality(null);
-        btnRef.current.setAttribute('disabled', 'disabled');
-        setValue('speciality', '');
-        setValue('file', '');
-        setTable(data)
-        const formData = new FormData();
-        submittedFile.forEach(file => {
-            formData.append(file.speciality, file.file);
-        });
-        let result = await saveFeeSchedule(partyRoleId,formData);
+            });
+            setSelectedFile(null);
+            setSelectedSpeciality(null);
+            // @ts-ignore
+            btnRef.current.setAttribute('disabled', 'disabled');
+            setValue('speciality', '');
+            setValue('file', '');
+            setTable(data)
+        }
 
     };
 
@@ -175,19 +151,11 @@ const AddFeeSchedules = ({ edit,partyRoleId, isFeeSchedule }) => {
                         <input type="file" name="file" className="form-control"  {...register('file')} onChange={onChangeFile} />
                     </div>
 
-
-
-
-
                     <div className='col-2 mt-5'>
-                        {/* <button >Submit</button> */}
                         <button type="button" className="btn btn-primary" ref={btnRef} onClick={handleSubmission} >
                             Submit
                         </button>
                     </div>
-
-
-
                 </div>
                 {table.length != 0 && <div className='row ml-2 mt-3'>
                     <div className='col-5'><h5>Speciality</h5></div>
@@ -195,12 +163,8 @@ const AddFeeSchedules = ({ edit,partyRoleId, isFeeSchedule }) => {
                 </div>}
                 {table}
 
-
-
-
             </CModalBody>
             <CModalFooter>
-            
             </CModalFooter>
 
         </CModal>

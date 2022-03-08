@@ -70,3 +70,5 @@ export const getHospitalSmsSender=()=>axiosInstance.get(`hospital/verified/smsse
 export const saveFeeSchedule=(hospitalId,data) =>axiosInstance.post(`hospital/saveFacilityProcedure/${hospitalId}`,data);
 
 export const getFeeSchedule=(hospitalId) =>axiosInstance.get(`hospital/feeSchedule/${hospitalId}`);
+
+export const deleteFeeSchedule=(hospitalId,specialityId) =>axiosInstance.delete(`hospital/feeSchedule/${hospitalId}/${specialityId}`);
