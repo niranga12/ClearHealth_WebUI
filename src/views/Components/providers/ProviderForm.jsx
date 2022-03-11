@@ -18,6 +18,8 @@ import FormatText from 'src/reusable/FormatText';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { EnableMaskPhone } from 'src/reusable';
+import ProviderEditFeeSchedules from './FeeSchedules/ProviderEditFeeSchedules';
+import ProviderAddFeeSchedules from './FeeSchedules/ProviderAddFeeSchedules';
 
 const schema = yup.object().shape({
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
@@ -80,7 +82,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [showLastNameError, setShowLastNameError] = useState(false);
 	const [showGroupNameError, setShowGroupNameError] = useState(false);
 	const [groupSelection, setGroupSelection] = useState("Individual");
-	//const [healthSystems, setHealthSystem] = useState([]);
+	const [isFeeSchedule, setFeeSchedule] = useState(false);
 
 	const handleBillingChecked = (event) => {
 		if (event.target.checked) {
@@ -371,7 +373,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		try {
 			if (!isFirstName && !isLastName && showResults) {
 				saveProviders(newProvider)
-
+				
 			} else if (!isGroupName && !showResults) {
 				saveProviders(newProvider)
 			}
@@ -383,23 +385,31 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		}
 	};
 
+	const onOpenFeeSchedule = (result) => {
+		//setHospitalId(result)
+		setFeeSchedule(true);
+
+	}
+
 	const saveProviders = async (newProvider) => {
 
 		try {
 			if (newProvider) {
 				let result = await saveProvider(newProvider);
 				if (result.data.message === ServiceMsg.OK) {
-					dispatch(notify(`Successfully added`, 'success'));
+				
+					dispatch(notify(`Successfully added`, 'success'))
+					onOpenFeeSchedule(result.data.data);
 
 					// for redirecting parent page
-					if (tabId && hospitalId) {
-						history.push({
-							pathname: `/hospitals/hospital`,
-							search: `?id=${hospitalId}&name=${hospitalName}&tap=${tabId}`,
-						});
-					} else {
-						history.push('/providers');
-					}
+					// if (tabId && hospitalId) {
+					// 	history.push({
+					// 		pathname: `/hospitals/hospital`,
+					// 		search: `?id=${hospitalId}&name=${hospitalName}&tap=${tabId}`,
+					// 	});
+					// } else {
+					// 	history.push('/providers');
+					// }
 
 				}
 			}
@@ -835,6 +845,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 				{/* </div> */}
 
+				{partyRoleId != null && <ProviderEditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} />}
+				
+				{isFeeSchedule==true && <ProviderAddFeeSchedules edit={isEdit} partyRoleId={hospitalId} isFeeSchedule={isFeeSchedule}  />}
 				<div className='row'>
 					<div className='col-md-12'>
 						<button type='submit' className='btn btn-primary btn-lg float-right'>
