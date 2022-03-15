@@ -10,7 +10,7 @@ import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { notify } from 'reapop';
-import { getSpecialityList } from 'src/service/providerService';
+import { getServiceProviders, getSpecialityList } from 'src/service/providerService';
 
 
 const schema = yup.object().shape({
@@ -53,7 +53,7 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 	const [serviceList, setServiceList] = useState([]);
 	const [hospitalList, setHospitalList] = useState([]);
 	const [stateChange, setstateChange] = useState(false);
-
+	const [selectedOption, setSelectedOption] = useState();
 	// const [hospitalId, setHospitalId] = useState(null);
 	const location = useLocation();
 
@@ -104,12 +104,33 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 
 
 	useEffect(() => {
-		const formValue = getValues("filterTool");
-		let hospitalName = formValue.hospitalSearch ? hospitalList.find(x => x.partyRoleId == formValue.hospitalSearch).name : "";
-		let serviceTypeName = formValue.serviceType ? serviceList.find(x => x.ID == formValue.serviceType).speciality : "";
-		let formDetails = { ...formValue, hospitalName, serviceTypeName }
 
-		handleFilterChange(formDetails)
+		const fetchData = async () => {
+			try {
+				const formValue = getValues("filterTool");
+				let ff = selectedOption;
+				if (selectedOption != undefined) {
+					 let result = await getServiceProviders(formValue.hospitalSearch,selectedOption);
+					//let result = await getServiceProviders(1335,1);
+					setHospitalList(result.data.data);
+				}
+
+				let hospitalName = formValue.hospitalSearch ? hospitalList.find(x => x.partyRoleId == formValue.hospitalSearch).name : "";
+				let serviceTypeName = formValue.serviceType ? serviceList.find(x => x.ID == formValue.serviceType).speciality : "";
+				let formDetails = { ...formValue, hospitalName, serviceTypeName }
+
+				handleFilterChange(formDetails)
+
+
+			} catch (error) {
+
+			}
+		}
+		fetchData();
+
+
+
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [stateChange])
 
@@ -145,7 +166,7 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 
 	const EnhancementPercentageSelect = () => {
 		return (
-			<select name='collectionEnhancement' id='collectionEnhancement' className='form-control-sm' {...register('filterTool.enhancementRate')} onClick={() => setstateChange(!stateChange)}>
+			<select name='collectionEnhancement' id='collectionEnhancement' className='form-control-sm' {...register('filterTool.enhancementRate')} onClick={() => setstateChange(!stateChange)} >
 				<option value=''> Select</option>
 
 				{EnhancementPercentage.map((item, index) => (
@@ -190,8 +211,8 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 
 					<div className='col-md-3'>
 						<div className='form-group'>
-							<label className='form-text font-lato-bold '> Service Type </label>
-							<select name='serviceType' id='serviceType' className='form-control-sm' {...register('filterTool.serviceType')} onClick={() => setstateChange(!stateChange)} >
+							<label className='form-text font-lato-bold '>Specialty</label>
+							<select name='serviceType' id='serviceType' className='form-control-sm' {...register('filterTool.serviceType')} onClick={() => setstateChange(!stateChange)} onChange={e => setSelectedOption(e.target.value)}>
 								{serviceList.map((item, index) => (
 									<option key={index} value={item.ID}>
 										{item.speciality}
@@ -201,29 +222,28 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 						</div>
 					</div>
 
-					<div className='col-md-3'>
+					{hospitalList.length>0 &&<div className='col-md-3'>
 						<div className='form-group'>
-							<label className='form-text font-lato-bold '> Hospital Search </label>
+							<label className='form-text font-lato-bold '>Provider</label>
 							<select name='hospitalSearch' id='hospitalSearch' className='form-control-sm' {...register('filterTool.hospitalSearch')} onClick={() => setstateChange(!stateChange)} >
 								<option value=''> Select</option>
 
 								{hospitalList.map((item, index) => (
 									<option key={index} value={item.partyRoleId}>
-										{item.name}
+										{item.firstName} {item.lastName}
 									</option>
 								))}
 
 							</select>
 						</div>
-					</div>
+					</div>}
 
-					<div className='col-md-2'>
+					{/* <div className='col-md-2'>
 						<div className='form-group'>
 							<label className='form-text font-lato-bold oneline-th'>{isNotGlobal ? 'Collection Enhancement' : 'Clear Transactional Fee'}  </label>
-							{/* <input type='text' className='form-control-sm' {...register('filterTool.collectionEnhancement')} onBlur={()=>setstateChange(!stateChange)}/> */}
 							{isNotGlobal ? EnhancementPercentageInput() : EnhancementPercentageSelect()}
 						</div>
-					</div>
+					</div> */}
 
 					{isNotGlobal && CollectionEnhancementOn()}
 
