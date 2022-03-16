@@ -85,6 +85,7 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 				if (id) {
 					let data = hospitals.filter(x => x.partyRoleId == id);
 					setHospitalList(data);
+				
 					setValue("filterTool.hospitalSearch", Number(id))
 				} else {
 					setHospitalList(hospitals);
@@ -108,11 +109,12 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 		const fetchData = async () => {
 			try {
 				const formValue = getValues("filterTool");
-				let ff = selectedOption;
+		
 				if (selectedOption != undefined) {
-					 let result = await getServiceProviders(formValue.hospitalSearch,selectedOption);
+					let result = await getServiceProviders(formValue.hospitalSearch, selectedOption);
 					//let result = await getServiceProviders(1335,1);
 					setHospitalList(result.data.data);
+					console.log(result.data.data)
 				}
 
 				let hospitalName = formValue.hospitalSearch ? hospitalList.find(x => x.partyRoleId == formValue.hospitalSearch).name : "";
@@ -201,6 +203,27 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 	}
 
 
+	const Providers = () => {
+		return (
+			<div className='col-md-3'>
+				<div className='form-group'>
+					<label className='form-text font-lato-bold '>Provider</label>
+					<select name='hospitalSearch' id='hospitalSearch' className='form-control-sm' {...register('filterTool.hospitalSearch')} onClick={() => setstateChange(!stateChange)} >
+						<option value=''> Select</option>
+
+						{hospitalList && hospitalList.map((item, index) => (
+							<option key={index} value={item.partyRoleId}>
+								{item.firstName} {item.lastName}
+							</option>
+						))}
+
+					</select>
+				</div>
+			</div>
+		)
+	}
+
+
 
 
 
@@ -222,21 +245,7 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 						</div>
 					</div>
 
-					{hospitalList.length>0 &&<div className='col-md-3'>
-						<div className='form-group'>
-							<label className='form-text font-lato-bold '>Provider</label>
-							<select name='hospitalSearch' id='hospitalSearch' className='form-control-sm' {...register('filterTool.hospitalSearch')} onClick={() => setstateChange(!stateChange)} >
-								<option value=''> Select</option>
-
-								{hospitalList.map((item, index) => (
-									<option key={index} value={item.partyRoleId}>
-										{item.firstName} {item.lastName}
-									</option>
-								))}
-
-							</select>
-						</div>
-					</div>}
+					{Providers()}
 
 					{/* <div className='col-md-2'>
 						<div className='form-group'>
