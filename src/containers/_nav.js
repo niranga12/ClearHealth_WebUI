@@ -51,14 +51,14 @@ const _nav =  [
      screenid:ScreenPermissions.Providers,
 
   },
-  {
-    _tag: 'CSidebarNavItem',
-    name: 'Pricing Tools',
-    icon: <CIcon content={pricingTool} size={'2xl'} className="m-auto"/>,
-     to: '/pricing',
-     screenid:ScreenPermissions.PricingTool,
+  // {
+  //   _tag: 'CSidebarNavItem',
+  //   name: 'Pricing Tools',
+  //   icon: <CIcon content={pricingTool} size={'2xl'} className="m-auto"/>,
+  //    to: '/pricing',
+  //    screenid:ScreenPermissions.PricingTool,
 
-  },
+  // },
   {
     _tag: 'CSidebarNavItem',
     name: 'Orders',

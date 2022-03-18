@@ -23,10 +23,10 @@ const DashboardMenuItems = () => {
             <CardWidget  title="Providers"  url="/providers" logoName="logoProviders"/>
           </CCol>
   
-          
+{/*           
           <CCol sm="6" md="3" className={PermissionMenu(ScreenPermissions.PricingTool,permissionList)?'':'hide'}>
             <CardWidget  title="Pricing Tool" url="/pricing"   logoName="pricingTool"/>
-          </CCol>
+          </CCol> */}
           
   
   
