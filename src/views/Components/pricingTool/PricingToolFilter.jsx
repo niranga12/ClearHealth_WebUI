@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
-import { EnhancementPercentage, ServiceType } from 'src/reusable/enum';
+import { EnhancementPercentage, PackageItems, ServiceType } from 'src/reusable/enum';
 import { getHospitalsList } from 'src/service/hospitalsService';
 import { useDispatch, useSelector } from 'react-redux';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
@@ -16,7 +16,8 @@ import { getServiceProviders, getSpecialityList } from 'src/service/providerServ
 const schema = yup.object().shape({
 	filterTool: yup.object().shape({
 		serviceType: yup.string(),
-		hospitalSearch: yup.string(),
+		provider: yup.string(),
+		// hospitalSearch: yup.string(),
 		enhancementRate: yup.string().required(),
 		// enhancementOn:yup.string().required()
 	})
@@ -25,9 +26,11 @@ const schema = yup.object().shape({
 const resetTool = {
 	filterTool: {
 		serviceType: "",
-		hospitalSearch: "",
+		// hospitalSearch: "",
 		enhancementRate: "",
-		enhancementOn: ""
+		enhancementOn: "",
+		clPrice:"",
+		provider:""
 	}
 }
 
@@ -51,9 +54,17 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 
 	// eslint-disable-next-line no-unused-vars
 	const [serviceList, setServiceList] = useState([]);
-	const [hospitalList, setHospitalList] = useState([]);
+	// const [hospitalList, setHospitalList] = useState([]);
+	const [providerList, setProviderList] = useState([]);
 	const [stateChange, setstateChange] = useState(false);
 	const [selectedOption, setSelectedOption] = useState();
+	const [selectedPackageId, setSelectedPackageId] = useState(selectedPackage);
+	const [hospitalId, setHospitalId] = useState(null);
+	const [hospitalName, setHospitalName] = useState(null);
+
+	
+
+
 	// const [hospitalId, setHospitalId] = useState(null);
 	const location = useLocation();
 
@@ -71,25 +82,29 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 		reset(resetTool)
 
 		const params = new URLSearchParams(location.search);
-		const id = params.get('id');
-		// setHospitalId(id);
+		const hId = params.get('id');
+		const hName= params.get('name');
+		setHospitalId(hId);
+		setHospitalName(hName);
+
+
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
-				let result = await getHospitalsList({});
+				// let result = await getHospitalsList({});
 				const specialityList = await getSpecialityList();
 
 				setServiceList(specialityList.data.data);
-				let hospitals = result.data.data;
+				// let hospitals = result.data.data;
 
-				if (id) {
-					let data = hospitals.filter(x => x.partyRoleId == id);
-					setHospitalList(data);
+				// if (id) {
+				// 	let data = hospitals.filter(x => x.partyRoleId == id);
+				// 	setHospitalList(data);
 				
-					setValue("filterTool.hospitalSearch", Number(id))
-				} else {
-					setHospitalList(hospitals);
-				}
+				// 	setValue("filterTool.hospitalSearch", Number(id))
+				// } else {
+				// 	setHospitalList(hospitals);
+				// }
 				setstateChange(!stateChange);
 				dispatch(loaderHide());
 
@@ -99,25 +114,31 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 			}
 		}
 		fetchData();
+		setSelectedPackageId(selectedPackage)
+
+		// console.log(selectedPackage);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedPackage, location])
 
 
 
 	useEffect(() => {
+		
 
 		const fetchData = async () => {
 			try {
+				const params = new URLSearchParams(location.search);
+		        const hospitalId = params.get('id');
 				const formValue = getValues("filterTool");
 		
-				if (selectedOption != undefined) {
-					let result = await getServiceProviders(formValue.hospitalSearch, selectedOption);
+				if (selectedOption != undefined && PackageItems.Facility !== selectedPackageId )   {
+					let result = await getServiceProviders(hospitalId, selectedOption);
 					//let result = await getServiceProviders(1335,1);
-					setHospitalList(result.data.data);
-					console.log(result.data.data)
+					setProviderList(result.data.data);
+					
 				}
 
-				let hospitalName = formValue.hospitalSearch ? hospitalList.find(x => x.partyRoleId == formValue.hospitalSearch).name : "";
+				// let hospitalName = formValue.hospitalSearch ? hospitalList.find(x => x.partyRoleId == formValue.hospitalSearch).name : "";
 				let serviceTypeName = formValue.serviceType ? serviceList.find(x => x.ID == formValue.serviceType).speciality : "";
 				let formDetails = { ...formValue, hospitalName, serviceTypeName }
 
@@ -139,8 +160,24 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 
 
 
+	const clearOptimizedPrice = () => {
+		return (
+			<>
+				<div className='col-md-3'>
+				<div className='form-group'>
+					<label className='form-text font-lato-bold oneline-th  '> Clear Optimized Price </label>
+					<input type='radio' className='mt-2' name='group1' value='Auto' {...register("filterTool.clPrice")}  />   <span className='p-2'> Auto</span>
+					<input type='radio'  className='mt-2' name='group1' value='custom'   {...register("filterTool.clPrice")} />  <span className='p-2 '> Custom</span>
+					</div>
+				</div>
+			</>
+		);
+	};
+
+
 
 	const pricingFormSubmit = ({ filterTool }) => {
+	
 
 		if (isNotGlobal) {
 			if (filterTool.enhancementOn && filterTool.enhancementRate) {
@@ -184,7 +221,7 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 
 	const CollectionEnhancementOn = () => {
 		return (
-			<div className='col-md-3'>
+			<div className='col-md-2'>
 				<div className='form-group'>
 					<label className='form-text font-lato-bold oneline-th '> Collection Enhancement On </label>
 					<select name='enhancementOn' id='enhancementOn' className='form-control-sm' {...register('filterTool.enhancementOn')} onClick={() => setstateChange(!stateChange)} >
@@ -205,13 +242,13 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 
 	const Providers = () => {
 		return (
-			<div className='col-md-3'>
+			<div className='col-md-2'>
 				<div className='form-group'>
 					<label className='form-text font-lato-bold '>Provider</label>
-					<select name='hospitalSearch' id='hospitalSearch' className='form-control-sm' {...register('filterTool.hospitalSearch')} onClick={() => setstateChange(!stateChange)} >
+					<select name='provider' id='provider' className='form-control-sm' {...register('filterTool.provider')} onClick={() => setstateChange(!stateChange)} >
 						<option value=''> Select</option>
 
-						{hospitalList && hospitalList.map((item, index) => (
+						{providerList && providerList.map((item, index) => (
 							<option key={index} value={item.partyRoleId}>
 								{item.firstName} {item.lastName}
 							</option>
@@ -232,10 +269,11 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 			<form onSubmit={handleSubmit(pricingFormSubmit)}>
 				<div className='row divider p-2'>
 
-					<div className='col-md-3'>
+					<div className='col-md-2'>
 						<div className='form-group'>
 							<label className='form-text font-lato-bold '>Specialty</label>
 							<select name='serviceType' id='serviceType' className='form-control-sm' {...register('filterTool.serviceType')} onClick={() => setstateChange(!stateChange)} onChange={e => setSelectedOption(e.target.value)}>
+							<option value=''> Select</option>
 								{serviceList.map((item, index) => (
 									<option key={index} value={item.ID}>
 										{item.speciality}
@@ -245,16 +283,20 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 						</div>
 					</div>
 
-					{Providers()}
+{/* export const PackageItems = { */}
+					{PackageItems.Facility == selectedPackageId ? '': Providers()}
 
-					{/* <div className='col-md-2'>
+					<div className='col-md-2'>
 						<div className='form-group'>
 							<label className='form-text font-lato-bold oneline-th'>{isNotGlobal ? 'Collection Enhancement' : 'Clear Transactional Fee'}  </label>
 							{isNotGlobal ? EnhancementPercentageInput() : EnhancementPercentageSelect()}
 						</div>
-					</div> */}
+					</div>
 
 					{isNotGlobal && CollectionEnhancementOn()}
+
+
+					{isNotGlobal && clearOptimizedPrice()} 
 
 					<div className="col-md-1 pt-2">
 						<button className="btn btn-primary mt-4" disabled={!isValid} >Save</button>

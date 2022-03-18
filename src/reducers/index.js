@@ -14,6 +14,7 @@ import pricingReducer from './pricingReducer';
 import orderReducer from './orderReducer';
 import orderTableReducer from './orderTableReducer';
 import permissionReducer from './permissionReducer';
+import feeScheduleReducer from './feeScheudle';
 
 
 const persistConfig={
@@ -30,6 +31,7 @@ const rootReducer= combineReducers({
    Order:orderReducer,
    mainOrder:orderTableReducer,
    Permission:permissionReducer,
+   FeeSchedule:feeScheduleReducer,
    notifications: notificationsReducer(),
 
 })

@@ -18,11 +18,11 @@ const GlobalToolTable = ({filterDetail}) => {
 		const fetchData = async () => {
 			try {
 				setGlobalPackage([]);
-				if (filterDetail.serviceType && filterDetail.hospitalSearch) {
+				if (filterDetail.serviceType && filterDetail.hospitalId) {
                     dispatch(loaderShow());
 
-					let data = {serviceType: filterDetail.serviceType};
-					let result = await getGlobalPackageByHospitalId(filterDetail.hospitalSearch, data);
+					let data = {serviceType: filterDetail.serviceType,providerPartyRoleID: filterDetail.provider};
+					let result = await getGlobalPackageByHospitalId(filterDetail.hospitalId, data);
 					setGlobalPackage(result.data.data);
 
 					 if(filterDetail.enhancementRate){

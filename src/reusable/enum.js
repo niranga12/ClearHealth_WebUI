@@ -115,6 +115,7 @@ export const Packages = [
 	{ name: 'Pathology', id: 5 },
 ];
 
+
 export const FacilityPackageField = [
 	{ text: 'Medicare Rate', value: 'medicareRate', id: 1 },
 	{ text: 'Hospital Collection', value: 'hospitalCollectionFee', id: 2 },

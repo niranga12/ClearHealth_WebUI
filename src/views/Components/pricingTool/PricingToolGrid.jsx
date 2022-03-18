@@ -62,7 +62,8 @@ const PricingToolGrid = () => {
 	};
 
 	const handleFilterChange = (e) => {
-		setfilterDetails(e);
+		
+		setfilterDetails({...e,hospitalId});
 	};
 
 	const saveChange = (data) => {
@@ -88,7 +89,7 @@ const PricingToolGrid = () => {
 		try {
 
 			let data = {enhancementRate: value.enhancementRate, enhancementOn: value.enhancementOn};
-			let result = await updateFacilityPackage(value.hospitalSearch, data);
+			let result = await updateFacilityPackage(hospitalId, data);
 			if (result.data.message === ServiceMsg.OK) {
 				dispatch(notify(`Successfully Updated`, 'success'));
 			}
@@ -100,7 +101,7 @@ const PricingToolGrid = () => {
 	const updatePhysician = async (value) => {
 		try {
 			let data = {enhancementRate: value.enhancementRate, enhancementOn: value.enhancementOn};
-			let result = await updatePhysicianPackage(value.hospitalSearch, data);
+			let result = await updatePhysicianPackage(hospitalId, data);
 			if (result.data.message === ServiceMsg.OK) {
 				dispatch(notify(`Successfully Updated`, 'success'));
 			}
@@ -112,7 +113,7 @@ const PricingToolGrid = () => {
 	const updateGlobal = async (value) => {
 		try {
 			let data = {enhancementRate: value.enhancementRate};
-			let result = await updateGlobalPackage(value.hospitalSearch, data);
+			let result = await updateGlobalPackage(hospitalId, data);
 			if (result.data.message === ServiceMsg.OK) {
 				dispatch(notify(`Successfully Updated`, 'success'));
 			}

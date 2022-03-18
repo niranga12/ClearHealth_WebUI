@@ -72,3 +72,7 @@ export const saveFeeSchedule=(hospitalId,data) =>axiosInstance.post(`hospital/sa
 export const getFeeSchedule=(hospitalId) =>axiosInstance.get(`hospital/feeSchedule/${hospitalId}`);
 
 export const deleteFeeSchedule=(hospitalId,specialityId) =>axiosInstance.delete(`hospital/feeSchedule/${hospitalId}/${specialityId}`);
+
+export const updateFeeSchedule=(data) =>axiosInstance.put(`hospital/packageUpdate/CPT`,data);
+
+
