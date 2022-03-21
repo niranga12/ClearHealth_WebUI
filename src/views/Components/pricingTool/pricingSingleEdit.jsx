@@ -76,7 +76,7 @@ try {
 
 
             ...((catType == PackageItems.Facility ) && {
-                collectionAmount: row.original.collectionAmount,
+                collectionAmount: row.original.hospitalCollectionFee,
             }),
             ...((catType == PackageItems.Physician ) && {
                 collectionAmount: row.original.physicianCollectionFee,
@@ -141,7 +141,7 @@ try {
                             {catType == PackageItems.Facility? paylaterPrice(): ''}
 							
 							<div className='col-md-6'>
-								<label htmlFor=''>clearOptimized Price</label>
+								<label htmlFor=''>Clear Optimized Price</label>
 								<input type='number' className=' form-control-sm col-9' {...register('priceTool.clearOptimizedPrice')} />
 							</div>
 						</div>
@@ -150,7 +150,7 @@ try {
 
 				<CModalFooter>
 					<CButton color='primary' onClick={onEdit}>
-						Send
+						Save
 					</CButton>{' '}
 					<CButton color='secondary' onClick={() => setEditMode(false)}>
 						Cancel

@@ -86,6 +86,7 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
     };
 
     const handleSubmission = async () => {
+       
         const formData = new FormData();
         formData.append(selectedSpeciality, selectedFile);
         let result = await saveProviderFeeSchedule(partyRoleId, formData);

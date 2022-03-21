@@ -84,6 +84,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [groupSelection, setGroupSelection] = useState("Individual");
 	const [isFeeSchedule, setFeeSchedule] = useState(false);
 
+	const [saveProviderId, setSaveProviderId] = useState(null)
+
 	const handleBillingChecked = (event) => {
 		if (event.target.checked) {
 			setValue('billingAddress1', getValues('address1'), {
@@ -400,7 +402,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				
 					dispatch(notify(`Successfully added`, 'success'))
 					onOpenFeeSchedule(result.data.data);
-
+					setSaveProviderId(result.data.data);
 					// for redirecting parent page
 					// if (tabId && hospitalId) {
 					// 	history.push({
@@ -847,7 +849,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 				{partyRoleId != null && <ProviderEditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} />}
 				
-				{isFeeSchedule==true && <ProviderAddFeeSchedules edit={isEdit} partyRoleId={hospitalId} isFeeSchedule={isFeeSchedule}  />}
+				{isFeeSchedule==true && <ProviderAddFeeSchedules edit={isEdit} partyRoleId={saveProviderId} isFeeSchedule={isFeeSchedule}  />}
 				<div className='row'>
 					<div className='col-md-12'>
 						<button type='submit' className='btn btn-primary btn-lg float-right'>
