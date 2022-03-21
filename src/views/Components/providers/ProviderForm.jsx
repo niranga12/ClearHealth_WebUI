@@ -849,7 +849,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 				{partyRoleId != null && <ProviderEditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} />}
 				
-				{isFeeSchedule==true && <ProviderAddFeeSchedules edit={isEdit} partyRoleId={saveProviderId} isFeeSchedule={isFeeSchedule}  />}
+				{isFeeSchedule==true && <ProviderAddFeeSchedules edit={isEdit} partyRoleId={saveProviderId} isFeeSchedule={isFeeSchedule}  hosId={hospitalId} hosName={hospitalName} tabId={tabId}/>}
 				<div className='row'>
 					<div className='col-md-12'>
 						<button type='submit' className='btn btn-primary btn-lg float-right'>

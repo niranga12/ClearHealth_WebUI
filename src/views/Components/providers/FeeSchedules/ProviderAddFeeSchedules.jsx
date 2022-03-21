@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { getSpecialityList, saveProviderFeeSchedule } from 'src/service/providerService';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useHistory } from 'react-router-dom';
 
 
 const schema = yup.object().shape({
@@ -14,8 +15,8 @@ const schema = yup.object().shape({
 
 });
 
-const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
-
+const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,hosId, hosName, tabId }) => {
+    let history = useHistory();
     let btnRef = useRef();
     const {
         register,
@@ -115,7 +116,10 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
 
     };
 
-
+    const onClose = (event) => {
+        setModal(false);
+        history.push(`/hospitals/hospital?id=${hosId}&&name=${hosName}&tap=${tabId}`);
+    };
 
 
 
@@ -166,6 +170,9 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
 
             </CModalBody>
             <CModalFooter>
+            <CButton color='secondary' onClick={onClose}>
+                Close
+            </CButton>
             </CModalFooter>
 
         </CModal>
