@@ -19,9 +19,9 @@ const DashboardMenuItems = () => {
             <CardWidget   title="Health Systems" url="/healthsystem" logoName="logoHealthSystem"/>
           </CCol>
           
-          <CCol sm="6" md="3" className={PermissionMenu(ScreenPermissions.Providers,permissionList)?'':'hide'}>
+          {/* <CCol sm="6" md="3" className={PermissionMenu(ScreenPermissions.Providers,permissionList)?'':'hide'}>
             <CardWidget  title="Providers"  url="/providers" logoName="logoProviders"/>
-          </CCol>
+          </CCol> */}
   
 {/*           
           <CCol sm="6" md="3" className={PermissionMenu(ScreenPermissions.PricingTool,permissionList)?'':'hide'}>
@@ -43,9 +43,9 @@ const DashboardMenuItems = () => {
           </CCol>
   
           
-          <CCol sm="6" md="3" className={PermissionMenu(ScreenPermissions.Profile,permissionList)?'':'hide'}>
+          {/* <CCol sm="6" md="3" className={PermissionMenu(ScreenPermissions.Profile,permissionList)?'':'hide'}>
             <CardWidget  title="profile" logoName="Profile"/>
-          </CCol>
+          </CCol> */}
   
           
           

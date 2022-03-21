@@ -126,7 +126,7 @@ try {
 
 						<div className='row'>
 							<div className='col-md-6'>
-								<label htmlFor=''>MediaCare Rate</label>
+								<label htmlFor=''>Medicare Rate</label>
 								<input type='number' className=' form-control-sm col-9' {...register('priceTool.mediacareRate')} />
 							</div>
 							<div className='col-md-6'>

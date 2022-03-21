@@ -43,14 +43,14 @@ const _nav =  [
 
     icon: <CIcon content={logoHealthSystem} size={'2xl'} className="m-auto"/>,
   },
-  {
-    _tag: 'CSidebarNavItem',
-    name: 'Providers',
-    icon: <CIcon content={logoProviders} size={'2xl'} className="m-auto"/>,
-     to: '/providers',
-     screenid:ScreenPermissions.Providers,
+  // {
+  //   _tag: 'CSidebarNavItem',
+  //   name: 'Providers',
+  //   icon: <CIcon content={logoProviders} size={'2xl'} className="m-auto"/>,
+  //    to: '/providers',
+  //    screenid:ScreenPermissions.Providers,
 
-  },
+  // },
   // {
   //   _tag: 'CSidebarNavItem',
   //   name: 'Pricing Tools',
@@ -82,13 +82,13 @@ const _nav =  [
     icon: <CIcon content={logoAccounting} size={'2xl'} className="m-auto"/>,
     screenid:ScreenPermissions.Accounting,
   },
-  {
-    _tag: 'CSidebarNavItem',
-    name: 'Profile',
-    icon: <CIcon content={Profile} size={'2xl'} className="m-auto"/>,
-    // to: '/base/cards',
-    screenid:ScreenPermissions.Profile,
-  },
+  // {
+  //   _tag: 'CSidebarNavItem',
+  //   name: 'Profile',
+  //   icon: <CIcon content={Profile} size={'2xl'} className="m-auto"/>,
+    
+  //   screenid:ScreenPermissions.Profile,
+  // },
 
 ]
 
