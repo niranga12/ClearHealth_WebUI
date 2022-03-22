@@ -13,7 +13,7 @@ const schema = yup.object().shape({
 });
 
 
-const EditFeeSchedules = ({ edit, partyRoleId }) => {
+const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
     let btnRef = useRef();
     const { register, handleSubmit, setValue, getValues, reset, control, formState: { errors }, }
         = useForm({ resolver: yupResolver(schema), mode: 'all' });
@@ -66,9 +66,11 @@ const EditFeeSchedules = ({ edit, partyRoleId }) => {
 
 
     const onClickDelete = (event) => {
+
         const fetchData = async () => {
             const result = await deleteFeeSchedule(partyRoleId, event.speciality);
             if (result.data.message == 'OK') {
+                updateChanges(true);
                 let index = submittedFile.findIndex(x => x.speciality === event.speciality);
                 submittedFile.splice(index, 1)
                 setSubmittedFile(submittedFile);
@@ -102,13 +104,14 @@ const EditFeeSchedules = ({ edit, partyRoleId }) => {
         setSelectedSpeciality(event.target.value);
     };
     const handleSubmission = async () => {
-
+        updateChanges(true);
         const fetchData = async () => {
             const formData = new FormData();
 
             formData.append(selectedSpeciality, selectedFile);
             let result = await saveFeeSchedule(partyRoleId, formData);
             if (result.data.message == 'OK') {
+
                 submittedFile.push({ fileName: selectedFile?.name, speciality: selectedSpeciality, })
                 let data = submittedFile.map(function (obj) {
 

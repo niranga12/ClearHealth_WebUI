@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { getSpecialityList } from 'src/service/providerService';
@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { saveFeeSchedule } from 'src/service/hospitalsService';
+import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
     speciality: yup.string().required('Speciality is required'),
@@ -14,8 +15,8 @@ const schema = yup.object().shape({
 
 });
 
-const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
-
+const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,updateChanges }) => {
+    let history = useHistory();
     let btnRef = useRef();
     const {
         register,
@@ -58,6 +59,7 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
     }, [selectedFile, selectedSpeciality])
 
     const onClickDelete = (event) => {
+        updateChanges(true);
         let index = submittedFile.findIndex(x => x.speciality === event.speciality);
         submittedFile.splice(index, 1)
         setSubmittedFile(submittedFile);
@@ -86,6 +88,7 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
     };
 
     const handleSubmission = async () => {
+       
         const formData = new FormData();
         formData.append(selectedSpeciality, selectedFile);
         let result = await saveFeeSchedule(partyRoleId, formData);
@@ -113,6 +116,12 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
         }
 
     };
+
+    const onClose = (event) => {
+        setModal(false);
+        history.push(`/hospitals`);
+    };
+
 
 
 
@@ -165,6 +174,9 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
 
             </CModalBody>
             <CModalFooter>
+            <CButton color='secondary' onClick={onClose}>
+                Close
+            </CButton>
             </CModalFooter>
 
         </CModal>

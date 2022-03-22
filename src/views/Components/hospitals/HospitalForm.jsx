@@ -81,6 +81,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const debouncedName = useDebounce(hospitalName, 1000);
 	const [isNotify, setIsNotify] = useState(false);
 	const [isFeeSchedule, setFeeSchedule] = useState(false);
+	const [feeScheduleChanges, setFeeScheduleChanges] = useState(false);
 	const [hospitalId, setHospitalId] = useState(null);
 	// validate organition name
 	useEffect(() => {
@@ -257,11 +258,15 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		}
 	};
 
+	const getChanges= (result) => {
+		setFeeScheduleChanges(result)
+	}
+
 	// update hospital
 	const updateHospitalInfo = async () => {
 		try {
 			const updateHospital = {
-				...((dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.alertSenderEmail || dirtyFields.alertSenderSMS || dirtyFields.clearTransactionalFee || dirtyFields.patientResponsibilityDiscount || dirtyFields.clearTransactionalFeeforPatientResponsibility) && {
+				...((feeScheduleChanges|| dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.alertSenderEmail || dirtyFields.alertSenderSMS || dirtyFields.clearTransactionalFee || dirtyFields.patientResponsibilityDiscount || dirtyFields.clearTransactionalFeeforPatientResponsibility) && {
 					hospital: {
 						name: getValues('hospitalName'),
 						healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
@@ -611,7 +616,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				</div>
 
 
-				{partyRoleId != null && <EditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} />}
+				{partyRoleId != null && <EditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges}/>}
 
 				{/* Stripe */}
 				{/* {isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null}
@@ -660,7 +665,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 			<HospitalNotifyUser partyRoleId={partyRoleId} isNotify={isNotify} handleCancel={modelCancel} />
 
-			{isFeeSchedule==true && <AddFeeSchedules edit={isEdit} partyRoleId={hospitalId} isFeeSchedule={isFeeSchedule}  />}
+			{isFeeSchedule==true && <AddFeeSchedules edit={isEdit} partyRoleId={hospitalId} isFeeSchedule={isFeeSchedule}   />}
 
 		</div>
 	);
