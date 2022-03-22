@@ -1337,3 +1337,7 @@ border-radius: 0;
   width: 100%;
     overflow-x: auto;
 }
+.avoid-clicks {
+  pointer-events: none;
+  background-color: rgba(209, 203, 203, 0.281);
+}

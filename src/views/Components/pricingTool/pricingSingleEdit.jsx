@@ -127,7 +127,7 @@ try {
 		if(filterDetail?.clPrice == 'Auto' ){
 			let mediaCareRate = getValues('priceTool.mediacareRate');
 			let newClearFees = Number(mediaCareRate) * (Number(filterDetail?.enhancementRate) / 100) + Number(mediaCareRate);
-			setValue('priceTool.clearOptimizedPrice',newClearFees)
+			setValue('priceTool.clearOptimizedPrice',String(newClearFees))
 		}
 
 	}
@@ -136,7 +136,7 @@ try {
 		if(filterDetail?.clPrice == 'Auto' ){
 			let collectionAmount = getValues('priceTool.collectionAmount');
 			let newClearFees = Number(collectionAmount) * (Number(filterDetail?.enhancementRate) / 100) + Number(collectionAmount);
-			setValue('priceTool.clearOptimizedPrice',newClearFees)
+			setValue('priceTool.clearOptimizedPrice',String(newClearFees))
 
 		}
 	}
@@ -147,8 +147,8 @@ try {
         return (
             <>
             	<div className='col-md-6'>
-								<label htmlFor=''>Estimated Pay Later Price</label>
-								<input type='number' className=' form-control-sm col-9' {...register('priceTool.estimatedPayLaterPrice')} disabled={filterDetail?.clPrice == 'Auto'} />
+								<label htmlFor=''>Estimated Pay Later Price</label> 
+								<input type='number'  className={`form-control-sm col-9 ${filterDetail?.clPrice == 'Auto' ? 'avoid-clicks':''} `} {...register('priceTool.estimatedPayLaterPrice')} />
 							</div>
             </>
         );
@@ -205,7 +205,8 @@ try {
 							
 							<div className='col-md-6'>
 								<label htmlFor=''>Clear Optimized Price</label>
-								<input type='number' className=' form-control-sm col-9' {...register('priceTool.clearOptimizedPrice')} disabled={filterDetail?.clPrice == 'Auto'}  />
+								
+								<input type='number' className={`form-control-sm col-9 ${filterDetail?.clPrice == 'Auto' ? 'avoid-clicks':''} `} {...register('priceTool.clearOptimizedPrice')}   />
 							</div>
 						</div>
 					</form>
