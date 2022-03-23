@@ -3,7 +3,7 @@ import {CButton, CModal, CModalBody, CModalFooter, CModalHeader} from '@coreui/r
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { PackageItems, ServiceMsg } from 'src/reusable/enum';
+import { FacilityPackageField, PackageItems, PhysicianPackageField, ServiceMsg } from 'src/reusable/enum';
 import { updateFeeSchedule } from 'src/service/hospitalsService';
 import { useDispatch, useSelector } from 'react-redux';
 import { notify } from 'reapop';
@@ -17,8 +17,17 @@ const schema = yup.object().shape({
 const PricingSingleEdit = ({row, category=null}) => {
 	const [editMode, setEditMode] = useState(false);
     const [catType, setCatType] = useState(null);
+	const [isEdit, setisEdit] = useState(true)
+
+	const [mediacareRateDisable, setMediacareRateDisable] = useState(false)
+	const [collectionAmountDisable, setCollectionAmountDisable] = useState(false)
     const dispatch = useDispatch();
     let isFeeSchedule = useSelector((state) => state.FeeSchedule.resetFeeSchedule);
+	let filterDetail = useSelector((state) => state.Pricing.filterDetail);
+
+
+	
+	
 
 
 	const {
@@ -70,6 +79,18 @@ try {
 	};
 
 	useEffect(() => {
+
+
+                   if ( filterDetail && (filterDetail?.clPrice == 'Auto'  && filterDetail?.enhancementOn == '') ||(filterDetail?.clPrice == 'Auto'  && filterDetail?.enhancementRate == ''))  {
+						setisEdit(false);
+							
+						
+					} else {
+					setisEdit(true);}
+
+
+				
+		
 		let priceTool = {
 			mediacareRate: row.original.medicareRate,
 			// collectionAmount: row.original.hospitalCollectionFee,   // want to change for other physician 
@@ -89,24 +110,66 @@ try {
 		};
 		setValue('priceTool', {...priceTool});
         setCatType(category)
-	}, [ row, category]);
+	}, [ row, category, filterDetail]);
+
+
+	// useEffect(() => {
+	// 	if(filter?.clPrice=='Auto' && (!filter.enhancementOn || !filter.enhancementOn)){
+	// 		setIsEdit(false)
+	// 	}else{
+	// 		setIsEdit(true)
+	// 	}
+	  
+	// }, [filter])
+
+	const mediaRateChange=()=>{
+		debugger;
+		if(filterDetail?.clPrice == 'Auto' ){
+			let mediaCareRate = getValues('priceTool.mediacareRate');
+			let newClearFees = Number(mediaCareRate) * (Number(filterDetail?.enhancementRate) / 100) + Number(mediaCareRate);
+			setValue('priceTool.clearOptimizedPrice',String(newClearFees))
+		}
+
+	}
+
+	const hospitalRateChange=()=>{
+		if(filterDetail?.clPrice == 'Auto' ){
+			let collectionAmount = getValues('priceTool.collectionAmount');
+			let newClearFees = Number(collectionAmount) * (Number(filterDetail?.enhancementRate) / 100) + Number(collectionAmount);
+			setValue('priceTool.clearOptimizedPrice',String(newClearFees))
+
+		}
+	}
+
+
 
     const paylaterPrice=()=>{
         return (
             <>
             	<div className='col-md-6'>
-								<label htmlFor=''>Estimated Pay Later Price</label>
-								<input type='number' className=' form-control-sm col-9' {...register('priceTool.estimatedPayLaterPrice')} />
+								<label htmlFor=''>Estimated Pay Later Price</label> 
+								<input type='number'  className={`form-control-sm col-9 ${filterDetail?.clPrice == 'Auto' ? 'avoid-clicks':''} `} {...register('priceTool.estimatedPayLaterPrice')} />
 							</div>
             </>
         );
     }
-
-	return (
-		<>
+	const editButton=()=>{
+		return (
+			<>
 			<div onClick={() => setEditMode(true)}>
 				<span className='fa fa-x  fa-pencil'></span>
 			</div>
+			</>
+		);
+
+	}
+
+	return (
+		<>
+		{ isEdit && editButton() }
+		{/* <div onClick={() => setEditMode(true)}>
+				<span className='fa fa-x  fa-pencil'></span>
+			</div> */}
 
 			<CModal size={'lg'} show={editMode} onClose={setEditMode} closeOnBackdrop={false}>
 				<CModalHeader closeButton> <h5 className="font-weight-bold">Update FeeSchedules</h5> </CModalHeader>
@@ -127,14 +190,14 @@ try {
 						<div className='row'>
 							<div className='col-md-6'>
 								<label htmlFor=''>Medicare Rate</label>
-								<input type='number' className=' form-control-sm col-9' {...register('priceTool.mediacareRate')} />
+								<input type='number' className=' form-control-sm col-9' {...register('priceTool.mediacareRate')} onBlur={mediaRateChange} disabled={mediacareRateDisable} />
 							</div>
 							<div className='col-md-6'>
 								<label htmlFor=''>
                                 {catType == PackageItems.Facility?  'Hospital Collection' :'Physician Collection' }  
                                 
 </label>
-								<input type='number' className=' form-control-sm col-9' {...register('priceTool.collectionAmount')} />
+								<input type='number' className=' form-control-sm col-9' {...register('priceTool.collectionAmount')}  onBlur={hospitalRateChange} disabled={collectionAmountDisable}/>
 							</div>
 						</div>
 						<div className='row'>
@@ -142,7 +205,8 @@ try {
 							
 							<div className='col-md-6'>
 								<label htmlFor=''>Clear Optimized Price</label>
-								<input type='number' className=' form-control-sm col-9' {...register('priceTool.clearOptimizedPrice')} />
+								
+								<input type='number' className={`form-control-sm col-9 ${filterDetail?.clPrice == 'Auto' ? 'avoid-clicks':''} `} {...register('priceTool.clearOptimizedPrice')}   />
 							</div>
 						</div>
 					</form>

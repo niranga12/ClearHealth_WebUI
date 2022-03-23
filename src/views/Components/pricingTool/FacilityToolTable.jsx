@@ -11,29 +11,27 @@ import {CurrencyFormat} from 'src/reusable';
 import {SHOW_PRICE_DATA} from 'src/constansts';
 import PricingSingleEdit from './pricingSingleEdit';
 
-function CellAction({row}) {
-
-
-	return (
-		<>
-         <PricingSingleEdit row={row} category={PackageItems.Facility}/>			
-		</> 
-	);
-}
-
 const FacilityToolTable = ({filterDetail}) => {
 	const [facitlityData, setFacitlityData] = useState([]);
+	// const [isEdit, setIsEdit] = useState(true);
+
+	// const [selectedFilterDetail, setSelectedFilterDetail] = useState(filterDetail);
 	const dispatch = useDispatch();
-    let isFeeSchedule = useSelector((state) => state.FeeSchedule.resetFeeSchedule);
+	let isFeeSchedule = useSelector((state) => state.FeeSchedule.resetFeeSchedule);
 
 	useEffect(() => {
+		// setSelectedFilterDetail(filterDetail);
+	
 		const fetchData = async () => {
 			try {
 				if (filterDetail.serviceType && filterDetail.hospitalId) {
 					dispatch(loaderShow());
 					let data = {serviceType: filterDetail.serviceType};
 					let result = await getFacilityPackageByHospitalId(filterDetail.hospitalId, data);
-					setFacitlityData(result.data.data);
+
+				
+				  setFacitlityData(result.data.data);
+				
 
 					if (filterDetail.enhancementRate && filterDetail.enhancementOn) {
 						let fieldName = FacilityPackageField.find((x) => x.id == filterDetail.enhancementOn).value;
@@ -44,7 +42,7 @@ const FacilityToolTable = ({filterDetail}) => {
 			} catch (error) {}
 		};
 		fetchData();
-	}, [filterDetail,isFeeSchedule]);
+	}, [filterDetail, isFeeSchedule]);
 
 	useEffect(() => {
 		let packageName = Packages.find((x) => x.id == PackageItems.Facility).name;
@@ -61,9 +59,16 @@ const FacilityToolTable = ({filterDetail}) => {
 			let newClearFees = Number(x[enhancementField]) * (Number(enhancementPercentage) / 100) + Number(x[enhancementField]);
 			return {...x, clearOptimizedFee: newClearFees};
 		});
+		
 
 		setFacitlityData(updatedData);
 	};
+
+	function CellAction({row}) {
+		
+
+		return <> <PricingSingleEdit row={row} category={PackageItems.Facility}  /></>;
+	}
 
 	// for table
 	//SETTING COLUMNS NAMES
@@ -92,7 +97,7 @@ const FacilityToolTable = ({filterDetail}) => {
 				disableSortBy: true,
 				Cell: ({row}) => <div className='text-right pr-3'> {CurrencyFormat(Number(row.original.hospitalCollectionFee), true)} </div>,
 			},
-            {
+			{
 				Header: () => <div className='text-right oneline-th'>Estimated pay later price </div>,
 				accessor: 'estimatedPayLaterPrice', // accessor is the "key" in the data
 				disableSortBy: true,
