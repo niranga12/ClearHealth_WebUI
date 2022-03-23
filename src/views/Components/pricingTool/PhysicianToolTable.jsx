@@ -41,7 +41,7 @@ useEffect(() => {
              
              if(filterDetail.enhancementRate && filterDetail.enhancementOn){
               let fieldName=   PhysicianPackageField.find(x=>x.id==filterDetail.enhancementOn).value;
-              CalculationPackage(filterDetail.enhancementRate , fieldName);
+              CalculationPackage(filterDetail.enhancementRate , fieldName,result.data.data);
     
              }
              dispatch(loaderHide());
@@ -72,8 +72,8 @@ useEffect(() => {
 	}, [physicianData])
 
 
-    const CalculationPackage=(enhancementPercentage,enhancementField) => {
-        let updatedData =   physicianData.map(x=>{
+    const CalculationPackage=(enhancementPercentage,enhancementField,physicianDataDetail) => {
+        let updatedData =   physicianDataDetail.map(x=>{
            let newClearFees = ( Number(x[enhancementField])*(Number(enhancementPercentage)/100) )+ Number(x[enhancementField]);
            return {...x,clearOptimizedFee:newClearFees}
            });
