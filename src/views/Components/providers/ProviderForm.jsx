@@ -72,7 +72,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const dispatch = useDispatch();
 	let history = useHistory();
 	const location = useLocation();
-
+	const [feeScheduleChanges, setFeeScheduleChanges] = useState(false);
 	const [tabId, setTabId] = useState(null);
 	const [hospitalName, setHospitalName] = useState(null);
 	const [hospitalId, setHospitalId] = useState(null);
@@ -430,6 +430,10 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		setValue('billingState', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
 
+	const getChanges= (result) => {
+		setFeeScheduleChanges(result)
+	}
+
 	// update Provider
 	const updateProviderInfo = async () => {
 
@@ -437,7 +441,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 
 			const updateProvider = {
-				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality || dirtyFields.email || dirtyFields.providerGroup) && {
+				...((feeScheduleChanges || dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality || dirtyFields.email || dirtyFields.providerGroup) && {
 					provider: {
 						providerTypeId: Provider.Provider,
 						email: getValues('email'),
@@ -847,7 +851,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 				{/* </div> */}
 
-				{partyRoleId != null && <ProviderEditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} />}
+				{partyRoleId != null && <ProviderEditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges}/>}
 				
 				{isFeeSchedule==true && <ProviderAddFeeSchedules edit={isEdit} partyRoleId={saveProviderId} isFeeSchedule={isFeeSchedule}  hosId={hospitalId} hosName={hospitalName} tabId={tabId}/>}
 				<div className='row'>

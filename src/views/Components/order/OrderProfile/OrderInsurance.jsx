@@ -199,7 +199,7 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
                 <div className='col-md-4'>
                     <div className='form-group'>
                         <label className='form-text'>
-                            Group ID<span className='text-danger font-weight-bold '>*</span>
+                            Group ID
                         </label>
                         <input className='form-control-sm' type='text' {...register('insurance.groupNumber')} readOnly={isEdit} onBlur={() => setstateChange(!stateChange)} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
                         <div className='small text-danger  pb-2   '>{errors.insurance?.groupNumber?.message}</div>
