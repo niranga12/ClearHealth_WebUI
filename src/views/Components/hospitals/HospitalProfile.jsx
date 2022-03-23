@@ -95,9 +95,9 @@ const [smsSenders, setSmsSenders] = useState([]);
 				setSmsSenders(sendSmsListResult.data.data);
 
 				//getOnboardinginfo
-				const onboarding = await getOnboardinginfo(id);
 				//const onboarding = await getOnboardinginfo(id);
-				setOnboarding(onboarding.data.data);
+				//const onboarding = await getOnboardinginfo(id);
+				//setOnboarding(onboarding.data.data);
 			} catch (error) {
 				OnError(error, dispatch);
 			}
