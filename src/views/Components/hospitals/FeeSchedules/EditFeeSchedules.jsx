@@ -36,7 +36,6 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
             const list = await getFeeSchedule(partyRoleId);
             setSubmittedFile(list.data.data)
             let data = list.data.data.map(function (obj) {
-
                 let selected = specialityList.data.data.filter(x => x.ID == obj.speciality);
                 return <div key={obj.speciality} className='row'>
 
@@ -114,7 +113,6 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
 
                 submittedFile.push({ fileName: selectedFile?.name, speciality: selectedSpeciality, })
                 let data = submittedFile.map(function (obj) {
-
                     let selected = specialityData.filter(x => x.ID == obj.speciality);
                     return <div key={obj} className='row'>
                         <div className='col-2'>{selected[0].speciality}</div>
