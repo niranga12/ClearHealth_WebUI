@@ -581,8 +581,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				{showRadioButton ? <div className='row mb-3'>
 					<div className='col-md-4'>
 						<div className='mt-1 ml-4'>
-							<input type='radio' checked={groupSelection === "Individual"} value="Individual" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} /> <span className='ml-3 mr-5'>Individual</span>{' '}
-							<input type='radio' checked={groupSelection === "Group"} value="Group" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} /> <span className='ml-3 mr-3'>Group </span>{' '}
+							<input type='radio' checked={groupSelection === "Individual"} value="Individual" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} disabled={isEdit}/> <span className='ml-3 mr-5'>Individual</span>{' '}
+							<input type='radio' checked={groupSelection === "Group"} value="Group" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} disabled={isEdit}/> <span className='ml-3 mr-3'>Group </span>{' '}
 						</div>
 					</div>
 				</div> : ''}

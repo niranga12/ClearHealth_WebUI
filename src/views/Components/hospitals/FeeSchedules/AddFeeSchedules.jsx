@@ -15,7 +15,7 @@ const schema = yup.object().shape({
 
 });
 
-const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,updateChanges }) => {
+const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
     let history = useHistory();
     let btnRef = useRef();
     const {
@@ -59,7 +59,6 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,updateChanges }) => 
     }, [selectedFile, selectedSpeciality])
 
     const onClickDelete = (event) => {
-        updateChanges(true);
         let index = submittedFile.findIndex(x => x.speciality === event.speciality);
         submittedFile.splice(index, 1)
         setSubmittedFile(submittedFile);

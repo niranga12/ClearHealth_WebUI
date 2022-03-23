@@ -148,11 +148,11 @@ const HospitalProviderTable = () => {
 				<div className='btn btn-outline-secondary text-black-50 ml-3 float-right' onClick={editProcedure}>
 					Edit Provider
 				</div>
-				{AddPE && (
+				{/* {AddPE && (
 					<div className='btn btn-outline-secondary text-black-50 ml-3 float-right' onClick={addProcedure}>
 						Add Procedures
 					</div>
-				)}
+				)} */}
 
 				{ViewPE && (
 					<div className='btn btn-outline-secondary text-black-50 ml-3 float-right' {...row.getToggleRowExpandedProps()}>
