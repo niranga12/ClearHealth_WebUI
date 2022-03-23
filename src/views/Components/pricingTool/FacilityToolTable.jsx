@@ -35,7 +35,7 @@ const FacilityToolTable = ({filterDetail}) => {
 
 					if (filterDetail.enhancementRate && filterDetail.enhancementOn) {
 						let fieldName = FacilityPackageField.find((x) => x.id == filterDetail.enhancementOn).value;
-						CalculationPackage(filterDetail.enhancementRate, fieldName);
+						CalculationPackage(filterDetail.enhancementRate, fieldName,result.data.data);
 					}
 					dispatch(loaderHide());
 				}
@@ -54,8 +54,8 @@ const FacilityToolTable = ({filterDetail}) => {
 		});
 	}, [facitlityData]);
 
-	const CalculationPackage = (enhancementPercentage, enhancementField) => {
-		let updatedData = facitlityData.map((x) => {
+	const CalculationPackage = (enhancementPercentage, enhancementField,facilityDataDetail) => {
+		let updatedData = facilityDataDetail.map((x) => {
 			let newClearFees = Number(x[enhancementField]) * (Number(enhancementPercentage) / 100) + Number(x[enhancementField]);
 			return {...x, clearOptimizedFee: newClearFees};
 		});

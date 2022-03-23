@@ -3,7 +3,7 @@ import {CButton, CModal, CModalBody, CModalFooter, CModalHeader} from '@coreui/r
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { FacilityPackageField, PackageItems, PhysicianPackageField, ServiceMsg } from 'src/reusable/enum';
+import { FacilityPackageField, FeeScheduleSingleEdit, PackageItems, PhysicianPackageField, ServiceMsg } from 'src/reusable/enum';
 import { updateFeeSchedule } from 'src/service/hospitalsService';
 import { useDispatch, useSelector } from 'react-redux';
 import { notify } from 'reapop';
@@ -123,7 +123,8 @@ try {
 	// }, [filter])
 
 	const mediaRateChange=()=>{
-		if(filterDetail?.clPrice == 'Auto' ){
+		debugger;
+		if(filterDetail?.clPrice == 'Auto' && filterDetail?.enhancementOn ==FeeScheduleSingleEdit.mediaCareRate){
 			let mediaCareRate = getValues('priceTool.mediacareRate');
 			let newClearFees = Number(mediaCareRate) * (Number(filterDetail?.enhancementRate) / 100) + Number(mediaCareRate);
 			setValue('priceTool.clearOptimizedPrice',String(newClearFees))
@@ -132,7 +133,7 @@ try {
 	}
 
 	const hospitalRateChange=()=>{
-		if(filterDetail?.clPrice == 'Auto' ){
+		if(filterDetail?.clPrice == 'Auto' && filterDetail?.enhancementOn ==FeeScheduleSingleEdit.collectionAmount ){
 			let collectionAmount = getValues('priceTool.collectionAmount');
 			let newClearFees = Number(collectionAmount) * (Number(filterDetail?.enhancementRate) / 100) + Number(collectionAmount);
 			setValue('priceTool.clearOptimizedPrice',String(newClearFees))

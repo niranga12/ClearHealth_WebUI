@@ -281,3 +281,8 @@ export const HospitalInpatientTabList = {
 	Deductible: 2
 };
 
+
+export const FeeScheduleSingleEdit = {
+	mediaCareRate: 1,
+	collectionAmount: 2,
+};
