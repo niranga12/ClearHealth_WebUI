@@ -123,7 +123,6 @@ try {
 	// }, [filter])
 
 	const mediaRateChange=()=>{
-		debugger;
 		if(filterDetail?.clPrice == 'Auto' && filterDetail?.enhancementOn ==FeeScheduleSingleEdit.mediaCareRate){
 			let mediaCareRate = getValues('priceTool.mediacareRate');
 			let newClearFees = Number(mediaCareRate) * (Number(filterDetail?.enhancementRate) / 100) + Number(mediaCareRate);

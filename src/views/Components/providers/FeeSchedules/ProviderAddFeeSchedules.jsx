@@ -29,6 +29,7 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,hosId, hosNa
     } = useForm({ resolver: yupResolver(schema), mode: 'all' });
     const [modal, setModal] = useState(false);
     const [specialityData, setSpecialityData] = useState([]);
+    const [specialityList, setspecialityList] = useState([]);
     const [submittedFile, setSubmittedFile] = useState([]);
     const [selectedFile, setSelectedFile] = useState();
     const [selectedSpeciality, setSelectedSpeciality] = useState();
@@ -41,8 +42,9 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,hosId, hosNa
 
         const fetchData = async () => {
             setModal(isFeeSchedule);
-            const specialityList = await getSpecialityList();
-            setSpecialityData(specialityList.data.data);
+            const speciality = await getSpecialityList();
+            setSpecialityData(speciality.data.data);
+            setspecialityList(speciality.data.data);
 
         };
         fetchData();
@@ -59,7 +61,11 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,hosId, hosNa
     }, [selectedFile, selectedSpeciality])
 
     const onClickDelete = (event) => {
+
         let index = submittedFile.findIndex(x => x.speciality === event.speciality);
+        let selected = specialityData.filter(x => x.ID == event.speciality);
+        specialityList.push(selected);
+        setspecialityList(specialityList);
         submittedFile.splice(index, 1)
         setSubmittedFile(submittedFile);
         let data = submittedFile.map(function (obj) {
@@ -90,6 +96,8 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,hosId, hosNa
        
         const formData = new FormData();
         formData.append(selectedSpeciality, selectedFile);
+        let speciality = specialityList.filter(x => x.ID != selectedSpeciality);
+        setspecialityList(speciality)
         let result = await saveProviderFeeSchedule(partyRoleId, formData);
         if (result.data.message == 'OK') {
             submittedFile.push({ 'speciality': selectedSpeciality, file: selectedFile })
@@ -140,7 +148,7 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,hosId, hosNa
 
                         <select name='' id='' className='form-control-sm'   {...register('speciality')} onChange={onChangeSpeciality}>
                             <option value=''>Select</option>
-                            {specialityData.map((item, index) => (
+                            {specialityList.map((item, index) => (
                                 <option key={index} value={item.ID}>
                                     {item.speciality}
                                 </option>
