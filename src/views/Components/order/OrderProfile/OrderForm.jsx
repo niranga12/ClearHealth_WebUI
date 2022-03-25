@@ -189,7 +189,6 @@ const OrderForm = () => {
 
 
 	const insuranceFormDetail = (val) => {
-		console.log(val);
 		if (patientDetail.showInsurance == "1") {
 			if (!val.isValid) {
 				// @ts-ignore
