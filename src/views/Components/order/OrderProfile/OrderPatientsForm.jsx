@@ -146,9 +146,9 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
 			setIsmail(false);
 			setIsPhone(false);
 		}
-		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) > -1 && formValue?.showInsurance > -1 ) {
+		if (formValue?.contactMethod == ContactMethod.Email && fromDate && formValue?.firstName && Number(formValue?.contactMethod) >= 0 && formValue?.lastName && formValue?.email && Number(formValue?.orderType) > -1 && formValue?.showInsurance > -1  && formValue.gender  ) {
 			isAviable = ((formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) || (formValue?.orderType == OrderType.ClearPackage)) ? true : false;
-		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) > -1 && formValue?.showInsurance > -1 ) {
+		} else if (formValue?.contactMethod == ContactMethod.Phone && fromDate && formValue?.firstName && formValue?.lastName && Number(formValue?.contactMethod) >= 0 && formValue?.phone && Number(formValue?.orderType) > -1 && formValue?.showInsurance > -1 && formValue.gender) {
 			isAviable = ((formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) || (formValue?.orderType == OrderType.ClearPackage)) ? true : false;
 		} else {
 			isAviable = false;
@@ -219,7 +219,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                             Gender <span className='text-danger font-weight-bold '>*</span>
                         </label>
                         <select name='' id='' className='form-control-sm' {...register('patient.gender')} onBlur={() => setstateChange(!stateChange)}>
-                            <option value='0'>Select</option>
+                            <option value=''>Select</option>
                             <option value='M'>Male</option>
                             <option value='F'>Female</option>
 

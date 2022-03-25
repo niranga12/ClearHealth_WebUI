@@ -16,16 +16,19 @@ let schema = yup
     .shape({
         insurance: yup.object().shape({
             payerId: yup.string(),
-            subscriberRelationship: yup.string(),
+            //.required('payerId is required'),
+            subscriberRelationship: yup.string().required('Subscriber Relationship is required'),
+            memberId: yup.string().required('Member Id is required'),
             // subscriberId: yup.string(),
             providerNpi: yup.string(),
+            //.required('provider Npi is required'),
             groupNumber: yup.string(),
             subscriberFirstName: yup.string(),
-            patientFirstName: yup.string(),
+            patientFirstName: yup.string().required('FirstName is required'),
             patientMiddleName: yup.string(),
-            patientLastName: yup.string(),
-            patientGender: yup.string(),
-            memberId: yup.string(),
+            patientLastName: yup.string().required('Last Name is required'),
+            // patientGender: yup.string().required('Group Number is required'),
+          
         })
     })
 
@@ -125,8 +128,12 @@ const OrderInsurance = ({ defaultValues, isEdit = false, handleInsuranceForm, pa
             // setValue('insurance.patientLastName', '');
         }
         const formValue = getValues('insurance');
+        let formDetail={
+            isValid:isValid,
+            values:{ ...formValue, payerId: selectedPayerId?.payerID, patientBirthDate: patientDetail.dateOfBirth, patientGender: patientDetail.gender }
+        }
 
-        handleInsuranceForm({ ...formValue, payerId: selectedPayerId?.payerID, patientBirthDate: patientDetail.dateOfBirth, patientGender: patientDetail.gender });
+        handleInsuranceForm(formDetail);
 
     }, [stateChange])
 
