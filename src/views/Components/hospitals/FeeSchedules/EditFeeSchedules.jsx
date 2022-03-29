@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { deleteFeeSchedule, getFeeSchedule, saveFeeSchedule } from 'src/service/hospitalsService';
+import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+import { useDispatch } from 'react-redux';
 
 const schema = yup.object().shape({
     speciality: yup.string().required('Speciality is required'),
@@ -15,11 +17,13 @@ const schema = yup.object().shape({
 
 const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
     let btnRef = useRef();
+    const dispatch = useDispatch();
     const { register, handleSubmit, setValue, getValues, reset, control, formState: { errors }, }
         = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
     const [specialityData, setSpecialityData] = useState([]);
     const [submittedFile, setSubmittedFile] = useState([]);
+    const [submittedFileCount, setSubmittedFileCount] = useState(0);
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedSpeciality, setSelectedSpeciality] = useState();
     const [table, setTable] = useState([]);
@@ -35,24 +39,35 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
             setSpecialityData(specialityList.data.data);
             const list = await getFeeSchedule(partyRoleId);
             setSubmittedFile(list.data.data)
-            let data = list.data.data.map(function (obj) {
-                let selected = specialityList.data.data.filter(x => x.ID == obj.speciality);
+     
+        };
+        fetchData();
+    }, [edit])
+
+    useEffect(() => {
+        if (submittedFile.length > 0 && specialityData.length > 0) {
+            let data = submittedFile.map(function (obj) {
+                let selected = specialityData.filter(x => x.ID == obj.speciality);
                 return <div key={obj.speciality} className='row'>
 
                     <div className='col-2'>{selected[0].speciality}</div>
 
                     <div className='col-2'>{obj.fileName} </div>
                     <div className='col-2'>
-                        <div onClick={() => onClickDelete(obj)}  >
-                            <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
-                        </div>
+
+                        <FontAwesomeIcon onClick={() => onClickDelete(obj)} icon={faTimesCircle} className="pr-1 fa-2x" />
+
                     </div>
                 </div>
             });
             setTable(data)
-        };
-        fetchData();
-    }, [edit])
+        } else {
+            setTable(null)
+        }
+
+
+    }, [submittedFile, specialityData, submittedFileCount])
+
 
 
     useEffect(() => {
@@ -64,44 +79,46 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
 
 
 
-    const onClickDelete = (event) => {
+    const onClickDelete = async (event) => {
+        try {
+            dispatch(loaderShow());
 
-        const fetchData = async () => {
+
             const result = await deleteFeeSchedule(partyRoleId, event.speciality);
             if (result.data.message == 'OK') {
                 updateChanges(true);
                 let index = submittedFile.findIndex(x => x.speciality === event.speciality);
                 submittedFile.splice(index, 1)
-                setSubmittedFile(submittedFile);
-                let data = submittedFile.map(function (obj) {
-                    let selected = specialityData.filter(x => x.ID == obj.speciality);
-                    return <div key={obj} className='row'>
-
-                        <div className='col-2'>{selected[0].speciality}</div>
-
-                        <div className='col-2'>{obj.fileName} </div>
-                        <div className='col-2'>
-                            <div onClick={() => onClickDelete(obj)}  >
-                                <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
-                            </div>
-                        </div>
-                    </div>
-                });
-                setTable(data)
+                let newData = submittedFile
+                if (submittedFile.length > 0) {
+                    setSubmittedFile(newData);
+                    setSubmittedFileCount(submittedFile.length)
+                } else {
+                    setSubmittedFile([]);
+                    setSubmittedFileCount(submittedFile.length)
+                }
+                dispatch(loaderHide());
+            }else{
+                dispatch(loaderHide());
             }
-        };
-        fetchData();
+
+        } catch (error) {
+            dispatch(loaderHide());
+        }
+
+        
 
     }
 
     const onChangeFile = (event) => {
         setSelectedFile(event.target.files[0]);
-
     };
 
     const onChangeSpeciality = (event) => {
         setSelectedSpeciality(event.target.value);
     };
+
+
     const handleSubmission = async () => {
         updateChanges(true);
         const fetchData = async () => {
@@ -110,29 +127,17 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
             formData.append(selectedSpeciality, selectedFile);
             let result = await saveFeeSchedule(partyRoleId, formData);
             if (result.data.message == 'OK') {
-
-                submittedFile.push({ fileName: selectedFile?.name, speciality: selectedSpeciality, })
-                let data = submittedFile.map(function (obj) {
-                    let selected = specialityData.filter(x => x.ID == obj.speciality);
-                    return <div key={obj} className='row'>
-                        <div className='col-2'>{selected[0].speciality}</div>
-                        <div className='col-2'>{obj.fileName} </div>
-                        <div className='col-2'>
-                            <div onClick={() => onClickDelete(obj)}  >
-                                <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
-                            </div>
-                        </div>
-                    </div>
-                });
+                let newData = [...submittedFile, { fileName: selectedFile?.name, speciality: selectedSpeciality, }]
+                setSubmittedFile(newData);
+                setSubmittedFileCount(submittedFile.length+1)
                 setSelectedFile(null);
                 setSelectedSpeciality(null);
-                //btnRef.current.setAttribute('disabled', 'disabled');
                 setValue('speciality', '');
                 setValue('file', '');
-                setTable(data)
-
+         
             }
-        };
+        }
+
         fetchData();
     };
 
@@ -171,7 +176,7 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
                     </div>
                 </div>
 
-                {table.length != 0 && <div className='row mt-3'>
+                {table && table?.length != 0 && <div className='row mt-3'>
                     <div className='col-2'><h5>Speciality</h5></div>
                     <div className='col-2'><h5>File Name</h5></div>
 

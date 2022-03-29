@@ -67,10 +67,8 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
             return <div key={obj} className='row ml-2 '>
                 <div className='col-5'>{selected[0].speciality}</div>
                 <div className='col-5'>{obj.file.name} </div>
-                <div className='col-2'>
-                    <div onClick={() => onClickDelete(obj)}  >
-                        <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
-                    </div>
+                <div className='col-2'>      
+                        <FontAwesomeIcon onClick={() => onClickDelete(obj)}  icon={faTimesCircle} className="pr-1 fa-2x" />       
                 </div>
             </div>
         });
@@ -99,9 +97,7 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
                     <div className='col-5'>{selected[0].speciality}</div>
                     <div className='col-5'>{obj.file.name} </div>
                     <div className='col-2'>
-                        <div onClick={() => onClickDelete(obj)}  >
-                            <FontAwesomeIcon icon={faTimesCircle} className="pr-1 fa-2x" />
-                        </div>
+                            <FontAwesomeIcon onClick={() => onClickDelete(obj)}  icon={faTimesCircle} className="pr-1 fa-2x" />
                     </div>
                 </div>
             });
