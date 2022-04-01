@@ -130,11 +130,13 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 				const params = new URLSearchParams(location.search);
 		        const hospitalId = params.get('id');
 				const formValue = getValues("filterTool");
+				
 				// filterTool.serviceType
-		
+
 				if ( PackageItems.Facility !== selectedPackageId )   {
 					let result = await getServiceProviders(hospitalId, formValue.serviceType);
 					//let result = await getServiceProviders(1335,1);
+					
 					setProviderList(result.data.data);
 					
 				}
@@ -210,6 +212,11 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 
 	}
 
+	const specialtyChange=()=>{
+		setstateChange(!stateChange)
+		setProviderList([]);
+	}
+
 	const EnhancementPercentageSelect = () => {
 		return (
 			<select name='collectionEnhancement' id='collectionEnhancement' className='form-control-sm' {...register('filterTool.enhancementRate')} onClick={() => setstateChange(!stateChange)} >
@@ -279,7 +286,7 @@ const PricingToolFilter = ({ fieldsList = [], isNotGlobal, handleFilterChange, s
 					<div className='col-md-2'>
 						<div className='form-group'>
 							<label className='form-text font-lato-bold '>Specialty</label>
-							<select name='serviceType' id='serviceType' className='form-control-sm' {...register('filterTool.serviceType')} onClick={() => setstateChange(!stateChange)} >
+							<select name='serviceType' id='serviceType' className='form-control-sm' {...register('filterTool.serviceType')} onClick={() => specialtyChange()} >
 							{/* <select name='serviceType' id='serviceType' className='form-control-sm' {...register('filterTool.serviceType')} onClick={() => setstateChange(!stateChange)} onChange={e => setSelectedOption(e.target.value)}> */}
 							<option value=''> Select</option>
 								{serviceList.map((item, index) => (

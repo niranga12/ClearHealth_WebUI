@@ -150,7 +150,7 @@ const OrderList = ({ orderDetail,handleAddCPT }) => {
 			{
 				Header: 'Price',
 				accessor: 'packagePrice',
-				Cell: ({ row }) => <div>{row.original.packagePrice} $</div>,
+				Cell: ({ row }) => <div>$ {row.original.packagePrice}</div>,
 			},
 
 			{

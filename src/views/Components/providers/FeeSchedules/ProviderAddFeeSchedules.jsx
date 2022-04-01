@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { getSpecialityList, saveProviderFeeSchedule } from 'src/service/providerService';
+import { deleteProviderFeeSchedule, getSpecialityList, saveProviderFeeSchedule } from 'src/service/providerService';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -60,8 +60,9 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,hosId, hosNa
         }
     }, [selectedFile, selectedSpeciality])
 
-    const onClickDelete = (event) => {
-
+    const onClickDelete = async (event) => {
+        const result = await deleteProviderFeeSchedule(partyRoleId, event.speciality);
+        if (result.data.message == 'OK') {
         let index = submittedFile.findIndex(x => x.speciality === event.speciality);
         let selected = specialityData.filter(x => x.ID == event.speciality);
         specialityList.push(selected);
@@ -82,6 +83,7 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule,hosId, hosNa
         });
 
         setTable(data)
+    }
     }
 
     const onChangeFile = (event) => {

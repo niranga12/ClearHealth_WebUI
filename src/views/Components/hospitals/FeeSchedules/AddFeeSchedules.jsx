@@ -6,7 +6,7 @@ import { getSpecialityList } from 'src/service/providerService';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { saveFeeSchedule } from 'src/service/hospitalsService';
+import { deleteFeeSchedule, saveFeeSchedule } from 'src/service/hospitalsService';
 import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
@@ -58,7 +58,10 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
         }
     }, [selectedFile, selectedSpeciality])
 
-    const onClickDelete = (event) => {
+    const onClickDelete = async (event) => {
+
+        const result = await deleteFeeSchedule(partyRoleId, event.speciality);
+        if (result.data.message == 'OK') {
         let index = submittedFile.findIndex(x => x.speciality === event.speciality);
         submittedFile.splice(index, 1)
         setSubmittedFile(submittedFile);
@@ -74,6 +77,7 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
         });
 
         setTable(data)
+    }
     }
 
     const onChangeFile = (event) => {

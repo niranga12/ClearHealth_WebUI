@@ -24,7 +24,7 @@ const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel,orderDet
 
             var downloadLink = document.createElement('a');
             downloadLink.target = '_blank';
-            downloadLink.download = 'name_to_give_saved_file.pdf';
+            downloadLink.download = orderId +'.pdf';
             // convert downloaded data to a Blob
             var blob = new Blob([result.data], { type: 'application/pdf' });
 
