@@ -231,7 +231,6 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	}
 
 	const handleIndividualGroup = (event) => {
-		debugger
 		setGroupSelection(event.target.value)
 		if (event.target.value == 'Group') {
 			setShowResults(false);
