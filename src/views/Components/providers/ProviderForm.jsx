@@ -26,9 +26,9 @@ const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital name is required'),
 	providerGroup: yup.string(),
 	providerTypeId: yup.string(),
-	// firstName: yup.string(),
-	// middleName: yup.string(),
-	// lastName: yup.string(),
+	firstName: yup.string().required('First name is required'),
+	middleName: yup.string(),
+	lastName: yup.string().required('Last name is required'),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
@@ -231,7 +231,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	}
 
 	const handleIndividualGroup = (event) => {
-
+		debugger
 		setGroupSelection(event.target.value)
 		if (event.target.value == 'Group') {
 			setShowResults(false);
@@ -318,7 +318,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			}
 
 		} else {
-			
+
 			if (data.providerGroup == "") {
 				setShowGroupNameError(true);
 				isGroupName = true;
@@ -375,7 +375,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		try {
 			if (!isFirstName && !isLastName && showResults) {
 				saveProviders(newProvider)
-				
+
 			} else if (!isGroupName && !showResults) {
 				saveProviders(newProvider)
 			}
@@ -399,7 +399,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			if (newProvider) {
 				let result = await saveProvider(newProvider);
 				if (result.data.message === ServiceMsg.OK) {
-				
+
 					dispatch(notify(`Successfully added`, 'success'))
 					onOpenFeeSchedule(result.data.data);
 					setSaveProviderId(result.data.data);
@@ -430,8 +430,30 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		setValue('billingState', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
 
-	const getChanges= (result) => {
+	const getChanges = (result) => {
 		setFeeScheduleChanges(result)
+	}
+
+	const firstNameChanged = (result) => {
+		if (groupSelection == "Individual") {
+			if (result.currentTarget.value == '') {
+				setShowFirstNameError(true);
+			} else {
+				setShowFirstNameError(false);
+			}
+		}
+
+	}
+
+	const lastNameChanged = (result) => {
+		if (groupSelection == "Individual") {
+			if (result.currentTarget.value == '') {
+				setShowLastNameError(true);
+			} else {
+				setShowLastNameError(false);
+			}
+		}
+
 	}
 
 	// update Provider
@@ -581,8 +603,8 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				{showRadioButton ? <div className='row mb-3'>
 					<div className='col-md-4'>
 						<div className='mt-1 ml-4'>
-							<input type='radio' checked={groupSelection === "Individual"} value="Individual" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} disabled={isEdit}/> <span className='ml-3 mr-5'>Individual</span>{' '}
-							<input type='radio' checked={groupSelection === "Group"} value="Group" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} disabled={isEdit}/> <span className='ml-3 mr-3'>Group </span>{' '}
+							<input type='radio' checked={groupSelection === "Individual"} value="Individual" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} disabled={isEdit} /> <span className='ml-3 mr-5'>Individual</span>{' '}
+							<input type='radio' checked={groupSelection === "Group"} value="Group" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} disabled={isEdit} /> <span className='ml-3 mr-3'>Group </span>{' '}
 						</div>
 					</div>
 				</div> : ''}
@@ -600,7 +622,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} onChange={firstNameChanged} />
 							{showFirstNameError ? <div className='small text-danger  pb-2   '>First name is required</div> : ''}
 						</div>
 					</div>
@@ -622,7 +644,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} onChange={lastNameChanged} />
 							{showLastNameError ? <div className='small text-danger  pb-2   '>Last name is required</div> : ''}
 						</div>
 					</div>
@@ -851,9 +873,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 				{/* </div> */}
 
-				{partyRoleId != null && <ProviderEditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges}/>}
-				
-				{isFeeSchedule==true && <ProviderAddFeeSchedules edit={isEdit} partyRoleId={saveProviderId} isFeeSchedule={isFeeSchedule}  hosId={hospitalId} hosName={hospitalName} tabId={tabId}/>}
+				{partyRoleId != null && <ProviderEditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges} />}
+
+				{isFeeSchedule == true && <ProviderAddFeeSchedules edit={isEdit} partyRoleId={saveProviderId} isFeeSchedule={isFeeSchedule} hosId={hospitalId} hosName={hospitalName} tabId={tabId} />}
 				<div className='row'>
 					<div className='col-md-12'>
 						<button type='submit' className='btn btn-primary btn-lg float-right'>

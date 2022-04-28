@@ -26,12 +26,27 @@ const schema = yup.object().shape({
 		lastName: yup.string().required('Last Name is required'),
 		phoneNumber:yup
 		.string()
-		.required(' Phone is required')
+		//.required(' Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-		email: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
+		email: yup.string()
+		//.required('Contact Email is required')
+		.email('Contact Email must be a valid email'),
 		DOB: yup.string(),
 		contactMethod: yup.string()
 		// enhancementOn:yup.string().required()
+	}).when((values, schema) => {
+		if (values.contactMethod == '1') {
+			return schema.shape({
+				email: yup.string().email(' Please enter a valid email').required('Email is required'),
+			});
+		}
+		else if (values.contactMethod == '2') {
+			return schema.shape({
+				phoneNumber: yup.string()
+					.required('Phone is required')
+					.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+			});
+		} 
 	}),
 });
 
@@ -50,7 +65,6 @@ const OrderViewPatient = ({patientDetail}) => {
 		register,
 		getValues,
 		reset,
-
 		 formState
 	} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
@@ -83,12 +97,12 @@ const OrderViewPatient = ({patientDetail}) => {
 		// let isAviable=false;
 		const formValue = getValues('patientForm');
 		let value=Number(formValue?.contactMethod)
-		
+
 		if(value>-1){
 			if(value=== Number(ContactMethod.Email)){
 				setIsmail(true);
 				setIsPhone(false);
-				// schema.patient?. yup.object().shape({})
+				
 			}else if(value=== Number(ContactMethod.Phone)){
 				setIsPhone(true);
 				setIsmail(false);
