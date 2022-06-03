@@ -32,20 +32,18 @@ const schema = yup.object().shape({
 	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	phone: yup
 		.string()
-		.required('Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	// phone: yup.string().required('Phone is required').matches(ValidationPatterns.phoneRegExp, 'Phone number is not valid'),
-	shippingAddress1: yup.string().required('Shipping Address line 1 is required'),
+	shippingAddress1: yup.string(),
 	shippingAddress2: yup.string(),
-	shippingCity: yup.string().required('City is required'),
-	shippingState: yup.string().required('State is required'),
-	shippingZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	contactName: yup.string().required('Contact name is required').matches(ValidationPatterns.onlyCharacters, 'Contact name should contain only characters'),
+	shippingCity: yup.string(),
+	shippingState: yup.string(),
+	shippingZip: yup.string().matches(ValidationPatterns.zip, 'Zip is not valid'),
+	contactName: yup.string().matches(ValidationPatterns.onlyCharacters, 'Contact name should contain only characters'),
 	contactPhone: yup
 		.string()
-		.required('Contact phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	contactEmail: yup.string().required('Contact email is required').email('Contact Email must be a valid email'),
+	contactEmail: yup.string().email('Contact Email must be a valid email'),
 });
 
 const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, stateList = []}) => {
@@ -371,7 +369,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Phone <span className='text-danger font-weight-bold '>*</span>
+								Phone
 							</label>
 							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('phone'))} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
@@ -387,7 +385,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 						</h5>
 						<div className='form-group'>
 							<label className='form-text'>
-								Address Line 1 <span className='text-danger font-weight-bold '>*</span>{' '}
+								Address Line 1 
 							</label>
 							<input type='text' className='form-control-sm' {...register('shippingAddress1')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.shippingAddress1?.message}</div>
@@ -401,14 +399,14 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 						<div className='row'>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
-									City <span className='text-danger font-weight-bold '>*</span>
+									City 
 								</label>
 								<input type='text' className='form-control-sm' {...register('shippingCity')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 								<div className='small text-danger  pb-2   '>{errors.shippingCity?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
-									State <span className='text-danger font-weight-bold '>*</span>
+									State 
 								</label>
 
 								<Autocomplete
@@ -430,7 +428,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Zip <span className='text-danger font-weight-bold '>*</span>
+								Zip 
 							</label>
 							<input type='text' className='form-control-sm' {...register('shippingZip')} />
 							<div className='small text-danger  pb-2   '>{errors.shippingZip?.message}</div>
@@ -442,7 +440,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Name <span className='text-danger font-weight-bold '>*</span>
+								Name 
 							</label>
 							<input type='text' className='form-control-sm' {...register('contactName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.contactName?.message}</div>
@@ -450,7 +448,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Phone <span className='text-danger font-weight-bold '>*</span>
+								Phone 
 							</label>
 							<InputMask {...register('contactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('contactPhone'))} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('contactPhone')} /> */}
@@ -459,7 +457,7 @@ const HealthSystemForm = ({defaultValues, isEdit = false, partyRoleId = null, st
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Email <span className='text-danger font-weight-bold '>*</span>
+								Email 
 							</label>
 							<input type='text' className='form-control-sm' {...register('contactEmail')} />
 							<div className='small text-danger  pb-2   '>{errors.contactEmail?.message}</div>

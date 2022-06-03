@@ -34,19 +34,17 @@ const schema = yup.object().shape({
 	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
 	phone: yup
 		.string()
-		.required('Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	businessAddress1: yup.string().required('Business Address Line 1 is required'),
+	businessAddress1: yup.string(),
 	businessAddress2: yup.string(),
-	businessCity: yup.string().required('City is required'),
-	businessState: yup.string().required('State is required'),
-	businessZip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	patientContactName: yup.string().required('Contact name is required'),
+	businessCity: yup.string(),
+	businessState: yup.string(),
+	businessZip: yup.string().matches(ValidationPatterns.zip, 'Zip is not valid'),
+	patientContactName: yup.string(),
 	patientContactPhone: yup
 		.string()
-		.required('Contact Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	patientContactEmail: yup.string().required('Contact Email is required').email('Contact Email must be a valid email'),
+	patientContactEmail: yup.string().email('Contact Email must be a valid email'),
 	clearTransactionalFee: yup.number().required('Clear Transactional Fee percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee percentage is required.'),
 	patientResponsibilityDiscount: yup.number().required('Patient Responsibility Discount percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Patient Responsibility Discount percentage is required.'),
 	clearTransactionalFeeforPatientResponsibility: yup.number().required('Clear Transactional Fee for patient responsibility percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee for patient responsibility percentage is required.'),
@@ -518,7 +516,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Phone <span className='text-danger font-weight-bold '>*</span>
+								Phone 
 							</label>
 							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('phone'))} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
@@ -534,7 +532,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						</h5>
 						<div className='form-group'>
 							<label className='form-text'>
-								Address Line 1 <span className='text-danger font-weight-bold '>*</span>{' '}
+								Address Line 1 
 							</label>
 							<input type='text' className='form-control-sm' {...register('businessAddress1')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.businessAddress1?.message}</div>
@@ -548,14 +546,14 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						<div className='row'>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
-									City <span className='text-danger font-weight-bold '>*</span>
+									City 
 								</label>
 								<input type='text' className='form-control-sm' {...register('businessCity')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 								<div className='small text-danger  pb-2   '>{errors.businessCity?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
 								<label className='form-text'>
-									State <span className='text-danger font-weight-bold '>*</span>
+									State 
 								</label>
 								<Autocomplete
 									id='business state'
@@ -576,7 +574,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Zip <span className='text-danger font-weight-bold '>*</span>
+								Zip
 							</label>
 							<input type='text' className='form-control-sm' {...register('businessZip')} />
 							<div className='small text-danger  pb-2   '>{errors.businessZip?.message}</div>
@@ -589,7 +587,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Name <span className='text-danger font-weight-bold '>*</span>
+								Name 
 							</label>
 							<input type='text' className='form-control-sm' {...register('patientContactName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.patientContactName?.message}</div>
@@ -597,7 +595,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Phone <span className='text-danger font-weight-bold '>*</span>
+								Phone 
 							</label>
 							<InputMask {...register('patientContactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patientContactPhone'))} className='form-control-sm' />
 
@@ -607,7 +605,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						<div className='form-group'>
 							<label className='form-text'>
-								Email <span className='text-danger font-weight-bold '>*</span>
+								Email 
 							</label>
 							<input type='text' className='form-control-sm' {...register('patientContactEmail')} />
 							<div className='small text-danger  pb-2   '>{errors.patientContactEmail?.message}</div>
