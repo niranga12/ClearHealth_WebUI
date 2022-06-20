@@ -75,6 +75,8 @@
     "build-qa": "env-cmd -e qa react-scripts build",
     "start-uat": "env-cmd -e uat react-scripts start",
     "build-uat": "env-cmd -e uat react-scripts build",
+    "start-prod": "env-cmd -e prod react-scripts start",
+    "build-prod": "env-cmd -e prod react-scripts build",
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
