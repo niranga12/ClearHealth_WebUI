@@ -50,8 +50,9 @@ const ProcedureProfile =React.lazy(() => import('./views/Components/Procedure/Pr
 const PricingTool =React.lazy(() => import('./views/Components/pricingTool/PricingToolGrid'));
 const User = React.lazy(() => import('./views/Components/users/UserGrid'));
 const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'));
-const OrderProfile= React.lazy(() => import('./views/Components/order/OrderProfile'));
-
+const OrderProfile= React.lazy(() => import('./views/Components/order/OrderProfile/OrderProfile'));
+const OrderView= React.lazy(() => import('./views/Components/order/OrderView/OrderView'));
+const PatientOrderList= React.lazy(() => import('./views/Components/patients/PatientsOrder/PatientsOrderList'));
 
 
 
@@ -109,6 +110,8 @@ const routes = [
   //Patients
   { path: '/patients', name: 'Patients', component: Patient, exact: true},
   { path: '/patients/profile', name: 'Patients Profile', component:PatientProfile },
+  { path: '/patients/orders', name: 'Patients Orders', component:PatientOrderList },
+  
   // procedure
   { path: '/procedure', name: 'Procedure', component:ProcedureProfile, exact: true },
   // PricingTool
@@ -118,6 +121,8 @@ const routes = [
    { path: '/users/profile', name: 'Users Profile', component: UserProfile },
    //order
    { path: '/order', name: 'order', component: OrderProfile, exact: true },
+   { path: '/order/view', name: 'Order View', component: OrderView },
+   
    
 
 ];

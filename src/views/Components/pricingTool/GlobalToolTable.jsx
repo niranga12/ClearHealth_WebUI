@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useMemo, useState} from 'react';
 import DataTable from 'src/views/common/dataTable';
 import PropTypes from 'prop-types';
@@ -5,6 +7,8 @@ import {getGlobalPackageByHospitalId} from 'src/service/hospitalsService';
 import { useDispatch } from 'react-redux';
 import { loaderHide, loaderShow } from 'src/actions/loaderAction';
 import { CurrencyFormat } from 'src/reusable';
+import { SHOW_PRICE_DATA } from 'src/constansts';
+import { PackageItems, Packages } from 'src/reusable/enum';
 
 const GlobalToolTable = ({filterDetail}) => {
 	const [globalPackage, setGlobalPackage] = useState([]);
@@ -13,12 +17,12 @@ const GlobalToolTable = ({filterDetail}) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				
-				if (filterDetail.serviceType && filterDetail.hospitalSearch) {
+				setGlobalPackage([]);
+				if (filterDetail.serviceType && filterDetail.hospitalId) {
                     dispatch(loaderShow());
 
-					let data = {serviceType: filterDetail.serviceType};
-					let result = await getGlobalPackageByHospitalId(filterDetail.hospitalSearch, data);
+					let data = {serviceType: filterDetail.serviceType,providerPartyRoleID: filterDetail.provider};
+					let result = await getGlobalPackageByHospitalId(filterDetail.hospitalId, data);
 					setGlobalPackage(result.data.data);
 
 					 if(filterDetail.enhancementRate){
@@ -34,6 +38,18 @@ const GlobalToolTable = ({filterDetail}) => {
 	}, [filterDetail]);
 
 
+	useEffect(() => {
+
+	let packageName = Packages.find(x=>x.id== PackageItems.GlobalPackage).name;
+
+	let data={feeSchedule:globalPackage, packageName, filterDetail };
+	
+	dispatch({
+		type: SHOW_PRICE_DATA,
+		payload: data,
+	  }); 
+		
+	}, [globalPackage])
 
 
     const CalculationPackage=(enhancementPercentage)=>{
@@ -45,7 +61,7 @@ const GlobalToolTable = ({filterDetail}) => {
         return {...x,clearTransactionalFee:clearFees, packagePrice:total }
        
            });
-           // console.log(updatedData);
+         
            setGlobalPackage(updatedData)
        
        

@@ -2,8 +2,31 @@ export const USER_LOGIN = "USER_LOGIN";
 export const FETCHING_USER = "FETCHING_USER";
 export const LOG_OUT = "LOG_OUT";
 export const SET_FETCHING_FALSE = "SET_FETCHING_FALSE";
-export const SHOW_ERROR_PAGE = "SHOW_ERROR_PAGE";
 
 
 export const LOADER_SHOW="LOADER_SHOW";
 export const LOADER_HIDE="LOADER_HIDE";
+
+
+export const SHOW_PRICE_DATA="SHOW_PRICE_DATA"
+
+
+export const CHANGE_ORDER_STATUS="CHANGE_ORDER_STATUS";
+export const RESET_ORDER_STATUS="RESET_ORDER_STATUS";
+export const RESET_MAIN_ORDER="RESET_MAIN_ORDER";
+
+
+
+export const CHANGE_ORDER_Table="CHANGE_ORDER_Table";
+
+export const RESET_ORDER_Table="RESET_ORDER_Table";
+
+export const FETCH_PERMISSION="FETCH_PERMISSION";
+export const RESET_PERMISSION="RESET_PERMISSION";
+
+export const RESET_FEE_SCHEDULE="RESET_FEE_SCHEDULE"; 
+
+
+
+
+

@@ -16,6 +16,8 @@ export const getProviderListCountByHospitalId=(hospitalId,data) =>axiosInstance.
 export const getOrderListByHospitalId=(hospitalId,data) =>axiosInstance.post(`hospital/${hospitalId}/orders`,data);
 
 
+export const getOrderListCountByHospitalId=(hospitalId,data) =>axiosInstance.post(`hospital/${hospitalId}/orders/count`,data);
+
 export const getHospitalDashboard=(data)=>axiosInstance.post(`dashboard`,data);
 
 export const getProcedureByHospitalId=(hospitalId,data)=>axiosInstance.post(`hospital/${hospitalId}/procedures`, data);
@@ -41,3 +43,36 @@ export const updatePhysicianPackage=(hospitalId,data)=>axiosInstance.put(`hospit
 
 // update Package global detail
 export const updateGlobalPackage=(hospitalId,data)=>axiosInstance.put(`hospital/${hospitalId}/packages`, data)
+
+
+//get CPT Codes By  hospitalId
+export const getCPTCodesByHospital=(hospitalId,data)=>axiosInstance.post(`hospital/${hospitalId}/procedurecodes`,data);
+
+//Add CPT code
+export const addCPTCodesByHospital=(orderId,data)=>axiosInstance.put(`order/addCPT/${orderId}`,data);
+
+// get patients details by hospitalId
+export const getPatientsDetailsByHospital=(hospitalId,data)=>axiosInstance.post(`hospital/${hospitalId}/patients`,data);
+
+//Stripe on board infor
+export const getOnboardinginfo=(partyRoleId)=>axiosInstance.get(`payment/onboardinginfo/${partyRoleId}`);
+
+export const save=(data)=>axiosInstance.post(`hospital`,data);
+
+export const saveNotifyUser=(partyRoleId,data)=>axiosInstance.post(`payment/onboardingAlert/${partyRoleId}`,data);
+
+// {{URL}}/api/hospital/verified/senders
+
+export const getHospitalEmailSender=()=>axiosInstance.get(`hospital/verified/emailsender`);
+
+export const getHospitalSmsSender=()=>axiosInstance.get(`hospital/verified/smssender`);
+
+export const saveFeeSchedule=(hospitalId,data) =>axiosInstance.post(`hospital/saveFacilityProcedure/${hospitalId}`,data);
+
+export const getFeeSchedule=(hospitalId) =>axiosInstance.get(`hospital/feeSchedule/${hospitalId}`);
+
+export const deleteFeeSchedule=(hospitalId,specialityId) =>axiosInstance.delete(`hospital/feeSchedule/${hospitalId}/${specialityId}`);
+
+export const updateFeeSchedule=(data) =>axiosInstance.put(`hospital/packageUpdate/CPT`,data);
+
+

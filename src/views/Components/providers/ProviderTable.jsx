@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useMemo, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {TableSettingsEnum} from 'src/reusable/enum';
+import {useDispatch, useSelector} from 'react-redux';
+import {ButtonPermissions, ScreenPermissions, TableSettingsEnum} from 'src/reusable/enum';
 import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
-import { getHospitalsListCount} from 'src/service/hospitalsService';
 import DataTable from 'src/views/common/dataTable';
 import PaginationTable from 'src/views/common/paginationTable';
 import OnError from 'src/_helpers/onerror';
@@ -10,22 +10,24 @@ import 'font-awesome/css/font-awesome.min.css';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import {useHistory} from 'react-router-dom';
 import {CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from '@coreui/react';
-import { getProvidersList, getProvidersListCount } from 'src/service/providerService';
-import { loaderHide, loaderShow } from 'src/actions/loaderAction';
+import {getProvidersList, getProvidersListCount} from 'src/service/providerService';
+import {loaderHide, loaderShow} from 'src/actions/loaderAction';
+import PermissionButton from 'src/reusable/PermissionButton';
+import MetaTitles from 'src/views/common/metaTitles';
 
 const initialSearch = {
 	itemsPerPage: TableSettingsEnum.ItemPerPage,
 	pageNumber: 1,
 	searchTerm: '',
+	sortOrder: 'desc',
+	orderBy: 'id',
 };
 
-
 function CellProvider({row}) {
-
 	return (
 		<>
 			<div className='max-celladdress'>
-				{row.original.firstName} {' '} {row.original.lastName} 
+				{row.original.firstName} {row.original.lastName}
 			</div>
 			<div className='max-celladdress'>
 				{row.original.address1} {', '} {row.original.address2} {', '} {row.original.state} {', '} {row.original.zip}
@@ -34,13 +36,31 @@ function CellProvider({row}) {
 				{' '}
 				<span className='fa fa-phone text-health-icon pr-1'></span> {PhoneNumberFormater(row.original.phone)}
 			</div>
-			
 		</>
 	);
 }
 
 function ActionProvider({row}) {
 	let history = useHistory();
+
+	// for permission
+	const [isEditProviderPE, setIsEditProviderPE] = useState(false);
+	const [isDeleteProviderPE, setIsDeleteProviderPE] = useState(false);
+
+	let permissionList = useSelector((state) => state.Permission.UiPermissions);
+
+	useEffect(() => {
+		const fetchPermission = async () => {
+			let EditPermission = await PermissionButton(ScreenPermissions.Providers, ButtonPermissions.EditProviders, permissionList);
+			setIsEditProviderPE(EditPermission);
+
+			let DeletePermission = await PermissionButton(ScreenPermissions.Providers, ButtonPermissions.DeleteProviders, permissionList);
+			setIsDeleteProviderPE(DeletePermission);
+		};
+
+		fetchPermission();
+	}, []);
+
 	const redirectToEdit = () => {
 		history.push({
 			pathname: `/providers/profile`,
@@ -48,7 +68,6 @@ function ActionProvider({row}) {
 			// state: { detail: 'some_value' }
 		});
 	};
-
 
 	return (
 		<>
@@ -58,8 +77,9 @@ function ActionProvider({row}) {
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
-				<CDropdownMenu>
-					<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>
+				<CDropdownMenu className={`${(!isEditProviderPE && !isDeleteProviderPE) ? 'hide':'' }`}>
+				{isEditProviderPE && 	<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
+				{isDeleteProviderPE &&	<CDropdownItem >Delete</CDropdownItem>}
 					{/* <CDropdownItem onClick={redirectAccount}>Account</CDropdownItem> */}
 				</CDropdownMenu>
 			</CDropdown>
@@ -79,13 +99,20 @@ const ProviderTable = () => {
 
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 
+	// for permission
+	const [isAddProviderPE, setIsAddProviderPE] = useState(false);
+	let permissionList = useSelector((state) => state.Permission.UiPermissions);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				dispatch(loaderShow());
+				// button Permission
+				let Permission = PermissionButton(ScreenPermissions.Providers, ButtonPermissions.AddProviders, permissionList);
+				 setIsAddProviderPE(Permission);
+
 				const result = await getProvidersList(searchQuery);
 				seProviderData(result.data.data);
-			
 
 				const countQuery = {searchTerm: searchQuery.searchTerm};
 				const resultCount = await getProvidersListCount(countQuery);
@@ -93,7 +120,6 @@ const ProviderTable = () => {
 				let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
 				setPage(Math.ceil(pageCount));
 				dispatch(loaderHide());
-				
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -108,6 +134,7 @@ const ProviderTable = () => {
 	const searchTextChange = (e) => {
 		if (e.target.value.length > 3) {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
+			// eslint-disable-next-line eqeqeq
 		} else if (e.target.value.length == '') {
 			setSearchQuery({...initialSearch, searchTerm: e.target.value});
 		} else {
@@ -115,8 +142,20 @@ const ProviderTable = () => {
 	};
 
 	const addNewProvider = () => {
-
 		history.push('/providers/profile');
+	};
+
+	const sortingHandler = (sorting) => {
+		if (sorting.length > 0) {
+			let result = {...searchQuery, orderBy: sorting[0].id ? sorting[0].id : '', sortOrder: sorting[0].desc ? 'desc' : 'asc'};
+			setSearchQuery(result);
+		} else {
+			// this validation for initial load avoid 2 times call api
+			if (JSON.stringify(initialSearch) !== JSON.stringify(searchQuery)) {
+				let result = {...searchQuery, orderBy: '', sortOrder: ''};
+				setSearchQuery(result);
+			}
+		}
 	};
 
 	//SETTING COLUMNS NAMES
@@ -134,8 +173,8 @@ const ProviderTable = () => {
 
 			{
 				Header: 'Provider',
-				accessor: 'Provider', // accessor is the "key" in the data
-				disableSortBy: true,
+				accessor: 'firstName', // accessor is the "key" in the data
+				// disableSortBy: true,
 				Cell: CellProvider,
 			},
 			{
@@ -143,7 +182,6 @@ const ProviderTable = () => {
 				accessor: 'partyRoleId',
 				// accessor: '[row identifier to be passed to button]',
 				Cell: ActionProvider,
-				
 			},
 		],
 		[]
@@ -151,8 +189,10 @@ const ProviderTable = () => {
 
 	return (
 		<>
-			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewProvider} placeholder='Search here..' buttonTitle='New Provider' title='Providers' />
-			<DataTable columns={columns} data={providerData} />
+		 {/* for addeing page metas  */}
+         <MetaTitles title="Clear Health | Providers" description=" Providers  "/>
+			<AdminHeaderWithSearch showCount={count} handleSearchChange={searchTextChange} handleAddNew={addNewProvider} placeholder='Search here..' buttonTitle='New Provider' title='Providers' buttonHide={!isAddProviderPE} />
+			<DataTable columns={columns} data={providerData} sortingHandler={sortingHandler} />
 			<div className='row'>
 				<div className='col-md-12 pl-5 pr-5'>{count > 0 ? <PaginationTable handlePageChange={pageChange} countPage={page} count={count} currentPage={searchQuery.pageNumber} /> : ''}</div>
 			</div>

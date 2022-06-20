@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import grayTick from '../../assets/images/icons/graytick.png';
 import greenTick from '../../assets/images/icons/greentick.png';
@@ -6,13 +7,18 @@ import PropTypes from 'prop-types';
 
 const RatingView = ({totalCount, count}) => {
 	// @ts-ignore
-	const [total, setTotal] = useState(totalCount);
+	// eslint-disable-next-line no-unused-vars
+	const [total, setTotal] = useState(Number(totalCount));
 	// @ts-ignore
-	const [attempt, setAttempt] = useState(count);
+	// eslint-disable-next-line no-unused-vars
+	const [attempt, setAttempt] = useState(Number(count));
 	const [pending, setPending] = useState(0);
 
 	useEffect(() => {
-		setPending(total - attempt);
+		if(total>=attempt){
+			setPending(total - attempt);
+		}
+	
 	}, [totalCount,count]);
 
 	const success = () => {
