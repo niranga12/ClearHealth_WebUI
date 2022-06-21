@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -8,6 +9,8 @@ import { getHealthSystemList } from 'src/service/healthsystemService';
 import { getHospitalByPartyRoleId } from 'src/service/hospitalsService';
 import { getProviderByPartyRoleId, getSpecialityList } from 'src/service/providerService';
 import AdminTitle from 'src/views/common/adminTitle';
+import Goback from 'src/views/common/Goback';
+import MetaTitles from 'src/views/common/metaTitles';
 import OnError from 'src/_helpers/onerror';
 import ProviderForm from './ProviderForm';
 
@@ -15,6 +18,8 @@ import ProviderForm from './ProviderForm';
 const defalutFormValue = {
 	hospitalName: '',
 	healthSystemPartyRoleId: '',
+	providerGroup: '',
+	providerTypeId: '',
 	firstName: '',
 	middleName: '',
 	lastName: '',
@@ -29,12 +34,13 @@ const defalutFormValue = {
 	billingState: '',
 	billingZip: '',
 	phone: '',
+	email: '',
 	speciality: '',
 	taxId: '',
 	nip: '',
-	bankName: '',
-	accountNumber: '',
-	routing: '',
+	// bankName: '',
+	// accountNumber: '',
+	// routing: '',
 };
 
 const ProviderProfile = () => {
@@ -46,6 +52,10 @@ const ProviderProfile = () => {
 	const [providerData, setProviderData] = useState(defalutFormValue);
 	const [specialityData, setSpecialityData] = useState([]);
 	const dispatch = useDispatch();
+
+
+
+
 	//if this a edit form get the data
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
@@ -55,7 +65,7 @@ const ProviderProfile = () => {
 		id ? setEditProfile(true) : setEditProfile(false);
 
 		const fetchData = async () => {
-			
+
 			try {
 				dispatch(loaderShow());
 				const hsResult = await getHealthSystemList({});
@@ -70,7 +80,7 @@ const ProviderProfile = () => {
 
 
 			try {
-				
+
 				if (id) {
 					const result = await getProviderByPartyRoleId(id);
 					const formatedData = await updateFormFields(result.data.data);
@@ -83,7 +93,7 @@ const ProviderProfile = () => {
 					setProviderData(defautlSet);
 				}
 
-				
+
 			} catch (error) {
 				OnError(error, dispatch);
 			}
@@ -102,6 +112,8 @@ const ProviderProfile = () => {
 		const providerDetails = {
 			hospitalName: data.hopsitalPartyRoleId,
 			healthSystemPartyRoleId: data.healthsystemPartyRoleId,
+			providerGroup: data.providerGroup,
+			providerTypeId: data.providerTypeId,
 			firstName: data.firstName,
 			middleName: data.middleName,
 			lastName: data.lastName,
@@ -116,12 +128,13 @@ const ProviderProfile = () => {
 			billingState: data.secondaryState,
 			billingZip: data.secondaryZip,
 			phone: data.phone,
+			email: data.email,
 			speciality: data.speciality,
 			taxId: data.taxId,
 			nip: data.NPI,
-			bankName: data.bankName,
-			accountNumber: data.accountNumber,
-			routing: data.routing
+			// bankName: data.bankName,
+			// accountNumber: data.accountNumber,
+			// routing: data.routing
 		};
 
 		return providerDetails;
@@ -129,11 +142,17 @@ const ProviderProfile = () => {
 	};
 
 	return (
-		<div className="card  cover-content pt-2 ">
-			<AdminTitle title={editProfile ? 'Edit Provider' : 'Add Provider'} />
+		<>
+			<Goback />
 
-			<ProviderForm defaultValues={providerData} stateList={stateList} isEdit={editProfile} partyRoleId={partyRoleId} healthSystemList={healthSystems} specialityData={specialityData} />
-		</div>
+			<div className="card  cover-content pt-2 ">
+				{/* for addeing page metas  */}
+				<MetaTitles title="Clear Health | Provider Profile" description=" Create update Providers  " />
+				<AdminTitle title={editProfile ? 'Edit Provider' : 'Add Provider'} />
+
+				<ProviderForm defaultValues={providerData} stateList={stateList} isEdit={editProfile} partyRoleId={partyRoleId} healthSystemList={healthSystems} specialityData={specialityData} />
+			</div>
+		</>
 	);
 };
 

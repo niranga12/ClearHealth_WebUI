@@ -25,7 +25,7 @@ import navigation from "./_nav";
 const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.sidebar.sidebarShow);
-//  console.log(navigation) 
+
  const navLinks=navigation.map((item,index)=>
   <li className="CUnavi" key={index} >
   
@@ -103,11 +103,11 @@ const TheSidebar = () => {
       <div className="row sidebar-bottom">
         <div className="col-md-12 pb-2">
           <span className="email-sm"></span>
-          <span className="support-clearhealth-slider">support@clearhealth.com</span>
+          <span className="support-clearhealth-slider"> support@clearhealthinc.com</span>
         </div>
         <div className="col-md-12 pb-2">
           <span className="phone-sm"></span>
-          <span className="support-clearhealth-slider">(800) -229-01528</span>
+          <span className="support-clearhealth-slider">(888) 918-2522</span>
         </div>
       </div>
       {/* <CSidebarMinimizer className="c-d-md-down-none" name="fdasfdsa"/> */}

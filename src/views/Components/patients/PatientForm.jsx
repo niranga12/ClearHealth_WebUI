@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -44,7 +46,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 		reset,
 		control,
 		formState: { errors },
-	} = useForm({ resolver: yupResolver(schema) });
+	} = useForm({ resolver: yupResolver(schema), mode: 'all' });
 	var initMonth = new Date();
 	initMonth.setMonth(initMonth.getMonth() - 3);
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
@@ -79,8 +81,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 
 	// form submit
 	const patientFormSubmit = (data) => {
-		// console.log(data)
-		// console.log("isEdit", isEdit)
+		
 		if (isEdit) {
 			updatePatientInfo();
 		} else {
@@ -255,7 +256,7 @@ const PatientForm = ({ defaultValues, isEdit = false, partyRoleId = null, stateL
 								DOB <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							{/* <input className='form-control-sm' type='text' {...register('dateOfBirth')} /> */}
-							<DateSelector className='form-control-sm' selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true}/>
+							<DateSelector className={'form-control-sm calendar-font'} selectedDate={fromDate} handleDateChange={handlefromDateChange} disableFuture={true}/>
 							<div className='small text-danger  pb-2   '>{errors.dateOfBirth?.message}</div>
 						</div>
 

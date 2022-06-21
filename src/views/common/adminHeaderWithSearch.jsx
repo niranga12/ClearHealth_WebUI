@@ -4,13 +4,14 @@ import {freeSet} from '@coreui/icons';
 import 'font-awesome/css/font-awesome.min.css';
 import PropTypes from 'prop-types';
 
-const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDownChange, title = '', selectionList=[], placeholder = '&#xF002;', buttonTitle = null, showCount = 0, selectionTitle="",subHeader="",buttonDisable=false, iconShow = true}) => {
+const AdminHeaderWithSearch = ({handleSearchChange, handleAddNew, handleDropDownChange, title = '', selectionList=[], placeholder = '&#xF002;', buttonTitle = null, showCount = 0, selectionTitle="",subHeader="",buttonDisable=false, iconShow = true, buttonHide=false}) => {
 
 
 	//add new button 
 	const addNewButton = () => {
 		return (
-			<button type='button' className='btn btn-primary float-right ml-3 text-white' onClick={handleAddNew} disabled={buttonDisable}>
+			
+			<button type='button' className={`btn btn-primary float-right ml-3 text-white ${buttonHide ? "hide" : ""}`} onClick={handleAddNew} disabled={buttonDisable}>
 				{' '}
 				{iconShow && <CIcon content={freeSet.cilPlus} color='white' className='add-icon-set' /> }
 			    <span className='pt-1'> {buttonTitle}</span>
@@ -89,8 +90,8 @@ AdminHeaderWithSearch.propTypes = {
 	showCount: PropTypes.any,
 	selectionList:PropTypes.any,
 	selectionTitle:PropTypes.any,
-	subHeader:PropTypes.any
-
+	subHeader:PropTypes.any,
+	buttonHide:PropTypes.bool
 
 };
 

@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { TableSettingsEnum } from "src/reusable/enum";
+import { ButtonPermissions, ScreenPermissions, TableSettingsEnum } from "src/reusable/enum";
 import {
   getHealthSystemList,
   getHealthSystemListCount,
@@ -15,13 +16,14 @@ import PhoneNumberFormater from "src/reusable/PhoneNumberFormater";
 import DataTable from "src/views/common/dataTable";
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from "@coreui/react";
 import { loaderHide, loaderShow } from "src/actions/loaderAction";
+import PermissionButton from "src/reusable/PermissionButton";
 
 const initialSearch = {
   itemsPerPage: TableSettingsEnum.ItemPerPage,
   pageNumber: 1,
   searchTerm: "",
-  orderBy: "",
-  sortOrder: ""
+  sortOrder:'desc',
+	orderBy:'id'
 };
 
 
@@ -70,6 +72,32 @@ function CellAddress({ row }) {
 
 function ActionHealthSystem({row}) {
 	let history = useHistory();
+  // for permission
+  const [isEditHealthPE, setIsEditHealthPE] = useState(false);
+  const [isDeleteHealthPE, setIsDeleteHealthPE] = useState(false);
+  const [isViewHospital, setIsViewHospital] = useState(false);
+
+  let permissionList= useSelector((state) => state.Permission.UiPermissions);
+
+
+useEffect(() => {
+  const fetchPermission = async () => {
+
+  let EditPermission= await PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.EditHealthSystem,permissionList);
+   setIsEditHealthPE(EditPermission);
+
+  let DeletePermission=await PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.DeleteHealthSystem,permissionList);
+   setIsDeleteHealthPE(DeletePermission);
+
+   let ViewHosptialPermission= await PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.ViewHealthSystemHospital,permissionList);
+   setIsViewHospital(ViewHosptialPermission);
+  }
+
+  fetchPermission();
+
+
+}, [])
+
 
 	const redirectToEdit = () => {
 		history.push({
@@ -79,6 +107,12 @@ function ActionHealthSystem({row}) {
 		});
 	};
 
+  const redirectToHospital =()=>{
+    history.push({
+      pathname: `/hospitals`,
+			search: `?id=${row.original.partyRoleId}&&healthSystemName=${row.original.name}`,
+		});
+  }
 	
 
 	return (
@@ -89,9 +123,10 @@ function ActionHealthSystem({row}) {
 						<span className='fa fa-ellipsis-h '></span>
 					</div>
 				</CDropdownToggle>
-				<CDropdownMenu>
-					<CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>
-					<CDropdownItem >Delete</CDropdownItem>
+				<CDropdownMenu className={`${(!isEditHealthPE && !isDeleteHealthPE && !isViewHospital) ? 'hide':'' }`}>
+				{isEditHealthPE && <CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
+				{isDeleteHealthPE && <CDropdownItem >Delete</CDropdownItem>}
+        {isViewHospital && <CDropdownItem  onClick={redirectToHospital} >View Hospital</CDropdownItem>}	
 				</CDropdownMenu>
 			</CDropdown>
 		</>
@@ -106,6 +141,10 @@ const HealthTable = () => {
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   //  const [searchTerm, setSearchTerm] = useState("");
 
+  // for permission
+  const [isAddHealthPE, setIsAddHealthPE] = useState(false);
+  let permissionList= useSelector((state) => state.Permission.UiPermissions);
+
   const [page, setPage] = useState(1);
   // const [count, setCount] = useState(0);
   // const [pageSize, setPageSize] = useState(3);
@@ -116,6 +155,10 @@ const HealthTable = () => {
     const fetchData = async () => {
       try {
         dispatch(loaderShow());
+// button Permission
+let Permission=PermissionButton(ScreenPermissions.HealthSystem,ButtonPermissions.AddHealthSystem,permissionList);
+setIsAddHealthPE(Permission);
+
 
         const result = await getHealthSystemList(searchQuery);
         setdata(result.data.data);
@@ -125,11 +168,11 @@ const HealthTable = () => {
         setCount(resultCount.data.data.totalCount);
         let pageCount =
           resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage;
-        //  console.log(pageCount)
+      
         setPage(Math.ceil(pageCount));
         dispatch(loaderHide());
 
-        // console.log(count)
+      
       } catch (error) {
         OnError(error, dispatch);
       }
@@ -139,12 +182,12 @@ const HealthTable = () => {
 
   //  const searchTextChange= (value)=>{
 
-  //   //  console.log();
+  
   //   if(value.length>3){
   //     setSearchQuery({...initialSearch,searchTerm:value})
   //   }
 
-  //   console.log(searchQuery);
+  
   //  }
 
   //  const resCount = useCallback(
@@ -248,6 +291,7 @@ const HealthTable = () => {
         placeholder="Search here.."
         buttonTitle="New Health System"
         title="Health Systems"
+        buttonHide={!isAddHealthPE}
       />
 
 <DataTable columns={columns} data={data}  sortingHandler={sortingHandler}/>

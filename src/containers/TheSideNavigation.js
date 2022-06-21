@@ -12,13 +12,16 @@ import {
 
 // sidebar nav config
 import navigation from "./_nav";
+import PermissionMenu from "src/reusable/PermissionMenu";
 
 const TheSideNavigation = () => {
   const dispatch = useDispatch();
+  let permissionList= useSelector((state) => state.Permission.UiPermissions);
   const show = useSelector((state) => state.sidebar.sidebarShow);
 
   const navLinks = navigation.map((item, index) => (
-    <li className="CUnavi" key={index}>
+  
+    <li className={`CUnavi  ${PermissionMenu(item.screenid,permissionList) ? "" : "hide" } `} key={index}>
       <CLink to={item.to} {...item}>
         <div className="p-2 CNradius m-auto">{item.icon}</div>
       </CLink>

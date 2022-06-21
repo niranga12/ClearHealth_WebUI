@@ -361,8 +361,17 @@ button:focus {
   // background-color: #eae4e454;
 }
 .cursor-point {
-  cursor: pointer;
+  cursor: pointer !important
 }
+ .font-green{
+  color: green
+ }
+
+ .font-red{
+  color: red
+ }
+
+
 .sub-title{
   font-size: 0.9rem;
 }
@@ -379,6 +388,7 @@ button:focus {
   color: #616161;
   font-family: LatoRegular, serif !important;
   font-size: 16px;
+  cursor: pointer;
 
   
 
@@ -517,7 +527,7 @@ label,
   text-align: center;
   border-radius: 15px;
   background-color: #5b4dfd;
-  color: #645151;
+  color: #e7e4e4;
   padding: 8px !important;
   // color: white;
   line-height: 10px;
@@ -530,6 +540,16 @@ label,
 
 .font-15re {
   font-size: 1.5rem !important;
+}
+
+.three-dot-margin{
+  margin-top: -12px;
+}
+
+.calendar-font {
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  color: #768192 !important;
 }
 
 .text-black {
@@ -550,6 +570,8 @@ label,
 .MuiPaginationItem-textPrimary.Mui-selected {
   color: #7c70fd !important;
   background-color: #ffffff !important;
+  font-weight: bolder !important;
+
 }
 .MuiPaginationItem-root {
   color: #92929d !important;
@@ -710,6 +732,8 @@ background-color: rgba(91,77,253,0.1);
 //   border-left: 1px solid #928e8e38;
 
 // }
+
+
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus{
   border-color: white;
   border-bottom: 4px solid #5b4dfd;
@@ -729,6 +753,10 @@ background-color: rgba(91,77,253,0.1);
 
 .main-menu-card:hover{
   box-shadow: none !important;
+
+}
+.border-none{
+  border: none !important;
 
 }
 .img-full{
@@ -893,6 +921,11 @@ font-weight: bold;
   min-width: 70px;
 }
 
+input.form-control-sm:read-only {
+  background-color: rgb(243, 240, 240);
+}
+
+
 .view-Procedure-table{
   font-size: 0.8rem;
 
@@ -908,6 +941,44 @@ font-weight: bold;
   pointer-events: none;
   background-color:#eeeaea;
 
+}
+
+.disable{
+  pointer-events: none;
+  opacity: 0.4;
+  background-color:#f3f0f0;
+}
+
+.payment-address {
+  
+  color: #222831;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+.payment-information-about {
+
+  color: #7A7E83;
+ 
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 19px;
+}
+.pay-summary-name{
+
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.2em;
+}
+.pay-summary-address{
+color: #222831;
+
+font-size: 16px;
+font-weight: 500;
+letter-spacing: 0;
+line-height: 1.2em;
 }
 // loader animation
 
@@ -974,3 +1045,299 @@ font-weight: bold;
 
 
 // loader animation end
+
+
+
+/* CSS for Credit Card Payment form */
+.credit-card-box .panel-title {
+  display: inline;
+  font-weight: bold;
+}
+.credit-card-box .form-control.error {
+  border-color: red;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(255,0,0,0.6);
+}
+.credit-card-box label.error {
+font-weight: bold;
+color: red;
+padding: 2px 8px;
+margin-top: 2px;
+}
+.credit-card-box .payment-errors {
+font-weight: bold;
+color: red;
+padding: 2px 8px;
+margin-top: 2px;
+}
+.credit-card-box label {
+  display: block;
+}
+/* The old "center div vertically" hack */
+.credit-card-box .display-table {
+  display: table;
+}
+.credit-card-box .display-tr {
+  display: table-row;
+}
+.credit-card-box .display-td {
+  display: table-cell;
+  vertical-align: middle;
+  width: 50%;
+}
+/* Just looks nicer */
+.credit-card-box .panel-heading img {
+  min-width: 180px;
+}
+
+.MuiInputBase-root {
+  color: rgb(156 159 165) !important;
+ 
+}
+// .MuiFormControl-root{
+//   width:100% !important;
+// }
+
+.hide{
+  display:none !important;
+}
+
+
+
+// input[type = checkbox]{
+//   -webkit-appearance: none;
+//   background-color: #fafafa;
+//   border: 1px solid #cacece;
+//   box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+//   padding: 9px;
+//   border-radius: 3px;
+//   display: inline-block;
+//   position: relative;    
+// }
+
+// input[type = checkbox]:checked {
+// background-color:#6d64fd;
+// border: 1px solid #adb8c0;
+// box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+// color: #99a1a7;
+// }
+
+.checkbox-label {
+  display: block;
+  position: relative;
+  margin: auto;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 24px;
+  height: 20px;
+  width: 20px;
+  clear: both;
+}
+
+.checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkbox-label .checkbox-custom {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 20px;
+  width: 20px;
+  background-color: transparent;
+  border-radius: 5px;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  border: 1px solid rgb(146, 145, 145);
+}
+
+
+.checkbox-label input:checked ~ .checkbox-custom {
+  background-color: #5B4DFD;
+  border-radius: 5px;
+  -webkit-transform: rotate(0deg) scale(1);
+  -ms-transform: rotate(0deg) scale(1);
+  transform: rotate(0deg) scale(1);
+  opacity:1;
+  border: 2px solid #5B4DFD;
+}
+
+.checkbox-label .checkbox-custom::after {
+  position: absolute;
+  content: "";
+  left: 10px;
+  top: 10px;
+  height: 0px;
+  width: 0px;
+  border-radius: 5px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(0deg) scale(0);
+  -ms-transform: rotate(0deg) scale(0);
+  transform: rotate(0deg) scale(0);
+  opacity:1;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+}
+
+
+.checkbox-label input:checked ~ .checkbox-custom::after {
+-webkit-transform: rotate(45deg) scale(1);
+-ms-transform: rotate(45deg) scale(1);
+transform: rotate(45deg) scale(1);
+opacity:1;
+left: 6px;
+top: 3px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+background-color: transparent;
+border-radius: 0;
+}
+
+.pay-mobile-amount{
+  display: block;
+  width: 80%;
+  margin-left: 10px;
+  box-sizing: border-box;
+  border: 1px solid #5B4DFD;
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 20px 0 rgba(135,135,135,0.07);
+
+}
+
+
+.pay-mobile-right{
+  display: block;
+  width: 100%;
+  margin: auto;
+  box-sizing: border-box;
+  // border: 1px solid #5B4DFD;
+  // border-radius: 10px;
+  // background-color: #FFFFFF;
+  box-shadow: 0 2px 20px 0 rgba(135,135,135,0.07);
+
+}
+
+.pay-italic{
+  color: #7A7E83;
+  font-family:  LatoRegular, serif !important;;
+  font-size: 12px;
+  font-style: italic;
+  letter-spacing: 0;
+  line-height: 15px;
+}
+
+.text-amount-blue{
+
+  color: #5B4DFD;
+  font-family: Lato;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 36px;
+}
+
+.radius-1{
+  border-radius: 1.25rem;
+}
+
+.braintree-sheet{
+  
+  border-radius: 10px;
+  border: none !important;
+  box-shadow: 0 2px 20px 0 rgb(135 135 135 / 30%);
+}
+
+.rectangle-invoice{
+  box-sizing: border-box;
+  // height: 30px;
+  padding: 5px;
+  padding-right: 7px;
+  padding-left:7px;
+  width: fit-content;
+  //  min-width: 138px;
+  //  max-width: 250px;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  color: black;
+  font-size:0.8rem;
+  cursor: pointer;
+}
+
+.rt-input-input {
+  position: relative;
+  display: inline-block;
+}
+
+.rt-input-input::after {
+  content: '%';
+  font-family: sans-serif;
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  top: 45%;
+  right: 5px;
+  
+  transform: translateY(-50%);
+}
+
+.hr-row{
+  border-bottom: 1px #d6d6d6 solid;
+}
+
+.remove-percentage::-webkit-outer-spin-button,
+.remove-percentage::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.button-width{
+  width: 95%;
+}
+
+.box-border{
+  border:solid  #5b4dfd 2px;
+  border-radius:6px;
+  -moz-border-radius:6px;
+  padding: 10px;
+}
+
+.sms-heading-align{
+  text-align: right; padding-right: 29px;padding-top: 9px;
+}
+
+.procedure-text{
+  padding: 5px;color: #aeb1b3;
+}
+
+.col-width{
+  width: 50%;
+}
+
+.check-circle{
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 3px solid #484848;
+  color: blue;
+}
+.tb-res{
+  width: 100%;
+    overflow-x: auto;
+}
+.avoid-clicks {
+  pointer-events: none;
+  background-color: rgba(209, 203, 203, 0.281);
+}

@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { MaskFormat, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
-import { useHistory } from 'react-router-dom';
+import { MaskFormat, PartyTypeEnum, Provider, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
+import { useHistory, useLocation } from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
 import { notify } from 'reapop';
 import { saveProvider, updateProviderByPartyRoleId } from 'src/service/providerService';
@@ -17,14 +18,17 @@ import FormatText from 'src/reusable/FormatText';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { EnableMaskPhone } from 'src/reusable';
+import ProviderEditFeeSchedules from './FeeSchedules/ProviderEditFeeSchedules';
+import ProviderAddFeeSchedules from './FeeSchedules/ProviderAddFeeSchedules';
 
 const schema = yup.object().shape({
-
 	healthSystemPartyRoleId: yup.string().required('Health system is required'),
 	hospitalName: yup.string().required('Hospital name is required'),
-	firstName: yup.string().required('First name is required'),
-	middleName: yup.string(),
-	lastName: yup.string().required('Last name is required'),
+	providerGroup: yup.string(),
+	providerTypeId: yup.string(),
+	// firstName: yup.string(),
+	// middleName: yup.string(),
+	// lastName: yup.string(),
 	address1: yup.string().required('Address line1 is required'),
 	address2: yup.string(),
 	city: yup.string().required('City is required'),
@@ -39,12 +43,13 @@ const schema = yup.object().shape({
 	phone: yup.string()
 		.required('Phone is required')
 		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	speciality: yup.string().required('Speciality is required'),
+	email: yup.string().required('Email is required').email('Email must be a valid email'),
+	speciality: yup.string().required('Specialty is required'),
 	taxId: yup.string(),
 	nip: yup.string().required('NPI is required'),
-	bankName: yup.string(),
-	accountNumber: yup.string(),
-	routing: yup.string()
+	// bankName: yup.string(),
+	// accountNumber: yup.string(),
+	// routing: yup.string()
 });
 
 const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystemList = [], specialityData = [], stateList = [] }) => {
@@ -56,7 +61,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		reset,
 		control,
 		formState: { errors },
-	} = useForm({ resolver: yupResolver(schema) });
+	} = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
 	const { dirtyFields } = useFormState({ control });
@@ -66,8 +71,20 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [billingStateOption, setBillingStateOption] = React.useState(defaultValues.billingState);
 	const dispatch = useDispatch();
 	let history = useHistory();
+	const location = useLocation();
+	const [feeScheduleChanges, setFeeScheduleChanges] = useState(false);
+	const [tabId, setTabId] = useState(null);
+	const [hospitalName, setHospitalName] = useState(null);
+	const [hospitalId, setHospitalId] = useState(null);
+	const [showResults, setShowResults] = useState(true);
+	const [showRadioButton, setShowRadioButton] = useState(true);
+	const [showFirstNameError, setShowFirstNameError] = useState(false);
+	const [showLastNameError, setShowLastNameError] = useState(false);
+	const [showGroupNameError, setShowGroupNameError] = useState(false);
+	const [groupSelection, setGroupSelection] = useState("Individual");
+	const [isFeeSchedule, setFeeSchedule] = useState(false);
 
-	//const [healthSystems, setHealthSystem] = useState([]);
+	const [saveProviderId, setSaveProviderId] = useState(null)
 
 	const handleBillingChecked = (event) => {
 		if (event.target.checked) {
@@ -107,7 +124,16 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		setStateOption(defaultValues.state); //set state dropdown value
 		setBillingStateOption(defaultValues.billingState);
 
-	}, [defaultValues]);
+		const params = new URLSearchParams(location.search);
+		const tap = params.get('tap');
+		const hosName = params.get('hospitalName');
+		const hosId = params.get('hospitalId');
+
+		setTabId(tap);
+		setHospitalName(hosName)
+		setHospitalId(hosId)
+
+	}, [defaultValues, location]);
 
 
 	useEffect(() => {
@@ -129,7 +155,14 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 
 			if (isEdit || defaultValues.healthSystemPartyRoleId) {
-
+				if (defaultValues.providerTypeId == Provider.Provider) {
+					setGroupSelection('Individual')
+					setShowResults(true);
+				} else if (defaultValues.providerTypeId == Provider.GroupProvider) {
+					setGroupSelection('Group');
+					setShowResults(false);
+				}
+				//setShowRadioButton(false);
 				// defaultValuese
 				const hospitalList = await getHospitalsList();
 
@@ -197,6 +230,59 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		}
 	}
 
+	const handleIndividualGroup = (event) => {
+
+		setGroupSelection(event.target.value)
+		if (event.target.value == 'Group') {
+			setShowResults(false);
+			setValue('firstName', getValues('firstName'), {
+				shouldValidate: false,
+				shouldDirty: true,
+			});
+			setValue('middleName', getValues('middleName'), {
+				shouldValidate: false,
+				shouldDirty: true,
+			});
+			setValue('lastName', getValues('lastName'), {
+				shouldValidate: false,
+				shouldDirty: true,
+			});
+			setValue('taxId', getValues('taxId'), {
+				shouldValidate: false,
+				shouldDirty: true,
+			});
+			setValue('providerGroup', getValues('providerGroup'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+
+
+		} else {
+			setShowResults(true);
+			setValue('firstName', getValues('firstName'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('middleName', getValues('middleName'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('lastName', getValues('lastName'), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			setValue('providerGroup', getValues('providerGroup'), {
+				shouldValidate: false,
+				shouldDirty: true,
+			});
+			setValue('nip', getValues('nip'), {
+				shouldValidate: false,
+				shouldDirty: true,
+			});
+			setShowResults(true);
+		}
+
+	}
 
 	// form submit
 	const providerFormSubmit = (data) => {
@@ -207,17 +293,52 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		}
 	};
 
-
-
 	// save Provider
 	const addProvider = async (data) => {
+		setShowFirstNameError(false);
+		setShowLastNameError(false);
+		setShowGroupNameError(false)
+		let isFirstName = false;
+		let isLastName = false;
+		let isGroupName = false;
+		// provider type ID can be 7 OR 13
+
+		if (groupSelection == "Individual") {
+			if (data.firstName == "") {
+				setShowFirstNameError(true);
+				isFirstName = true;
+			} else if (data.lastName == "") {
+				setShowLastNameError(true);
+				isLastName = true
+			} else {
+				setShowFirstNameError(false);
+				setShowLastNameError(false);
+				isFirstName = false;
+				isLastName = false;
+			}
+
+		} else {
+			
+			if (data.providerGroup == "") {
+				setShowGroupNameError(true);
+				isGroupName = true;
+			} else {
+				setShowGroupNameError(false);
+				isGroupName = false;
+			}
+
+		}
 		const newProvider = {
 			provider: {
-				firstName: data.firstName,
-				middleName: data.middleName,
-				lastName: data.lastName,
+				email: data.email,
 				hospitalList: data.hospitalName,
 				speciality: data.speciality,
+				...(groupSelection == "Individual" && { firstName: data.firstName }),
+				...(groupSelection == "Individual" && { middleName: data.middleName }),
+				...(groupSelection == "Individual" && { lastName: data.lastName }),
+				...(groupSelection == "Individual" && { providerTypeId: Provider.Provider }),
+				...(groupSelection == "Group" && { providerGroup: data.providerGroup }),
+				...(groupSelection == "Group" && { providerTypeId: Provider.GroupProvider }),
 			},
 
 			postalAddress: [
@@ -245,24 +366,62 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			paymentInfo: {
 				NPI: data.nip,
 				taxId: data.taxId,
-				bankName: data.bankName,
-				routing: data.routing,
-				accountNumber: data.accountNumber,
+				// bankName: data.bankName,
+				// routing: data.routing,
+				// accountNumber: data.accountNumber,
 
 			},
 		};
 		try {
+			if (!isFirstName && !isLastName && showResults) {
+				saveProviders(newProvider)
+				
+			} else if (!isGroupName && !showResults) {
+				saveProviders(newProvider)
+			}
+
+
+
+		} catch (error) {
+			OnError(error, dispatch);
+		}
+	};
+
+	const onOpenFeeSchedule = (result) => {
+		//setHospitalId(result)
+		setFeeSchedule(true);
+
+	}
+
+	const saveProviders = async (newProvider) => {
+
+		try {
 			if (newProvider) {
 				let result = await saveProvider(newProvider);
 				if (result.data.message === ServiceMsg.OK) {
-					dispatch(notify(`Successfully added`, 'success'));
-					history.push('/providers');
+				
+					dispatch(notify(`Successfully added`, 'success'))
+					onOpenFeeSchedule(result.data.data);
+					setSaveProviderId(result.data.data);
+					// for redirecting parent page
+					// if (tabId && hospitalId) {
+					// 	history.push({
+					// 		pathname: `/hospitals/hospital`,
+					// 		search: `?id=${hospitalId}&name=${hospitalName}&tap=${tabId}`,
+					// 	});
+					// } else {
+					// 	history.push('/providers');
+					// }
+
 				}
 			}
 		} catch (error) {
 			OnError(error, dispatch);
 		}
+
 	};
+
+
 	const stateSelect = (event) => {
 		setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
@@ -271,23 +430,29 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		setValue('billingState', event.target.innerText, { shouldValidate: true, shouldDirty: true, });
 	};
 
+	const getChanges= (result) => {
+		setFeeScheduleChanges(result)
+	}
+
 	// update Provider
 	const updateProviderInfo = async () => {
+
 		try {
+
+
 			const updateProvider = {
-
-
-				...((dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality) && {
+				...((feeScheduleChanges || dirtyFields.firstName || dirtyFields.middleName || dirtyFields.lastName || dirtyFields.hospitalName || dirtyFields.speciality || dirtyFields.email || dirtyFields.providerGroup) && {
 					provider: {
-						firstName: getValues('firstName'),
-						middleName: getValues('middleName'),
-						lastName: getValues('lastName'),
+						providerTypeId: Provider.Provider,
+						email: getValues('email'),
 						hospitalList: getValues('hospitalName'),
 						speciality: getValues('speciality'),
+						...(groupSelection == "Individual" && { firstName: getValues('firstName') }),
+						...(groupSelection == "Individual" && { middleName: getValues('middleName') }),
+						...(groupSelection == "Individual" && { lastName: getValues('lastName') }),
+						...(groupSelection == "Group" && { providerGroup: getValues('providerGroup') }),
 					}
 				}),
-
-
 
 				...((dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip || dirtyFields.billingAddress1 || dirtyFields.billingAddress2 || dirtyFields.billingCity || dirtyFields.billingState || dirtyFields.billingZip) && {
 					postalAddress: [
@@ -331,9 +496,9 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						taxId: getValues('taxId'),
 						NPI: getValues('nip'),
-						bankName: getValues('bankName'),
-						routing: getValues('routing'),
-						accountNumber: getValues('accountNumber'),
+						// bankName: getValues('bankName'),
+						// routing: getValues('routing'),
+						// accountNumber: getValues('accountNumber'),
 
 					},
 				}),
@@ -342,10 +507,21 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				dispatch(notify(`No record to update`, 'error'));
 			} else {
 				try {
+
 					const result = await updateProviderByPartyRoleId(partyRoleId, updateProvider);
 					if (result.data.message == ServiceMsg.OK) {
 						dispatch(notify(`Successfully updated`, 'success'));
-						history.push('/providers');
+						// history.push('/providers');
+						// for redirecting parent page
+						if (tabId && hospitalId) {
+							history.push({
+								pathname: `/hospitals/hospital`,
+								search: `?id=${hospitalId}&name=${hospitalName}&tap=${tabId}`,
+
+							});
+						} else {
+							history.push('/providers');
+						}
 					}
 				} catch (error) {
 					OnError(error, dispatch);
@@ -402,8 +578,22 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					</div>
 				</div>
 
+				{showRadioButton ? <div className='row mb-3'>
+					<div className='col-md-4'>
+						<div className='mt-1 ml-4'>
+							<input type='radio' checked={groupSelection === "Individual"} value="Individual" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} disabled={isEdit}/> <span className='ml-3 mr-5'>Individual</span>{' '}
+							<input type='radio' checked={groupSelection === "Group"} value="Group" name="IndividualGroup" className='form-check-input mr-3' onChange={handleIndividualGroup} disabled={isEdit}/> <span className='ml-3 mr-3'>Group </span>{' '}
+						</div>
+					</div>
+				</div> : ''}
 
-				<div className='row mb-3'>
+
+
+
+
+
+
+				{showResults ? <div className='row mb-3'>
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
@@ -411,7 +601,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								First Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('firstName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.firstName?.message}</div>
+							{showFirstNameError ? <div className='small text-danger  pb-2   '>First name is required</div> : ''}
 						</div>
 					</div>
 
@@ -433,17 +623,28 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								Last Name <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<input className='form-control-sm' type='text' {...register('lastName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
-							<div className='small text-danger  pb-2   '>{errors.lastName?.message}</div>
+							{showLastNameError ? <div className='small text-danger  pb-2   '>Last name is required</div> : ''}
 						</div>
 					</div>
-				</div>
+				</div> : <div className='row mb-3'>
+					<div className='col-md-4'>
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								Group Name <span className='text-danger font-weight-bold '>*</span>{' '}
+							</label>
+							<input className='form-control-sm' type='text' {...register('providerGroup')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
+							{showGroupNameError ? <div className='small text-danger  pb-2   '>Group name is required</div> : ''}
+						</div>
+					</div>
+				</div>}
 
 				<div className='row mb-3'>
 					{/* address */}
 					<div className='col-md-4'>
 
 						<h5 className='font-weight-bold mt-1'>
-							<span className='pr-5'>Address </span> <input type='checkbox' className='form-check-input' onChange={handleHospitalChecked} /> <span className='small'>Use hospital address</span>{' '}
+							<span className='pr-5'>Address </span> <input type='checkbox' className='form-check-input' onChange={handleHospitalChecked} /> <span className='small'>Use Hospital Address</span>{' '}
 						</h5>
 						{/* <h5 className='font-weight-bold mt-1'>Address </h5> */}
 						<div className='form-group'>
@@ -559,14 +760,23 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<label className='form-text'>
 								Phone <span className='text-danger font-weight-bold '>*</span>
 							</label>
-							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit,getValues('phone'))} className='form-control-sm' />
+							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('phone'))} className='form-control-sm' />
 							<div className='small text-danger  pb-2'>{errors.phone?.message}</div>
 						</div>
 
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Speciality <span className='text-danger font-weight-bold '>*</span>{' '}
+								Email <span className='text-danger font-weight-bold '></span>{' '}
+							</label>
+							<input type='text' className='form-control-sm' {...register('email')} />
+							<div className='small text-danger  pb-2   '> {errors.email?.message} </div>
+						</div>
+
+						<div className='form-group'>
+							<label className='form-text'>
+								{' '}
+								Specialty <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 							<select name='' id='' className='form-control-sm' {...register('speciality')}>
 								<option value=''>Select</option>
@@ -583,7 +793,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
-								Tax Id <span className='text-danger font-weight-bold '></span>{' '}
+								Tax Id <span className='text-danger font-weight-bold '>{showResults ? '' : '*'}</span>
 							</label>
 							<input type='text' className='form-control-sm' {...register('taxId')} />
 							<div className='small text-danger  pb-2   '> {errors.taxId?.message} </div>
@@ -593,7 +803,7 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						<div className='form-group'>
 							<label className='form-text'>
-								NPI <span className='text-danger font-weight-bold '>*</span>
+								NPI <span className='text-danger font-weight-bold '>{showResults ? '*' : ''}</span>
 							</label>
 							<input type='text' className='form-control-sm' {...register('nip')} />
 							<div className='small text-danger  pb-2   '>{errors.nip?.message}</div>
@@ -602,13 +812,13 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 				</div>
 
 				{/* payment info */}
-				<h5 className='font-weight-bold mt-1'>Payment Info </h5>
+				{/* <h5 className='font-weight-bold mt-1'>Payment Info </h5> */}
 
-				<div className='row'>
+				{/* <div className='row'> */}
 
 
-					{/* secound details */}
-					<div className='col-md-4'>
+				{/* secound details */}
+				{/* <div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
 								{' '}
@@ -636,11 +846,14 @@ const ProviderForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<input type='text' className='form-control-sm' {...register('routing')} />
 							<div className='small text-danger  pb-2   '> {errors.routing?.message} </div>
 						</div>
-					</div>
+					</div> */}
 
 
-				</div>
+				{/* </div> */}
 
+				{partyRoleId != null && <ProviderEditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges}/>}
+				
+				{isFeeSchedule==true && <ProviderAddFeeSchedules edit={isEdit} partyRoleId={saveProviderId} isFeeSchedule={isFeeSchedule}  hosId={hospitalId} hosName={hospitalName} tabId={tabId}/>}
 				<div className='row'>
 					<div className='col-md-12'>
 						<button type='submit' className='btn btn-primary btn-lg float-right'>

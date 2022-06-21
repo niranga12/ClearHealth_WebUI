@@ -10,18 +10,28 @@ import {combineReducers } from 'redux'
 import { persistReducer } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
 import loaderReducer from './loaderReducer';
+import pricingReducer from './pricingReducer';
+import orderReducer from './orderReducer';
+import orderTableReducer from './orderTableReducer';
+import permissionReducer from './permissionReducer';
+import feeScheduleReducer from './feeScheudle';
 
 
 const persistConfig={
    key:'root',
    storage,
-   whitelist:['Login']
+   whitelist:['Login','Permission']
 }
 
 const rootReducer= combineReducers({
    Login: loginReducer,
    sidebar: changeState,
    Loader:loaderReducer,
+   Pricing:pricingReducer,
+   Order:orderReducer,
+   mainOrder:orderTableReducer,
+   Permission:permissionReducer,
+   FeeSchedule:feeScheduleReducer,
    notifications: notificationsReducer(),
 
 })

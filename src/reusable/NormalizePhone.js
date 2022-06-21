@@ -5,7 +5,11 @@
 const NormalizePhone = (phone) => {
  // for int  use  parseInt(phone.replace(/[^0-9]+/g, '')) 
  try {
-    return phone.replace(/[^0-9]+/g, '');	
+     if(phone){
+        return phone.replace(/[^0-9]+/g, '');
+     }
+    
+    	
  } catch (error) {
      console.error(error)
  }

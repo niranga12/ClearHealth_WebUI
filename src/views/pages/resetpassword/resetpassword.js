@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,6 +14,8 @@ import { useDispatch } from "react-redux";
 import { notify } from "reapop";
 // import history from "src/_helpers/history";
 import OnError from "src/_helpers/onerror";
+import { loaderHide, loaderShow } from "src/actions/loaderAction";
+import MetaTitles from "src/views/common/metaTitles";
 
 const schema = yup.object().shape({
   password: yup.string().required("Password is required"),
@@ -46,7 +49,7 @@ const ResetPassword = () => {
 
       })
       .catch((error) => {onError(error, disPatch);
-        // console.log( error.response.data.message);
+        
         setIsValid(false);
       });
   }, []);
@@ -54,6 +57,8 @@ const ResetPassword = () => {
   const resetPass = async (data) => {
     
     try {
+      disPatch(loaderShow());
+
       const resetData = {
         token: id,
         username: userName,
@@ -64,6 +69,7 @@ const ResetPassword = () => {
         disPatch(notify(`Successfully added`, "success"));
         history.push("/login");
       }
+      disPatch(loaderHide());
     } catch (error) {
       OnError(error, disPatch);
     }
@@ -105,6 +111,8 @@ const resetForm=()=>{
 
   return (
     <SingleLayout>
+       {/* for addeing page metas  */}
+       <MetaTitles title="Clear Health | Reset Password " description=" Reset Password  "/>
       <h2 className="font-lato-bold">Reset password</h2>
      
      {isValid? resetForm() : <h4  className="font-lato-bold text-danger mt-3"> Invalid Request</h4>}

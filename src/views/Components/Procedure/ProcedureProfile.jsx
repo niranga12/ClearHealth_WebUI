@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {freeSet} from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import React, {useEffect, useMemo, useState} from 'react';
@@ -5,10 +6,11 @@ import {useDispatch} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
 import {notify} from 'reapop';
 import {loaderHide, loaderShow} from 'src/actions/loaderAction';
-import {ServiceMsg, ServiceType} from 'src/reusable/enum';
+import {HospitalTabList, ServiceMsg, ServiceType} from 'src/reusable/enum';
 import {getProcedureByProvideId, saveProcedureByProviderId} from 'src/service/providerService';
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch';
 import DataTable from 'src/views/common/dataTable';
+import Goback from 'src/views/common/Goback';
 import OnError from 'src/_helpers/onerror';
 import ProcedureForm from './ProcedureForm';
 
@@ -37,7 +39,7 @@ const ProcedureProfile = () => {
 	const searchTextChange = (e) => {
 	    let searchText=String(e.target.value).toLowerCase();
 		let textData=tempProcedureData;
-		let result = textData.filter(x=>x.description.toLowerCase().includes(searchText) );
+		let result = textData.filter(x => x.description.toLowerCase().includes(searchText) || x.code.toLowerCase().includes(searchText) );
 		setProcedureData(result);
 	};
 
@@ -90,7 +92,7 @@ const ProcedureProfile = () => {
 	};
 
 	const ActionProcedure = ({row, data}) => {
-		// console.log(procedureData)
+		
 
 		return (
 			<>
@@ -118,6 +120,10 @@ const ProcedureProfile = () => {
 	const save = async () => {
 		let checkEmptyData = savePrcoedureData;
 		
+		const params = new URLSearchParams(location.search);
+		const hospitalId = params.get('hospitalId');
+		const hospitalName = params.get('hospitalName');
+		
 		let emptyData = checkEmptyData.filter((x) => {
 			return !x.facility && !x.physician ? true : false;
 		}); // this following conditon for radiology
@@ -130,7 +136,13 @@ const ProcedureProfile = () => {
 				const result = await saveProcedureByProviderId(providerId, saveProcedure);
 				if (result.data.message === ServiceMsg.OK) {
 					dispatch(notify(`Successfully updated`, 'success'));
-					history.push('/hospitals');
+					//  history.push('/hospitals');
+					 history.push({
+						pathname: `/hospitals/hospital`,
+						search: `?id=${hospitalId}&name=${hospitalName}&tap=${HospitalTabList.Providers}`,
+						
+					});
+				
 				}
 			} catch (error) {
 				OnError(error, dispatch);
@@ -167,6 +179,9 @@ const ProcedureProfile = () => {
 	);
 
 	return (
+		<>
+					<Goback/>
+
 		<div className='card  cover-content pt-2 '>
 			<AdminHeaderWithSearch title={providerName} handleAddNew={save} buttonDisable={savePrcoedureData.length < 1}  buttonTitle='Save' iconShow={false}  handleSearchChange={searchTextChange} selectionList={ServiceType.Types} handleDropDownChange={dropDownChange} placeholder='Search here..' selectionTitle='Service Type' subHeader='Provider Name' />
 			<div className='divider m-1'></div>
@@ -191,6 +206,7 @@ const ProcedureProfile = () => {
 				</div>
 			</div>
 		</div>
+		</>
 	);
 };
 
