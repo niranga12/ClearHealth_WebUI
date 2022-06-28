@@ -1,36 +1,23 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  CHeader,
-  CToggler,
-  
-  CHeaderNav,
-  
-} from "@coreui/react";
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { CHeader, CToggler, CHeaderNav } from '@coreui/react'
 // import CIcon from "@coreui/icons-react";
-import logo from "../assets/images/2.svg";
-
+import logo from '../assets/images/2.svg'
 
 // routes config
 // import routes from "../routes";
 
-import {
-  TheHeaderDropdown,
-  
-
-  TheTittleUser,
-} from "./index";
-import TheHeaderDropdownImage from "./TheHeaderDropDownImage";
-import { useHistory } from "react-router-dom";
+import { TheHeaderDropdown, TheTittleUser } from './index'
+import TheHeaderDropdownImage from './TheHeaderDropDownImage'
+import { useHistory } from 'react-router-dom'
 // import Logo from "src/reusable/Logo";
 // import { changeHeadToggle } from "src/actions/changeAction";
 
 const TheHeader = () => {
-  const dispatch = useDispatch();
-  let history=useHistory()
-  const sidebarShow = useSelector((state) => state.sidebar.sidebarShow);
-  let isPermission = useSelector((state) => state.Login.isLogin);
-
+  const dispatch = useDispatch()
+  let history = useHistory()
+  const sidebarShow = useSelector((state) => state.sidebar.sidebarShow)
+  let isPermission = useSelector((state) => state.Login.isLogin)
 
   // const toggleSidebar = () => {
   //   const val = [true, "responsive"].includes(sidebarShow)
@@ -40,25 +27,17 @@ const TheHeader = () => {
   // };
 
   const toggleSidebarMobile = () => {
-    const val = [false, "responsive"].includes(sidebarShow)
-      ? true
-      : "responsive";
-    dispatch({ type: "set", sidebarShow: val });
-  };
-  const routeToDashboard=() =>{
-    history.push('/main');
-
-
+    const val = [false, 'responsive'].includes(sidebarShow) ? true : 'responsive'
+    dispatch({ type: 'set', sidebarShow: val })
+  }
+  const routeToDashboard = () => {
+    history.push('/main')
   }
 
   return (
     <CHeader withSubheader className="box-shadow-bottom  ">
-       <img src={logo} alt="Logo" className="sm-logo-setting-layout" onClick={routeToDashboard}/> 
-      <CToggler
-        inHeader
-        className="ml-md-3 d-lg-none"
-        onClick={toggleSidebarMobile}
-      />
+      <img src={logo} alt="Logo" className="sm-logo-setting-layout" onClick={routeToDashboard} />
+      <CToggler inHeader className="ml-md-3 d-lg-none" onClick={toggleSidebarMobile} />
       {/* <CToggler
         inHeader
         className="ml-3 d-md-down-none"
@@ -68,7 +47,7 @@ const TheHeader = () => {
 
       {/* <img src={logo} alt="Logo" className="sm-logo-setting"/>    */}
       {/* <Logo classname="sm-logo-setting" /> */}
-        {/* <CIcon name="logo" height="60" alt="Logo" /> */}
+      {/* <CIcon name="logo" height="60" alt="Logo" /> */}
       {/* </CHeaderBrand> */}
 
       <CHeaderNav className="d-md-down-none mr-auto">
@@ -84,16 +63,14 @@ const TheHeader = () => {
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
-     
-      {/* { isPermission &&   <TheHeaderDropdownNotif/>} */}
-        
+        {/* { isPermission &&   <TheHeaderDropdownNotif/>} */}
+
         {/* <div className="font-weight-bold">Name</div> */}
         {/* <TheHeaderDropdownTasks/>
         <TheHeaderDropdownMssg/> */}
-    { isPermission &&    <TheHeaderDropdownImage/>}
-    { isPermission &&    <TheTittleUser/> }
-     { isPermission &&     <TheHeaderDropdown /> }
-       
+        {isPermission && <TheHeaderDropdownImage />}
+        {isPermission && <TheTittleUser />}
+        {isPermission && <TheHeaderDropdown />}
       </CHeaderNav>
 
       {/* <CSubheader className="px-3 justify-content-between">
@@ -118,7 +95,7 @@ const TheHeader = () => {
           </div>
       </CSubheader> */}
     </CHeader>
-  );
-};
+  )
+}
 
-export default TheHeader;
+export default TheHeader

@@ -1,31 +1,26 @@
-const {   RESET_ORDER_Table} = require('src/constansts');
+const { RESET_ORDER_Table } = require('src/constansts')
 
 const initialState = {
-	changeProgress: false,
-};
-
+  changeProgress: false
+}
 
 const orderTableReducer = (state = initialState, action) => {
-	switch (action.type) {
-		// case CHANGE_ORDER_Table:
-		// 	return {
-		// 		...state,
-		// 		changeProgress: true,
-		// 	};
-		case RESET_ORDER_Table:
-                return {
-                    ...state,
-                    changeProgress: action.payload,
-                }; 
-           
-			
+  switch (action.type) {
+    // case CHANGE_ORDER_Table:
+    // 	return {
+    // 		...state,
+    // 		changeProgress: true,
+    // 	};
+    case RESET_ORDER_Table:
+      return {
+        ...state,
+        changeProgress: action.payload
+      }
 
-		
+    default: {
+      return state
+    }
+  }
+}
 
-		default: {
-			return state;
-		}
-	}
-};
-
-export default orderTableReducer;
+export default orderTableReducer

@@ -1,23 +1,20 @@
-const {SHOW_PRICE_DATA} = require('src/constansts');
+const { SHOW_PRICE_DATA } = require('src/constansts')
 
 const initialState = {
-	feeSchedule:[],
-    package:null,
-    filterDetail:null
-
-};
+  feeSchedule: [],
+  package: null,
+  filterDetail: null
+}
 
 const pricingReducer = (state = initialState, action) => {
-   
-	switch (action.type) {
-		case SHOW_PRICE_DATA:
-            return (state = action.payload);
-			
-		
-		default: {
-			return state;
-		}
-	}
-};
+  switch (action.type) {
+    case SHOW_PRICE_DATA:
+      return (state = action.payload)
 
-export default pricingReducer;
+    default: {
+      return state
+    }
+  }
+}
+
+export default pricingReducer
