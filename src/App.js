@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import {  HashRouter, Route,  Switch } from 'react-router-dom';
+import React, { Component } from 'react'
+import { HashRouter, Route, Switch } from 'react-router-dom'
 
-
-import './scss/style.scss';
-import AuthRoute from './_helpers/AuthRoute';
+import './scss/style.scss'
+import AuthRoute from './_helpers/AuthRoute'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -11,9 +10,8 @@ const loading = (
   </div>
 )
 
-
 // Containers
-const TheLayout = React.lazy(() => import('./containers/TheLayout'));
+const TheLayout = React.lazy(() => import('./containers/TheLayout'))
 
 // Pages
 const Login = React.lazy(() => import('./views/pages/login/Login'));
@@ -29,7 +27,6 @@ const PaymentMobile= React.lazy(()=>import('./views/Components/paymentMobile/Pay
 const PaymentVerification = React.lazy(()=>import('./views/Components/Payment-Verification/paymentverification'));
 
 class App extends Component {
-
   render() {
     return (
       // <Router history={history}>
@@ -76,9 +73,9 @@ class App extends Component {
 
       </HashRouter>
 
-    // {/* </BrowserRouter> */}
-    );
+      // {/* </BrowserRouter> */}
+    )
   }
 }
 
-export default App;
+export default App

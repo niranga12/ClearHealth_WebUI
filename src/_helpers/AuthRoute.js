@@ -1,14 +1,13 @@
-import React  from "react";
+import React from 'react'
 // import { useState } from "react";
-import { useSelector } from "react-redux";
-import { Route, Redirect,  } from "react-router";
+import { useSelector } from 'react-redux'
+import { Route, Redirect } from 'react-router'
 // import { TheLayout } from "src/containers";
 // import Login from "src/views/pages/login/Login";
 
 const AuthRoute = (props) => {
- 
   // const [permission, setPermission] = useState(false);
-  let isPermission = useSelector((state) => state.Login.isLogin);
+  let isPermission = useSelector((state) => state.Login.isLogin)
   // useEffect(() => {
   //   setPermission(isPermission);
   // }, []);
@@ -56,9 +55,9 @@ const AuthRoute = (props) => {
   //   };
 
   if (isPermission) {
-    return <Route path={props.path} component={props.render}></Route>;
+    return <Route path={props.path} component={props.render}></Route>
   } else {
-    return <Redirect to="/login"></Redirect>;
+    return <Redirect to="/login"></Redirect>
   }
 
   //   return (
@@ -76,6 +75,6 @@ const AuthRoute = (props) => {
   //     //   }
   //     ></Route>
   //   );
-};
+}
 
-export default AuthRoute;
+export default AuthRoute

@@ -646,8 +646,8 @@ const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, health
 					</div>
 				) : null} */}
 
-				<div className='row'>
-					{/* <div className='col-md-12'>
+        <div className="row">
+          {/* <div className='col-md-12'>
 						<button type='submit' ref={btnRef} className='btn btn-primary btn-lg float-right'>
 							{isEdit ? 'Update' : 'Save'}
 						</button>

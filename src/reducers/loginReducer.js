@@ -1,37 +1,37 @@
-import { FETCHING_USER, LOG_OUT, SET_FETCHING_FALSE, USER_LOGIN } from "src/constansts";
+import { FETCHING_USER, LOG_OUT, SET_FETCHING_FALSE, USER_LOGIN } from 'src/constansts'
 
 const initialState = {
   username: null,
-  isLogin:false,
-  keepMeSignIn:false
+  isLogin: false,
+  keepMeSignIn: false
 
   // isLogin: localStorage.getItem("token")? true: false,
-};
+}
 
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCHING_USER: {
       return {
         ...state,
-        fetching: true,
-      };
+        fetching: true
+      }
     }
     case USER_LOGIN: {
-      return (state = action.payload);
+      return (state = action.payload)
     }
 
     case LOG_OUT: {
-      return initialState;
+      return initialState
     }
     case SET_FETCHING_FALSE: {
-        return {
-          ...state,
-          fetching: false
-        };
+      return {
+        ...state,
+        fetching: false
       }
+    }
     default: {
-      return state;
+      return state
     }
   }
-};
-export default loginReducer;
+}
+export default loginReducer

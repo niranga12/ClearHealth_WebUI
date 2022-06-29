@@ -1,4 +1,6 @@
-export const logoMenu=['30 30', `
+export const logoMenu = [
+  '30 30',
+  `
 
 
 <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -13,4 +15,5 @@ export const logoMenu=['30 30', `
     </g>
 </g>
 </g>
-`]
+`
+]

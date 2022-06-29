@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  CDropdown,
-  
-  CDropdownToggle,
-  CImg
-} from '@coreui/react'
+import { CDropdown, CDropdownToggle, CImg } from '@coreui/react'
 // import CIcon from '@coreui/icons-react'
 // import { useDispatch } from 'react-redux'
 // import { logout } from 'src/actions/loginAction'
@@ -14,22 +9,13 @@ const TheHeaderDropdownImage = () => {
 
   // const logOut=()=>{
   //   dispatch(logout())
-   
 
   // }
   return (
-    <CDropdown
-      inNav
-      className="c-header-nav-items "
-      direction="down"
-    >
+    <CDropdown inNav className="c-header-nav-items " direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
-          <CImg
-            src={'avatars/9.png'}
-            className="c-avatar-img"
-            alt="user"
-          />
+          <CImg src={'avatars/9.png'} className="c-avatar-img" alt="user" />
         </div>
       </CDropdownToggle>
       {/* <CDropdownMenu className="pt-0" placement="bottom-end">
@@ -49,4 +35,4 @@ const TheHeaderDropdownImage = () => {
   )
 }
 
-export default TheHeaderDropdownImage;
+export default TheHeaderDropdownImage

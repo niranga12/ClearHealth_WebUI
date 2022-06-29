@@ -7,14 +7,16 @@ The docs of the new components are available [here](https://coreui.io/react/docs
 The good news is that most probably it will be sufficient to migrate layout components (Sidebar, Header, Footer, Aside) and `Switch` component
 
 The best way to do a migration is:
+
 1. Install `@coreui/coreui-react` v3
 2. Make a copy of the current `containers` folder
-2. Paste [containers](https://github.com/coreui/coreui-free-react-admin-template/tree/master/src/containers) folder from v3 template to project
-3. Correct routing paths
-4. Add previous content to new template layout components
-5. Replace `Switch` components with `CSwitch`
+3. Paste [containers](https://github.com/coreui/coreui-free-react-admin-template/tree/master/src/containers) folder from v3 template to project
+4. Correct routing paths
+5. Add previous content to new template layout components
+6. Replace `Switch` components with `CSwitch`
 
 Layout components/ corresponding components in version 3
+
 - Aside -> CSidebar (with prop aside={true})
 - AsideToggler -> CToggler
 - Breadcrumb -> CBreadcrumbRouter
