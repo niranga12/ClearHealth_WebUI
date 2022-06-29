@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   CCreateElement,
   CSidebar,
@@ -7,68 +7,55 @@ import {
   CSidebarNav,
   CSidebarNavDivider,
   CSidebarNavTitle,
-  
   CSidebarNavDropdown,
   CSidebarNavItem,
-  CLink,
-  
-} from "@coreui/react";
+  CLink
+} from '@coreui/react'
 
-import CIcon from "@coreui/icons-react";
+import CIcon from '@coreui/icons-react'
 
 // sidebar nav config
-import navigation from "./_nav";
+import navigation from './_nav'
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 // import { changeHeadToggle } from "src/actions/changeAction";
 
 const TheSidebar = () => {
-  const dispatch = useDispatch();
-  const show = useSelector((state) => state.sidebar.sidebarShow);
+  const dispatch = useDispatch()
+  const show = useSelector((state) => state.sidebar.sidebarShow)
 
- const navLinks=navigation.map((item,index)=>
-  <li className="CUnavi" key={index} >
-  
+  const navLinks = navigation.map((item, index) => (
+    <li className="CUnavi" key={index}>
+      <CLink to={item.to} {...item}>
+        <div className="p-2 CNradius m-auto">{item.icon}</div>
+      </CLink>
+    </li>
+  ))
 
-  <CLink to={item.to} {...item}>
- <div  className="p-2 CNradius m-auto">
-    {item.icon} 
-    
-    </div>
-</CLink>
-</li>
-)
+  // const navLInks=()=>{
 
-// const navLInks=()=>{
+  // <ul>
+  //   {navigation.map((item,index)=>
+  //     <li key={index}>
 
-// <ul>
-//   {navigation.map((item,index)=>
-//     <li key={index}>
-    
-
-//     <CLink to={item.to} {...item}>
-//    <div  className="p-3 bg-success m-auto"> {item.name} </div>
-// </CLink>
-// </li>
-//   )
-// }
-//   </ul>
-// }
-
+  //     <CLink to={item.to} {...item}>
+  //    <div  className="p-3 bg-success m-auto"> {item.name} </div>
+  // </CLink>
+  // </li>
+  //   )
+  // }
+  //   </ul>
+  // }
 
   return (
     <CSidebar
       show={show}
       className="c-sidebar-light "
-      onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
+      onShowChange={(val) => dispatch({ type: 'set', sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none " to="/dashboard">
         {/* <div className="logo-image-panel"></div> */}
-        <CIcon
-          className="c-sidebar-brand-full m-auto"
-          name="logo-negative"
-          height={55}
-        />
+        <CIcon className="c-sidebar-brand-full m-auto" name="logo-negative" height={55} />
         {/* <CIcon
           className="c-sidebar-brand-minimized"
           name="sygnet"
@@ -84,21 +71,17 @@ const TheSidebar = () => {
             CSidebarNavDivider,
             CSidebarNavDropdown,
             CSidebarNavItem,
-            CSidebarNavTitle,
+            CSidebarNavTitle
           }}
         />
-<ul className="list-unstyled p-0">
-  {navLinks}
-  </ul>
-      
+        <ul className="list-unstyled p-0">{navLinks}</ul>
+
         {/* <div  className="p-3 bg-success m-auto">
         <CIcon content={freeSet.cilLibraryAdd} size={'2xl'} className="m-auto" />
         </div> */}
 
         {/* </div> */}
       </CSidebarNav>
-
-
 
       <div className="row sidebar-bottom">
         <div className="col-md-12 pb-2">
@@ -112,7 +95,7 @@ const TheSidebar = () => {
       </div>
       {/* <CSidebarMinimizer className="c-d-md-down-none" name="fdasfdsa"/> */}
     </CSidebar>
-  );
-};
+  )
+}
 
-export default React.memo(TheSidebar);
+export default React.memo(TheSidebar)

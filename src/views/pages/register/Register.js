@@ -19,8 +19,8 @@ import MetaTitles from 'src/views/common/metaTitles'
 const Register = () => {
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
-       {/* for addeing page metas  */}
-       <MetaTitles title="Clear Health | Register" description=" Register  "/>
+      {/* for addeing page metas  */}
+      <MetaTitles title="Clear Health | Register" description=" Register  " />
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md="9" lg="7" xl="6">
@@ -59,16 +59,22 @@ const Register = () => {
                     </CInputGroupPrepend>
                     <CInput type="password" placeholder="Repeat password" autoComplete="new-password" />
                   </CInputGroup>
-                  <CButton color="success" block>Create Account</CButton>
+                  <CButton color="success" block>
+                    Create Account
+                  </CButton>
                 </CForm>
               </CCardBody>
               <CCardFooter className="p-4">
                 <CRow>
                   <CCol xs="12" sm="6">
-                    <CButton className="btn-facebook mb-1" block><span>facebook</span></CButton>
+                    <CButton className="btn-facebook mb-1" block>
+                      <span>facebook</span>
+                    </CButton>
                   </CCol>
                   <CCol xs="12" sm="6">
-                    <CButton className="btn-twitter mb-1" block><span>twitter</span></CButton>
+                    <CButton className="btn-twitter mb-1" block>
+                      <span>twitter</span>
+                    </CButton>
                   </CCol>
                 </CRow>
               </CCardFooter>

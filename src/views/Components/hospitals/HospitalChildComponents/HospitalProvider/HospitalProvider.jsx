@@ -1,13 +1,12 @@
 import React from 'react'
-import HospitalProviderTable from './HospitalProviderTable';
+import HospitalProviderTable from './HospitalProviderTable'
 
 const HospitalProvider = () => {
-
-    return (
-        <div>
-            <HospitalProviderTable />
-        </div>
-    )
+  return (
+    <div>
+      <HospitalProviderTable />
+    </div>
+  )
 }
 
-export default HospitalProvider;
+export default HospitalProvider

@@ -1,4 +1,6 @@
-export const logoPayment=['30 30', `
+export const logoPayment = [
+  '30 30',
+  `
 <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="4---CHP---Hospital-Account---Orders---Outstanding" transform="translate(-165.000000, -540.000000)">
             <g id="inner-section" transform="translate(130.000000, 205.000000)">
@@ -18,4 +20,5 @@ export const logoPayment=['30 30', `
             </g>
         </g>
     </g>
-`]
+`
+]

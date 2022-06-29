@@ -1,4 +1,6 @@
-export const logo = ['608 134', `
+export const logo = [
+  '608 134',
+  `
   <title>coreui react pro</title>
   
 	<defs>
@@ -66,4 +68,5 @@ export const logo = ['608 134', `
   </g>
 </g>
 
-`]
+`
+]

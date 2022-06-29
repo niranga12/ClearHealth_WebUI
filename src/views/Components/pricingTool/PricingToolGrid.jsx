@@ -1,142 +1,140 @@
 /* eslint-disable eqeqeq */
-import React, {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {useLocation} from 'react-router-dom';
-import {notify} from 'reapop';
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import { notify } from 'reapop'
 
-import {FacilityPackageField, PackageItems, PhysicianPackageField, ServiceMsg} from 'src/reusable/enum';
-import {updateFacilityPackage, updateGlobalPackage, updatePhysicianPackage} from 'src/service/hospitalsService';
-import MetaTitles from 'src/views/common/metaTitles';
-import OnError from 'src/_helpers/onerror';
-import FacilityToolTable from './FacilityToolTable';
-import GlobalToolTable from './GlobalToolTable';
-import PhysicianToolTable from './PhysicianToolTable';
-import PricingToolCategories from './PricingToolCategories';
-import PricingToolFilter from './PricingToolFilter';
+import { FacilityPackageField, PackageItems, PhysicianPackageField, ServiceMsg } from 'src/reusable/enum'
+import { updateFacilityPackage, updateGlobalPackage, updatePhysicianPackage } from 'src/service/hospitalsService'
+import MetaTitles from 'src/views/common/metaTitles'
+import OnError from 'src/_helpers/onerror'
+import FacilityToolTable from './FacilityToolTable'
+import GlobalToolTable from './GlobalToolTable'
+import PhysicianToolTable from './PhysicianToolTable'
+import PricingToolCategories from './PricingToolCategories'
+import PricingToolFilter from './PricingToolFilter'
 
 const PricingToolGrid = () => {
-	const [isNotGlobal, setIsNotGlobal] = useState(false);
-	const [fieldsList, setIsFieldsList] = useState([]);
-	const [selectedPackage, setSelectedPackage] = useState(null);
-	const [filterDetails, setfilterDetails] = useState();
-	const [hospitalId, setHospitalId] = useState(null);
-	const location = useLocation();
+  const [isNotGlobal, setIsNotGlobal] = useState(false)
+  const [fieldsList, setIsFieldsList] = useState([])
+  const [selectedPackage, setSelectedPackage] = useState(null)
+  const [filterDetails, setfilterDetails] = useState()
+  const [hospitalId, setHospitalId] = useState(null)
+  const location = useLocation()
 
-	const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-	useEffect(() => {
-		const params = new URLSearchParams(location.search);
-		const id = params.get('id');
-		setHospitalId(id);
-	}, [location]);
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const id = params.get('id')
+    setHospitalId(id)
+  }, [location])
 
-	const loadSelectedTable = () => {
-		switch (selectedPackage) {
-			case PackageItems.Facility:
-				return <FacilityToolTable filterDetail={filterDetails} />;
-			case PackageItems.Physician:
-				return <PhysicianToolTable filterDetail={filterDetails} />;
-			case PackageItems.GlobalPackage:
-				return <GlobalToolTable filterDetail={filterDetails} />;
-			default:
-				break;
-		}
-	};
+  const loadSelectedTable = () => {
+    switch (selectedPackage) {
+      case PackageItems.Facility:
+        return <FacilityToolTable filterDetail={filterDetails} />
+      case PackageItems.Physician:
+        return <PhysicianToolTable filterDetail={filterDetails} />
+      case PackageItems.GlobalPackage:
+        return <GlobalToolTable filterDetail={filterDetails} />
+      default:
+        break
+    }
+  }
 
-	const handlePackageChange = (value) => {
-		setSelectedPackage(value);
-		setfilterDetails(null);
-		PackageItems.GlobalPackage == value ? setIsNotGlobal(false) : setIsNotGlobal(true);
+  const handlePackageChange = (value) => {
+    setSelectedPackage(value)
+    setfilterDetails(null)
+    PackageItems.GlobalPackage == value ? setIsNotGlobal(false) : setIsNotGlobal(true)
 
-		switch (value) {
-			case PackageItems.Facility:
-				setIsFieldsList(FacilityPackageField);
-				break;
-			case PackageItems.Physician:
-				setIsFieldsList(PhysicianPackageField);
-				break;
-			default:
-				setIsFieldsList([]);
-				break;
-		}
-	};
+    switch (value) {
+      case PackageItems.Facility:
+        setIsFieldsList(FacilityPackageField)
+        break
+      case PackageItems.Physician:
+        setIsFieldsList(PhysicianPackageField)
+        break
+      default:
+        setIsFieldsList([])
+        break
+    }
+  }
 
-	const handleFilterChange = (e) => {
-		
-		setfilterDetails({...e,hospitalId});
-	};
+  const handleFilterChange = (e) => {
+    setfilterDetails({ ...e, hospitalId })
+  }
 
-	const saveChange = (data) => {
-		
-		switch (selectedPackage) {
-			case PackageItems.Facility:
-				updateFacility(data);
-				break;
-			case PackageItems.Physician:
-				updatePhysician(data);
-				break;
-			case PackageItems.GlobalPackage:
-				updateGlobal(data);
-				break;
-			default:
-				break;
-		}
-		
-	};
+  const saveChange = (data) => {
+    switch (selectedPackage) {
+      case PackageItems.Facility:
+        updateFacility(data)
+        break
+      case PackageItems.Physician:
+        updatePhysician(data)
+        break
+      case PackageItems.GlobalPackage:
+        updateGlobal(data)
+        break
+      default:
+        break
+    }
+  }
 
-	const updateFacility = async (value) => {
-		// value.hospitalSearch
-		try {
+  const updateFacility = async (value) => {
+    // value.hospitalSearch
+    try {
+      let data = { enhancementRate: value.enhancementRate, enhancementOn: value.enhancementOn }
+      let result = await updateFacilityPackage(hospitalId, data)
+      if (result.data.message === ServiceMsg.OK) {
+        dispatch(notify(`Successfully Updated`, 'success'))
+      }
+    } catch (error) {
+      OnError(error, dispatch)
+    }
+  }
 
-			let data = {enhancementRate: value.enhancementRate, enhancementOn: value.enhancementOn};
-			let result = await updateFacilityPackage(hospitalId, data);
-			if (result.data.message === ServiceMsg.OK) {
-				dispatch(notify(`Successfully Updated`, 'success'));
-			}
-		} catch (error) {
-			OnError(error, dispatch);
-		}
-	};
+  const updatePhysician = async (value) => {
+    try {
+      let data = { enhancementRate: value.enhancementRate, enhancementOn: value.enhancementOn }
+      let result = await updatePhysicianPackage(hospitalId, data)
+      if (result.data.message === ServiceMsg.OK) {
+        dispatch(notify(`Successfully Updated`, 'success'))
+      }
+    } catch (error) {
+      OnError(error, dispatch)
+    }
+  }
 
-	const updatePhysician = async (value) => {
-		try {
-			let data = {enhancementRate: value.enhancementRate, enhancementOn: value.enhancementOn};
-			let result = await updatePhysicianPackage(hospitalId, data);
-			if (result.data.message === ServiceMsg.OK) {
-				dispatch(notify(`Successfully Updated`, 'success'));
-			}
-		} catch (error) {
-			OnError(error, dispatch);
-		}
-	};
+  const updateGlobal = async (value) => {
+    try {
+      let data = { enhancementRate: value.enhancementRate }
+      let result = await updateGlobalPackage(hospitalId, data)
+      if (result.data.message === ServiceMsg.OK) {
+        dispatch(notify(`Successfully Updated`, 'success'))
+      }
+    } catch (error) {
+      OnError(error, dispatch)
+    }
+  }
 
-	const updateGlobal = async (value) => {
-		try {
-			let data = {enhancementRate: value.enhancementRate};
-			let result = await updateGlobalPackage(hospitalId, data);
-			if (result.data.message === ServiceMsg.OK) {
-				dispatch(notify(`Successfully Updated`, 'success'));
-			}
-		} catch (error) {
-			OnError(error, dispatch);
-		}
-	};
+  return (
+    <>
+      {/* for addeing page metas  */}
+      <MetaTitles title="Clear Health | Pricing Tool " description=" Pricing Tools  " />
+      <div className={`${hospitalId ? '' : 'card  cover-content pt-2 '}`}>
+        <PricingToolFilter
+          isNotGlobal={isNotGlobal}
+          fieldsList={fieldsList}
+          handleFilterChange={handleFilterChange}
+          saveChange={saveChange}
+          selectedPackage={selectedPackage}
+        />
+        <PricingToolCategories handlePackageChange={handlePackageChange} />
+        <div className="font-size-8">{loadSelectedTable()}</div>
+      </div>
+    </>
+  )
+}
 
-	return (
-		<>
-		 {/* for addeing page metas  */}
-         <MetaTitles title="Clear Health | Pricing Tool " description=" Pricing Tools  "/>
-		  <div className={`${hospitalId ? "" : "card  cover-content pt-2 "}`}    >
-			<PricingToolFilter isNotGlobal={isNotGlobal} fieldsList={fieldsList} handleFilterChange={handleFilterChange} saveChange={saveChange} selectedPackage={selectedPackage} />
-			<PricingToolCategories handlePackageChange={handlePackageChange} />
-			<div className="font-size-8"> 
-			{loadSelectedTable()}
-			</div>
-			
-
-			</div>
-		</>
-	);
-};
-
-export default PricingToolGrid;
+export default PricingToolGrid

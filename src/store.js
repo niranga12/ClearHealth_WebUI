@@ -1,9 +1,7 @@
-import { applyMiddleware, createStore ,compose} from "redux";
-import   allReducers from 'src/reducers'
-import thunk from 'redux-thunk';
-import { persistStore } from "redux-persist";
-
-
+import { applyMiddleware, createStore, compose } from 'redux'
+import allReducers from 'src/reducers'
+import thunk from 'redux-thunk'
+import { persistStore } from 'redux-persist'
 
 // const initialState = {
 //   sidebarShow: "responsive",
@@ -19,15 +17,15 @@ import { persistStore } from "redux-persist";
 // };
 
 // const store = createStore(changeState);
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export const store = createStore(
   allReducers,
   //  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  composeEnhancers(applyMiddleware(thunk)) 
-  );
+  composeEnhancers(applyMiddleware(thunk))
+)
 
-export const  persistor = persistStore(store);
+export const persistor = persistStore(store)
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default {store, persistor};
+export default { store, persistor }

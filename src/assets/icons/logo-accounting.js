@@ -1,4 +1,6 @@
-export const logoAccounting=['30 30', `
+export const logoAccounting = [
+  '30 30',
+  `
     
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
     <g id="3---CHP---Hospitals" transform="translate(-20.000000, -700.000000)" fill-rule="nonzero">
@@ -12,4 +14,5 @@ export const logoAccounting=['30 30', `
         </g>
     </g>
 </g>
-`]
+`
+]

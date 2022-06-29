@@ -1,78 +1,74 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react'
 // import { Link, useHistory } from "react-router-dom";
 // import "./login.scss";
 // import Logo from "src/reusable/Logo";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import {  useDispatch, useSelector } from "react-redux";
-import { login } from "src/actions/loginAction";
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from 'src/actions/loginAction'
 // import NotificationLayout from "src/_helpers/notification";
 // import { notify } from "reapop";
-import SingleLayout from "../singlelayout/singleLayout";
+import SingleLayout from '../singlelayout/singleLayout'
 // import history from "../../../_helpers/history";
-import { useHistory } from "react-router-dom";
-import MetaTitles from "src/views/common/metaTitles";
-import { Organizations } from "src/reusable/enum";
+import { useHistory } from 'react-router-dom'
+import MetaTitles from 'src/views/common/metaTitles'
+import { Organizations } from 'src/reusable/enum'
 
 const schema = yup.object().shape({
-  username: yup.string().required("Email required"),
-  password: yup.string().required("Password required"),
-  keepSignIn:yup.bool()
-});
+  username: yup.string().required('Email required'),
+  password: yup.string().required('Password required'),
+  keepSignIn: yup.bool()
+})
 
 const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm({
-    resolver: yupResolver(schema),
-  });
+    resolver: yupResolver(schema)
+  })
 
   // const User = useSelector((state) => state.Login);
-  const disPatch = useDispatch();
-  const history = useHistory();
-  let keepMeSignIN = useSelector((state) => state.Login.keepMeSignIn);
-  let userDetail=useSelector((state) => state.Login);
+  const disPatch = useDispatch()
+  const history = useHistory()
+  let keepMeSignIN = useSelector((state) => state.Login.keepMeSignIn)
+  let userDetail = useSelector((state) => state.Login)
 
   useEffect(() => {
-
-    if(keepMeSignIN){
-      if(userDetail.roleTypeId ==Organizations.HospitalAdmin || userDetail.roleTypeId ==Organizations.HospitalStaff ){
-        if(userDetail.hospitalId && userDetail.hospitalName){
-          history.push(`/hospitals/hospital?id=${userDetail.hospitalId}&&name=${userDetail.hospitalName}`);
-        }else{
-          history.push(`hospitals`);
+    if (keepMeSignIN) {
+      if (
+        userDetail.roleTypeId == Organizations.HospitalAdmin ||
+        userDetail.roleTypeId == Organizations.HospitalStaff
+      ) {
+        if (userDetail.hospitalId && userDetail.hospitalName) {
+          history.push(`/hospitals/hospital?id=${userDetail.hospitalId}&&name=${userDetail.hospitalName}`)
+        } else {
+          history.push(`hospitals`)
         }
-
-      }else{
-        history.push("/main");
+      } else {
+        history.push('/main')
       }
-    
     }
-    
   }, [])
 
- 
-
   const userLogin = (data) => {
-     
-    disPatch(login(data,history));
+    disPatch(login(data, history))
     // disPatch(notify('Welcome to the documentation', 'info'))
-  };
+  }
 
   const redirectToPage = () => {
-    history.push("/forgotpassword");
-  };
+    history.push('/forgotpassword')
+  }
 
   return (
     <SingleLayout>
-       {/* for addeing page metas  */}
-       <MetaTitles title="Clear Health | Login" description=" Login  "/>
+      {/* for addeing page metas  */}
+      <MetaTitles title="Clear Health | Login" description=" Login  " />
       {/* // <div className="container-fluid bg-login">
     //   <NotificationLayout/>
     //   <div className="row  ">
@@ -103,7 +99,7 @@ const Login = () => {
         <label className="mt-3 pb-2">Email address</label>
         <input
           type="text"
-          {...register("username")}
+          {...register('username')}
           className="form-control mb-3 "
           placeholder="Enter Email"
           autoComplete="new-off"
@@ -113,35 +109,35 @@ const Login = () => {
         <label className="pb-2">Password</label>
         <input
           type="password"
-          {...register("password")}
+          {...register('password')}
           className="form-control mb-3"
           placeholder="Enter Password"
           autoComplete="new"
         />
         <div className="small text-danger pb-2  ">{errors.password?.message}</div>
         <div className="row p-2">
-<div className="col-md-6 pl-2 checkbox">
-<div className="checkbox-container float-left">
-        <label className="checkbox-label">
-            <input type="checkbox" name="KeepSign" id=""    {...register("keepSignIn")}/>
-            <span className="checkbox-custom"></span>
-        </label>
-</div>
-  {/* <input type="checkbox" className="form-check-input" name="KeepSign" id=""   {...register("keepSignIn")}/> <div className="label  form-check-label ">Keep me signed in</div> */}
-  <div className="label  form-check-label pl-2 ml-3 "> Keep me signed in</div>
-</div>
+          <div className="col-md-6 pl-2 checkbox">
+            <div className="checkbox-container float-left">
+              <label className="checkbox-label">
+                <input type="checkbox" name="KeepSign" id="" {...register('keepSignIn')} />
+                <span className="checkbox-custom"></span>
+              </label>
+            </div>
+            {/* <input type="checkbox" className="form-check-input" name="KeepSign" id=""   {...register("keepSignIn")}/> <div className="label  form-check-label ">Keep me signed in</div> */}
+            <div className="label  form-check-label pl-2 ml-3 "> Keep me signed in</div>
+          </div>
 
-<div className="col-md-6 text-right">
-<div className=" label  text-right text-loginblue  font-lato-bold cil-cursor cursor-point" onClick={redirectToPage}>
-          Forgot Password?
+          <div className="col-md-6 text-right">
+            <div
+              className=" label  text-right text-loginblue  font-lato-bold cil-cursor cursor-point"
+              onClick={redirectToPage}
+            >
+              Forgot Password?
+            </div>
+          </div>
         </div>
-</div>
 
-        </div>
-       
-        <button className="btn btn-primary btn-lg col-md-12 mt-1 p-3">
-          Sign in
-        </button>
+        <button className="btn btn-primary btn-lg col-md-12 mt-1 p-3">Sign in</button>
         {/* {process.env.REACT_APP_BASE_URL} */}
       </form>
 
@@ -153,7 +149,7 @@ const Login = () => {
       </div>
     </div> */}
     </SingleLayout>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
