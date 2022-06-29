@@ -1,28 +1,28 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react';
-import { useForm, useFormState } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import React, {useEffect, useRef, useState} from 'react';
+import {useForm, useFormState} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum';
-import { useHistory } from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns} from 'src/reusable/enum';
+import {useHistory} from 'react-router-dom';
 import OnError from 'src/_helpers/onerror';
-import { saveHospital, updateHospitalByPartyRoleId } from 'src/service/hospitalsService';
-import { notify } from 'reapop';
+import {saveHospital, updateHospitalByPartyRoleId} from 'src/service/hospitalsService';
+import {notify} from 'reapop';
 import InputMask from 'react-input-mask';
 import NormalizePhone from 'src/reusable/NormalizePhone';
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation';
 import useDebounce from 'src/reusable/debounce';
-import { getValidateOrganization } from 'src/service/commonService';
+import {getValidateOrganization} from 'src/service/commonService';
 import FormatText from 'src/reusable/FormatText';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { EnableMaskPhone } from 'src/reusable';
+import {EnableMaskPhone} from 'src/reusable';
 import HospitalNotifyUser from './HospitalNotifyUser';
 import AddFeeSchedules from './FeeSchedules/AddFeeSchedules';
 import EditFeeSchedules from './FeeSchedules/EditFeeSchedules';
-
+import { MultiEmailText } from 'src/reusable/MultiEmailText';
 
 const schema = yup.object().shape({
 	hospitalName: yup.string().required('Hospital name is required').matches(ValidationPatterns.onlyCharacters, 'Hospital name should contain only characters'),
@@ -32,26 +32,21 @@ const schema = yup.object().shape({
 	city: yup.string().required('City is required'),
 	state: yup.string().required('State is required'),
 	zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
-	phone: yup
-		.string()
-		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+	phone: yup.string().test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
 	businessAddress1: yup.string(),
 	businessAddress2: yup.string(),
 	businessCity: yup.string(),
 	businessState: yup.string(),
 	businessZip: yup.string().matches(ValidationPatterns.zip, 'Zip is not valid'),
 	patientContactName: yup.string(),
-	patientContactPhone: yup
-		.string()
-		.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-	patientContactEmail: yup.string().email('Contact Email must be a valid email'),
+	patientContactPhone: yup.string().test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+	// patientContactEmail: yup.string().email('Contact Email must be a valid email'),
 	clearTransactionalFee: yup.number().required('Clear Transactional Fee percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee percentage is required.'),
 	patientResponsibilityDiscount: yup.number().required('Patient Responsibility Discount percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Patient Responsibility Discount percentage is required.'),
 	clearTransactionalFeeforPatientResponsibility: yup.number().required('Clear Transactional Fee for patient responsibility percentage is required.').min(0, 'Min value 0.').max(100, 'Max value 100.').typeError('Clear Transactional Fee for patient responsibility percentage is required.'),
-
 });
 
-const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = [], onboardingInfo, emailSendersList = [], smsSendersList = [] }) => {
+const HospitalForm = ({defaultValues, isEdit = false, partyRoleId = null, healthSystems = [], stateList = [], onboardingInfo, emailSendersList = [], smsSendersList = []}) => {
 	const {
 		register,
 		handleSubmit,
@@ -59,17 +54,19 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		getValues,
 		reset,
 		control,
-		formState: { errors },
-	} = useForm({ resolver: yupResolver(schema), mode: 'all' });
+		formState: {errors},
+	} = useForm({resolver: yupResolver(schema), mode: 'all'});
 
 	const [stateOption, setStateOption] = useState(defaultValues.state);
 	const [businessStateOption, setBusinessStateOption] = useState(defaultValues.businessState);
 
 	// const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
-	const { dirtyFields } = useFormState({ control });
+	const {dirtyFields} = useFormState({control});
 	const dispatch = useDispatch();
 	let history = useHistory();
 	let btnRef = useRef();
+
+	const [emailList, setEmailist] = useState([]);
 
 	// for org name validation
 	const [hospitalName, setHospitalName] = useState('');
@@ -81,19 +78,21 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	const [isFeeSchedule, setFeeSchedule] = useState(false);
 	const [feeScheduleChanges, setFeeScheduleChanges] = useState(false);
 	const [hospitalId, setHospitalId] = useState(null);
+
+
+
 	// validate organition name
 	useEffect(() => {
 		const fetchValidate = async () => {
 			try {
-				
 				setIsSearching(true);
 				if (debouncedName) {
 					let data = {
 						roleTypeId: Organizations.Hospital,
 						organizationName: debouncedName,
-						...(isEdit && { partyRoleId }),
+						...(isEdit && {partyRoleId}),
 					};
-				
+
 					const result = await getValidateOrganization(data);
 
 					if (result.data.data) {
@@ -103,12 +102,12 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					}
 					setIsSearching(false);
 					setIsAlreadyExit(!result.data.data);
-					setValue('hospitalName', debouncedName, { shouldValidate: true, shouldDirty: true });
+					setValue('hospitalName', debouncedName, {shouldValidate: true, shouldDirty: true});
 				} else {
 					setIsSearching(false);
 					setIsAlreadyExit(false);
 				}
-			} catch (error) { }
+			} catch (error) {}
 		};
 		fetchValidate();
 	}, [debouncedName]);
@@ -147,11 +146,20 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 	};
 
 	const stateSelect = (event) => {
-		setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true });
+		setValue('state', event.target.innerText, {shouldValidate: true, shouldDirty: true});
 	};
 	const businessStateSelect = (event) => {
-		setValue('businessState', event.target.innerText, { shouldValidate: true, shouldDirty: true });
+		setValue('businessState', event.target.innerText, {shouldValidate: true, shouldDirty: true});
 	};
+
+
+
+	const changeEmail=( val)=>{
+		
+		setEmailist(val);
+	}
+
+
 
 	// set default form values
 	useEffect(() => {
@@ -159,6 +167,13 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			reset(defaultValues);
 			setStateOption(defaultValues.state); //set state dropdown value
 			setBusinessStateOption(defaultValues.businessState);
+
+			if(defaultValues.patientContactEmail){
+				let patientEmailList=defaultValues.patientContactEmail.split(', ');
+				setEmailist(patientEmailList);
+			}
+		
+
 		} catch (error) {
 			OnError(error, dispatch);
 		}
@@ -167,6 +182,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 	// form submit
 	const hospitalFormSubmit = (data) => {
+		
 		if (btnRef.current) {
 			btnRef.current.setAttribute('disabled', 'disabled');
 		}
@@ -187,14 +203,14 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 	const onCancelFeeSchedule = () => {
 		setFeeSchedule(false);
-
-	}
+	};
 
 	const onOpenFeeSchedule = (result) => {
-		setHospitalId(result)
+		setHospitalId(result);
 		setFeeSchedule(true);
+	};
 
-	}
+
 
 
 
@@ -236,19 +252,21 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 			patientAccessContact: {
 				name: data.patientContactName,
 				phone: NormalizePhone(data.patientContactPhone),
-				email: data.patientContactEmail,
+				// email: data.patientContactEmail,
+				email:emailList.join(', ')
 			},
-
 		};
+
+		
 
 		try {
 			if (newHospital) {
 				let result = await saveHospital(newHospital);
 				if (result.data.message === ServiceMsg.OK) {
-				dispatch(notify(`Successfully added`, 'success'));
-				// history.push('/hospitals');
-				onOpenFeeSchedule(result.data.data);
-				//history.goBack();
+					dispatch(notify(`Successfully added`, 'success'));
+					// history.push('/hospitals');
+					onOpenFeeSchedule(result.data.data);
+					//history.goBack();
 				}
 			}
 		} catch (error) {
@@ -256,15 +274,15 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 		}
 	};
 
-	const getChanges= (result) => {
-		setFeeScheduleChanges(result)
-	}
+	const getChanges = (result) => {
+		setFeeScheduleChanges(result);
+	};
 
 	// update hospital
 	const updateHospitalInfo = async () => {
 		try {
 			const updateHospital = {
-				...((feeScheduleChanges|| dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.alertSenderEmail || dirtyFields.alertSenderSMS || dirtyFields.clearTransactionalFee || dirtyFields.patientResponsibilityDiscount || dirtyFields.clearTransactionalFeeforPatientResponsibility) && {
+				...((feeScheduleChanges || dirtyFields.hospitalName || dirtyFields.healthSystemPartyRoleId || dirtyFields.alertSenderEmail || dirtyFields.alertSenderSMS || dirtyFields.clearTransactionalFee || dirtyFields.patientResponsibilityDiscount || dirtyFields.clearTransactionalFeeforPatientResponsibility) && {
 					hospital: {
 						name: getValues('hospitalName'),
 						healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
@@ -279,28 +297,28 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					postalAddress: [
 						...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
 							? [
-								{
-									partyContactTypeId: PartyTypeEnum.primary,
-									address1: getValues('address1'),
-									address2: getValues('address2'),
-									city: getValues('city'),
-									state: getValues('state'),
-									zip: getValues('zip'),
-								},
-							]
+									{
+										partyContactTypeId: PartyTypeEnum.primary,
+										address1: getValues('address1'),
+										address2: getValues('address2'),
+										city: getValues('city'),
+										state: getValues('state'),
+										zip: getValues('zip'),
+									},
+							  ]
 							: []),
 
 						...(dirtyFields.businessAddress1 || dirtyFields.businessAddress2 || dirtyFields.businessCity || dirtyFields.businessState || dirtyFields.businessZip
 							? [
-								{
-									partyContactTypeId: PartyTypeEnum.shipping,
-									address1: getValues('businessAddress1'),
-									address2: getValues('businessAddress2'),
-									city: getValues('businessCity'),
-									state: getValues('businessState'),
-									zip: getValues('businessZip'),
-								},
-							]
+									{
+										partyContactTypeId: PartyTypeEnum.shipping,
+										address1: getValues('businessAddress1'),
+										address2: getValues('businessAddress2'),
+										city: getValues('businessCity'),
+										state: getValues('businessState'),
+										zip: getValues('businessZip'),
+									},
+							  ]
 							: []),
 					],
 				}),
@@ -308,7 +326,8 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 					patientAccessContact: {
 						name: getValues('patientContactName'),
 						phone: NormalizePhone(getValues('patientContactPhone')),
-						email: getValues('patientContactEmail'),
+						// email: getValues('patientContactEmail'),
+						email:	emailList.join(', ')
 					},
 				}),
 				...(dirtyFields.phone && {
@@ -317,7 +336,6 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						number: NormalizePhone(getValues('phone')),
 					},
 				}),
-
 			};
 			if (Object.keys(updateHospital).length === 0) {
 				dispatch(notify(`No record to update`, 'error'));
@@ -411,8 +429,6 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						</div>
 					</div>
 
-
-
 					<div className='col-md-4'>
 						<div className='form-group'>
 							<label className='form-text'>
@@ -420,8 +436,8 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								Clear Transactional Fee <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
 
-							<div className='rt-input-input w-100' >
-								<input className='form-control-sm remove-percentage' type='number' min="0" max="100"  {...register('clearTransactionalFee')} />
+							<div className='rt-input-input w-100'>
+								<input className='form-control-sm remove-percentage' type='number' min='0' max='100' {...register('clearTransactionalFee')} />
 							</div>
 							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFee?.message}</div>
 						</div>
@@ -433,12 +449,10 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								Patient Responsibility Discount <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<div className='rt-input-input w-100' >
-								<input className='form-control-sm remove-percentage' type='number' min="0" max="100"  {...register('patientResponsibilityDiscount')} />
+							<div className='rt-input-input w-100'>
+								<input className='form-control-sm remove-percentage' type='number' min='0' max='100' {...register('patientResponsibilityDiscount')} />
 							</div>
 							<div className='small text-danger  pb-2   '>{errors.patientResponsibilityDiscount?.message}</div>
-
-
 						</div>
 					</div>
 
@@ -448,12 +462,10 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 								{' '}
 								Clear Transactional Fee for Patient Responsibility <span className='text-danger font-weight-bold '>*</span>{' '}
 							</label>
-							<div className='rt-input-input w-100' >
-								<input className='form-control-sm remove-percentage' type='number' min="0" max="100" {...register('clearTransactionalFeeforPatientResponsibility')} />
+							<div className='rt-input-input w-100'>
+								<input className='form-control-sm remove-percentage' type='number' min='0' max='100' {...register('clearTransactionalFeeforPatientResponsibility')} />
 							</div>
 							<div className='small text-danger  pb-2   '>{errors.clearTransactionalFeeforPatientResponsibility?.message}</div>
-
-
 						</div>
 					</div>
 				</div>
@@ -515,9 +527,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						</div>
 
 						<div className='form-group'>
-							<label className='form-text'>
-								Phone 
-							</label>
+							<label className='form-text'>Phone</label>
 							<InputMask {...register('phone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('phone'))} className='form-control-sm' />
 							{/* <input type='text' className='form-control-sm' {...register('phone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.phone?.message}</div>
@@ -531,9 +541,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 							<span className='pr-5'>Business Address </span> <input type='checkbox' className='form-check-input' onChange={handleBusinessChecked} /> <span className='small'>Same as address</span>{' '}
 						</h5>
 						<div className='form-group'>
-							<label className='form-text'>
-								Address Line 1 
-							</label>
+							<label className='form-text'>Address Line 1</label>
 							<input type='text' className='form-control-sm' {...register('businessAddress1')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.businessAddress1?.message}</div>
 						</div>
@@ -545,16 +553,12 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 						<div className='row'>
 							<div className='form-group col-md-6'>
-								<label className='form-text'>
-									City 
-								</label>
+								<label className='form-text'>City</label>
 								<input type='text' className='form-control-sm' {...register('businessCity')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 								<div className='small text-danger  pb-2   '>{errors.businessCity?.message}</div>
 							</div>
 							<div className='form-group col-md-6'>
-								<label className='form-text'>
-									State 
-								</label>
+								<label className='form-text'>State</label>
 								<Autocomplete
 									id='business state'
 									options={stateList}
@@ -573,9 +577,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						</div>
 
 						<div className='form-group'>
-							<label className='form-text'>
-								Zip
-							</label>
+							<label className='form-text'>Zip</label>
 							<input type='text' className='form-control-sm' {...register('businessZip')} />
 							<div className='small text-danger  pb-2   '>{errors.businessZip?.message}</div>
 						</div>
@@ -586,35 +588,32 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 						<h5 className='font-weight-bold mt-1'>Patient Access Contact </h5>
 
 						<div className='form-group'>
-							<label className='form-text'>
-								Name 
-							</label>
+							<label className='form-text'>Name</label>
 							<input type='text' className='form-control-sm' {...register('patientContactName')} onInput={(e) => (e.target.value = FormatText(e.target.value))} />
 							<div className='small text-danger  pb-2   '>{errors.patientContactName?.message}</div>
 						</div>
 
 						<div className='form-group'>
-							<label className='form-text'>
-								Phone 
-							</label>
+							<label className='form-text'>Phone</label>
 							<InputMask {...register('patientContactPhone')} mask={MaskFormat.phoneNumber} alwaysShowMask={EnableMaskPhone(isEdit, getValues('patientContactPhone'))} className='form-control-sm' />
 
 							{/* <input type='text' className='form-control-sm' {...register('patientContactPhone')} /> */}
 							<div className='small text-danger  pb-2   '>{errors.patientContactPhone?.message}</div>
 						</div>
 
-						<div className='form-group'>
+						<div className='form-group margin-minus-top-8'>
 							<label className='form-text'>
 								Email 
 							</label>
-							<input type='text' className='form-control-sm' {...register('patientContactEmail')} />
-							<div className='small text-danger  pb-2   '>{errors.patientContactEmail?.message}</div>
+							{/* <MultipleValueTextInput onItemAdded={(item, allItems) => patientAccessContactEmail(allItems)} onItemDeleted={(item, allItems) => setEmailist(allItems)} label='Email' name='item-input' className='form-control-sm' placeholder='Enter whatever items you want; separate them with COMMA or ENTER.' values={emailList} /> */}
+							<MultiEmailText  handleEmailAdd={changeEmail} defalutEmail ={emailList}/>
+							{/* <input type='text' className='form-control-sm' {...register('patientContactEmail')} />
+							<div className='small text-danger  pb-2   '>{errors.patientContactEmail?.message}</div> */}
 						</div>
 					</div>
 				</div>
 
-
-				{partyRoleId != null && <EditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges}/>}
+				{partyRoleId != null && <EditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges} />}
 
 				{/* Stripe */}
 				{/* {isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null}
@@ -663,8 +662,7 @@ const HospitalForm = ({ defaultValues, isEdit = false, partyRoleId = null, healt
 
 			<HospitalNotifyUser partyRoleId={partyRoleId} isNotify={isNotify} handleCancel={modelCancel} />
 
-			{isFeeSchedule==true && <AddFeeSchedules edit={isEdit} partyRoleId={hospitalId} isFeeSchedule={isFeeSchedule}   />}
-
+			{isFeeSchedule == true && <AddFeeSchedules edit={isEdit} partyRoleId={hospitalId} isFeeSchedule={isFeeSchedule} />}
 		</div>
 	);
 };

@@ -14,3 +14,7 @@ export const getOrderSuccessByOrderId=(id,data)=>axiosInstance.post(`openorder/c
 
 export const paymentCheckout=(data)=>axiosInstance.post(`openorder/checkout`,data);
 
+
+export const facilityPaymentVerification=(data)=>axiosInstance.post(`openorder/facilityPaymentVerification`,data);
+
+export const providerPaymentVerification=(data)=>axiosInstance.post(`openorder/providerPaymentVerification`,data);

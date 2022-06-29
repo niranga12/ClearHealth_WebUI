@@ -26,8 +26,7 @@ const DashboardMenu= React.lazy(()=>import('./views/Components/dashboardMenu/The
 const Payment =React.lazy(() => import('./views/Components/payment/Payment'));
 const OnBoarding = React.lazy(()=>import('./views/pages/onboarding/onBoardingComplete'));
 const PaymentMobile= React.lazy(()=>import('./views/Components/paymentMobile/PaymentMobileLink'));
-
-
+const PaymentVerification = React.lazy(()=>import('./views/Components/Payment-Verification/paymentverification'));
 
 class App extends Component {
 
@@ -47,6 +46,13 @@ class App extends Component {
               <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
               <Route exact path="/onboardingcomplete" name="On Boarding Complete" render={props => <OnBoarding {...props}/>} />
               <Route exact path="/paymentsms" name="Payment Mobile Link" render={props => <PaymentMobile {...props}/>} />
+             
+              <Route exact path="/paymentverificationprovider" name="payment verification " render={props => <PaymentVerification {...props}/>} />
+              <Route exact path="/paymentverificationprovider/:id" name="payment verification " render={props => <PaymentVerification {...props}/>} />
+              <Route exact path="/paymentverificationprovider/:id/:providerid" name="payment verification " render={props => <PaymentVerification {...props}/>} />
+
+              <Route exact path="/paymentverificationfacility" name="payment verification " render={props => <PaymentVerification {...props}/>} />
+              <Route exact path="/paymentverificationfacility/:id" name="payment verification " render={props => <PaymentVerification {...props}/>} />
 
               
               <Route exact  path="/payment" name="payment" render={props => <Payment {...props}/>} />

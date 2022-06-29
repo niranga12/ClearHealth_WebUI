@@ -29,3 +29,4 @@ export const getPayerList=(search)=>axiosInstance.post(`order/payerList`,search)
 
 export const verifyInsuranceDetails=(insurancDetails)=>axiosInstance.post(`order/verifyInsurance`,insurancDetails);
 
+export const getOpenOrderById=(orderId)=>axiosInstance.get(`openOrder/${orderId}`);
