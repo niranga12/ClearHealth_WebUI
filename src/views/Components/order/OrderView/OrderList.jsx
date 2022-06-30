@@ -130,9 +130,14 @@ const OrderList = ({ orderDetail,handleAddCPT }) => {
 				Cell: serviceDetail,
 			},
 			{
-				Header: 'CPT Code',
-				accessor: 'code',
+				Header: 'Facility Account Number',
+				accessor: 'facilityAccountNumber',
 			},
+			{
+				Header: 'Ancillary Account Number',
+				accessor: 'ancillaryAccountNumber',
+			},
+		
 			{
 				Header: 'Provider',
 				accessor: 'providerFirstName',
@@ -147,11 +152,35 @@ const OrderList = ({ orderDetail,handleAddCPT }) => {
 			// 	Header: 'Ref',
 			// 	accessor: 'Ref',
 			// },
+			// {
+			// 	Header: 'Price',
+			// 	accessor: 'packagePrice',
+			// 	Cell: ({ row }) => <div>$ {row.original.packagePrice}</div>,
+			// },
 			{
-				Header: 'Price',
+				Header: 'Facility Price',
+				accessor: 'facilityPrice',
+				Cell: ({ row }) => <div>$ {row.original.facilityPrice}</div>,
+			},
+			{
+				Header: 'Provider Price',
+				accessor: 'providerPrice',
+				Cell: ({ row }) => <div>$ {row.original.providerPrice}</div>,
+			},
+			{
+				Header: 'Clear Charge',
+				accessor: 'clearCharge',
+				Cell: ({ row }) => <div>$ {row.original.clearCharge}</div>,
+			},
+
+			{
+				Header: 'package Price',
 				accessor: 'packagePrice',
 				Cell: ({ row }) => <div>$ {row.original.packagePrice}</div>,
 			},
+		
+
+	
 
 			{
 				Header: '',
@@ -172,6 +201,8 @@ const OrderList = ({ orderDetail,handleAddCPT }) => {
 						<div className='h4 mb-1 text-black'>Order #{order?.orderPatientDetails?.orderNumber}</div>
 						<div>{moment(order?.orderPatientDetails?.orderDate).format('MM-DD-YYYY')}</div>
 						<div>OrderType : {order?.orderSummary[0]?.orderTypeDescription}</div>
+						<div>Date Paid : {order?.orderSummary[0]?.datePaid}</div>
+						<div>Date Sent : {order?.orderSummary[0]?.dateSent}</div>
 						{order?.orderSummary[0]?.orderTypeId === OrderType.PatientResponsibility && <div>Order Total : {order?.orderSummary[0]?.orderTotal}	</div>}
 					</div>
 
