@@ -1,9 +1,5 @@
-import CurrencyFormat from './CurrencyFormat';
-import DocsLink from './DocsLink';
-import EnableMaskPhone from "./EnableMaskPhone";
+import CurrencyFormat from './CurrencyFormat'
+import DocsLink from './DocsLink'
+import EnableMaskPhone from './EnableMaskPhone'
 
-export {
-  DocsLink,
-  EnableMaskPhone,
-  CurrencyFormat
-}
+export { DocsLink, EnableMaskPhone, CurrencyFormat }

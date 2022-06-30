@@ -12,36 +12,31 @@ import { Profile } from 'src/assets/icons/logo-profile'
 import { logoMenu } from 'src/assets/icons/logo-menu'
 import { ScreenPermissions } from 'src/reusable/enum'
 
-
-const _nav =  [
- 
+const _nav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'Main',
-     to: '/main',
+    to: '/main',
     // icon: 'cil-drop',
-    screenid:ScreenPermissions.Main,
+    screenid: ScreenPermissions.Main,
 
-    icon:<CIcon content={logoMenu} size={'2xl'}  className="m-auto"/>,
+    icon: <CIcon content={logoMenu} size={'2xl'} className="m-auto" />
   },
-  
 
-
- 
   {
     _tag: 'CSidebarNavItem',
     name: 'Hospitals',
-   to: '/hospitals',
-   screenid:ScreenPermissions.Hospital,
-    icon:<CIcon content={logoHospital} size={'2xl'} className="m-auto"/>,
+    to: '/hospitals',
+    screenid: ScreenPermissions.Hospital,
+    icon: <CIcon content={logoHospital} size={'2xl'} className="m-auto" />
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Health Systems',
-     to: '/healthsystem',
-     screenid:ScreenPermissions.HealthSystem,
+    to: '/healthsystem',
+    screenid: ScreenPermissions.HealthSystem,
 
-    icon: <CIcon content={logoHealthSystem} size={'2xl'} className="m-auto"/>,
+    icon: <CIcon content={logoHealthSystem} size={'2xl'} className="m-auto" />
   },
   // {
   //   _tag: 'CSidebarNavItem',
@@ -62,34 +57,32 @@ const _nav =  [
   {
     _tag: 'CSidebarNavItem',
     name: 'Orders',
-    icon: <CIcon content={logoOrders} size={'2xl'} className="m-auto"/>,
+    icon: <CIcon content={logoOrders} size={'2xl'} className="m-auto" />,
     // to: '/base/cards',
-    screenid:ScreenPermissions.Orders,
+    screenid: ScreenPermissions.Orders
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Patients',
-    icon: <CIcon content={logoPatients} size={'2xl'} className="m-auto"/>,
-     to: '/patients',
-     screenid:ScreenPermissions.Patients,
-
+    icon: <CIcon content={logoPatients} size={'2xl'} className="m-auto" />,
+    to: '/patients',
+    screenid: ScreenPermissions.Patients
   },
- 
+
   {
     _tag: 'CSidebarNavItem',
     name: 'Accounting',
     // to: '/base/cards',
-    icon: <CIcon content={logoAccounting} size={'2xl'} className="m-auto"/>,
-    screenid:ScreenPermissions.Accounting,
-  },
+    icon: <CIcon content={logoAccounting} size={'2xl'} className="m-auto" />,
+    screenid: ScreenPermissions.Accounting
+  }
   // {
   //   _tag: 'CSidebarNavItem',
   //   name: 'Profile',
   //   icon: <CIcon content={Profile} size={'2xl'} className="m-auto"/>,
-    
+
   //   screenid:ScreenPermissions.Profile,
   // },
-
 ]
 
 export default _nav

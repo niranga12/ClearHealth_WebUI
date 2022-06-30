@@ -1,4 +1,6 @@
-export const logoPatients=['40 40', `
+export const logoPatients = [
+  '40 40',
+  `
 
 <defs>
 <filter color-interpolation-filters="auto" id="filter-1">
@@ -23,4 +25,5 @@ export const logoPatients=['40 40', `
     </g>
 </g>
 </g>
-`]
+`
+]

@@ -1,4 +1,6 @@
-export const logoHealthSystem=['30 30', `
+export const logoHealthSystem = [
+  '30 30',
+  `
     
     <defs>
         <rect id="path-1" x="0" y="0" width="40" height="40"></rect>
@@ -18,4 +20,5 @@ export const logoHealthSystem=['30 30', `
         </g>
     </g>
 </g>
-`]
+`
+]

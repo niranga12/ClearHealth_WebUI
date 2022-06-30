@@ -4,9 +4,8 @@ import App from './App'
 // import ChartLineSimple from './views/charts/ChartLineSimple'
 // import Dashboard from './views/dashboard/Dashboard.js'
 
-
 it('mounts App without crashing', () => {
-  const wrapper = shallow(<App/>)
+  const wrapper = shallow(<App />)
   wrapper.unmount()
 })
 
