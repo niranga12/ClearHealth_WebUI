@@ -109,6 +109,7 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
       setValue('file', '')
       setTable(data)
     }
+    
   }
 
   const onClose = (event) => {

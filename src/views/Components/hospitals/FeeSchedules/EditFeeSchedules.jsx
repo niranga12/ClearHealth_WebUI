@@ -126,6 +126,7 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
         setSelectedSpeciality(null)
         setValue('speciality', '')
         setValue('file', '')
+        btnRef.current.setAttribute('disabled', 'disabled')
       }
     }
 
@@ -162,7 +163,7 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
 
           <div className="col-2 mt-5">
             <button type="button" className="btn btn-primary" ref={btnRef} onClick={handleSubmission}>
-              Submit
+              Submit 
             </button>
           </div>
         </div>

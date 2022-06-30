@@ -33,7 +33,7 @@ function CellContract({ row }) {
       </div>
       <div className="rectangle-intable">
         {' '}
-        <span className="fa fa-envelope text-health-icon pr-1"></span> {row.original.contactElectronicAddress}
+        <span className="fa fa-envelope text-health-icon pr-1"></span> {row.original.contactElectronicAddress.split(',')[0]}
       </div>
     </>
   )
