@@ -19,6 +19,7 @@ import { store, persistor } from './store'
 Sentry.init({
   dsn: 'https://9a72d0bab1eb4ef7aad763a77dacd7d8@o1302227.ingest.sentry.io/6539318',
   integrations: [new BrowserTracing()],
+  environment: process.env.NODE_ENV || 'other',
 
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
