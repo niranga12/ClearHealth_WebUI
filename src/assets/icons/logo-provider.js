@@ -1,4 +1,6 @@
-export const logoProviders=['30 30', `
+export const logoProviders = [
+  '30 30',
+  `
 
 
 
@@ -15,4 +17,5 @@ export const logoProviders=['30 30', `
     </g>
 </g>
 </g>
-`]
+`
+]

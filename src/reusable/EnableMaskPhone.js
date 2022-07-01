@@ -1,11 +1,7 @@
-import NormalizePhone from "./NormalizePhone";
+import NormalizePhone from './NormalizePhone'
 
-const EnableMaskPhone=(edit,inputValue)=>{
-	
-	
-	return  edit &&  NormalizePhone(inputValue) ? true:false;
-	
-
+const EnableMaskPhone = (edit, inputValue) => {
+  return edit && NormalizePhone(inputValue) ? true : false
 }
 
-export default EnableMaskPhone;
+export default EnableMaskPhone

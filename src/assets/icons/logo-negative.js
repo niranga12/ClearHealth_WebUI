@@ -1,4 +1,6 @@
-export const logoNegative = ['408 154', `
+export const logoNegative = [
+  '408 154',
+  `
   <title>clear health  logo</title>
  
 	<defs>
@@ -68,6 +70,5 @@ export const logoNegative = ['408 154', `
 
 
 
-`]
-
-
+`
+]

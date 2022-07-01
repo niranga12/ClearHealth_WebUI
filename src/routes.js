@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 // const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
 // const Tables = React.lazy(() => import('./views/base/tables/Tables'));
@@ -37,25 +37,22 @@ import React from 'react';
 // const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 // const Users = React.lazy(() => import('./views/users/Users'));
 // const User = React.lazy(() => import('./views/users/User'));
-const HealthSystem = React.lazy(() => import('./views/Components/healthSystems/healthsytemgrid'));
-const HealthSystemProfile = React.lazy(() => import('./views/Components/healthSystems/healthSystemProfile'));
-const Hospitals = React.lazy(() => import('./views/Components/hospitals/HospitalsGrid'));
-const HospitalProfile = React.lazy(() => import('./views/Components/hospitals/HospitalProfile'));
-const HospitalSubPage = React.lazy(() => import('./views/Components/hospitals/HospitalLayout/HospitalLayout'));
-const Provider=React.lazy(() => import('./views/Components/providers/ProviderGrid'));
-const ProviderProfile=React.lazy(() => import('./views/Components/providers/ProviderProfile'));
-const Patient=React.lazy(() => import('./views/Components/patients/PatientGrid'));
-const PatientProfile=React.lazy(() => import('./views/Components/patients/PatientProfile'));
-const ProcedureProfile =React.lazy(() => import('./views/Components/Procedure/ProcedureProfile'));
-const PricingTool =React.lazy(() => import('./views/Components/pricingTool/PricingToolGrid'));
-const User = React.lazy(() => import('./views/Components/users/UserGrid'));
-const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'));
-const OrderProfile= React.lazy(() => import('./views/Components/order/OrderProfile/OrderProfile'));
-const OrderView= React.lazy(() => import('./views/Components/order/OrderView/OrderView'));
-const PatientOrderList= React.lazy(() => import('./views/Components/patients/PatientsOrder/PatientsOrderList'));
-
-
-
+const HealthSystem = React.lazy(() => import('./views/Components/healthSystems/healthsytemgrid'))
+const HealthSystemProfile = React.lazy(() => import('./views/Components/healthSystems/healthSystemProfile'))
+const Hospitals = React.lazy(() => import('./views/Components/hospitals/HospitalsGrid'))
+const HospitalProfile = React.lazy(() => import('./views/Components/hospitals/HospitalProfile'))
+const HospitalSubPage = React.lazy(() => import('./views/Components/hospitals/HospitalLayout/HospitalLayout'))
+const Provider = React.lazy(() => import('./views/Components/providers/ProviderGrid'))
+const ProviderProfile = React.lazy(() => import('./views/Components/providers/ProviderProfile'))
+const Patient = React.lazy(() => import('./views/Components/patients/PatientGrid'))
+const PatientProfile = React.lazy(() => import('./views/Components/patients/PatientProfile'))
+const ProcedureProfile = React.lazy(() => import('./views/Components/Procedure/ProcedureProfile'))
+const PricingTool = React.lazy(() => import('./views/Components/pricingTool/PricingToolGrid'))
+const User = React.lazy(() => import('./views/Components/users/UserGrid'))
+const UserProfile = React.lazy(() => import('./views/Components/users/UserProfile'))
+const OrderProfile = React.lazy(() => import('./views/Components/order/OrderProfile/OrderProfile'))
+const OrderView = React.lazy(() => import('./views/Components/order/OrderView/OrderView'))
+const PatientOrderList = React.lazy(() => import('./views/Components/patients/PatientsOrder/PatientsOrderList'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -108,23 +105,20 @@ const routes = [
   { path: '/providers', name: 'Providers', component: Provider, exact: true },
   { path: '/providers/profile', name: 'Providers Profile', component: ProviderProfile },
   //Patients
-  { path: '/patients', name: 'Patients', component: Patient, exact: true},
-  { path: '/patients/profile', name: 'Patients Profile', component:PatientProfile },
-  { path: '/patients/orders', name: 'Patients Orders', component:PatientOrderList },
-  
+  { path: '/patients', name: 'Patients', component: Patient, exact: true },
+  { path: '/patients/profile', name: 'Patients Profile', component: PatientProfile },
+  { path: '/patients/orders', name: 'Patients Orders', component: PatientOrderList },
+
   // procedure
-  { path: '/procedure', name: 'Procedure', component:ProcedureProfile, exact: true },
+  { path: '/procedure', name: 'Procedure', component: ProcedureProfile, exact: true },
   // PricingTool
-  { path: '/pricing', name: 'PricingTool', component:PricingTool ,exact: true},
-   //User
-   { path: '/users', name: 'Users', component: User, exact: true },
-   { path: '/users/profile', name: 'Users Profile', component: UserProfile },
-   //order
-   { path: '/order', name: 'order', component: OrderProfile, exact: true },
-   { path: '/order/view', name: 'Order View', component: OrderView },
-   
-   
+  { path: '/pricing', name: 'PricingTool', component: PricingTool, exact: true },
+  //User
+  { path: '/users', name: 'Users', component: User, exact: true },
+  { path: '/users/profile', name: 'Users Profile', component: UserProfile },
+  //order
+  { path: '/order', name: 'order', component: OrderProfile, exact: true },
+  { path: '/order/view', name: 'Order View', component: OrderView }
+]
 
-];
-
-export default routes;
+export default routes

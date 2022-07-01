@@ -1,7 +1,7 @@
-import {configure} from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { configure } from 'enzyme'
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
 
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() })
 
 if (global.document) {
   document.createRange = () => ({
@@ -9,7 +9,7 @@ if (global.document) {
     setEnd: () => {},
     commonAncestorContainer: {
       nodeName: 'BODY',
-      ownerDocument: document,
-    },
-  });
+      ownerDocument: document
+    }
+  })
 }

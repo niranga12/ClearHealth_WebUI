@@ -1,4 +1,6 @@
-export const logoHospital=['40 40', `
+export const logoHospital = [
+  '40 40',
+  `
 
 
 <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -14,4 +16,5 @@ export const logoHospital=['40 40', `
 </g>
 </g>
 
-`]
+`
+]

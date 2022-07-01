@@ -1,5 +1,6 @@
-
-export const Profile=['30 30', `
+export const Profile = [
+  '30 30',
+  `
 
 
 
@@ -17,4 +18,5 @@ export const Profile=['30 30', `
     </g>
 </g>
 </g>
-`]
+`
+]

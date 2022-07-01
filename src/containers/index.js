@@ -8,7 +8,7 @@ import TheHeaderDropdownTasks from './TheHeaderDropdownTasks'
 import TheLayout from './TheLayout'
 import TheSidebar from './TheSidebar'
 import TheSideNavigation from './TheSideNavigation'
-import TheTittleUser from "./TheTittleUser";
+import TheTittleUser from './TheTittleUser'
 
 export {
   TheContent,
