@@ -200,11 +200,11 @@ const ProviderForm = ({
   const handleHospitalChecked = (event) => {
     if (event.target.checked) {
       let result = hsHospitalData.find((x) => x.partyRoleId == getValues('hospitalName'))
-      setValue('address1', result.primaryAddress1, {
+      setValue('address1', result?.primaryAddress1, {
         shouldValidate: true,
         shouldDirty: true
       })
-      setValue('address2', result.primaryAddress2, {
+      setValue('address2', result?.primaryAddress2, {
         shouldValidate: true,
         shouldDirty: true
       })
@@ -569,8 +569,7 @@ const ProviderForm = ({
                 onChange={(e) => handleHealthSystemChange(e)}
                 name="healthSystemPartyRoleId"
                 id="healthSystemPartyRoleId"
-                className="form-control-sm"
-              >
+                className="form-control-sm">
                 <option value="">Select</option>
                 {healthSystemList.map((item, index) => (
                   <option key={index} value={item.partyRoleId}>
@@ -697,7 +696,7 @@ const ProviderForm = ({
                   className="form-control-sm"
                   type="text"
                   {...register('providerGroup')}
-                  onInput={(e) => (e.target.value = FormatText(e.target.value))}
+                   onInput={(e) => (e.target.value = FormatText(e.target.value))}
                 />
                 {showGroupNameError ? <div className="small text-danger  pb-2   ">Group name is required</div> : ''}
               </div>

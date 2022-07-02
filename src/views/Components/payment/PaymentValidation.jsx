@@ -4,11 +4,13 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 import { loaderHide, loaderShow } from 'src/actions/loaderAction'
-import { ServiceMsg } from 'src/reusable/enum'
+import { OrderVerificationType, ServiceMsg } from 'src/reusable/enum'
 import { getOpenOrderByOrderId } from 'src/service/orderService'
 import DateSelector from 'src/views/common/dateSelector'
 import OnError from 'src/_helpers/onerror'
 import PropTypes from 'prop-types'
+import { notify } from 'reapop'
+
 
 const PaymentValidation = ({ verifyHandle, verificationMsg = null }) => {
   const location = useLocation()
@@ -19,13 +21,25 @@ const PaymentValidation = ({ verifyHandle, verificationMsg = null }) => {
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const id = params.get('id')
+    const providerId = params.get('providerid') ?? 0
+    let verificationType
+    if (location.pathname == '/paymentverificationprovider') {
+      verificationType = OrderVerificationType.ProviderOrderVerification
+    } else if (location.pathname == '/paymentverificationfacility') {
+      verificationType = OrderVerificationType.FacilityOrderVerification
+    } else {
+      verificationType = OrderVerificationType.PatientOrderPaymentVerification
+    }
 
     const fetchData = async () => {
       dispatch(loaderShow())
       try {
-        let result = await getOpenOrderByOrderId(id)
+        let result = await getOpenOrderByOrderId(id, verificationType, providerId)
         if (result.data.message == ServiceMsg.OK) {
           setDetail(result.data.data)
+        }
+        else{
+          dispatch(notify(result.data.message, 'error'))
         }
       } catch (error) {
         OnError(error, dispatch)
@@ -37,6 +51,7 @@ const PaymentValidation = ({ verifyHandle, verificationMsg = null }) => {
   }, [location])
 
   const verifyAccount = () => {
+   
     if (fromDate) {
       verifyHandle(fromDate)
     }
