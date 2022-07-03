@@ -68,6 +68,7 @@ const ProviderForm = ({
     getValues,
     reset,
     control,
+    
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema), mode: 'all' })
 
@@ -235,18 +236,21 @@ const ProviderForm = ({
     setGroupSelection(event.target.value)
     if (event.target.value == 'Group') {
       setShowResults(false)
-      setValue('firstName', getValues('firstName'), {
+      setValue('firstName', getValues('firstName') ?? '_', {
         shouldValidate: false,
         shouldDirty: true
       })
+
+      setValue('lastName', getValues('lastName') ?? '_', {
+        shouldValidate: false,
+        shouldDirty: true
+      })
+
       setValue('middleName', getValues('middleName'), {
         shouldValidate: false,
         shouldDirty: true
       })
-      setValue('lastName', getValues('lastName'), {
-        shouldValidate: false,
-        shouldDirty: true
-      })
+
       setValue('taxId', getValues('taxId'), {
         shouldValidate: false,
         shouldDirty: true
@@ -426,6 +430,7 @@ const ProviderForm = ({
       }
     }
   }
+  
 
   const lastNameChanged = (result) => {
     if (groupSelection == 'Individual') {
@@ -696,7 +701,7 @@ const ProviderForm = ({
                   className="form-control-sm"
                   type="text"
                   {...register('providerGroup')}
-                   onInput={(e) => (e.target.value = FormatText(e.target.value))}
+                  onInput={(e) => (e.target.value = FormatText(e.target.value))}
                 />
                 {showGroupNameError ? <div className="small text-danger  pb-2   ">Group name is required</div> : ''}
               </div>
