@@ -31,14 +31,12 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
 
     setOrderId(id)
 
-  
-
     const fetchData = async () => {
       dispatch(loaderShow())
       try {
         let result = await getOpenOrderById(id)
         if (result.data.message == ServiceMsg.OK) {
-          setDetail(result.data.data.orderPatientDetails)
+          setDetail(result.data.data)
         }
       } catch (error) {
         OnError(error, dispatch)
@@ -104,36 +102,44 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
                   <div className="text-center pt-4 pb-2  ">Patient Name</div>
 
                   <div className="text-center font-weight-bold h5 mb-2">
-                    {detail && detail?.firstName} {detail && detail?.lastName}{' '}
+                    {detail && detail?.orderPatientDetails?.firstName} {detail && detail?.orderPatientDetails.lastName}{' '}
                   </div>
                 </div>
 
                 <div className="col-md-12">
                   <div className="text-center pt-4 pb-2  ">Date Of Birth</div>
-                  <div className="text-center font-weight-bold h5 mb-2">{detail && detail?.DOB} </div>
+                  <div className="text-center font-weight-bold h5 mb-2">
+                    {detail && detail?.orderPatientDetails?.DOB}{' '}
+                  </div>
                 </div>
 
                 <div className="col-md-12">
                   <div className="text-center pt-4 pb-2  ">Hospital</div>
-                  <div className="text-center font-weight-bold h5 mb-2">{detail && detail?.facilityName} </div>
+                  <div className="text-center font-weight-bold h5 mb-2">
+                    {detail && detail?.orderPatientDetails?.facilityName}{' '}
+                  </div>
                 </div>
 
                 <div className="col-md-12">
                   <div className="text-center pt-4 pb-2  ">Procedure</div>
-                  <div className="text-center font-weight-bold h5 mb-2">{detail && detail?.description} </div>
+                  <ul className="text-center font-weight-bold h5 mb-2 mb-2 list-unstyled">{detail && detail?.orderDetails.length>0 && detail?.orderDetails.map((item, index) => (
+                  <li key={index} value={item}>
+                    {item.description}
+                  </li>
+                ))} </ul>
                 </div>
 
                 <div className="col-md-6  offset-md-3  text-center">
                   <input
                     type="text"
                     className="form-control-sm "
-                    onChange={handleIdChange}
+                    onChange={(e) => handleIdChange(e.target.value)}
                     placeholder="Enter Id Here"
                   />
                   {/* <DateSelector className={'form-control-sm calendar-font '} selectedDate={idNumber} handleDateChange={handleIdChange} disableFuture={true} /> */}
                   {/* <p className="text-danger text-left mt-4">{verificationMsg && verificationMsg}</p> */}
 
-                  <button className="btn btn-primary  btn-lg  mt-3 mb-2" onClick={submitAccount}>
+                  <button type="button" className="btn btn-primary  btn-lg  mt-3 mb-2" onClick={submitAccount}>
                     Submit
                   </button>
                 </div>
