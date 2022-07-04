@@ -696,7 +696,7 @@ const HospitalForm = ({
 
           {/* Patient Access Contact */}
           <div className="col-md-4">
-            <h5 className="font-weight-bold mt-1">Patient Access Contact </h5>
+            <h5 className="font-weight-bold mt-1">Payment Confirmation Contact</h5>
 
             <div className="form-group">
               <label className="form-text">Name</label>
