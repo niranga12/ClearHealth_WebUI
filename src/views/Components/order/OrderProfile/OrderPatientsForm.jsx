@@ -148,7 +148,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
       } else if (value === Number(ContactMethod.Phone)) {
         setIsPhone(true)
         setIsmail(false)
-      }else if (value === Number(ContactMethod.Both)) {
+      } else if (value === Number(ContactMethod.Both)) {
         setIsPhone(true)
         setIsmail(true)
       }
@@ -174,6 +174,22 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
           : false
     } else if (
       formValue?.contactMethod == ContactMethod.Phone &&
+      fromDate &&
+      formValue?.firstName &&
+      formValue?.lastName &&
+      Number(formValue?.contactMethod) >= 0 &&
+      formValue?.phone &&
+      Number(formValue?.orderType) > -1 &&
+      formValue?.showInsurance > -1 &&
+      formValue.gender
+    ) {
+      isAviable =
+        (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
+          formValue?.orderType == OrderType.ClearPackage
+          ? true
+          : false
+    } else if (
+      formValue?.contactMethod == ContactMethod.Both &&
       fromDate &&
       formValue?.firstName &&
       formValue?.lastName &&
