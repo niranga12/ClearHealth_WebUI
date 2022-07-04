@@ -148,7 +148,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
       } else if (value === Number(ContactMethod.Phone)) {
         setIsPhone(true)
         setIsmail(false)
-      }else if (value === Number(ContactMethod.Both)) {
+      } else if (value === Number(ContactMethod.Both)) {
         setIsPhone(true)
         setIsmail(true)
       }
