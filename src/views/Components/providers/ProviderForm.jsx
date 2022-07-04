@@ -68,7 +68,7 @@ const ProviderForm = ({
     getValues,
     reset,
     control,
-    
+
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema), mode: 'all' })
 
@@ -236,12 +236,12 @@ const ProviderForm = ({
     setGroupSelection(event.target.value)
     if (event.target.value == 'Group') {
       setShowResults(false)
-      setValue('firstName', getValues('firstName') ?? '_', {
+      setValue('firstName', '_Dummy', {
         shouldValidate: false,
         shouldDirty: true
       })
 
-      setValue('lastName', getValues('lastName') ?? '_', {
+      setValue('lastName', '_Dummy', {
         shouldValidate: false,
         shouldDirty: true
       })
@@ -261,7 +261,8 @@ const ProviderForm = ({
       })
     } else {
       setShowResults(true)
-      setValue('firstName', getValues('firstName'), {
+      let fName = getValues('firstName') == '_Dummy' ? ' ' : getValues('firstName')
+      setValue('firstName', fName, {
         shouldValidate: true,
         shouldDirty: true
       })
@@ -269,7 +270,8 @@ const ProviderForm = ({
         shouldValidate: true,
         shouldDirty: true
       })
-      setValue('lastName', getValues('lastName'), {
+      let lName = getValues('lastName') == '_Dummy' ? ' ' : getValues('lastName')
+      setValue('lastName', lName, {
         shouldValidate: true,
         shouldDirty: true
       })
@@ -430,7 +432,6 @@ const ProviderForm = ({
       }
     }
   }
-  
 
   const lastNameChanged = (result) => {
     if (groupSelection == 'Individual') {
