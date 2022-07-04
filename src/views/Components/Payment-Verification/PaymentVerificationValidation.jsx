@@ -53,7 +53,7 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
         let data = { orderId: orderId, providerPartyRoleID: providerId, providerUniqueNumber: idNumber }
         providerVerification(data)
       } else if (location.pathname == '/paymentverificationfacility') {
-        let data = { orderId: orderId, providerUniqueNumber: idNumber }
+        let data = { orderId: orderId, facilityUniqueNumber: idNumber }
         facilityVerification(data)
       } else {
       }
