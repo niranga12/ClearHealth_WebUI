@@ -27,6 +27,7 @@ const serviceDetail = ({ row }) => {
 }
 
 const OrderList = ({ orderDetail, handleAddCPT }) => {
+
   const [order, setOrder] = useState(orderDetail)
   const [orderData, setOrderData] = useState([])
   const dispatch = useDispatch()
@@ -40,7 +41,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
   const [addDetails, setAddDetails] = useState(null)
   const [visible, setVisible] = useState(false)
 
-  let btnRef = useRef()
+  const btnRef = useRef()
   //const [modelCancel, setModelCancel] = useState(null);
   //let btnRef = useRef();
   useEffect(() => {
@@ -82,8 +83,10 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
   }, [order])
 
   const approveOrder = async () => {
+   
     try {
-	  btnRef.current.setAttribute('disabled', 'disabled')
+	    // @ts-ignore
+	    btnRef.current.setAttribute('disabled', 'disabled')
       const result = await orderAprove(orderId)
       if (result.data.message == ServiceMsg.OK) {
         dispatch(notify(`Successfully updated`, 'success'))
@@ -220,6 +223,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             {order?.orderSummary[0]?.orderTypeId == OrderType.PatientResponsibility && (
               <button
                 className="btn btn-view-account ml-3 float-right"
+                ref={btnRef}
                 disabled={
                   order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts || !isAction
                 }
