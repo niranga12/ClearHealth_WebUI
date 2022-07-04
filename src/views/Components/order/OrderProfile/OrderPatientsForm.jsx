@@ -188,6 +188,22 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
           formValue?.orderType == OrderType.ClearPackage
           ? true
           : false
+    } else if (
+      formValue?.contactMethod == ContactMethod.Both &&
+      fromDate &&
+      formValue?.firstName &&
+      formValue?.lastName &&
+      Number(formValue?.contactMethod) >= 0 &&
+      formValue?.phone &&
+      Number(formValue?.orderType) > -1 &&
+      formValue?.showInsurance > -1 &&
+      formValue.gender
+    ) {
+      isAviable =
+        (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
+          formValue?.orderType == OrderType.ClearPackage
+          ? true
+          : false
     } else {
       isAviable = false
     }
