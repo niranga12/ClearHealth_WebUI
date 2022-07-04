@@ -166,7 +166,8 @@ export const HospitalTabList = {
 }
 export const ContactMethod = {
   Email: 1,
-  Phone: 2
+  Phone: 2,
+  Both: 3
 }
 
 export const csvOptions = {

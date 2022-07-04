@@ -62,7 +62,14 @@ let schema = yup.object().shape({
             .required('Phone is required')
             .test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value))
         })
-      } else {
+      } else if (values.contactMethod == '3') {
+        return schema.shape({
+          phone: yup
+            .string()
+            .required('Phone is required')
+            .test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+          email: yup.string().email(' Please enter a valid email').required('Email is required')
+        })
       }
     })
 })
@@ -141,6 +148,9 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
       } else if (value === Number(ContactMethod.Phone)) {
         setIsPhone(true)
         setIsmail(false)
+      }else if (value === Number(ContactMethod.Both)) {
+        setIsPhone(true)
+        setIsmail(true)
       }
     } else {
       setIsmail(false)
@@ -159,7 +169,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
-        formValue?.orderType == OrderType.ClearPackage
+          formValue?.orderType == OrderType.ClearPackage
           ? true
           : false
     } else if (
@@ -175,7 +185,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
-        formValue?.orderType == OrderType.ClearPackage
+          formValue?.orderType == OrderType.ClearPackage
           ? true
           : false
     } else {
@@ -299,6 +309,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 <option value="-1">Select</option>
                 <option value={ContactMethod.Email}>Email</option>
                 <option value={ContactMethod.Phone}>Phone</option>
+                <option value={ContactMethod.Both}>Both</option>
               </select>
 
               {/* <input className='form-control-sm' type='text' {...register('patient.email')} onBlur={() => setstateChange(!stateChange)} readOnly={isEdit} /> */}
