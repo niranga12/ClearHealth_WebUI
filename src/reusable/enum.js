@@ -277,3 +277,9 @@ export const FeeScheduleSingleEdit = {
   mediaCareRate: 1,
   collectionAmount: 2
 }
+
+export const OrderVerificationType = {
+  PatientOrderPaymentVerification: 1,
+  FacilityOrderVerification: 2,
+  ProviderOrderVerification: 3
+}

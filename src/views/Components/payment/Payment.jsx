@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 import { TheHeader } from 'src/containers'
-import { ServiceMsg } from 'src/reusable/enum'
+import { OrderVerificationType, ServiceMsg } from 'src/reusable/enum'
 import { validateOrderDob } from 'src/service/orderService'
 import MetaTitles from 'src/views/common/metaTitles'
 import NotificationLayout from 'src/_helpers/notification'
@@ -27,7 +27,23 @@ const Payment = () => {
 
   const verifyHandle = async (value) => {
     try {
-      let detail = { dateOfBirth: moment(value).format('MM-DD-YYYY') }
+      const params = new URLSearchParams(location.search)
+      const providerId = params.get('providerid') ?? 0
+
+      let verificationType
+      if (location.pathname == '/paymentverificationprovider') {
+        verificationType = OrderVerificationType.ProviderOrderVerification
+      } else if (location.pathname == '/paymentverificationfacility') {
+        verificationType = OrderVerificationType.FacilityOrderVerification
+      } else {
+        verificationType = OrderVerificationType.PatientOrderPaymentVerification
+      }
+
+      let detail = {
+        dateOfBirth: moment(value).format('MM-DD-YYYY'),
+        verificationType: verificationType,
+        providerPartyRoleID: providerId
+      }
       let result = await validateOrderDob(orderId, detail)
       if (result.data.message == ServiceMsg.OK) {
         setIsValidDob(result.data.data.isValidBirthday)

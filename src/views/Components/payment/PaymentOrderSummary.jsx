@@ -23,9 +23,9 @@ const PaymentOrderSummary = ({ orderDetail }) => {
       let list = CPTDetails.map((x, index) => {
         return (
           <tr key={index}>
-            {/* <td className='pay-summary-name p-2'>{ x.description }</td> */}
+            <td className=' p-2'>{ x.description }</td>
             {/* <td className='pay-summary-name p-2 text-right'>{x.packagePrice}</td> */}
-            {/* <td className='pay-summary-name p-2 text-right'>${x.discountedPrice}</td> */}
+            <td className=' p-2 text-right'>${x.discountedPrice}</td>
           </tr>
         )
       })
@@ -70,7 +70,7 @@ const PaymentOrderSummary = ({ orderDetail }) => {
             </tr>
 
             <tr>
-              <td className="pt-3 col-width">Sub Total</td>
+              <td className="pt-3 col-width">Sub Total </td>
               <td className="pt-3 text-right col-width">$ {subTotal}</td>
             </tr>
             <tr>

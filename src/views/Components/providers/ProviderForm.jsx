@@ -68,6 +68,7 @@ const ProviderForm = ({
     getValues,
     reset,
     control,
+    
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema), mode: 'all' })
 
@@ -200,11 +201,11 @@ const ProviderForm = ({
   const handleHospitalChecked = (event) => {
     if (event.target.checked) {
       let result = hsHospitalData.find((x) => x.partyRoleId == getValues('hospitalName'))
-      setValue('address1', result.primaryAddress1, {
+      setValue('address1', result?.primaryAddress1, {
         shouldValidate: true,
         shouldDirty: true
       })
-      setValue('address2', result.primaryAddress2, {
+      setValue('address2', result?.primaryAddress2, {
         shouldValidate: true,
         shouldDirty: true
       })
@@ -235,18 +236,21 @@ const ProviderForm = ({
     setGroupSelection(event.target.value)
     if (event.target.value == 'Group') {
       setShowResults(false)
-      setValue('firstName', getValues('firstName'), {
+      setValue('firstName', getValues('firstName') ?? '_', {
         shouldValidate: false,
         shouldDirty: true
       })
+
+      setValue('lastName', getValues('lastName') ?? '_', {
+        shouldValidate: false,
+        shouldDirty: true
+      })
+
       setValue('middleName', getValues('middleName'), {
         shouldValidate: false,
         shouldDirty: true
       })
-      setValue('lastName', getValues('lastName'), {
-        shouldValidate: false,
-        shouldDirty: true
-      })
+
       setValue('taxId', getValues('taxId'), {
         shouldValidate: false,
         shouldDirty: true
@@ -426,6 +430,7 @@ const ProviderForm = ({
       }
     }
   }
+  
 
   const lastNameChanged = (result) => {
     if (groupSelection == 'Individual') {
@@ -569,8 +574,7 @@ const ProviderForm = ({
                 onChange={(e) => handleHealthSystemChange(e)}
                 name="healthSystemPartyRoleId"
                 id="healthSystemPartyRoleId"
-                className="form-control-sm"
-              >
+                className="form-control-sm">
                 <option value="">Select</option>
                 {healthSystemList.map((item, index) => (
                   <option key={index} value={item.partyRoleId}>
