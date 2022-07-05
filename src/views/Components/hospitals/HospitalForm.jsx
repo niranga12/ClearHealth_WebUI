@@ -459,7 +459,7 @@ const HospitalForm = ({
 
           <div className="col-md-6">
             <div className="form-group">
-              <label className="form-text"> Sms Sender </label>
+              <label className="form-text"> SMS Sender </label>
               <select name="" id="" className="form-control-sm" {...register('alertSenderSMS')}>
                 <option value="">Select</option>
                 {smsSendersList.map((item, index) => (
