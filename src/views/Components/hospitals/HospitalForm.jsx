@@ -735,35 +735,39 @@ const HospitalForm = ({
         {partyRoleId != null && <EditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges} />}
 
         {/* Stripe */}
-        {/* {isEdit ? <h5 className='font-weight-bold mt-1'>Stripe Onboarding </h5> : null}
+        {isEdit ? <h5 className="font-weight-bold mt-1">Stripe Onboarding </h5> : null}
 
-				{isEdit ? (
-					<div className='row'>
-						<div className='col-md-4'>
-							<div className='form-group'>
-								<label className='form-text'>Update Link</label>
-								<a href={onboardingInfo.url} target='_blank' rel='noreferrer'>
-									{onboardingInfo.isOnboardingCompleted == '1' ? 'Update Account' : 'Complete Account'}
-								</a>
-							</div>
-						</div>
+        {isEdit ? (
+          <div className="row">
+            <div className="col-md-4">
+              <div className="form-group">
+                <label className="form-text">Update Link</label>
+                <a href={onboardingInfo.url} target="_blank" rel="noreferrer">
+                  {onboardingInfo.isOnboardingCompleted == '1' ? 'Update Account' : 'Complete Account'}
+                </a>
+              </div>
+            </div>
 
-						<div className='col-md-4 row'>
-							<div className='form-group'>
-								<label className='form-text'>Status</label>
-								{onboardingInfo.isOnboardingCompleted == '1' ? <div className='font-weight-bold font-green'>Complete</div> : <div className='font-weight-bold font-red'>Pending</div>}
-							</div>
+            <div className="col-md-4 row">
+              <div className="form-group">
+                <label className="form-text">Status</label>
+                {onboardingInfo.isOnboardingCompleted == '1' ? (
+                  <div className="font-weight-bold font-green">Complete</div>
+                ) : (
+                  <div className="font-weight-bold font-red">Pending</div>
+                )}
+              </div>
 
-							<div className='form-group'>
-								<div className='ml-5 mt-4'>
-									<div onClick={notifyUser} className='btn btn-secondary m-0'>
-										Notify User
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				) : null} */}
+              <div className="form-group">
+                <div className="ml-5 mt-4">
+                  <div onClick={notifyUser} className="btn btn-secondary m-0">
+                    Notify User
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
 
         <div className="row">
           {/* <div className='col-md-12'>

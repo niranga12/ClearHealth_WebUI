@@ -8,11 +8,12 @@ export const getOrderSuccessByOrderId = (id, data) => axiosInstance.post(`openor
 // {{URL}}/api/payment/token
 // export const getPaymentToken=()=>axiosInstance.get(`payment/token`);
 
+export const paymentCheckout = (data) => axiosInstance.post(`openorder/checkout`, data );
 
-export const paymentCheckout=(data)=>axiosInstance.post(`openorder/checkout`,data);
+export const facilityPaymentVerification = (data) => axiosInstance.post(`openorder/facilityPaymentVerification`,data);
+
+export const providerPaymentVerification = (data) => axiosInstance.post(`openorder/providerPaymentVerification`,data);
 
 
-export const facilityPaymentVerification=(data)=>axiosInstance.post(`openorder/facilityPaymentVerification`,data);
-
-export const providerPaymentVerification=(data)=>axiosInstance.post(`openorder/providerPaymentVerification`,data);
+export const getPaymentIntentKeyId = (id) => axiosInstance.get(`openorder/paymentIntent/${id}`)
 

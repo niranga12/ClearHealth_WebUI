@@ -16,7 +16,7 @@ useEffect(() => {
 
 
 useEffect(() => {
-    // console.log(emails);
+   
 
     handleEmailAdd(emails)
   

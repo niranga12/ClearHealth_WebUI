@@ -9,7 +9,7 @@ const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel, orderDe
   const [facilityName, setFacilityName] = useState(null)
   useEffect(() => {
     setModal(isNotify)
-    setFacilityName(orderDetail.orderPatientDetails.facilityName)
+    setFacilityName(orderDetail?.orderPatientDetails?.facilityName)
   }, [isNotify])
 
   const downlaodPdf = async () => {
