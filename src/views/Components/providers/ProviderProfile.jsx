@@ -6,7 +6,7 @@ import { loaderHide, loaderShow } from 'src/actions/loaderAction'
 import { Country } from 'src/reusable/enum'
 import { getStateList } from 'src/service/commonService'
 import { getHealthSystemList } from 'src/service/healthsystemService'
-import { getHospitalByPartyRoleId } from 'src/service/hospitalsService'
+import { getHospitalByPartyRoleId, getOnboardinginfo } from 'src/service/hospitalsService'
 import { getProviderByPartyRoleId, getSpecialityList } from 'src/service/providerService'
 import AdminTitle from 'src/views/common/adminTitle'
 import Goback from 'src/views/common/Goback'
@@ -50,6 +50,7 @@ const ProviderProfile = () => {
   const [stateList, setstateList] = useState([])
   const [providerData, setProviderData] = useState(defalutFormValue)
   const [specialityData, setSpecialityData] = useState([])
+  const [onboardingInfo, setOnboarding] = useState([])
   const dispatch = useDispatch()
 
   //if this a edit form get the data
@@ -78,6 +79,8 @@ const ProviderProfile = () => {
           const result = await getProviderByPartyRoleId(id)
           const formatedData = await updateFormFields(result.data.data)
           setProviderData(formatedData)
+          const onboarding = await getOnboardinginfo(id)
+          setOnboarding(onboarding.data.data)
         } else if (hospitalId) {
           const hsDetatil = await getHospitalByPartyRoleId(hospitalId)
 
@@ -145,6 +148,7 @@ const ProviderProfile = () => {
           partyRoleId={partyRoleId}
           healthSystemList={healthSystems}
           specialityData={specialityData}
+          onboardingInfo={onboardingInfo}
         />
       </div>
     </>
