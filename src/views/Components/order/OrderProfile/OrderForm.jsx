@@ -205,6 +205,7 @@ const OrderForm = () => {
         patientPartyRoleId: selectedValue.partyRoleId,
         procedures: SelectedCpt,
         orderTypeId: patientDetail?.orderType,
+        estimatedPayLaterPrice: patientDetail?.estimatedPayLaterPrice,
         ...(patientDetail.showInsurance == '1' ? { insuranceInfo: { ...SelectedInsuranceDetails } } : {})
       }
     } else if (SelectedCpt.length > 0 && patientDetail) {
@@ -212,6 +213,7 @@ const OrderForm = () => {
         hospitalPartyRoleId: hospitalId,
         patientResponsibilityAmount: null,
         orderTypeId: patientDetail?.orderType,
+        estimatedPayLaterPrice: patientDetail?.estimatedPayLaterPrice,
         patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
         procedures: SelectedCpt,
         ...(patientDetail.showInsurance == '1' ? { insuranceInfo: { ...SelectedInsuranceDetails } } : {})
@@ -221,6 +223,7 @@ const OrderForm = () => {
         hospitalPartyRoleId: hospitalId,
         patientResponsibilityAmount: patientDetail?.patientResponsibilityAmount,
         orderTypeId: patientDetail?.orderType,
+        estimatedPayLaterPrice: patientDetail?.estimatedPayLaterPrice,
         patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
         procedures: [],
         ...(patientDetail.showInsurance == '1' ? { insuranceInfo: { ...SelectedInsuranceDetails } } : {})

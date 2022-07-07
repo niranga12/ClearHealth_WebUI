@@ -38,6 +38,7 @@ let schema = yup.object().shape({
       // 	.required('Phone is required')
       // 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
       orderType: yup.string(),
+      estimatedPayLaterPrice: yup.string(),
       gender: yup.string().required('Please select gender')
       // email: yup.string().email(' Please enter a valid email'),
       // phone: yup
@@ -169,7 +170,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
-          formValue?.orderType == OrderType.ClearPackage
+        formValue?.orderType == OrderType.ClearPackage
           ? true
           : false
     } else if (
@@ -185,7 +186,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
-          formValue?.orderType == OrderType.ClearPackage
+        formValue?.orderType == OrderType.ClearPackage
           ? true
           : false
     } else if (
@@ -201,7 +202,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
-          formValue?.orderType == OrderType.ClearPackage
+        formValue?.orderType == OrderType.ClearPackage
           ? true
           : false
     } else {
@@ -299,8 +300,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 id=""
                 className="form-control-sm"
                 {...register('patient.gender')}
-                onBlur={() => setstateChange(!stateChange)}
-              >
+                onBlur={() => setstateChange(!stateChange)}>
                 <option value="">Select</option>
                 <option value="M">Male</option>
                 <option value="F">Female</option>
@@ -320,8 +320,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 id=""
                 className="form-control-sm"
                 {...register('patient.contactMethod')}
-                onBlur={() => setstateChange(!stateChange)}
-              >
+                onBlur={() => setstateChange(!stateChange)}>
                 <option value="-1">Select</option>
                 <option value={ContactMethod.Email}>Email</option>
                 <option value={ContactMethod.Phone}>Phone</option>
@@ -380,8 +379,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 id=""
                 className="form-control-sm"
                 {...register('patient.orderType')}
-                onBlur={() => setstateChange(!stateChange)}
-              >
+                onBlur={() => setstateChange(!stateChange)}>
                 <option value="-1">Select</option>
 
                 {orderTypeList.map((item, index) => (
@@ -427,13 +425,20 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 id="showInsurance"
                 className="form-control-sm"
                 {...register('patient.showInsurance')}
-                onBlur={() => setstateChange(!stateChange)}
-              >
+                onBlur={() => setstateChange(!stateChange)}>
                 <option value="-1">Select</option>
                 <option value="1">Yes</option>
                 <option value="0">No</option>
               </select>
               <div className="small text-danger  pb-2   ">{errors.patient?.showInsurance?.message}</div>
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-text">Estimated Pay Later Price</label>
+              <input className="form-control-sm" type="number" {...register('patient.estimatedPayLaterPrice')} />
+              {/* <div className="small text-danger  pb-2   ">{errors.patient?.estimatedPayLaterPrice?.message}</div> */}
             </div>
           </div>
         </div>

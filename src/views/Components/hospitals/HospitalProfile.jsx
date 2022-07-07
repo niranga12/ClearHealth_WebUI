@@ -100,8 +100,10 @@ const HospitalProfile = () => {
 
         //getOnboardinginfo
         // const onboarding = await getOnboardinginfo(id);
-        const onboarding = await getOnboardinginfo(id)
-        setOnboarding(onboarding.data.data)
+        if (id) {
+          const onboarding = await getOnboardinginfo(id)
+          setOnboarding(onboarding.data.data)
+        }
       } catch (error) {
         OnError(error, dispatch)
       }
