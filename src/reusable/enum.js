@@ -13,7 +13,8 @@ export const ValidationPatterns = {
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
   onlyCharacters: /^[a-zA-Z ]*$/,
   zip: /^[0-9]{5}(?:-[0-9]{4})?$/,
-  phoneFormatReg: /^\D*(\{0,3})\D*(\d{0,3})\D*(\d{0,4})/
+  phoneFormatReg: /^\D*(\{0,3})\D*(\d{0,3})\D*(\d{0,4})/,
+  noSpace: /^[^\s].([A-Za-z]+\s)*[A-Za-z]+$/
   // phoneFormatReg: /^[1-9]*$/
 }
 

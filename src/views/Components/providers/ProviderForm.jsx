@@ -661,10 +661,11 @@ const ProviderForm = ({
                   className="form-control-sm"
                   type="text"
                   {...register('firstName')}
-                  onInput={(e) => (e.target.value = FormatText(e.target.value))}
+                  onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
                   onChange={firstNameChanged}
                 />
-                {showFirstNameError ? <div className="small text-danger  pb-2   ">First name is required</div> : ''}
+                <div className="small text-danger  pb-2   ">{errors.firstName?.message} </div>
+                {/* {showFirstNameError ? <div className="small text-danger  pb-2   ">First name is required</div> : ''} */}
               </div>
             </div>
 
@@ -694,7 +695,7 @@ const ProviderForm = ({
                   className="form-control-sm"
                   type="text"
                   {...register('lastName')}
-                  onInput={(e) => (e.target.value = FormatText(e.target.value))}
+                  onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
                   onChange={lastNameChanged}
                 />
                 {showLastNameError ? <div className="small text-danger  pb-2   ">Last name is required</div> : ''}

@@ -235,7 +235,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 {...register('patient.firstName')}
                 readOnly={isEdit}
                 onBlur={() => setstateChange(!stateChange)}
-                onInput={(e) => (e.target.value = FormatText(e.target.value))}
+                onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
               />
               <div className="small text-danger  pb-2   ">{errors.patient?.firstName?.message}</div>
             </div>
@@ -267,7 +267,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 {...register('patient.lastName')}
                 readOnly={isEdit}
                 onBlur={() => setstateChange(!stateChange)}
-                onInput={(e) => (e.target.value = FormatText(e.target.value))}
+                onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
               />
               <div className="small text-danger  pb-2   ">{errors.patient?.lastName?.message}</div>
             </div>
@@ -433,7 +433,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
               <div className="small text-danger  pb-2   ">{errors.patient?.showInsurance?.message}</div>
             </div>
           </div>
-
+          {!isPatientResponsibility && (
           <div className="col-md-4">
             <div className="form-group">
               <label className="form-text">Estimated Pay Later Price</label>
@@ -441,6 +441,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
               {/* <div className="small text-danger  pb-2   ">{errors.patient?.estimatedPayLaterPrice?.message}</div> */}
             </div>
           </div>
+           )}
         </div>
       </form>
     </>

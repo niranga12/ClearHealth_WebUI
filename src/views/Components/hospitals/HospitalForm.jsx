@@ -414,7 +414,7 @@ const HospitalForm = ({
                 type="text"
                 {...register('hospitalName')}
                 onChange={(e) => setHospitalName(e.target.value)}
-                onInput={(e) => (e.target.value = FormatText(e.target.value))}
+                onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
               />
               <div className="small text-danger  pb-2   ">{errors.hospitalName?.message}</div>
               {isSearching && <div>Searching ...</div>}
