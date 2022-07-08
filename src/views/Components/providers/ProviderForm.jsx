@@ -456,6 +456,7 @@ const ProviderForm = ({
 
   // update Provider
   const updateProviderInfo = async () => {
+    console.log(dirtyFields.firstName)
     try {
       const updateProvider = {
         ...((feeScheduleChanges ||
@@ -660,9 +661,10 @@ const ProviderForm = ({
                 <input
                   className="form-control-sm"
                   type="text"
-                  {...register('firstName')}
+                 
                   onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
                   onChange={firstNameChanged}
+                  {...register('firstName')}
                 />
                 <div className="small text-danger  pb-2   ">{errors.firstName?.message} </div>
                 {/* {showFirstNameError ? <div className="small text-danger  pb-2   ">First name is required</div> : ''} */}
@@ -694,9 +696,9 @@ const ProviderForm = ({
                 <input
                   className="form-control-sm"
                   type="text"
-                  {...register('lastName')}
                   onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
                   onChange={lastNameChanged}
+                  {...register('lastName')}
                 />
                 {showLastNameError ? <div className="small text-danger  pb-2   ">Last name is required</div> : ''}
               </div>
