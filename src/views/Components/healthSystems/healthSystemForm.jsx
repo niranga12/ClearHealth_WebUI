@@ -318,7 +318,7 @@ const HealthSystemForm = ({ defaultValues, isEdit = false, partyRoleId = null, s
                 className="form-control-sm"
                 type="text"
                 {...register('name')}
-                onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
+                onInput={(e) => (e.target.value = FormatText(e.target.value))}
                 onChange={(e) => setHealthSystemName(e.target.value)}
               />
               <div className="small text-danger  pb-2   ">{errors.name?.message}</div>
