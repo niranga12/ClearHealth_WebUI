@@ -34,7 +34,7 @@ const selectionListDropDown = [
 ]
 
 function OrderAttempt({ row }) {
-  // console.log(row.original);
+ // console.log(row.original);
   return (
     <>
       <div className="min-150">

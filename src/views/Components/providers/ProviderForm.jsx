@@ -20,6 +20,7 @@ import TextField from '@material-ui/core/TextField'
 import { EnableMaskPhone } from 'src/reusable'
 import ProviderEditFeeSchedules from './FeeSchedules/ProviderEditFeeSchedules'
 import ProviderAddFeeSchedules from './FeeSchedules/ProviderAddFeeSchedules'
+import HospitalNotifyUser from '../hospitals/HospitalNotifyUser'
 
 const schema = yup.object().shape({
   healthSystemPartyRoleId: yup.string().required('Health system is required'),
@@ -59,7 +60,8 @@ const ProviderForm = ({
   partyRoleId = null,
   healthSystemList = [],
   specialityData = [],
-  stateList = []
+  stateList = [],
+  onboardingInfo
 }) => {
   const {
     register,
@@ -68,7 +70,7 @@ const ProviderForm = ({
     getValues,
     reset,
     control,
-    
+
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema), mode: 'all' })
 
@@ -94,6 +96,7 @@ const ProviderForm = ({
   const [isFeeSchedule, setFeeSchedule] = useState(false)
 
   const [saveProviderId, setSaveProviderId] = useState(null)
+  const [isNotify, setIsNotify] = useState(false)
 
   const handleBillingChecked = (event) => {
     if (event.target.checked) {
@@ -236,12 +239,12 @@ const ProviderForm = ({
     setGroupSelection(event.target.value)
     if (event.target.value == 'Group') {
       setShowResults(false)
-      setValue('firstName', getValues('firstName') ?? '_', {
+      setValue('firstName', '_Dummy', {
         shouldValidate: false,
         shouldDirty: true
       })
 
-      setValue('lastName', getValues('lastName') ?? '_', {
+      setValue('lastName', '_Dummy', {
         shouldValidate: false,
         shouldDirty: true
       })
@@ -261,7 +264,8 @@ const ProviderForm = ({
       })
     } else {
       setShowResults(true)
-      setValue('firstName', getValues('firstName'), {
+      let fName = getValues('firstName') == '_Dummy' ? ' ' : getValues('firstName')
+      setValue('firstName', fName, {
         shouldValidate: true,
         shouldDirty: true
       })
@@ -269,7 +273,8 @@ const ProviderForm = ({
         shouldValidate: true,
         shouldDirty: true
       })
-      setValue('lastName', getValues('lastName'), {
+      let lName = getValues('lastName') == '_Dummy' ? ' ' : getValues('lastName')
+      setValue('lastName', lName, {
         shouldValidate: true,
         shouldDirty: true
       })
@@ -409,6 +414,14 @@ const ProviderForm = ({
     }
   }
 
+  const notifyUser = () => {
+    setIsNotify(!isNotify)
+  }
+
+  const modelCancel = () => {
+    setIsNotify(!isNotify)
+  }
+
   const stateSelect = (event) => {
     setValue('state', event.target.innerText, { shouldValidate: true, shouldDirty: true })
   }
@@ -430,7 +443,6 @@ const ProviderForm = ({
       }
     }
   }
-  
 
   const lastNameChanged = (result) => {
     if (groupSelection == 'Individual') {
@@ -444,6 +456,7 @@ const ProviderForm = ({
 
   // update Provider
   const updateProviderInfo = async () => {
+    console.log(dirtyFields.firstName)
     try {
       const updateProvider = {
         ...((feeScheduleChanges ||
@@ -648,11 +661,13 @@ const ProviderForm = ({
                 <input
                   className="form-control-sm"
                   type="text"
-                  {...register('firstName')}
-                  onInput={(e) => (e.target.value = FormatText(e.target.value))}
+                 
+                  onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
                   onChange={firstNameChanged}
+                  {...register('firstName')}
                 />
-                {showFirstNameError ? <div className="small text-danger  pb-2   ">First name is required</div> : ''}
+                <div className="small text-danger  pb-2   ">{errors.firstName?.message} </div>
+                {/* {showFirstNameError ? <div className="small text-danger  pb-2   ">First name is required</div> : ''} */}
               </div>
             </div>
 
@@ -681,9 +696,9 @@ const ProviderForm = ({
                 <input
                   className="form-control-sm"
                   type="text"
-                  {...register('lastName')}
-                  onInput={(e) => (e.target.value = FormatText(e.target.value))}
+                  onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
                   onChange={lastNameChanged}
+                  {...register('lastName')}
                 />
                 {showLastNameError ? <div className="small text-danger  pb-2   ">Last name is required</div> : ''}
               </div>
@@ -923,6 +938,44 @@ const ProviderForm = ({
           </div>
         </div>
 
+        {isEdit && <div className="row divider p-2 mb-2"></div>}
+
+        {/* Stripe */}
+        {isEdit ? <h5 className="font-weight-bold  mt-1">Stripe Onboarding </h5> : null}
+
+        {isEdit ? (
+          <div className="row">
+            <div className="col-md-4">
+              <div className="form-group">
+                <label className="form-text">Update Link</label>
+                <a href={onboardingInfo.url} target="_blank" rel="noreferrer">
+                  {onboardingInfo.isOnboardingCompleted == '1' ? 'Update Account' : 'Complete Account'}
+                </a>
+              </div>
+            </div>
+
+            <div className="col-md-4 row">
+              <div className="form-group">
+                <label className="form-text">Status</label>
+                {onboardingInfo.isOnboardingCompleted == '1' ? (
+                  <div className="font-weight-bold font-green">Complete</div>
+                ) : (
+                  <div className="font-weight-bold font-red">Pending</div>
+                )}
+              </div>
+
+              <div className="form-group">
+                <div className="ml-5 mt-4">
+                  <div onClick={notifyUser} className="btn btn-secondary m-0">
+                    Notify User
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {isEdit && <div className="row divider p-2 mb-2"></div>}
         {/* payment info */}
         {/* <h5 className='font-weight-bold mt-1'>Payment Info </h5> */}
 
@@ -960,6 +1013,7 @@ const ProviderForm = ({
 					</div> */}
 
         {/* </div> */}
+        <HospitalNotifyUser partyRoleId={partyRoleId} isNotify={isNotify} handleCancel={modelCancel} />
 
         {partyRoleId != null && (
           <ProviderEditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges} />

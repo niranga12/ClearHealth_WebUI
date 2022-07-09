@@ -10,6 +10,7 @@ import { notify } from 'reapop'
 import { getOrderSuccessByOrderId } from 'src/service/paymentService'
 import { ServiceMsg } from 'src/reusable/enum'
 import OnError from 'src/_helpers/onerror'
+import PaymentCompletedAlert from '../payment/PaymentCompletedAlert'
 
 const CARD_OPTIONS = {
   hidePostalCode: true,
@@ -47,6 +48,7 @@ const PayStripe = ({ billingDetails, stKey, isValid, orderId }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   // let btnRef = useRef();
+  const [isNotify, setIsNotify] = useState(false)
 
   useEffect(() => {
     // if (btnRef.current) {
@@ -87,7 +89,8 @@ const PayStripe = ({ billingDetails, stKey, isValid, orderId }) => {
 
     // });
     let Key = String(stripeKeySes)
-
+    delete billingDetails.billing
+    delete billingDetails.orderId
     //  const result = await stripe.confirmCardPayment('pi_3JbTJsBOELX9tyni04ZI8oOZ_secret_WT1Iou4419shrypuGR6OqIO2C',{
     const result = await stripe.confirmCardPayment(Key, {
       payment_method: {
@@ -110,7 +113,8 @@ const PayStripe = ({ billingDetails, stKey, isValid, orderId }) => {
           let saveResult = await getOrderSuccessByOrderId(orderId, data)
           if (saveResult.data.message == ServiceMsg.OK) {
             dispatch(notify('Paid successfully', 'success'))
-            history.push('/main')
+            // history.push('/main')
+            setIsNotify(true)
           } else {
             dispatch(notify('Paid successfully but not saved in history', 'error'))
           }
@@ -127,24 +131,39 @@ const PayStripe = ({ billingDetails, stKey, isValid, orderId }) => {
     }
   }
 
+  const modelCancel = () => {
+    setIsNotify(!isNotify)
+    history.push('/main')
+  }
+
   return (
-    // <Elements stripe={stripePromise}>
-    <div className="card  cover-content p-3 pt-5 ">
-      <form onSubmit={handleSubmit}>
-        <div className="row">
-          <div className="col-md-7 mb-4">
-            <div className="FormRow form-group">
-              <CardElement options={CARD_OPTIONS} />
+    <>
+      {/* <Elements stripe={stripePromise}> */}
+      <div className="card  cover-content p-3 pt-5 ">
+        <form onSubmit={handleSubmit}>
+          <div className="row">
+            <div className="col-md-7 mb-4">
+              <div className="FormRow form-group">
+                <CardElement options={CARD_OPTIONS} />
+              </div>
             </div>
           </div>
-        </div>
 
-        <button type="submit" className="btn btn-primary" disabled={!stripe || !validDetail}>
-          Pay Now
-        </button>
-      </form>
-    </div>
-    // </Elements>
+          <button type="submit" className="btn btn-primary" disabled={!stripe || !validDetail}>
+            Pay Now
+          </button>
+        </form>
+      </div>
+
+      <PaymentCompletedAlert
+        isNotify={isNotify}
+        handleCancel={modelCancel}
+        orderId={orderId}
+        orderDetail={billingDetails}
+      />
+
+      {/* </Elements> */}
+    </>
   )
 }
 

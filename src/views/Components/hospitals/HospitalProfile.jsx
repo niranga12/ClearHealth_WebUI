@@ -99,9 +99,11 @@ const HospitalProfile = () => {
         setSmsSenders(sendSmsListResult.data.data)
 
         //getOnboardinginfo
-        //const onboarding = await getOnboardinginfo(id);
-        //const onboarding = await getOnboardinginfo(id);
-        //setOnboarding(onboarding.data.data);
+        // const onboarding = await getOnboardinginfo(id);
+        if (id) {
+          const onboarding = await getOnboardinginfo(id)
+          setOnboarding(onboarding.data.data)
+        }
       } catch (error) {
         OnError(error, dispatch)
       }

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 // import {Elements} from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
@@ -8,10 +9,11 @@ import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 import { loaderHide, loaderShow } from 'src/actions/loaderAction'
 import { DateFormat, ServiceMsg } from 'src/reusable/enum'
-import { getPatientOrderDetailsByOrderId } from 'src/service/paymentService'
+import { getPatientOrderDetailsByOrderId, getPaymentIntentKeyId } from 'src/service/paymentService'
 
 import OnError from 'src/_helpers/onerror'
 import PayBrainTree from '../Payment-BrainTree/PayBrainTree'
+import PayStripe from '../Payment-Stripe/PayStripe'
 // import PayStripe from '../Payment-Stripe/PayStripe';
 import PaymentOrder from './PaymentOrder'
 import PaymentOrderSummary from './PaymentOrderSummary'
@@ -64,6 +66,10 @@ const PaymentForm = () => {
           setIsPayable(false)
           setErrorMessage('Invalid Order !')
         }
+
+        const res = await getPaymentIntentKeyId(id)
+        setSTKey(res.data.data)
+
       } catch (error) {
         OnError(error, dispatch)
         setIsPayable(false)
@@ -110,6 +116,7 @@ const PaymentForm = () => {
 
   const formChange = (value) => {
     setPatientData(value)
+   
 
     let result = {
       billing: {
@@ -124,6 +131,7 @@ const PaymentForm = () => {
       orderId: orderId
     }
     setBillingData(result)
+    
   }
 
   const avilablePayment = () => {
@@ -133,15 +141,15 @@ const PaymentForm = () => {
           <div className="col-md-8">
             <PaymentOrder patientOrder={patient} formChange={formChange} handleValid={formValid} />
             <div className="component-header mt-4 mb-4 ">Payment Details </div>
-            {/* <Elements stripe={stripePromise}>
-							<PayStripe billingDetails={billingData} stKey={stKey} isValid={isValid} orderId={patientData?.orderId} />
-						</Elements> */}
-            <PayBrainTree
+            <Elements stripe={stripePromise}>
+				     	<PayStripe billingDetails={billingData} stKey={stKey} isValid={isValid} orderId={patientData?.orderId} />
+						</Elements>
+            {/* <PayBrainTree
               billingDetails={billingData}
               isValid={isValid}
               orderId={patientData?.orderId}
               orderDetail={orderDetail}
-            />
+            /> */}
           </div>
           <div className="col-md-4">
             <PaymentOrderSummary orderDetail={orderDetail} />
