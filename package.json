@@ -66,6 +66,7 @@
     "react-router-dom": "^5.2.0",
     "react-select": "^4.3.1",
     "react-table": "^7.7.0",
+    "react-tooltip": "^4.2.21",
     "reapop": "^3.0.4",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
