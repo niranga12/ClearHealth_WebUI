@@ -87,7 +87,7 @@ const OrderAction = ({ row }) => {
 
       <CModal show={modal} onClose={setModal} closeOnBackdrop={false}>
         <CModalHeader closeButton>
-          <CModalTitle>Delete tt</CModalTitle>
+          <CModalTitle>Delete</CModalTitle>
         </CModalHeader>
         {/* <CModalBody>Are you Sure Delete this item {row.original.description}?</CModalBody> */}
         <CModalBody>
