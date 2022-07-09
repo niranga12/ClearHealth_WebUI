@@ -16,6 +16,8 @@ import RatingView from 'src/views/common/ratingView'
 import OnError from 'src/_helpers/onerror'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react'
 import OrderCheckEligibility from 'src/views/Components/order/OrderView/OrderCheckEligibility/OrderCheckEligibility'
+
+
 const initialSearch = {
   itemsPerPage: TableSettingsEnum.ItemPerPage,
   pageNumber: 1,
@@ -32,10 +34,12 @@ const selectionListDropDown = [
 ]
 
 function OrderAttempt({ row }) {
+ // console.log(row.original);
   return (
     <>
       <div className="min-150">
-        <RatingView totalCount={Number(row.original.totalAttempts)} count={Number(row.original.attempts)} />
+
+        <RatingView totalCount={Number(row.original.totalAttempts)} count={Number(row.original.attempts)} attemptsDate={row.original.attemptDate} />
       </div>
     </>
   )
