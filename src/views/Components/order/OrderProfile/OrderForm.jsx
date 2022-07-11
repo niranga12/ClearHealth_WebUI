@@ -192,7 +192,6 @@ const OrderForm = () => {
   }
 
   const saveOrder = async () => {
-    debugger;
     if (btnRef.current) {
       // @ts-ignore
       btnRef.current.setAttribute('disabled', 'disabled')
