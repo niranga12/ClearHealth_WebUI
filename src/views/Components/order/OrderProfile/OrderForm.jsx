@@ -192,6 +192,7 @@ const OrderForm = () => {
   }
 
   const saveOrder = async () => {
+    debugger;
     if (btnRef.current) {
       // @ts-ignore
       btnRef.current.setAttribute('disabled', 'disabled')
@@ -204,6 +205,7 @@ const OrderForm = () => {
         patientResponsibilityAmount: null,
         patientPartyRoleId: selectedValue.partyRoleId,
         procedures: SelectedCpt,
+        patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
         orderTypeId: patientDetail?.orderType,
         estimatedPayLaterPrice: patientDetail?.estimatedPayLaterPrice,
         ...(patientDetail.showInsurance == '1' ? { insuranceInfo: { ...SelectedInsuranceDetails } } : {})
@@ -222,6 +224,7 @@ const OrderForm = () => {
       data = {
         hospitalPartyRoleId: hospitalId,
         patientResponsibilityAmount: patientDetail?.patientResponsibilityAmount,
+        patientPartyRoleId: selectedValue.partyRoleId,
         orderTypeId: patientDetail?.orderType,
         estimatedPayLaterPrice: patientDetail?.estimatedPayLaterPrice,
         patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
