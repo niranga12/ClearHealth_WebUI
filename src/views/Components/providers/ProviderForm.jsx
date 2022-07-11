@@ -456,7 +456,7 @@ const ProviderForm = ({
 
   // update Provider
   const updateProviderInfo = async () => {
-    console.log(dirtyFields.firstName)
+  
     try {
       const updateProvider = {
         ...((feeScheduleChanges ||
