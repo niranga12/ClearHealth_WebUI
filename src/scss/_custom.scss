@@ -1206,25 +1206,30 @@ border-radius: 0;
 
 .pay-mobile-amount{
   display: block;
-  width: 80%;
+  width: 45%;
   margin-left: 10px;
   box-sizing: border-box;
   border: 1px solid #5B4DFD;
   border-radius: 10px;
   background-color: #FFFFFF;
   box-shadow: 0 2px 20px 0 rgba(135,135,135,0.07);
+  float: left;
+  margin-left: 2% !important;
 
 }
 
 
 .pay-mobile-right{
   display: block;
-  width: 100%;
+  width: 45%;
   margin: auto;
   box-sizing: border-box;
-  // border: 1px solid #5B4DFD;
-  // border-radius: 10px;
-  // background-color: #FFFFFF;
+  float: right;
+  margin-right: 2% !important;
+ 
+ border: 1px solid #77777a;
+  border-radius: 10px;
+  background-color: #FFFFFF;
   box-shadow: 0 2px 20px 0 rgba(135,135,135,0.07);
 
 }
@@ -1242,7 +1247,7 @@ border-radius: 0;
 
   color: #5B4DFD;
   font-family: Lato;
-  font-size: 30px;
+  font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: 0;
   line-height: 36px;
@@ -1314,7 +1319,7 @@ border-radius: 0;
 }
 
 .sms-heading-align{
-  text-align: right; padding-right: 29px;padding-top: 9px;
+  text-align: left; padding-right: 29px;padding-top: 9px;
 }
 
 .procedure-text{
@@ -1347,4 +1352,42 @@ border-radius: 0;
 }
 .type-success{
   background-color: #06C4AB  !important;
+}
+.bg-gray-price{
+  background-color: rgba(157, 165, 177, 0.3) !important;
+  border-bottom: 1px solid gray;
+}
+
+.border-cover{
+  border:1px solid #cccccc !important;
+  // min-width: 500px
+}
+.sms-text-footer{
+  text-align: center;
+  font-size:1rem;
+  font-weight:600 !important;
+}
+.h5-smstext{
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .h5-smstext{
+    font-size: 0.5rem;
+  }
+
+  .text-amount-blue{
+    font-size: 0.7rem;
+  }
+  .pay-italic {
+    color: #7A7E83;
+    font-family: LatoRegular, serif !important;
+    font-size: 0.5rem;
+    font-style: italic;
+    letter-spacing: 0;
+    line-height: 0.5rem;
+}
+.button-width{
+  width: 100%;
+}
 }

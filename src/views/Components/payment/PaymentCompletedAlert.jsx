@@ -55,9 +55,8 @@ const PaymentCompletedAlert = ({ orderId = null, isNotify, handleCancel, orderDe
             <h3>Successfully Completed</h3>
           </div>
           <div className="text-center">
-            Thank you for completing your order with {facilityName}. A copy of your order will be emailed to you
-            shortly. If you're not already scheduled for your procedure, you will be receiving a call from hospital to
-            schedule.{' '}
+            Thank you for completing your order. A copy of your order will be emailed to you shortly. If you're not
+            already scheduled for your procedure, you will be receiving a call from hospital to schedule.{' '}
           </div>
 
           <div className="row  m-2 pt-3">

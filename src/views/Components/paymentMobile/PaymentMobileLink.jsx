@@ -39,26 +39,29 @@ const PaymentMobileLink = () => {
     fetchData()
   }, [location])
 
-  const ProcedureDetails = () => {
-    const listItems = orderDetail?.ProcedureDetails.map((x, index) => (
-      <li className="font-weight-bold h5" key={index}>
-        {x.description}
-      </li>
-    ))
-    return (
-      <>
-        <ul className="pl-2 pt-2 list-unstyled">{listItems}</ul>
-      </>
-    )
-  }
+  // const ProcedureDetails = () => {
+  //   const listItems = orderDetail?.ProcedureDetails.map((x, index) => (
+  //     <span className="font-weight-bold h5" key={index}>
+  //       {x.description} ,
+  //     </span>
+  //   ))
+  //   return (
+  //     <>
+  //     <div>
+  //     {listItems}
+  //     </div>
+  //       {/* <ul className="pl-2 pt-2 list-unstyled">{listItems}</ul> */}
+  //     </>
+  //   )
+  // }
 
-  const paymentLink = () => {
-    history.push({
-      pathname: `/payment`,
-      search: `?id=${orderId}`
-      // state: { detail: 'some_value' }
-    })
-  }
+  // const paymentLink = () => {
+  //   history.push({
+  //     pathname: `/payment`,
+  //     search: `?id=${orderId}`
+  //     // state: { detail: 'some_value' }
+  //   })
+  // }
 
   return (
     <>
@@ -66,47 +69,43 @@ const PaymentMobileLink = () => {
         <div className="c-wrapper bg-white">
           <TheHeader />
           <div className="container">
-            <div className="row mt-5 pt-5">
-              <div className="col-md-7">
+            <div className="row mt-2 pt-3 ">
+              <div className="col-md-6  offset-md-3 border-cover pt-2">
                 <h4>Dear {orderDetail?.orderDetails.firstName}</h4>
-                <PaymentContent details={orderDetail} />
+                <PaymentContent details={orderDetail} orderId={orderId} />
 
                 <div>Thank you</div>
                 <h6 className="font-weight-bold">Customer Support Team </h6>
               </div>
-              <div className="col-md-5">
-                <div className="card  box-shadow">
-                  {/* <div className='card-header'> */}
+
+              {/* <div className="col-md-6 offset-md-3">
+                <div className="card  box-shadow m-5 bg-gray-price" >
+                 
                   <div className="row ">
-                    <div className="col-md-5">
-                      <img src="https://clearhealthresources.s3.amazonaws.com/hospital.png" width="150" />
+                    <div className="col-md-4 col-sm-4 col-xs-4">
+                      <img src="https://clearhealthresources.s3.amazonaws.com/hospital_logo.png" width="100" />
                     </div>
-                    <div className="col-md-7 h4 sms-heading-align">{orderDetail?.orderDetails.facilityName}</div>
+                    <div className="col-md-8 col-sm-8  col-xs-8 h6 sms-heading-align"> {orderDetail?.orderDetails.facilityName}
+                    {ProcedureDetails()}
+                    </div>
                   </div>
                   <div className="col-md-12 border-bottom"></div>
-                  {/* </div> */}
+                 
                   <div className="card-content">
                     <div className="row">
-                      <div className="col-md-12">
-                        {orderDetail?.orderDetails.orderType == OrderType.ClearPackage && (
-                          <div className="pt-2 pl-2 procedure-text">Procedure</div>
-                        )}
-                        {ProcedureDetails()}
-                        {/* <h4 className='p-2 font-weight-bold'> MRI Neck Without Contrast</h4> */}
-                      </div>
+                     
 
-                      <div className="col-md-5">
+                      <div className="col-md-12 mt-3">
                         <div className="pay-mobile-amount m-auto p-2 box-border">
-                          <h5 className="font-weight-bold">Pay Now Package Price</h5>
-                          <h2 className="text-amount-blue"> $ {orderDetail?.orderDetails.orderTotal}</h2>
-                          <div className="pay-italic">No Additional Bills</div>
+                          <h5 className="font-weight-bold text-center">Discounted  Pay Now Package Price</h5>
+                          <h2 className="text-amount-blue text-center"> $ {orderDetail?.orderDetails.orderTotal}</h2>
+                          <div className="pay-italic text-center">No Additional Bills</div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="pay-mobile-right m-auto">
-                          <h5 className="font-weight-bold">Estimated Cost at Time of Procedure</h5>
-                          <h2 className="text-amount-blue">$ {orderDetail?.orderDetails.total}</h2>
-                          <div className="pay-italic">
+                      
+                        <div className="pay-mobile-right bg-white m-auto">
+                          <h5 className="font-weight-bold text-center">Estimated  Full Cost at Time of Procedure</h5>
+                          <h2 className="text-amount-blue text-center">$ {orderDetail?.orderDetails.total}</h2>
+                          <div className="pay-italic text-center">
                             Facility price only, you may receive separate bills for provider(s){' '}
                           </div>
                         </div>
@@ -121,7 +120,19 @@ const PaymentMobileLink = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
+
+
+                <div  className="col-md-6  offset-md-3 border-cover bg-gray-price pt-2 mb-2 ">
+             <div className="sms-text-footer">   Clear Health, Inc. <a href="">(clearhealthinc.com)</a> </div>
+             <div className="sms-text-footer"> 7601 Highway 70 S. Suite #277 Nashville, TN 37221</div>
+             <div className="sms-text-footer"> 888-918-2522 | Email: info@clearhealthinc.com</div>
+             <div className="sms-text-footer"> Copyright © Clear Health Inc.</div>
+             <div className="sms-text-footer"> All rights reserved.</div>
+
+                 </div>
+
+
             </div>
           </div>
         </div>
