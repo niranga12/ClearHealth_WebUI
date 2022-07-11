@@ -12,8 +12,8 @@ export const saveProcedureByProviderId = (providerId, data) =>
   axiosInstance.post(`provider/${providerId}/procedures`, data)
 export const viewProcedureByProviderId = (providerId) => axiosInstance.get(`provider/${providerId}/procedures`)
 export const getProviderFeeSchedule = (providerId) => axiosInstance.get(`provider/feeSchedule/${providerId}`)
-export const deleteProviderFeeSchedule = (providerId, specialityId) =>
-  axiosInstance.delete(`provider/feeSchedule/${providerId}/${specialityId}`)
+export const deleteProviderFeeSchedule = (providerId, specialityId, fileName) =>
+  axiosInstance.delete(`provider/feeSchedule/${providerId}/${specialityId}`, { data: { fileName: fileName } })
 export const saveProviderFeeSchedule = (providerId, data) =>
   axiosInstance.post(`provider/saveProviderProcedure/${providerId}`, data)
 export const getServiceProviders = (hospitalId, specialtyId) =>

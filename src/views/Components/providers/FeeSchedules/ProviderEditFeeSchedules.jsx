@@ -73,8 +73,10 @@ const ProviderEditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
   }, [selectedFile, selectedSpeciality])
 
   const onClickDelete = (event) => {
+    
+
     const fetchData = async () => {
-      const result = await deleteProviderFeeSchedule(partyRoleId, event.speciality)
+      const result = await deleteProviderFeeSchedule(partyRoleId, event.speciality, event.fileName)
       if (result.data.message == 'OK') {
         updateChanges(true)
         let index = submittedFile.findIndex((x) => x.speciality === event.speciality)
