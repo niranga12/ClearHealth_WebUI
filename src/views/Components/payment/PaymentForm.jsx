@@ -10,7 +10,6 @@ import { useLocation } from 'react-router'
 import { loaderHide, loaderShow } from 'src/actions/loaderAction'
 import { DateFormat, ServiceMsg } from 'src/reusable/enum'
 import { getPatientOrderDetailsByOrderId, getPaymentIntentKeyId } from 'src/service/paymentService'
-import { stripeKey } from 'src/_config'
 
 import OnError from 'src/_helpers/onerror'
 import PayBrainTree from '../Payment-BrainTree/PayBrainTree'
@@ -37,10 +36,22 @@ const PaymentForm = () => {
   // recreating the `Stripe` object on every render.
   // const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
   // eslint-disable-next-line no-unused-vars
+  // let stripePromise
+  console.log(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
+  // if (process.env.NODE_ENV == 'prod') {
+  //   stripePromise = loadStripe(
+  //     'pk_live_51JKBypBOELX9tyni4tKJc2fnqfKtFR0cWOYaOchEF0e1505AqoXArN3lLP9cEHW4I3wSfGgBQwZYf8d7XSSNhgAT00kD0HfwNY'
+  //   )
+  // } else {
+  //   stripePromise = loadStripe(
+  //     'pk_test_51JKBypBOELX9tyniJrgYzR3SvXJDOusxZiuQ1wV60G8eJucn7p2hK1aKK0IPcktL6tTDh7fIeZL1lXQka7rZGpcz00oPjzhYRh'
+  //   )
+  // }
   // const stripePromise = loadStripe(
   //   'pk_test_51JKBypBOELX9tyniJrgYzR3SvXJDOusxZiuQ1wV60G8eJucn7p2hK1aKK0IPcktL6tTDh7fIeZL1lXQka7rZGpcz00oPjzhYRh'
   // )
-  const stripePromise = loadStripe(stripeKey)
+
+ let stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
 
   // let pubKey=String(StripPublicKey) ;
   // const stripePromise = loadStripe(pubKey);
