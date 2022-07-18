@@ -61,7 +61,7 @@ const PaymentContent = ({ details, orderId }) => {
 
       {details?.orderDetails.orderType == OrderType.ClearPackage && details?.orderDetails.orderAttempts == 3 && (
         <div>
-          <p>It’s almost time for your scheduled procedure at {details?.orderDetails?.facilityName}</p>
+          <p>It’s almost time for your scheduled procedure at {details?.orderDetails?.facilityName}.</p>
           <p>
             As a reminder, we have partnered with Clear Health to offer you a discounted, all-inclusive option to pay
             for your care. By paying in advance, you will pay less than if you wait to pay on the day of your procedure

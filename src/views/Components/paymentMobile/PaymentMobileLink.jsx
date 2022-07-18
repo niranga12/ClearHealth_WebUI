@@ -79,10 +79,10 @@ const PaymentMobileLink = () => {
                   width="150"
                   className="m-auto display-block mb-3"
                 />
-                <h4>Dear {orderDetail?.orderDetails.firstName}</h4>
+                <h4>Dear {orderDetail?.orderDetails.firstName}, </h4>
                 <PaymentContent details={orderDetail} orderId={orderId} />
 
-                <div>Thank you</div>
+                <div>Thank you, </div>
                 <h6 className="font-weight-bold">Customer Support Team </h6>
               </div>
 

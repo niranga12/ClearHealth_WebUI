@@ -37,7 +37,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
   const {
     register,
     handleSubmit,
-
+    setValue,
     getValues,
     reset,
     control,
@@ -121,6 +121,11 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 
   // role type selection
   const roleTypeChange = (e) => {
+
+    setValue('roleTypeId', e, {
+      shouldValidate: true,
+      shouldDirty: true
+    })
     switch (Number(e)) {
       case RoleType.HealthSystemAdmin:
         setHealthSystem(true)
