@@ -70,7 +70,15 @@ const PaymentMobileLink = () => {
           <TheHeader />
           <div className="container">
             <div className="row mt-2 pt-3 ">
+             
               <div className="col-md-6  offset-md-3 border-cover pt-2">
+              <img
+                  src="https://clearhealthresources.s3.amazonaws.com/clearhealthLogo.png"
+                  alt="Logo"
+                  title="Logo"
+                  width="150"
+                  className="m-auto display-block mb-3"
+                />
                 <h4>Dear {orderDetail?.orderDetails.firstName}</h4>
                 <PaymentContent details={orderDetail} orderId={orderId} />
 
@@ -122,17 +130,16 @@ const PaymentMobileLink = () => {
                 </div>
               </div> */}
 
-
-                <div  className="col-md-6  offset-md-3 border-cover bg-gray-price pt-2 mb-2 ">
-             <div className="sms-text-footer">   Clear Health, Inc. <a href="">(clearhealthinc.com)</a> </div>
-             <div className="sms-text-footer"> 7601 Highway 70 S. Suite #277 Nashville, TN 37221</div>
-             <div className="sms-text-footer"> 888-918-2522 | Email: info@clearhealthinc.com</div>
-             <div className="sms-text-footer"> Copyright © Clear Health Inc.</div>
-             <div className="sms-text-footer"> All rights reserved.</div>
-
-                 </div>
-
-
+              <div className="col-md-6  offset-md-3 border-cover bg-gray-price pt-2 mb-2 ">
+                <div className="sms-text-footer">
+                  {' '}
+                  Clear Health, Inc. <a href="">(clearhealthinc.com)</a>{' '}
+                </div>
+                <div className="sms-text-footer"> 7601 Highway 70 S. Suite #277 Nashville, TN 37221</div>
+                <div className="sms-text-footer"> 888-918-2522 | Email: info@clearhealthinc.com</div>
+                <div className="sms-text-footer"> Copyright © Clear Health Inc.</div>
+                <div className="sms-text-footer"> All rights reserved.</div>
+              </div>
             </div>
           </div>
         </div>

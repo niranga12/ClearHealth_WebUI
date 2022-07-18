@@ -1371,6 +1371,25 @@ border-radius: 0;
   font-size: 1rem;
 }
 
+.sms-left-image{
+  width:40%;
+  min-width: 100px;
+  float:left;
+
+}
+
+.sms-right-text{
+  width:60%;
+  float:right;
+  
+  
+}
+
+.display-block{
+  display:block;
+}
+
+
 @media (max-width: 768px) {
   .h5-smstext{
     font-size: 0.5rem;
@@ -1391,3 +1410,5 @@ border-radius: 0;
   width: 100%;
 }
 }
+
+

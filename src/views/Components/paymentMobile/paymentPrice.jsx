@@ -6,7 +6,7 @@ const PaymentPrice = ({ orderDetail, orderId }) => {
 
   const ProcedureDetails = () => {
     const listItems = orderDetail?.ProcedureDetails.map((x, index) => (
-      <span className="font-weight-bold h5" key={index}>
+      <span className="font-weight-bold h5-smstext" key={index}>
         {x.description} ,
       </span>
     ))
@@ -31,13 +31,16 @@ const PaymentPrice = ({ orderDetail, orderId }) => {
       <div className="card  box-shadow m-5 bg-gray-price">
         {/* <div className='card-header'> */}
         <div className="row ">
-          <div className="col-md-4 col-sm-4 col-xs-4">
-            <img src="https://clearhealthresources.s3.amazonaws.com/hospital_logo.png" width="100" />
-          </div>
-          <div className="col-md-8 col-sm-8  col-xs-8 h6 sms-heading-align">
-            {' '}
-            {orderDetail?.orderDetails?.facilityName}
-            {ProcedureDetails()}
+          <div className="col-md-12">
+            <div className="sms-left-image pt-3">
+              <img src="https://clearhealthresources.s3.amazonaws.com/palestine_logo.png" width="100" />
+            </div>
+            <div className="sms-right-text h6 sms-heading-align pl-1">
+              {' '}
+              {orderDetail?.orderDetails?.facilityName}
+              {ProcedureDetails()}
+            </div>
+            <div className="clearfix"></div>
           </div>
         </div>
         <div className="col-md-12 border-bottom"></div>
