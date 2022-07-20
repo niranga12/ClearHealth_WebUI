@@ -106,6 +106,7 @@ const OrderForm = () => {
 
   // handle selection
   const handleChange = (value) => {
+  
     let result = {
       patient: {
         firstName: value.firstName,
@@ -223,7 +224,7 @@ const OrderForm = () => {
       data = {
         hospitalPartyRoleId: hospitalId,
         patientResponsibilityAmount: patientDetail?.patientResponsibilityAmount,
-        patientPartyRoleId: selectedValue.partyRoleId,
+        patientPartyRoleId: selectedValue?.partyRoleId,
         orderTypeId: patientDetail?.orderType,
         estimatedPayLaterPrice: patientDetail?.estimatedPayLaterPrice,
         patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },

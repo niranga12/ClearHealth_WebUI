@@ -36,9 +36,23 @@ const PaymentForm = () => {
   // recreating the `Stripe` object on every render.
   // const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
   // eslint-disable-next-line no-unused-vars
-  const stripePromise = loadStripe(
-    'pk_test_51JKBypBOELX9tyniJrgYzR3SvXJDOusxZiuQ1wV60G8eJucn7p2hK1aKK0IPcktL6tTDh7fIeZL1lXQka7rZGpcz00oPjzhYRh'
-  )
+  // let stripePromise
+  console.log(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
+  // if (process.env.NODE_ENV == 'prod') {
+  //   stripePromise = loadStripe(
+  //     'pk_live_51JKBypBOELX9tyni4tKJc2fnqfKtFR0cWOYaOchEF0e1505AqoXArN3lLP9cEHW4I3wSfGgBQwZYf8d7XSSNhgAT00kD0HfwNY'
+  //   )
+  // } else {
+  //   stripePromise = loadStripe(
+  //     'pk_test_51JKBypBOELX9tyniJrgYzR3SvXJDOusxZiuQ1wV60G8eJucn7p2hK1aKK0IPcktL6tTDh7fIeZL1lXQka7rZGpcz00oPjzhYRh'
+  //   )
+  // }
+  // const stripePromise = loadStripe(
+  //   'pk_test_51JKBypBOELX9tyniJrgYzR3SvXJDOusxZiuQ1wV60G8eJucn7p2hK1aKK0IPcktL6tTDh7fIeZL1lXQka7rZGpcz00oPjzhYRh'
+  // )
+
+ let stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
+
   // let pubKey=String(StripPublicKey) ;
   // const stripePromise = loadStripe(pubKey);
 
@@ -69,7 +83,6 @@ const PaymentForm = () => {
 
         const res = await getPaymentIntentKeyId(id)
         setSTKey(res.data.data)
-
       } catch (error) {
         OnError(error, dispatch)
         setIsPayable(false)
@@ -116,7 +129,6 @@ const PaymentForm = () => {
 
   const formChange = (value) => {
     setPatientData(value)
-   
 
     let result = {
       billing: {
@@ -131,7 +143,6 @@ const PaymentForm = () => {
       orderId: orderId
     }
     setBillingData(result)
-    
   }
 
   const avilablePayment = () => {
@@ -142,8 +153,8 @@ const PaymentForm = () => {
             <PaymentOrder patientOrder={patient} formChange={formChange} handleValid={formValid} />
             <div className="component-header mt-4 mb-4 ">Payment Details </div>
             <Elements stripe={stripePromise}>
-				     	<PayStripe billingDetails={billingData} stKey={stKey} isValid={isValid} orderId={patientData?.orderId} />
-						</Elements>
+              <PayStripe billingDetails={billingData} stKey={stKey} isValid={isValid} orderId={patientData?.orderId} />
+            </Elements>
             {/* <PayBrainTree
               billingDetails={billingData}
               isValid={isValid}

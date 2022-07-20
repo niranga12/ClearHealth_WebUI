@@ -456,7 +456,7 @@ const ProviderForm = ({
 
   // update Provider
   const updateProviderInfo = async () => {
-    console.log(dirtyFields.firstName)
+
     try {
       const updateProvider = {
         ...((feeScheduleChanges ||
@@ -468,7 +468,7 @@ const ProviderForm = ({
           dirtyFields.email ||
           dirtyFields.providerGroup) && {
           provider: {
-            providerTypeId: Provider.Provider,
+            providerTypeId: getValues('providerTypeId'),
             email: getValues('email'),
             hospitalList: getValues('hospitalName'),
             speciality: getValues('speciality'),
