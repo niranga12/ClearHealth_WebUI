@@ -142,6 +142,10 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
         accessor: 'ancillaryAccountNumber'
       },
       {
+        Header: 'Scheduled date of procedure',
+        accessor: 'scheduleServiceDate'
+      },
+      {
         Header: 'CPT Code',
         accessor: 'code'
       },

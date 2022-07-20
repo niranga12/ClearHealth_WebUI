@@ -7,13 +7,16 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
 import PropTypes from 'prop-types'
+import DateSelector from 'src/views/common/dateSelector'
+import moment from 'moment'
 
 const schema = yup.object().shape({
   cptDetail: yup.object().shape({
     code: yup.string(),
     description: yup.string(),
     packagePrice: yup.string(),
-    providerPartyRoleId: yup.string()
+    providerPartyRoleId: yup.string(),
+    scheduleServiceDate: yup.string(),
   })
 })
 
@@ -24,6 +27,7 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
   const [editDetail, seteditDetail] = useState(data)
   const [tempSelectCPT, setTempSelectCPT] = useState([])
   const dispatch = useDispatch()
+  const [fromDate, handlefromDateChange] = useState(Date.now())
   const { register, reset, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' })
 
   const [selectedCPT, setSelectedCPT] = useState([])
@@ -41,7 +45,7 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
     }
     //	let changeValue = { ...editDetail, ...newValue, codeId: newValue.Id,}
     let formDetail = {
-      cptDetail: { ...changeValue }
+      cptDetail: { ...changeValue, scheduleServiceDate: moment(fromDate).format('MM-DD-YYYY') }
     }
 
     reset(formDetail)
@@ -50,10 +54,15 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
   }
 
   const providerChange = (event) => {
-    let changeValue = { ...tempSelectCPT, providerPartyRoleId: event.target.value }
+    let changeValue = { ...tempSelectCPT, providerPartyRoleId: event.target.value, dateofprocedure: moment(fromDate).format('MM-DD-YYYY') }
 
     handleChangeCpt(changeValue)
   }
+
+  useEffect(() => {
+    let changeValue = { ...tempSelectCPT, scheduleServiceDate: moment(fromDate).format('MM-DD-YYYY') }
+    handleChangeCpt(changeValue);
+  }, [fromDate])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,6 +117,17 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
           <div className="form-group">
             <label className="form-text">Package Price</label>
             <input className="form-control-sm" type="text" {...register('cptDetail.packagePrice')} readOnly />
+          </div>
+        </div>
+
+        <div className="col-md-6">
+          <div className="form-group">
+            <label className="form-text">Scheduled date of procedure</label>
+            <DateSelector
+              selectedDate={fromDate}
+              handleDateChange={handlefromDateChange}
+              disableFuture={true}
+            />
           </div>
         </div>
 
