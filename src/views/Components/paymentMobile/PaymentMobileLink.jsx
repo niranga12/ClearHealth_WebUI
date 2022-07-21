@@ -136,7 +136,7 @@ const PaymentMobileLink = () => {
                   Clear Health, Inc. <a href="">(clearhealthinc.com)</a>{' '}
                 </div>
                 <div className="sms-text-footer"> 7601 Highway 70 S. Suite #277 Nashville, TN 37221</div>
-                <div className="sms-text-footer"> 888-918-2522 | Email: info@clearhealthinc.com</div>
+                <div className="sms-text-footer"> 888-918-2522 | Email: support@clearhealthinc.com</div>
                 <div className="sms-text-footer"> Copyright © Clear Health Inc.</div>
                 <div className="sms-text-footer"> All rights reserved.</div>
               </div>
