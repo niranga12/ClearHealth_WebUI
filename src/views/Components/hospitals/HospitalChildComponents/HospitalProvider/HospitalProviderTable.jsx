@@ -127,6 +127,7 @@ const HospitalProviderTable = () => {
 
     const [AddPE, setAddPE] = useState(false)
     const [ViewPE, setViewPE] = useState(false)
+    const [isEditProviderPE, setIsEditProviderPE] = useState(false)
     let permissionList = useSelector((state) => state.Permission.UiPermissions)
 
     useEffect(() => {
@@ -143,6 +144,13 @@ const HospitalProviderTable = () => {
         permissionList
       )
       setViewPE(deletePermission)
+
+      let EditPermission = PermissionButton(
+        ScreenPermissions.Providers,
+        ButtonPermissions.EditProviders,
+        permissionList
+      )
+      setIsEditProviderPE(EditPermission)
     }, [])
 
     const addProcedure = () => {
@@ -161,9 +169,11 @@ const HospitalProviderTable = () => {
 
     return (
       <>
-        <div className="btn btn-outline-secondary text-black-50 ml-3 float-right" onClick={editProcedure}>
-          Edit Provider
-        </div>
+        {isEditProviderPE && (
+          <div className="btn btn-outline-secondary text-black-50 ml-3 float-right" onClick={editProcedure}>
+            Edit Provider
+          </div>
+        )}
         {/* {AddPE && (
 					<div className='btn btn-outline-secondary text-black-50 ml-3 float-right' onClick={addProcedure}>
 						Add Procedures
@@ -173,8 +183,7 @@ const HospitalProviderTable = () => {
         {ViewPE && (
           <div
             className="btn btn-outline-secondary text-black-50 ml-3 float-right"
-            {...row.getToggleRowExpandedProps()}
-          >
+            {...row.getToggleRowExpandedProps()}>
             {row.isExpanded ? 'Hide Procedures' : 'View Procedures'}{' '}
           </div>
         )}
@@ -188,8 +197,7 @@ const HospitalProviderTable = () => {
       <pre
         style={{
           fontSize: '10px'
-        }}
-      >
+        }}>
         <ViewProcedure providerId={row.original.partyRoleId} />
       </pre>
     ),
