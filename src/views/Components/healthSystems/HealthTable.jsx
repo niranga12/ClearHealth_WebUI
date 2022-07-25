@@ -32,10 +32,10 @@ function CellContract({ row }) {
          <span className="fa fa-phone text-health-icon pr-1"></span>
         {PhoneNumberFormater(row.original.contactNumber)}
       </div>}
-      {row.original.contactNumber && (
+      {row.original.contactElectronicAddress && (
         <div className="rectangle-intable">
           <span className="fa fa-envelope text-health-icon pr-1"></span>
-          row.original.contactElectronicAddress
+         { row.original.contactElectronicAddress}
         </div>
       )}
     </>

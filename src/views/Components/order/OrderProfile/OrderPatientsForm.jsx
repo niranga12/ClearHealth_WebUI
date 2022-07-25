@@ -434,14 +434,19 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
             </div>
           </div>
           {!isPatientResponsibility && (
-          <div className="col-md-4">
-            <div className="form-group">
-              <label className="form-text">Estimated Pay Later Price</label>
-              <input className="form-control-sm" type="number" {...register('patient.estimatedPayLaterPrice')} />
-              {/* <div className="small text-danger  pb-2   ">{errors.patient?.estimatedPayLaterPrice?.message}</div> */}
+            <div className="col-md-4">
+              <div className="form-group">
+                <label className="form-text">Estimated Pay Later Price</label>
+                <input
+                  className="form-control-sm"
+                  type="number"
+                  {...register('patient.estimatedPayLaterPrice')}
+                  onBlur={() => setstateChange(!stateChange)}
+                />
+                {/* <div className="small text-danger  pb-2   ">{errors.patient?.estimatedPayLaterPrice?.message}</div> */}
+              </div>
             </div>
-          </div>
-           )}
+          )}
         </div>
       </form>
     </>
