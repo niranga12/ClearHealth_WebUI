@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import 'font-awesome/css/font-awesome.min.css'
 import PropTypes from 'prop-types'
+import DateSelector from './dateSelector'
+
 
 const AdminHeaderWithSearch = ({
+  fromDateChange,
+  toDateChange,
   handleSearchChange,
   handleAddNew,
   handleDropDownChange,
@@ -17,8 +21,18 @@ const AdminHeaderWithSearch = ({
   subHeader = '',
   buttonDisable = false,
   iconShow = true,
-  buttonHide = false
+  buttonHide = false,
+  dateRange = false
+
 }) => {
+
+  var initMonth = new Date()
+  initMonth.setMonth(initMonth.getMonth() - 3)
+
+
+  const [fromDate] = useState(initMonth)
+  const [toDate] = useState(new Date())
+
   //add new button
   const addNewButton = () => {
     return (
@@ -35,6 +49,22 @@ const AdminHeaderWithSearch = ({
     )
   }
 
+  //Date Range
+  const DateRange = () => {
+    return (<div className="col-md-6 pull-right">
+      <div className="d-flex justify-content-end">
+        <div className="float-left mr-3 pt-2">From</div>
+        <DateSelector selectedDate={fromDate} handleDateChange={fromDateChange} />
+
+        {/* <input type='text' onBlur={handleFromChange} className=' form-control-sm w-25   float-left ' placeholder="DD/MM/YYYY"  /> */}
+        <div className="float-left mr-3 ml-2 pt-2">To</div>
+        <DateSelector selectedDate={toDate} handleDateChange={toDateChange} />
+        {/* <input type='text' onBlur={handleToChange} className=' form-control-sm  w-25   float-left' placeholder="DD/MM/YYYY"   /> */}
+      </div>
+    </div>
+    )
+  }
+
   const dropDownLabel = () => {
     return (
       <>
@@ -47,7 +77,7 @@ const AdminHeaderWithSearch = ({
   const dropDownSelect = () => {
     return (
       <>
-        <select name="" id="" className="form-control-sm float-right  w-25 mr-2" onChange={handleDropDownChange}>
+        <select name="" id="" className="form-control-sm float-right all-dropdown mr-2" onChange={handleDropDownChange}>
           {selectionList.map((item, index) => (
             <option key={index} value={item.value}>
               {item.text}
@@ -62,7 +92,7 @@ const AdminHeaderWithSearch = ({
   return (
     <div>
       <div className="row mb-2 LatoRegular mt-4 mb-3 pl-3 pr-3">
-        <div className="col-md-6">
+        <div className="col-md-3">
           <div className="component-header ">
             {subHeader ? <div className="small mb-2 sub-title">{subHeader}</div> : ''}
             <div>
@@ -71,8 +101,9 @@ const AdminHeaderWithSearch = ({
           </div>
         </div>
         {/* css condition  */}
-        <div className={`col-md-6 ${subHeader ? 'mt-3' : ''}`}>
+        <div className={`col-md-9 ${subHeader ? 'mt-3' : ''}`}>
           {buttonTitle ? addNewButton() : ''}
+          {dateRange ? DateRange(): ''}
           {/* <div className='float-right w-50'> */}
           <div className="float-right">
             {' '}
@@ -93,6 +124,8 @@ const AdminHeaderWithSearch = ({
 }
 
 AdminHeaderWithSearch.propTypes = {
+  fromDateChange: PropTypes.func,
+  toDateChange: PropTypes.func,
   handleSearchChange: PropTypes.func,
   handleAddNew: PropTypes.func,
   handleDropDownChange: PropTypes.func,
@@ -105,7 +138,8 @@ AdminHeaderWithSearch.propTypes = {
   selectionList: PropTypes.any,
   selectionTitle: PropTypes.any,
   subHeader: PropTypes.any,
-  buttonHide: PropTypes.bool
+  buttonHide: PropTypes.bool,
+  dateRange: PropTypes.bool
 }
 
 export default AdminHeaderWithSearch

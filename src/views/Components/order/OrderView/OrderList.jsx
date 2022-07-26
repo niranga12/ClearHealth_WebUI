@@ -180,7 +180,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
       },
 
       {
-        Header: 'package Price',
+        Header: 'Package Price',
         accessor: 'packagePrice',
         Cell: ({ row }) => <div>$ {row.original.packagePrice}</div>
       },
@@ -206,6 +206,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             <div>OrderType : {order?.orderSummary[0]?.orderTypeDescription}</div>
             <div>Date Paid : {order?.orderSummary[0]?.datePaid}</div>
             <div>Date Sent : {order?.orderSummary[0]?.dateSent}</div>
+            <div>Estimated Full Cost : $ {order?.orderSummary[0]?.estimatedFullCost}</div>
             {order?.orderSummary[0]?.orderTypeId === OrderType.PatientResponsibility && (
               <div>Order Total : {order?.orderSummary[0]?.orderTotal} </div>
             )}

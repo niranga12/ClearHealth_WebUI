@@ -274,8 +274,19 @@ function HospitalOrderTable() {
     if (e.target.value) {
       setSearchQuery({ ...searchQuery, paymentStatus: Number(e.target.value), pageNumber: 1 })
     }
+  } 
+  
+  const fromDateChange = (e) => {
+    if (e.target.value) {
+      // setSearchQuery({ ...searchQuery, paymentStatus: Number(e.target.value), pageNumber: 1 })
+    }
   }
 
+  const toDateChange = (e) => {
+    if (e.target.value) {
+      // setSearchQuery({ ...searchQuery, paymentStatus: Number(e.target.value), pageNumber: 1 })
+    }
+  }
   const handleAddOrder = (e) => {
     history.push('/order')
     history.push({
@@ -348,6 +359,8 @@ function HospitalOrderTable() {
     <>
       <div className=" pt-2 ">
         <AdminHeaderWithSearch
+          fromDateChange={fromDateChange}
+          toDateChange={toDateChange}
           handleAddNew={handleAddOrder}
           handleSearchChange={searchTextChange}
           handleDropDownChange={dropDownChange}
@@ -355,6 +368,7 @@ function HospitalOrderTable() {
           buttonTitle="Add Order"
           placeholder="Search here.."
           title="Orders"
+          dateRange={false}
         />
         <DataTable columns={columns} data={hospitalOrderData} />
         <div className="row">
