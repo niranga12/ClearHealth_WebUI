@@ -101,7 +101,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
           if (defaultValues?.hospitalList.length > 0) {
             let defaultHospital = await getSystemDefault(result.data.data, defaultValues.hospitalList)
             // setDefaultHospital(defaultHospital);
-            roleTypeChange(defaultValues.roleTypeId)
+            //  roleTypeChange(defaultValues.roleTypeId)
             defaultValues.healthSystemList == selectedHealthSystem
               ? setSelectedHospital(defaultHospital)
               : setSelectedHospital(null)
