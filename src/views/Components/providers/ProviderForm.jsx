@@ -897,7 +897,7 @@ const ProviderForm = ({
             <div className="form-group">
               <label className="form-text">
                 {' '}
-                Email <span className="text-danger font-weight-bold "></span>{' '}
+                Email <span className="text-danger font-weight-bold ">*</span>{' '}
               </label>
               <input type="text" className="form-control-sm" {...register('email')} />
               <div className="small text-danger  pb-2   "> {errors.email?.message} </div>
