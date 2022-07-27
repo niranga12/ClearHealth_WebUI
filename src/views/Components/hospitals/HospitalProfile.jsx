@@ -74,9 +74,11 @@ const HospitalProfile = () => {
     const id = params.get('id')
     const onboarding = params.get('onboarding')
     setPartyRoleId(id)
-    if (onboarding == 'bottom') {
-      window.scrollTo(0, document.body.scrollHeight)
-    }
+    // if (onboarding == 'bottom') {
+
+    //   window.scrollTo(0, document.body.scrollHeight)
+
+    // }
 
     id ? setEditProfile(true) : setEditProfile(false)
 
@@ -103,6 +105,12 @@ const HospitalProfile = () => {
         if (id) {
           const onboarding = await getOnboardinginfo(id)
           setOnboarding(onboarding.data.data)
+        }
+
+        if (onboarding == 'bottom') {
+          setTimeout(() => {
+            window.scrollTo(0, document.body.scrollHeight)
+          }, 1500)
         }
       } catch (error) {
         OnError(error, dispatch)

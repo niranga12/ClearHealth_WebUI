@@ -121,12 +121,18 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
                 </div>
 
                 <div className="col-md-12">
-                  <div className="text-center pt-4 pb-2  ">Procedure</div>
-                  <ul className="text-center font-weight-bold h5 mb-2 mb-2 list-unstyled">{detail && detail?.orderDetails.length>0 && detail?.orderDetails.map((item, index) => (
-                  <li key={index} value={item}>
-                    {item.description}
-                  </li>
-                ))} </ul>
+                  {detail && detail?.orderDetails.length > 0 && detail?.orderDetails[0].description && (
+                    <div className="text-center pt-4 pb-2  ">Procedure </div>
+                  )}
+                  <ul className="text-center font-weight-bold h5 mb-2 mb-2 list-unstyled">
+                    {detail &&
+                      detail?.orderDetails.length > 0 &&
+                      detail?.orderDetails.map((item, index) => (
+                        <li key={index} value={item}>
+                          {item.description}
+                        </li>
+                      ))}{' '}
+                  </ul>
                 </div>
 
                 <div className="col-md-6  offset-md-3  text-center">
