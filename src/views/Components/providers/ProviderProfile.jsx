@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import CIcon from '@coreui/icons-react'
+import { CCol, CRow } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { loaderHide, loaderShow } from 'src/actions/loaderAction'
 import { Country } from 'src/reusable/enum'
 import { getStateList } from 'src/service/commonService'
@@ -9,7 +11,7 @@ import { getHealthSystemList } from 'src/service/healthsystemService'
 import { getHospitalByPartyRoleId, getOnboardinginfo } from 'src/service/hospitalsService'
 import { getProviderByPartyRoleId, getSpecialityList } from 'src/service/providerService'
 import AdminTitle from 'src/views/common/adminTitle'
-import Goback from 'src/views/common/Goback'
+// import Goback from 'src/views/common/Goback'
 import MetaTitles from 'src/views/common/metaTitles'
 import OnError from 'src/_helpers/onerror'
 import ProviderForm from './ProviderForm'
@@ -51,13 +53,17 @@ const ProviderProfile = () => {
   const [providerData, setProviderData] = useState(defalutFormValue)
   const [specialityData, setSpecialityData] = useState([])
   const [onboardingInfo, setOnboarding] = useState([])
+  // const [tabId, setTabId] = useState(null)
+
   const dispatch = useDispatch()
+  const history = useHistory()
 
   //if this a edit form get the data
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const id = params.get('id')
     const hospitalId = params.get('hospitalId')
+
     setPartyRoleId(id)
     id ? setEditProfile(true) : setEditProfile(false)
 
@@ -99,6 +105,24 @@ const ProviderProfile = () => {
     fetchData()
   }, [location])
 
+  const goBack = () => {
+    const params = new URLSearchParams(location.search)
+    // const id = params.get('id')
+    const hospitalId = params.get('hospitalId')
+    const hospitalName = params.get('hospitalName')
+    const tap = params.get('tap')
+
+    
+    if (tap && hospitalId) {
+      history.push({
+        pathname: `/hospitals/hospital`,
+        search: `?id=${hospitalId}&name=${hospitalName}&tap=${tap}`
+      })
+    } else {
+      history.goBack()
+    }
+  }
+
   //updated form fields
   const updateFormFields = (data) => {
     const providerDetails = {
@@ -134,7 +158,15 @@ const ProviderProfile = () => {
 
   return (
     <>
-      <Goback />
+      {/* <Goback /> */}
+      <CRow>
+        <CCol xs="12" md="12" className="h4 font-lato-bold m-0 cursor-pointer mb-3">
+          <CIcon name="cilArrowLeft" size={'xl'} onClick={goBack} />
+          <span className="pl-3" onClick={goBack}>
+            Back
+          </span>
+        </CCol>
+      </CRow>
 
       <div className="card  cover-content pt-2 ">
         {/* for addeing page metas  */}
