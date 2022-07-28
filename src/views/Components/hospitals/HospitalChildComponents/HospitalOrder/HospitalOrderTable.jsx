@@ -6,7 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { notify } from 'reapop'
 import { loaderHide, loaderShow } from 'src/actions/loaderAction'
 import { resetOrderTable } from 'src/actions/orderAction'
-import { ServiceMsg, TableSettingsEnum } from 'src/reusable/enum'
+import { DateFormat, ServiceMsg, TableSettingsEnum } from 'src/reusable/enum'
 import { getOrderListByHospitalId, getOrderListCountByHospitalId } from 'src/service/hospitalsService'
 import { getOrderByOrderId, orderAprove } from 'src/service/orderService'
 import AdminHeaderWithSearch from 'src/views/common/adminHeaderWithSearch'
@@ -16,13 +16,16 @@ import RatingView from 'src/views/common/ratingView'
 import OnError from 'src/_helpers/onerror'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react'
 import OrderCheckEligibility from 'src/views/Components/order/OrderView/OrderCheckEligibility/OrderCheckEligibility'
+import moment from 'moment'
 
 
 const initialSearch = {
   itemsPerPage: TableSettingsEnum.ItemPerPage,
   pageNumber: 1,
   searchTerm: '',
-  paymentStatus: 1
+  paymentStatus: 1,
+  fromDate: null,
+  toDate: null
 }
 
 const selectionListDropDown = [
@@ -34,7 +37,7 @@ const selectionListDropDown = [
 ]
 
 function OrderAttempt({ row }) {
- // console.log(row.original);
+  // console.log(row.original);
   return (
     <>
       <div className="min-150">
@@ -213,7 +216,8 @@ function HospitalOrderTable() {
   const [hospitalOrderData, setHospitalOrderData] = useState([])
   const [hospitalId, setHospitalId] = useState(null)
   const [hospitalName, setHospitalName] = useState('')
-
+  const [fromDate, setFromDate] = useState(null)
+  const [toDate, setToDate] = useState(null)
   const [page, setPage] = useState(1)
   const [count, setCount] = useState(0)
 
@@ -274,19 +278,30 @@ function HospitalOrderTable() {
     if (e.target.value) {
       setSearchQuery({ ...searchQuery, paymentStatus: Number(e.target.value), pageNumber: 1 })
     }
-  } 
-  
+  }
+
   const fromDateChange = (e) => {
-    if (e.target.value) {
-      // setSearchQuery({ ...searchQuery, paymentStatus: Number(e.target.value), pageNumber: 1 })
+    if (e) {
+      let fDate= moment(e).format(DateFormat.USFormat)
+      setFromDate(fDate);
     }
   }
 
   const toDateChange = (e) => {
-    if (e.target.value) {
-      // setSearchQuery({ ...searchQuery, paymentStatus: Number(e.target.value), pageNumber: 1 })
+    if (e) {
+      let tDate= moment(e).format(DateFormat.USFormat)
+      setToDate(tDate);
     }
   }
+
+
+  useEffect(() => {
+    if (fromDate && toDate) {
+      setSearchQuery({ ...searchQuery, pageNumber: 1, fromDate, toDate })
+    }
+  }, [fromDate, toDate])
+
+
   const handleAddOrder = (e) => {
     history.push('/order')
     history.push({
@@ -368,7 +383,7 @@ function HospitalOrderTable() {
           buttonTitle="Add Order"
           placeholder="Search here.."
           title="Orders"
-          dateRange={false}
+          dateRange={true}
         />
         <DataTable columns={columns} data={hospitalOrderData} />
         <div className="row">

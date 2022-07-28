@@ -128,7 +128,7 @@ const ProviderAddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule, hosId, hosN
 
   return (
     <CModal show={modal} onClose={setModal} closeOnBackdrop={false} size="lg">
-      <CModalHeader closeButton>
+      <CModalHeader>
         <CModalTitle>Add Fee Schedules</CModalTitle>
       </CModalHeader>
 

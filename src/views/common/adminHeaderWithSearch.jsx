@@ -30,8 +30,16 @@ const AdminHeaderWithSearch = ({
   initMonth.setMonth(initMonth.getMonth() - 3)
 
 
-  const [fromDate] = useState(initMonth)
-  const [toDate] = useState(new Date())
+
+
+
+  const [fromDate, handleFDateChange] = useState(initMonth)
+  const [toDate, handleTDateChange] = useState(new Date())
+
+  useEffect(() => {
+    fromDateChange(fromDate)
+    toDateChange(toDate)
+  }, [fromDate, toDate])
 
   //add new button
   const addNewButton = () => {
@@ -54,12 +62,9 @@ const AdminHeaderWithSearch = ({
     return (<div className="col-md-6 pull-right">
       <div className="d-flex justify-content-end">
         <div className="float-left mr-3 pt-2">From</div>
-        <DateSelector selectedDate={fromDate} handleDateChange={fromDateChange} />
-
-        {/* <input type='text' onBlur={handleFromChange} className=' form-control-sm w-25   float-left ' placeholder="DD/MM/YYYY"  /> */}
+        <DateSelector selectedDate={fromDate} handleDateChange={handleFDateChange} />
         <div className="float-left mr-3 ml-2 pt-2">To</div>
-        <DateSelector selectedDate={toDate} handleDateChange={toDateChange} />
-        {/* <input type='text' onBlur={handleToChange} className=' form-control-sm  w-25   float-left' placeholder="DD/MM/YYYY"   /> */}
+        <DateSelector selectedDate={toDate} handleDateChange={handleTDateChange} />
       </div>
     </div>
     )
