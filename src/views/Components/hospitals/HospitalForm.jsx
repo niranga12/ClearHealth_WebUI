@@ -46,6 +46,7 @@ const schema = yup.object().shape({
     .string()
     .test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
   pLineEmail: yup.string().email('Contact Email must be a valid email'),
+  hospitalUniqueId: yup.string(),
   clearTransactionalFee: yup
     .number()
     .required('Clear Transactional Fee percentage is required.')
@@ -243,7 +244,8 @@ const HospitalForm = ({
         clearTransactionalFee: data.clearTransactionalFee,
         patientResponsibilityDiscount: data.patientResponsibilityDiscount,
         clearTransactionalFeeforPatientResponsibility: data.clearTransactionalFeeforPatientResponsibility,
-        pLineEmail: data.pLineEmail
+        pLineEmail: data.pLineEmail,
+        hospitalUniqueId: data.hospitalUniqueId
       },
       postalAddress: [
         {
@@ -306,7 +308,7 @@ const HospitalForm = ({
           dirtyFields.clearTransactionalFee ||
           dirtyFields.patientResponsibilityDiscount ||
           dirtyFields.clearTransactionalFeeforPatientResponsibility ||
-          dirtyFields.pLineEmail) && {
+          dirtyFields.pLineEmail|| dirtyFields.hospitalUniqueId) && {
           hospital: {
             name: getValues('hospitalName'),
             healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
@@ -315,8 +317,8 @@ const HospitalForm = ({
             clearTransactionalFee: getValues('clearTransactionalFee'),
             patientResponsibilityDiscount: getValues('patientResponsibilityDiscount'),
             clearTransactionalFeeforPatientResponsibility: getValues('clearTransactionalFeeforPatientResponsibility'),
-            pLineEmail: getValues('pLineEmail')
-
+            pLineEmail: getValues('pLineEmail'),
+            hospitalUniqueId:getValues('hospitalUniqueId')
           }
         }),
         ...((dirtyFields.address1 ||
@@ -740,6 +742,14 @@ const HospitalForm = ({
               {/* <MultiEmailText handleEmailAdd={changePlineEmail} defalutEmail={plineEmailList} /> */}
               <input type='text' className='form-control-sm' {...register('pLineEmail')} />
 							<div className='small text-danger  pb-2   '>{errors.pLineEmail?.message}</div>
+            </div>
+
+            <div className="form-group pline-remit-margin-top">
+              <label className="form-t  ext">Unit Hospital Number</label>
+              {/* <MultipleValueTextInput onItemAdded={(item, allItems) => patientAccessContactEmail(allItems)} onItemDeleted={(item, allItems) => setEmailList(allItems)} label='Email' name='item-input' className='form-control-sm' placeholder='Enter whatever items you want; separate them with COMMA or ENTER.' values={emailList} /> */}
+              {/* <MultiEmailText handleEmailAdd={changePlineEmail} defalutEmail={plineEmailList} /> */}
+              <input type='text' className='form-control-sm' {...register('hospitalUniqueId')} />
+							<div className='small text-danger  pb-2   '>{errors.hospitalUniqueId?.message}</div>
             </div>
           </div>
         </div>
