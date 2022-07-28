@@ -137,19 +137,23 @@ const UserTable = () => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'FirstName',
         accessor: 'firstName', // accessor is the "key" in the data
         Cell: ({ row }) => (
-          <h5 className="font-weight-normal text-black ml-4">
-            {' '}
-            {row.original.firstName} {row.original.lastName}{' '}
-          </h5>
+          <h5 className="font-weight-normal text-black ml-4 max-user-tb-name"> {row.original.firstName} </h5>
+        )
+      },
+      {
+        Header: 'LastName',
+        accessor: 'lastName', // accessor is the "key" in the data
+        Cell: ({ row }) => (
+          <h5 className="font-weight-normal text-black  max-user-tb-name"> {row.original.lastName} </h5>
         )
       },
       {
         Header: 'Email',
         accessor: 'email', // accessor is the "key" in the data
-        Cell: ({ row }) => <h5 className="max-celladdress"> {row.original.email}</h5>
+        Cell: ({ row }) => <h5 className="max-celladdress max-user-tb-name"> {row.original.email}</h5>
       },
 
       {

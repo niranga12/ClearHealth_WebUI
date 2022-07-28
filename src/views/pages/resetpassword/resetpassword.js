@@ -15,7 +15,7 @@ import { loaderHide, loaderShow } from 'src/actions/loaderAction'
 import MetaTitles from 'src/views/common/metaTitles'
 
 const schema = yup.object().shape({
-  password: yup.string().required('Password is required'),
+  password: yup.string().min(5, 'Password must be at least 5 characters.').required('Password is required'),
   retypePassword: yup
     .string()
     .required('Password is required')

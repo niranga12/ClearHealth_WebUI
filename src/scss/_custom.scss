@@ -983,12 +983,13 @@ line-height: 1.2em;
 // loader animation
 
 .center {
+  
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #4d4c5830;
-    position: absolute;
+   position: absolute;
     width: 100%;
     z-index: 9999;
 }
@@ -1419,4 +1420,13 @@ border-radius: 0;
   width: 100px;
 }
 
+.max-user-tb-name{
+	max-width: 300px;
+    word-break: break-all !important;
+}
+
+.overflow-home{
+  overflow: hidden;
+  height:100VH;
+}
 
