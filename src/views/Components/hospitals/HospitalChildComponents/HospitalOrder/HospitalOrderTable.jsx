@@ -278,9 +278,7 @@ function HospitalOrderTable() {
     if (e.target.value) {
       setSearchQuery({ ...searchQuery, paymentStatus: Number(e.target.value), pageNumber: 1 })
     }
-  } 
-  
-
+  }
 
   const fromDateChange = (e) => {
     if (e) {
