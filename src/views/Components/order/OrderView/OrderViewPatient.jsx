@@ -50,6 +50,14 @@ const schema = yup.object().shape({
             .required('Phone is required')
             .test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value))
         })
+      }else if (values.contactMethod == '3') {
+        return schema.shape({
+          phone: yup
+            .string()
+            .required('Phone is required')
+            .test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
+          email: yup.string().email(' Please enter a valid email').required('Email is required')
+        })
       }
     })
 })
@@ -102,6 +110,9 @@ const OrderViewPatient = ({ patientDetail }) => {
       } else if (value === Number(ContactMethod.Phone)) {
         setIsPhone(true)
         setIsmail(false)
+      } else if (value === Number(ContactMethod.Both)) {
+        setIsPhone(true)
+        setIsmail(true)
       }
     } else {
       setIsmail(false)
@@ -120,6 +131,16 @@ const OrderViewPatient = ({ patientDetail }) => {
       // isAviable=true;
     } else if (
       formValue?.contactMethod == ContactMethod.Phone &&
+      fromDate &&
+      formValue?.firstName &&
+      formValue?.lastName &&
+      Number(formValue?.contactMethod) >= 0 &&
+      formValue?.phoneNumber
+    ) {
+      // isAviable=true;
+      setIsAviable(true)
+    } else if (
+      formValue?.contactMethod == ContactMethod.Both &&
       fromDate &&
       formValue?.firstName &&
       formValue?.lastName &&
@@ -281,9 +302,11 @@ const OrderViewPatient = ({ patientDetail }) => {
                   <option value="-1">Select</option>
                   <option value={ContactMethod.Email}>Email</option>
                   <option value={ContactMethod.Phone}>Phone</option>
+                  <option value={ContactMethod.Both}>Both</option>
                 </select>
               ) : (
-                <div className="h5"> {patient?.contactMethod == ContactMethod.Email ? 'Email' : 'Phone'}</div>
+                <div className="h5"> {patient?.contactMethod == ContactMethod.Email ? 'Email' : patient?.contactMethod == ContactMethod.Phone ? 'Phone' : 'Both'}</div>
+                
               )}
               {isEdit && <div className="small text-danger  pb-2   ">{errors.patientForm?.contactMethod?.message}</div>}
             </div>

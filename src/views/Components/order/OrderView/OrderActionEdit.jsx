@@ -54,7 +54,7 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
   }
 
   const providerChange = (event) => {
-    let changeValue = { ...tempSelectCPT, providerPartyRoleId: event.target.value, dateofprocedure: moment(fromDate).format('MM-DD-YYYY') }
+    let changeValue = { ...tempSelectCPT, providerPartyRoleId: event.target.value, scheduleServiceDate: moment(fromDate).format('MM-DD-YYYY') }
 
     handleChangeCpt(changeValue)
   }
@@ -71,7 +71,11 @@ const OrderActionEdit = ({ data, handleChangeCpt }) => {
         let selected = result.data.data.filter((x) => x.Id == data.codeId)
         setCptList(result.data.data)
         setProvidersList(selected[0].providers)
-        setDefaultValue(selected)
+        setDefaultValue(selected);
+        if(data.scheduleServiceDate!==''){
+          handlefromDateChange(data.scheduleServiceDate)
+        }
+       
         let formDetail = {
           cptDetail: { ...data }
         }
