@@ -94,7 +94,7 @@ const HospitalProviderTable = () => {
   }
 
   const searchTextChange = (e) => {
-    if (e.target.value.length > 3) {
+    if (e.target.value.length > 1) {
       setSearchQuery({ ...initialSearch, searchTerm: e.target.value })
       // eslint-disable-next-line eqeqeq
     } else if (e.target.value.length == '') {

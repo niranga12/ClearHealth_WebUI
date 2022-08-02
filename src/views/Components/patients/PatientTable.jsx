@@ -139,7 +139,7 @@ const PatientTable = () => {
   }
 
   const searchTextChange = (e) => {
-    if (e.target.value.length > 3) {
+    if (e.target.value.length > 1) {
       setSearchQuery({ ...initialSearch, searchTerm: e.target.value })
     } else if (e.target.value.length == '') {
       setSearchQuery({ ...initialSearch, searchTerm: e.target.value })

@@ -192,7 +192,7 @@ const HealthTable = () => {
 
   const searchTextChange = (e) => {
     // setSearchTerm(e.target.value)
-    if (e.target.value.length > 3) {
+    if (e.target.value.length > 1) {
       setSearchQuery({ ...initialSearch, searchTerm: e.target.value })
       // eslint-disable-next-line eqeqeq
     } else if (e.target.value.length == '') {
