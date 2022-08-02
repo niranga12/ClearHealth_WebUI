@@ -59,7 +59,7 @@ const AdminHeaderWithSearch = ({
         <div className="float-left mr-3 pt-2">From</div>
         <DateSelector selectedDate={fromDate} handleDateChange={(e)=> {handleFDateChange(e);fromDateChange(e)}} />
         <div className="float-left mr-3 ml-2 pt-2">To</div>
-        <DateSelector selectedDate={toDate} handleDateChange={(e)=> {handleTDateChange(e);toDateChange(e)}} />
+        <DateSelector selectedDate={toDate} disableMinDate={true} minDate={fromDate} handleDateChange={(e)=> {handleTDateChange(e);toDateChange(e)} } />
       </div>
     </div>
     )
