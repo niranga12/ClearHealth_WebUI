@@ -700,7 +700,8 @@ const ProviderForm = ({
                   onChange={lastNameChanged}
                   {...register('lastName')}
                 />
-                {showLastNameError ? <div className="small text-danger  pb-2   ">Last name is required</div> : ''}
+                  <div className="small text-danger  pb-2   ">{errors.lastName?.message} </div>
+                {/* {showLastNameError ? <div className="small text-danger  pb-2   ">Last name is required</div> : ''} */}
               </div>
             </div>
           </div>
