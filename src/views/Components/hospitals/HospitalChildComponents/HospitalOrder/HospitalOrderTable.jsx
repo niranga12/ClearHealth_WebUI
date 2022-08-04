@@ -263,7 +263,7 @@ function HospitalOrderTable() {
   }
 
   const searchTextChange = (e) => {
-    if (e.target.value.length > 3) {
+    if (e.target.value.length > 1) {
       // setSearchQuery({...initialSearch, searchTerm: e.target.value});
       setSearchQuery({ ...searchQuery, searchTerm: e.target.value, pageNumber: 1 })
       // eslint-disable-next-line eqeqeq
