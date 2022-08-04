@@ -14,7 +14,7 @@ import PropTypes from 'prop-types'
 import { EnableMaskPhone } from 'src/reusable'
 import moment from 'moment'
 import FormatText from 'src/reusable/FormatText'
-import { getOrderType } from 'src/service/orderService'
+import { getOrderType, getOutOfPocketReasons } from 'src/service/orderService'
 
 let schema = yup.object().shape({
   patient: yup
@@ -39,7 +39,8 @@ let schema = yup.object().shape({
       // 	.test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
       orderType: yup.string(),
       estimatedPayLaterPrice: yup.string(),
-      gender: yup.string().required('Please select gender')
+      gender: yup.string().required('Please select gender'),
+      outOfPocketReason: yup.string(),
       // email: yup.string().email(' Please enter a valid email'),
       // phone: yup
       // 	.string()
@@ -87,6 +88,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
   const [isClearPackage, setisClearPackage] = useState(false)
   const [isPatientResponsibility, setisPatientResponsibility] = useState(false)
   const [orderTypeList, setorderTypeList] = useState([])
+  const [outOfPocketList, setOutOfPocketList] = useState([])
   const dispatch = useDispatch()
   const [value, setValue] = useState('')
   const [numValue, setNumValue] = useState()
@@ -106,13 +108,11 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // setRelationshipList([{ id: "Self", name: "Self" }, { id: "Spouse", name: "Spouse" },
-        // { id: "Dependant", name: "Dependant" }, { id: "Other", name: "Other" }])
-        // setInsuranceList([{ id: "1", name: "1199 NATIONAL BENEFIT FUND" },
-        // { id: "2", name: "137654 CALIFORNIA INCORPORATED" },
-        // { id: "3", name: "1ST AUTO AND CASUALTY" }, { id: "Other", name: "Other" }])
-        const result = await getOrderType()
+        const result = await getOrderType();
         setorderTypeList(result.data.data)
+
+        const reasons = await getOutOfPocketReasons();
+        setOutOfPocketList(reasons.data.data)
       } catch (error) {
         OnError(error, dispatch)
       }
@@ -170,7 +170,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
-        formValue?.orderType == OrderType.ClearPackage
+          formValue?.orderType == OrderType.ClearPackage
           ? true
           : false
     } else if (
@@ -186,7 +186,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
-        formValue?.orderType == OrderType.ClearPackage
+          formValue?.orderType == OrderType.ClearPackage
           ? true
           : false
     } else if (
@@ -202,7 +202,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
-        formValue?.orderType == OrderType.ClearPackage
+          formValue?.orderType == OrderType.ClearPackage
           ? true
           : false
     } else {
@@ -411,6 +411,43 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
               </div>
             </div>
           )}
+
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-text">Estimated Pay Later Price</label>
+              <input
+                className="form-control-sm"
+                type="number"
+                {...register('patient.estimatedPayLaterPrice')}
+                onBlur={() => setstateChange(!stateChange)}
+              />
+              {/* <div className="small text-danger  pb-2   ">{errors.patient?.estimatedPayLaterPrice?.message}</div> */}
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-text">
+                {' '}
+                Out of Pockets Reason <span className="text-danger font-weight-bold ">*</span>{' '}
+              </label>
+              <select
+                name=""
+                id=""
+                className="form-control-sm"
+                {...register('patient.outOfPocketReason')}
+                onBlur={() => setstateChange(!stateChange)}>
+                <option value="-1">Select</option>
+
+                {outOfPocketList.map((item, index) => (
+                  <option key={index} value={item.ID}>
+                    {item.Reason}
+                  </option>
+                ))}
+              </select>
+              <div className="small text-danger  pb-2   ">{errors.patient?.outOfPocketReason?.message}</div>
+            </div>
+          </div>
         </div>
 
         <div className="row">
@@ -433,20 +470,10 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
               <div className="small text-danger  pb-2   ">{errors.patient?.showInsurance?.message}</div>
             </div>
           </div>
-          {!isPatientResponsibility && (
-            <div className="col-md-4">
-              <div className="form-group">
-                <label className="form-text">Estimated Pay Later Price</label>
-                <input
-                  className="form-control-sm"
-                  type="number"
-                  {...register('patient.estimatedPayLaterPrice')}
-                  onBlur={() => setstateChange(!stateChange)}
-                />
-                {/* <div className="small text-danger  pb-2   ">{errors.patient?.estimatedPayLaterPrice?.message}</div> */}
-              </div>
-            </div>
-          )}
+          {/* {!isPatientResponsibility && (
+        
+          )} */}
+
         </div>
       </form>
     </>

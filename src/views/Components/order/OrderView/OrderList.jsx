@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import OnError from 'src/_helpers/onerror'
 import { useHistory, useLocation } from 'react-router-dom'
 import { notify } from 'reapop'
-import { orderAprove } from 'src/service/orderService'
+import { getOutOfPocketReasons, orderAprove } from 'src/service/orderService'
 import { OrderType, ServiceMsg } from 'src/reusable/enum'
 import moment from 'moment'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
@@ -40,22 +40,40 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
   const [hospitalId, setHospitalId] = useState(null)
   const [addDetails, setAddDetails] = useState(null)
   const [visible, setVisible] = useState(false)
-
+  const [outOfPocketList, setOutOfPocketList] = useState([])
+  const [reason, setReason] = useState([])
   const btnRef = useRef()
   //const [modelCancel, setModelCancel] = useState(null);
   //let btnRef = useRef();
   useEffect(() => {
     const params = new URLSearchParams(location.search)
-    const id = params.get('orderId')
-    const hospital_id = params.get('hospitalId')
-    const hospital_name = params.get('hospitalName')
-    setHospitalId(hospital_id)
-    setHospitalName(hospital_name)
-    setOrderId(id)
+    const id = params.get('orderId');
+    const hospital_id = params.get('hospitalId');
+    const hospital_name = params.get('hospitalName');
+    setHospitalId(hospital_id);
+    setHospitalName(hospital_name);
+    setOrderId(id);
   }, [location])
 
   useEffect(() => {
-    setOrder(orderDetail)
+    setOrder(orderDetail);
+    const fetchData = async () => {
+      try {
+        const reasons = await getOutOfPocketReasons();
+        setOutOfPocketList(reasons.data.data)
+        const outOfPocketReason = reasons.data.data.find(x => x.ID == orderDetail?.orderSummary[0].outOfPocketReason).Reason;
+        setReason(outOfPocketReason)
+      } catch (error) {
+        OnError(error, dispatch)
+      }
+    }
+
+    try {
+      fetchData()
+
+    } catch (error) {
+      OnError(error, dispatch)
+    }
     if (
       orderDetail?.orderPatientDetails?.orderStatus == 'Paid' ||
       orderDetail?.orderPatientDetails?.orderStatus == 'Expired'
@@ -83,10 +101,10 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
   }, [order])
 
   const approveOrder = async () => {
-   
+
     try {
-	    // @ts-ignore
-	    btnRef.current.setAttribute('disabled', 'disabled')
+      // @ts-ignore
+      btnRef.current.setAttribute('disabled', 'disabled')
       const result = await orderAprove(orderId)
       if (result.data.message == ServiceMsg.OK) {
         dispatch(notify(`Successfully updated`, 'success'))
@@ -207,6 +225,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             <div>Date Paid : {order?.orderSummary[0]?.datePaid}</div>
             <div>Date Sent : {order?.orderSummary[0]?.dateSent}</div>
             <div>Estimated Full Cost : $ {order?.orderSummary[0]?.estimatedFullCost}</div>
+            <div>Out of Pocket Reason : {reason}</div>
             {order?.orderSummary[0]?.orderTypeId === OrderType.PatientResponsibility && (
               <div>Order Total : {order?.orderSummary[0]?.orderTotal} </div>
             )}
