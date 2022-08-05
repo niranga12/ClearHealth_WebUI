@@ -28,6 +28,7 @@ const schema = yup.object().shape({
   hospitalName: yup
     .string()
     .required('Hospital name is required')
+    .matches(ValidationPatterns.hospitalName, 'Hospital name should contain only characters')
     .matches(ValidationPatterns.onlyCharacters, 'Hospital name should contain only characters'),
   healthSystemPartyRoleId: yup.string().required('Health System is required'),
   address1: yup.string().required('Address Line 1 is required'),

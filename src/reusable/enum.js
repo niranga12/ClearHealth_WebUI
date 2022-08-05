@@ -14,7 +14,9 @@ export const ValidationPatterns = {
   onlyCharacters: /^[a-zA-Z ]*$/,
   zip: /^[0-9]{5}(?:-[0-9]{4})?$/,
   phoneFormatReg: /^\D*(\{0,3})\D*(\d{0,3})\D*(\d{0,4})/,
-  noSpace: /^[^\s].([A-Za-z]+\s)*[A-Za-z]+$/
+  noSpace: /^[^\s].([A-Za-z]+\s)*[A-Za-z]+$/,
+  hospitalName: /^(?!\s+$).+/
+
   // phoneFormatReg: /^[1-9]*$/
 }
 
