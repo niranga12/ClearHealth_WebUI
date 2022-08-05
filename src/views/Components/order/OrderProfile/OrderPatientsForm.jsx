@@ -40,7 +40,7 @@ let schema = yup.object().shape({
       orderType: yup.string(),
       estimatedPayLaterPrice: yup.string(),
       gender: yup.string().required('Please select gender'),
-      outOfPocketReason: yup.string(),
+      outOfPocketReason: yup.string().required('Please select Out of Pocket reason'),
       // email: yup.string().email(' Please enter a valid email'),
       // phone: yup
       // 	.string()
@@ -166,7 +166,8 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
       formValue?.email &&
       Number(formValue?.orderType) > -1 &&
       formValue?.showInsurance > -1 &&
-      formValue.gender
+      formValue.gender && 
+      formValue.outOfPocketReason > -1
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
@@ -182,7 +183,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
       formValue?.phone &&
       Number(formValue?.orderType) > -1 &&
       formValue?.showInsurance > -1 &&
-      formValue.gender
+      formValue.gender && formValue.outOfPocketReason > -1
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
@@ -198,7 +199,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
       formValue?.phone &&
       Number(formValue?.orderType) > -1 &&
       formValue?.showInsurance > -1 &&
-      formValue.gender
+      formValue.gender && formValue.outOfPocketReason > -1
     ) {
       isAviable =
         (formValue?.orderType == OrderType.PatientResponsibility && formValue.patientResponsibilityAmount) ||
