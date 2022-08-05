@@ -3,6 +3,7 @@ import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
+import ReactGA from 'react-ga4'
 import { TheHeader } from 'src/containers'
 import { OrderVerificationType, ServiceMsg } from 'src/reusable/enum'
 import { validateOrderDob } from 'src/service/orderService'
@@ -23,6 +24,8 @@ const Payment = () => {
     const params = new URLSearchParams(location.search)
     const id = params.get('id')
     setOrderId(id)
+
+    ReactGA.event('payment_page_loaded', { order_id: id })
   }, [location])
 
   const verifyHandle = async (value) => {
@@ -48,7 +51,10 @@ const Payment = () => {
       if (result.data.message == ServiceMsg.OK) {
         setIsValidDob(result.data.data.isValidBirthday)
         if (!result.data.data.isValidBirthday) {
+          ReactGA.event('payment_page_dob_failed', { order_id: orderId })
           setVerifyMsg('Verification Failed')
+        } else {
+          ReactGA.event('payment_page_dob_passed', { order_id: orderId })
         }
       }
     } catch (error) {

@@ -41,8 +41,8 @@ const defalutFormValue = {
   clearTransactionalFee: '',
   patientResponsibilityDiscount: '',
   clearTransactionalFeeforPatientResponsibility: '',
- pLineEmail:'',
- hospitalUniqueId:''
+  pLineEmail: '',
+  hospitalUniqueId: ''
   // consolidatedInvoice: false,
   // applySAASTax: false,
   // taxId: '',
@@ -157,7 +157,7 @@ const HospitalProfile = () => {
       clearTransactionalFee: data.hospital.clearTransactionalFee,
       patientResponsibilityDiscount: data.hospital.patientResponsibilityDiscount,
       clearTransactionalFeeforPatientResponsibility: data.hospital.clearTransactionalFeeforPatientResponsibility,
-      pLineEmail:data.hospital.pLineEmail,
+      pLineEmail: data.hospital.pLineEmail,
       hospitalUniqueId: data.hospital.hospitalUniqueId
       // consolidatedInvoice: data.paymentInfo.consolidatedInvoice == 1 ? true : false,
       // applySAASTax: data.paymentInfo.applySAASTax == 1 ? true : false,
