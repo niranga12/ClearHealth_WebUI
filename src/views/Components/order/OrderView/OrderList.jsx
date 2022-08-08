@@ -27,7 +27,6 @@ const serviceDetail = ({ row }) => {
 }
 
 const OrderList = ({ orderDetail, handleAddCPT }) => {
-
   const [order, setOrder] = useState(orderDetail)
   const [orderData, setOrderData] = useState([])
   const dispatch = useDispatch()
@@ -41,27 +40,29 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
   const [addDetails, setAddDetails] = useState(null)
   const [visible, setVisible] = useState(false)
   const [outOfPocketList, setOutOfPocketList] = useState([])
-  const [reason, setReason] = useState([])
+  const [reason, setReason] = useState()
   const btnRef = useRef()
   //const [modelCancel, setModelCancel] = useState(null);
   //let btnRef = useRef();
   useEffect(() => {
     const params = new URLSearchParams(location.search)
-    const id = params.get('orderId');
-    const hospital_id = params.get('hospitalId');
-    const hospital_name = params.get('hospitalName');
-    setHospitalId(hospital_id);
-    setHospitalName(hospital_name);
-    setOrderId(id);
+    const id = params.get('orderId')
+    const hospital_id = params.get('hospitalId')
+    const hospital_name = params.get('hospitalName')
+    setHospitalId(hospital_id)
+    setHospitalName(hospital_name)
+    setOrderId(id)
   }, [location])
 
   useEffect(() => {
-    setOrder(orderDetail);
+    setOrder(orderDetail)
     const fetchData = async () => {
       try {
-        const reasons = await getOutOfPocketReasons();
+        const reasons = await getOutOfPocketReasons()
         setOutOfPocketList(reasons.data.data)
-        const outOfPocketReason = reasons.data.data.find(x => x.ID == orderDetail?.orderSummary[0].outOfPocketReason).Reason;
+        const outOfPocketReason = reasons.data.data.find(
+          (x) => x.ID == orderDetail?.orderSummary.outOfPocketReason
+        )?.Reason
         setReason(outOfPocketReason)
       } catch (error) {
         OnError(error, dispatch)
@@ -70,7 +71,6 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
 
     try {
       fetchData()
-
     } catch (error) {
       OnError(error, dispatch)
     }
@@ -101,7 +101,6 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
   }, [order])
 
   const approveOrder = async () => {
-
     try {
       // @ts-ignore
       btnRef.current.setAttribute('disabled', 'disabled')
@@ -221,19 +220,19 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
           <div className="col-md-6  ">
             <div className="h4 mb-1 text-black">Order #{order?.orderPatientDetails?.orderNumber}</div>
             <div>{moment(order?.orderPatientDetails?.orderDate).format('MM-DD-YYYY')}</div>
-            <div>OrderType : {order?.orderSummary[0]?.orderTypeDescription}</div>
-            <div>Date Paid : {order?.orderSummary[0]?.datePaid}</div>
-            <div>Date Sent : {order?.orderSummary[0]?.dateSent}</div>
-            <div>Estimated Full Cost : $ {order?.orderSummary[0]?.estimatedFullCost}</div>
+            <div>OrderType : {order?.orderSummary?.orderTypeDescription}</div>
+            <div>Date Paid : {order?.orderSummary?.datePaid}</div>
+            <div>Date Sent : {order?.orderSummary?.dateSent}</div>
+            <div>Estimated Full Cost : $ {order?.orderSummary?.estimatedFullCost}</div>
             <div>Out of Pocket Reason : {reason}</div>
-            {order?.orderSummary[0]?.orderTypeId === OrderType.PatientResponsibility && (
-              <div>Order Total : {order?.orderSummary[0]?.orderTotal} </div>
+            {order?.orderSummary?.orderTypeId === OrderType.PatientResponsibility && (
+              <div>Order Total : {order?.orderSummary?.orderTotal} </div>
             )}
           </div>
 
           <div className="col-md-6">
             {/* disabled={order?.orderPatientDetails?.totalAttempts <=order?.orderPatientDetails?.attempts || !orderData } */}
-            {order?.orderSummary[0]?.orderTypeId == OrderType.ClearPackage && order?.orderDetails.length != 0 && (
+            {order?.orderSummary?.orderTypeId == OrderType.ClearPackage && order?.orderDetails.length != 0 && (
               <button
                 className="btn btn-view-account ml-3 float-right"
                 ref={btnRef}
@@ -244,7 +243,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
                 Approve
               </button>
             )}
-            {order?.orderSummary[0]?.orderTypeId == OrderType.PatientResponsibility && (
+            {order?.orderSummary?.orderTypeId == OrderType.PatientResponsibility && (
               <button
                 className="btn btn-view-account ml-3 float-right"
                 ref={btnRef}
@@ -255,7 +254,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
                 Approve
               </button>
             )}
-            {order?.orderSummary[0]?.orderTypeId == OrderType.ClearPackage && (
+            {order?.orderSummary?.orderTypeId == OrderType.ClearPackage && (
               <button
                 className="btn btn-view-account ml-3 float-right"
                 disabled={
@@ -271,7 +270,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
       </div>
 
       <div className="card-body p-0">
-        {orderData && order?.orderSummary[0]?.orderTypeId === OrderType.ClearPackage && (
+        {orderData && order?.orderSummary?.orderTypeId === OrderType.ClearPackage && (
           <DataTable columns={columns} data={orderData} />
         )}
       </div>
