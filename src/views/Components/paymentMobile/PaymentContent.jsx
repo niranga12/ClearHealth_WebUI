@@ -12,18 +12,34 @@ const PaymentContent = ({ details, orderId }) => {
             payment responsibility for this procedure, it has been determined that you will owe 100% of the costs
             out-of-pocket.
           </p>
-          {details?.orderDetails.outOfPocketReason && ( <p>This could be due to one of the following reasons:</p> )}
+          {(details?.orderDetails.outOfPocketReason == OutOfPocketReason.HealthInsurance ||
+            details?.orderDetails.outOfPocketReason == OutOfPocketReason.AnnualDeductible ||
+            details?.orderDetails.outOfPocketReason == OutOfPocketReason.DeniedPayment) && (
+            <p>This could be due to one of the following reason:</p>
+          )}
+
           <ul className="list-unstyled">
             {details?.orderDetails.outOfPocketReason == OutOfPocketReason.HealthInsurance && (
               <li> - You are currently without a health insurance plan </li>
             )}
             {details?.orderDetails.outOfPocketReason == OutOfPocketReason.AnnualDeductible && (
-              <li> - You have not yet met your annual deductible or </li>
+              <li> - You have not yet met your annual deductible </li>
             )}
             {details?.orderDetails.outOfPocketReason == OutOfPocketReason.DeniedPayment && (
               <li> - Your insurance company has denied payment for the procedure</li>
             )}
           </ul>
+
+          {details?.orderDetails.outOfPocketReason == OutOfPocketReason.Other && (
+            <>
+              <p>This could be due to one of the following reasons:</p>
+              <ul className="list-unstyled">
+                <li> - You are currently without a health insurance plan </li>
+                <li> - You have not yet met your annual deductible or </li>
+                <li> - Your insurance company has denied payment for the procedure</li>
+              </ul>
+            </>
+          )}
 
           <p>
             {' '}

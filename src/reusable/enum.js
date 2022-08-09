@@ -290,5 +290,6 @@ export const OrderVerificationType = {
 export const OutOfPocketReason = {
   HealthInsurance: 1,
   AnnualDeductible: 2,
-  DeniedPayment: 3
+  DeniedPayment: 3,
+  Other: 4
 }
