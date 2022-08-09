@@ -42,6 +42,8 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
   const [outOfPocketList, setOutOfPocketList] = useState([])
   const [reason, setReason] = useState()
   const btnRef = useRef()
+
+  const [editAction, setEditAction] = useState(false)
   //const [modelCancel, setModelCancel] = useState(null);
   //let btnRef = useRef();
   useEffect(() => {
@@ -81,6 +83,15 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
       setIsAction(false)
     } else {
       setIsAction(true)
+    }
+
+    if (
+      orderDetail?.orderPatientDetails?.attempts > 0 || orderDetail?.orderPatientDetails?.orderStatus == 'Paid' ||
+      orderDetail?.orderPatientDetails?.orderStatus == 'Expired'
+    ) {
+      setEditAction(false)
+    } else {
+      setEditAction(true)
     }
   }, [orderDetail])
 
@@ -207,10 +218,10 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
         accessor: 'id', // accessor is the "key" in the data
         disableSortBy: true,
 
-        Cell: isAction ? OrderAction : ''
+        Cell: editAction ? OrderAction : ''
       }
     ],
-    [isAction]
+    [editAction]
   )
 
   return (
