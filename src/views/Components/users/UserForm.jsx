@@ -26,8 +26,8 @@ const initialSearch = {
 }
 
 const schema = yup.object().shape({
-  firstName: yup.string().matches(ValidationPatterns.hospitalName, 'Hospital name should contain only characters').required('First name is required'),
-  lastName: yup.string().matches(ValidationPatterns.hospitalName, 'Hospital name should contain only characters').required('Last name is required'),
+  firstName: yup.string().matches(ValidationPatterns.hospitalName, 'First name should contain only characters').required('First name is required'),
+  lastName: yup.string().matches(ValidationPatterns.hospitalName, 'Last name should contain only characters').required('Last name is required'),
   roleTypeId: yup.string().required('Role type is required'),
   status: yup.string().required('Status is required'),
   email: yup.string().required('Email is required').email('Email must be a valid email')
