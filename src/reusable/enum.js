@@ -286,3 +286,9 @@ export const OrderVerificationType = {
   FacilityOrderVerification: 2,
   ProviderOrderVerification: 3
 }
+
+export const OutOfPocketReason = {
+  HealthInsurance: 1,
+  AnnualDeductible: 2,
+  DeniedPayment: 3
+}

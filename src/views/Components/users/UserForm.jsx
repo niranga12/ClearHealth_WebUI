@@ -5,7 +5,7 @@ import { useForm, useFormState } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useDispatch } from 'react-redux'
-import { ActiveList, RoleType, ServiceMsg } from 'src/reusable/enum'
+import { ActiveList, RoleType, ServiceMsg, ValidationPatterns } from 'src/reusable/enum'
 import { useHistory } from 'react-router-dom'
 import OnError from 'src/_helpers/onerror'
 import { notify } from 'reapop'
@@ -26,8 +26,8 @@ const initialSearch = {
 }
 
 const schema = yup.object().shape({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
+  firstName: yup.string().matches(ValidationPatterns.hospitalName, 'Hospital name should contain only characters').required('First name is required'),
+  lastName: yup.string().matches(ValidationPatterns.hospitalName, 'Hospital name should contain only characters').required('Last name is required'),
   roleTypeId: yup.string().required('Role type is required'),
   status: yup.string().required('Status is required'),
   email: yup.string().required('Email is required').email('Email must be a valid email')
