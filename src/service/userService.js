@@ -18,3 +18,6 @@ export const getUserListCount = (data) => axiosInstance.post(`user/count`, data)
 export const getUserByPartyRoleId = (partyRoleId) => axiosInstance.get(`user/${partyRoleId}`)
 export const saveUser = (data) => axiosInstance.post(`user`, data)
 export const updateUserByPartyRoleId = (partyRoleId, data) => axiosInstance.put(`user/${partyRoleId}`, data)
+
+export const getUserNameAvailability = (data) => axiosInstance.post(`user/userNameAvailability`, data)
+

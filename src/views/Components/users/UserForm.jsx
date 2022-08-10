@@ -9,13 +9,14 @@ import { ActiveList, RoleType, ServiceMsg, ValidationPatterns } from 'src/reusab
 import { useHistory } from 'react-router-dom'
 import OnError from 'src/_helpers/onerror'
 import { notify } from 'reapop'
-import { saveUser, updateUserByPartyRoleId } from 'src/service/userService'
+import { getUserNameAvailability, saveUser, updateUserByPartyRoleId } from 'src/service/userService'
 import { getSpecificRoleList } from 'src/service/commonService'
 import FormatText from 'src/reusable/FormatText'
 import { loaderHide, loaderShow } from 'src/actions/loaderAction'
 import Select from 'react-select'
 import { getHealthSystemList } from 'src/service/healthsystemService'
 import { getHospitalsList } from 'src/service/hospitalsService'
+import useDebounce from 'src/reusable/debounce'
 
 const initialSearch = {
   itemsPerPage: '',
@@ -63,6 +64,17 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
 
   // const [defaultHospital, setDefaultHospital] = useState(null);
   const [defaultHealth, setDefaultlHealth] = useState(null)
+
+  // for email Validation
+  const [emailId, setEmailId] = useState('');
+  const [isSearching, setIsSearching] = useState(false)
+  const [isAlreadyExit, setIsAlreadyExit] = useState(false)
+    // Debounce search term so that it only gives us latest value ...
+  // ... if searchTerm has not been updated within last 1000ms.
+  // The goal is to only have the API call fire when user stops typing ...
+  // ... so that we aren't hitting our API rapidly.
+  const debouncedName = useDebounce(emailId, 1000);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,6 +130,39 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
     })
     return filtered
   }
+
+
+ // validate Email
+ useEffect(() => {
+  const fetchValidate = async () => {
+    try {
+      setIsSearching(true)
+      if (debouncedName) {
+        let data = {
+          userPartyRoleId: partyRoleId,
+          userName: emailId,
+        }
+
+        const result = await getUserNameAvailability(data)
+
+        // if (result.data.data) {
+        //   btnRef.current.removeAttribute('disabled')
+        // } else {
+        //   btnRef.current.setAttribute('disabled', 'disabled')
+        // }
+        setIsSearching(false)
+        setIsAlreadyExit(result.data.data.IsAvaliable)
+        setValue('email', debouncedName, { shouldValidate: true, shouldDirty: true })
+      } else {
+        setIsSearching(false)
+        setIsAlreadyExit(false)
+      }
+    } catch (error) {}
+  }
+  fetchValidate()
+}, [debouncedName])
+
+
 
   // role type selection
   const roleTypeChange = (e) => {
@@ -395,15 +440,18 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
               <label className="form-text">
                 Email <span className="text-danger font-weight-bold ">*</span>
               </label>
-              <input type="text" className="form-control-sm" {...register('email')} />
-              <div className="small text-danger  pb-2   ">{errors.email?.message}</div>
+              <input type="text" className="form-control-sm" {...register('email')} onChange={(e)=>{setEmailId(e.target.value)}} />
+               <div className="small text-danger  pb-2   ">{errors.email?.message}</div>
+               {isSearching && <div>Searching ...</div>}
+              
+              {isAlreadyExit? <div className="small text-danger pb-2">Hospital name already taken</div> :''} 
             </div>
           </div>
         </div>
 
         <div className="row">
           <div className="col-md-12">
-            <button type="submit" className="btn btn-primary btn-lg float-right">
+            <button type="submit" disabled={isAlreadyExit} className="btn btn-primary btn-lg float-right">
               {isEdit ? 'Update' : 'Save'}
             </button>
           </div>
