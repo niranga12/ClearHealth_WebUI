@@ -25,7 +25,7 @@ const Payment =React.lazy(() => import('./views/Components/payment/Payment'));
 const OnBoarding = React.lazy(()=>import('./views/pages/onboarding/onBoardingComplete'));
 const PaymentMobile= React.lazy(()=>import('./views/Components/paymentMobile/PaymentMobileLink'));
 const PaymentVerification = React.lazy(()=>import('./views/Components/Payment-Verification/paymentverification'));
-
+const SuccessPage = React.lazy(()=>import('./views/pages/successpage/success'));
 class App extends Component {
   render() {
     return (
@@ -43,7 +43,8 @@ class App extends Component {
               <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
               <Route exact path="/onboardingcomplete" name="On Boarding Complete" render={props => <OnBoarding {...props}/>} />
               <Route exact path="/paymentsms" name="Payment Mobile Link" render={props => <PaymentMobile {...props}/>} />
-             
+              <Route exact path="/successaction" name="Success" render={props => <SuccessPage {...props}/>} />
+
               <Route exact path="/paymentverificationprovider" name="payment verification " render={props => <PaymentVerification {...props}/>} />
               <Route exact path="/paymentverificationprovider/:id" name="payment verification " render={props => <PaymentVerification {...props}/>} />
               <Route exact path="/paymentverificationprovider/:id/:providerid" name="payment verification " render={props => <PaymentVerification {...props}/>} />

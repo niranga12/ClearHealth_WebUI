@@ -1,5 +1,5 @@
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -20,9 +20,18 @@ const HospitalNotifyUser = ({ partyRoleId = null, isNotify, handleCancel }) => {
 
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema), mode: 'all' })
+  
+  const [modal, setModal] = useState(false);
+  const [valid, setValid] = useState(false)
+   const [email, setEmail] = useState('');
 
-  const [modal, setModal] = useState(false)
-  // const [email, setEmail] = useState();
+  let btnRef = useRef();
+  useEffect(() => {
+
+ if(email.length>0){setValid(true)}
+    
+  }, [email])
+
   useEffect(() => {
     setModal(isNotify)
   }, [isNotify])
@@ -38,6 +47,7 @@ const HospitalNotifyUser = ({ partyRoleId = null, isNotify, handleCancel }) => {
       if (result.data.message === ServiceMsg.OK) {
         setValue('email', '')
         handleCancel()
+        
       }
     } catch (error) {
       OnError(error)
@@ -49,14 +59,14 @@ const HospitalNotifyUser = ({ partyRoleId = null, isNotify, handleCancel }) => {
       <CModalHeader closeButton></CModalHeader>
       <CModalBody>Please enter the mail of the user who is to complete the onboarding process below</CModalBody>
       <form>
-        <input type="text" className="ml-3 form-control-sm col-9" {...register('email')} />
+        <input type="text" className="ml-3 form-control-sm col-9" {...register('email')} onChange={e=>{setEmail(e.target.value)}} />
         <div className="small text-danger ml-3 pb-2   ">{errors.email?.message}</div>
       </form>
       <CModalFooter>
-        <CButton color="primary" onClick={onNotifyUser}>
+        <CButton disabled={errors.email?.message || !valid} color="primary" onClick={onNotifyUser}>
           Send
         </CButton>{' '}
-        <CButton color="secondary" onClick={handleCancel}>
+        <CButton  color="secondary" onClick={handleCancel}>
           Cancel
         </CButton>
       </CModalFooter>
