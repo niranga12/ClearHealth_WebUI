@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { OrderType } from 'src/reusable/enum'
+import { OrderType, OutOfPocketReason } from 'src/reusable/enum'
 import PaymentPrice from './paymentPrice'
 
 const PaymentContent = ({ details, orderId }) => {
@@ -12,13 +12,34 @@ const PaymentContent = ({ details, orderId }) => {
             payment responsibility for this procedure, it has been determined that you will owe 100% of the costs
             out-of-pocket.
           </p>
-          <p>This could be due to one of the following reasons:</p>
+          {(details?.orderDetails.outOfPocketReason == OutOfPocketReason.HealthInsurance ||
+            details?.orderDetails.outOfPocketReason == OutOfPocketReason.AnnualDeductible ||
+            details?.orderDetails.outOfPocketReason == OutOfPocketReason.DeniedPayment) && (
+            <p>This could be due to one of the following reason:</p>
+          )}
+
           <ul className="list-unstyled">
-            <li> - You are currently without a health insurance plan </li>
-            <li> - You have not yet met your annual deductible or </li>
-            <li> - Your insurance company has denied payment for the procedure</li>
+            {details?.orderDetails.outOfPocketReason == OutOfPocketReason.HealthInsurance && (
+              <li> - You are currently without a health insurance plan </li>
+            )}
+            {details?.orderDetails.outOfPocketReason == OutOfPocketReason.AnnualDeductible && (
+              <li> - You have not yet met your annual deductible </li>
+            )}
+            {details?.orderDetails.outOfPocketReason == OutOfPocketReason.DeniedPayment && (
+              <li> - Your insurance company has denied payment for the procedure</li>
+            )}
           </ul>
-          
+
+          {details?.orderDetails.outOfPocketReason == OutOfPocketReason.Other && (
+            <>
+              <p>This could be due to one of the following reasons:</p>
+              <ul className="list-unstyled">
+                <li> - You are currently without a health insurance plan </li>
+                <li> - You have not yet met your annual deductible or </li>
+                <li> - Your insurance company has denied payment for the procedure</li>
+              </ul>
+            </>
+          )}
 
           <p>
             {' '}
@@ -44,7 +65,7 @@ const PaymentContent = ({ details, orderId }) => {
             We want to make sure you are aware of a discounted, all-inclusive payment option for your upcoming
             procedure.
           </p>
-          
+
           <p>
             While it has been determined that you are responsible for 100% of costs out-of-pocket for your procedure,{' '}
             {details?.orderDetails?.facilityName}, in partnership with Clear Health, is offering you the option to
@@ -101,7 +122,7 @@ const PaymentContent = ({ details, orderId }) => {
             We want to make sure you are aware of a discounted, all-inclusive payment option for your upcoming
             procedure.
           </p>
-         
+
           <p>
             While it has been determined that you are responsible for a deductible for your procedure,{' '}
             {details?.orderDetails?.facilityName}, in partnership with Clear Health, is offering you the option to
@@ -110,7 +131,7 @@ const PaymentContent = ({ details, orderId }) => {
           <div>
             <PaymentPrice orderDetail={details} orderId={orderId} />
           </div>
-          
+
           <p>Take advantage of this rate now and make your day of care hassle-free.</p>
         </div>
       )}

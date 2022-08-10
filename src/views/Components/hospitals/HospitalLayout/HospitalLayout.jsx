@@ -3,6 +3,7 @@ import { CCol, CRow } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
+import ReactGA from 'react-ga4'
 import { RoleType } from 'src/reusable/enum'
 import { getHospitalsList } from 'src/service/hospitalsService'
 import MetaTitles from 'src/views/common/metaTitles'
@@ -37,6 +38,13 @@ const HospitalLayout = () => {
     const name = params.get('name')
     setPartyRoleId(id)
     setHospitalName(name)
+
+    ReactGA.set({
+      user_properties: {
+        hospitalId: id,
+        hospitalName: name
+      }
+    })
   }, [location])
 
   useEffect(() => {

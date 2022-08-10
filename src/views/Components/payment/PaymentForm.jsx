@@ -51,7 +51,7 @@ const PaymentForm = () => {
   //   'pk_test_51JKBypBOELX9tyniJrgYzR3SvXJDOusxZiuQ1wV60G8eJucn7p2hK1aKK0IPcktL6tTDh7fIeZL1lXQka7rZGpcz00oPjzhYRh'
   // )
 
- let stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
+  let stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
 
   // let pubKey=String(StripPublicKey) ;
   // const stripePromise = loadStripe(pubKey);
@@ -153,7 +153,13 @@ const PaymentForm = () => {
             <PaymentOrder patientOrder={patient} formChange={formChange} handleValid={formValid} />
             <div className="component-header mt-4 mb-4 ">Payment Details </div>
             <Elements stripe={stripePromise}>
-              <PayStripe billingDetails={billingData} stKey={stKey} isValid={isValid} orderId={patientData?.orderId} />
+              <PayStripe
+                billingDetails={billingData}
+                orderDetail={orderDetail}
+                stKey={stKey}
+                isValid={isValid}
+                orderId={patientData?.orderId}
+              />
             </Elements>
             {/* <PayBrainTree
               billingDetails={billingData}

@@ -7,6 +7,7 @@ import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import { notify } from 'reapop'
+import ReactGA from 'react-ga4'
 import { getOrderSuccessByOrderId } from 'src/service/paymentService'
 import { ServiceMsg } from 'src/reusable/enum'
 import OnError from 'src/_helpers/onerror'
@@ -40,7 +41,7 @@ const CARD_OPTIONS = {
   }
 }
 
-const PayStripe = ({ billingDetails, stKey, isValid, orderId }) => {
+const PayStripe = ({ billingDetails, orderDetail, stKey, isValid, orderId }) => {
   // eslint-disable-next-line no-unused-vars
   const [billDet, setBillDet] = useState(null)
   const [stripeKeySes, setStripeKeySes] = useState(null)
@@ -49,6 +50,7 @@ const PayStripe = ({ billingDetails, stKey, isValid, orderId }) => {
   const history = useHistory()
   // let btnRef = useRef();
   const [isNotify, setIsNotify] = useState(false)
+  const [gaParams, setGaParams] = useState({})
 
   useEffect(() => {
     // if (btnRef.current) {
@@ -57,7 +59,20 @@ const PayStripe = ({ billingDetails, stKey, isValid, orderId }) => {
     setBillDet(billingDetails?.order)
     setStripeKeySes(stKey)
     setIsvalidDetail(isValid)
-  }, [billingDetails, stKey, isValid])
+    const gaParamsFromOrderDetails = {
+      currency: 'USD',
+      value: +orderDetail.orderTotal,
+      items: orderDetail.orderDetails.map((od) => ({
+        item_id: od.code,
+        item_name: od.description,
+        currency: 'USD',
+        price: od.discountedPrice
+      })),
+      order_id: orderId
+    }
+    ReactGA.event('begin_checkout', gaParamsFromOrderDetails)
+    setGaParams(gaParamsFromOrderDetails)
+  }, [billingDetails, orderDetail, stKey, isValid])
 
   const stripe = useStripe()
   const elements = useElements()
@@ -92,6 +107,8 @@ const PayStripe = ({ billingDetails, stKey, isValid, orderId }) => {
     delete billingDetails.billing
     delete billingDetails.orderId
     //  const result = await stripe.confirmCardPayment('pi_3JbTJsBOELX9tyni04ZI8oOZ_secret_WT1Iou4419shrypuGR6OqIO2C',{
+    ReactGA.event('add_payment_info', gaParams)
+
     const result = await stripe.confirmCardPayment(Key, {
       payment_method: {
         card: elements.getElement(CardElement),
@@ -102,10 +119,12 @@ const PayStripe = ({ billingDetails, stKey, isValid, orderId }) => {
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
       console.error(result.error.message)
+      ReactGA.event('purchase_failed', gaParams)
       dispatch(notify(result.error.message, 'error'))
     } else {
       // The payment has been processed!
       if (result.paymentIntent.status === 'succeeded') {
+        ReactGA.event('purchase', { ...gaParams, transaction_id: result.paymentIntent.id })
         let data = {
           paymentStatus: JSON.stringify(result.paymentIntent)
         }

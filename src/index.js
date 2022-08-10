@@ -16,10 +16,24 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from './store'
 
+let env
+switch (window.location.hostname) {
+  case 'my.clearhealthinc.com':
+    env = 'prod'
+    break
+  case 'myuat.clearhealthinc.com':
+    env = 'uat'
+    break
+  case 'clearhealthqaui.s3-website-us-east-1.amazonaws.com':
+    env = 'qa'
+    break
+  default:
+    env = 'development'
+}
 Sentry.init({
   dsn: 'https://9a72d0bab1eb4ef7aad763a77dacd7d8@o1302227.ingest.sentry.io/6539318',
   integrations: [new BrowserTracing()],
-  environment: process.env.NODE_ENV || 'other',
+  environment: env,
 
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
