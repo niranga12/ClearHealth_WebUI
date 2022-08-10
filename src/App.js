@@ -26,7 +26,7 @@ const Payment = React.lazy(() => import('./views/Components/payment/Payment'))
 const OnBoarding = React.lazy(() => import('./views/pages/onboarding/onBoardingComplete'))
 const PaymentMobile = React.lazy(() => import('./views/Components/paymentMobile/PaymentMobileLink'))
 const PaymentVerification = React.lazy(() => import('./views/Components/Payment-Verification/paymentverification'))
-
+const SuccessPage = React.lazy(() => import('./views/pages/successpage/success'));
 class App extends Component {
   render() {
     return (
@@ -48,6 +48,8 @@ class App extends Component {
               name="On Boarding Complete"
               render={(props) => <OnBoarding {...props} />}
             />
+
+            <Route exact path="/successaction" name="Success" render={props => <SuccessPage {...props} />} />
             <Route
               exact
               path="/paymentsms"
