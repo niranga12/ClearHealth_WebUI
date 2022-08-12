@@ -63,8 +63,8 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
         const reasons = await getOutOfPocketReasons()
         setOutOfPocketList(reasons.data.data)
         const outOfPocketReason = reasons.data.data.find(
-          (x) => x.ID == orderDetail?.orderSummary.outOfPocketReason
-        )?.Reason
+          (x) => x.id == orderDetail?.orderSummary.outOfPocketReason
+        )?.reason
         setReason(outOfPocketReason)
       } catch (error) {
         OnError(error, dispatch)
@@ -76,6 +76,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
     } catch (error) {
       OnError(error, dispatch)
     }
+
     if (
       orderDetail?.orderPatientDetails?.orderStatus == 'Paid' ||
       orderDetail?.orderPatientDetails?.orderStatus == 'Expired'
@@ -235,7 +236,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             <div>Date Paid : {order?.orderSummary?.datePaid}</div>
             <div>Date Sent : {order?.orderSummary?.dateSent}</div>
             <div>Estimated Full Cost : $ {order?.orderSummary?.estimatedFullCost}</div>
-            <div>Out of Pocket Reason : {reason}</div>
+            <div>Out of Pocket Reason : {reason} </div>
             {order?.orderSummary?.orderTypeId === OrderType.PatientResponsibility && (
               <div>Order Total : {order?.orderSummary?.orderTotal} </div>
             )}
