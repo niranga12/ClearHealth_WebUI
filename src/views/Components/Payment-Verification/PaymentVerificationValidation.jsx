@@ -65,7 +65,7 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
       const result = await providerPaymentVerification(data)
       if (result.data.message === ServiceMsg.OK) {
         dispatch(notify(`Successfully updated`, 'success'))
-        history.push('/main')
+       history.push('/successaction')
       }
     } catch (error) {
       OnError(error, dispatch)
@@ -77,7 +77,7 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
       const result = await facilityPaymentVerification(data)
       if (result.data.message === ServiceMsg.OK) {
         dispatch(notify(`Successfully updated`, 'success'))
-        history.push('/main')
+       history.push('/successaction')
       }
     } catch (error) {
       OnError(error, dispatch)

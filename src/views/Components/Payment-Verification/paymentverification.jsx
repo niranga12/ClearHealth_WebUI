@@ -18,7 +18,7 @@ const PaymentVerification = () => {
   const [verifyMsg, setVerifyMsg] = useState(null)
   const location = useLocation()
   const dispatch = useDispatch()
-
+  
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const id = params.get('id')

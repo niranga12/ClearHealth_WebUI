@@ -441,8 +441,8 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 <option value="-1">Select</option>
 
                 {outOfPocketList.map((item, index) => (
-                  <option key={index} value={item.ID}>
-                    {item.Reason}
+                  <option key={index} value={item.id}>
+                    {item.reason}
                   </option>
                 ))}
               </select>
