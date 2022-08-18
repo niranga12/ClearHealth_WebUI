@@ -307,7 +307,7 @@ const HospitalForm = ({
     if (result.data.message == ServiceMsg.OK) {
       dispatch(notify(`Successfully updated`, 'success'))
     }
-   
+
 
   }
 
@@ -430,6 +430,7 @@ const HospitalForm = ({
     <div className="p-4">
       <form onSubmit={handleSubmit(hospitalFormSubmit)}>
         {/* hospital details */}
+        
         <h5 className="font-weight-bold mt-1">Hospital Details </h5>
         <div className="row mb-3">
           <div className="col-md-6">
@@ -563,7 +564,7 @@ const HospitalForm = ({
             </div>
           </div>
         </div>
-
+        <div className="border-bottom mb-3"></div>
         <div className="row mb-3">
           {/* address */}
           <div className="col-md-4">
@@ -777,7 +778,7 @@ const HospitalForm = ({
           </div>
         </div>
 
-
+        {isEdit ?<div className="border-bottom mb-3"></div>: null}
         {/* Hospital Logo */}
         {isEdit ? <h5 className="font-weight-bold mt-1">Hospital Logo</h5> : null}
 
@@ -804,9 +805,9 @@ const HospitalForm = ({
 
           </div>
         ) : null}
-
+        {isEdit ?<div className="border-bottom mb-3"></div>: null}
         {partyRoleId != null && <EditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges} />}
-
+        <div className="border-bottom mb-3 mt-4"></div>
         {/* Stripe */}
         {isEdit ? <h5 className="font-weight-bold mt-1">Stripe Onboarding </h5> : null}
 
@@ -841,7 +842,7 @@ const HospitalForm = ({
             </div>
           </div>
         ) : null}
-
+        {isEdit ?<div className="border-bottom mb-3"></div>: null}
         <div className="row">
           {/* <div className='col-md-12'>
 						<button type='submit' ref={btnRef} className='btn btn-primary btn-lg float-right'>
