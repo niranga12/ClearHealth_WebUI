@@ -2,6 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 const PaymentPrice = ({ orderDetail, orderId }) => {
+  debugger;
   const history = useHistory()
 
   const ProcedureDetails = () => {
@@ -33,7 +34,7 @@ const PaymentPrice = ({ orderDetail, orderId }) => {
         <div className="row ">
           <div className="col-md-12">
             <div className="sms-left-image pt-3">
-              <img src="https://clearhealthresources.s3.amazonaws.com/palestine_logo.png" width="100" />
+              <img src={orderDetail?.orderDetails.hospitalLogoUrl} width="100" />
             </div>
             <div className="sms-right-text h6 sms-heading-align pl-1">
               {' '}
