@@ -42,7 +42,8 @@ const defalutFormValue = {
   patientResponsibilityDiscount: '',
   clearTransactionalFeeforPatientResponsibility: '',
   pLineEmail: '',
-  hospitalUniqueId: ''
+  hospitalUniqueId: '',
+  hospitalLogoUrl:''
   // consolidatedInvoice: false,
   // applySAASTax: false,
   // taxId: '',
@@ -158,7 +159,8 @@ const HospitalProfile = () => {
       patientResponsibilityDiscount: data.hospital.patientResponsibilityDiscount,
       clearTransactionalFeeforPatientResponsibility: data.hospital.clearTransactionalFeeforPatientResponsibility,
       pLineEmail: data.hospital.pLineEmail,
-      hospitalUniqueId: data.hospital.hospitalUniqueId
+      hospitalUniqueId: data.hospital.hospitalUniqueId,
+      hospitalLogoUrl:data.hospital.hospitalLogoUrl
       // consolidatedInvoice: data.paymentInfo.consolidatedInvoice == 1 ? true : false,
       // applySAASTax: data.paymentInfo.applySAASTax == 1 ? true : false,
       // taxId: data.paymentInfo.taxId,

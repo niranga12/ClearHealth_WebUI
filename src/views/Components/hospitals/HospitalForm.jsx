@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum'
 import { useHistory } from 'react-router-dom'
 import OnError from 'src/_helpers/onerror'
-import { saveHospital, updateHospitalByPartyRoleId } from 'src/service/hospitalsService'
+import { saveHospital, saveLogo, updateHospitalByPartyRoleId } from 'src/service/hospitalsService'
 import { notify } from 'reapop'
 import InputMask from 'react-input-mask'
 import NormalizePhone from 'src/reusable/NormalizePhone'
@@ -96,10 +96,10 @@ const HospitalForm = ({
   const dispatch = useDispatch()
   let history = useHistory()
   let btnRef = useRef()
-
+  let btnLogoRef = useRef()
   const [emailList, setEmailList] = useState([])
   const [isEmailList, setIsEmailList] = useState(false)
-  
+
   // for org name validation
   const [hospitalName, setHospitalName] = useState('')
   const [isSearching, setIsSearching] = useState(false)
@@ -110,7 +110,8 @@ const HospitalForm = ({
   const [isFeeSchedule, setFeeSchedule] = useState(false)
   const [feeScheduleChanges, setFeeScheduleChanges] = useState(false)
   const [hospitalId, setHospitalId] = useState(null)
-
+  const [selectedLogo, setSelectedLogo] = useState();
+  const [preview, setPreview] = useState(null)
   // validate organition name
   useEffect(() => {
     const fetchValidate = async () => {
@@ -130,6 +131,7 @@ const HospitalForm = ({
           } else {
             btnRef.current.setAttribute('disabled', 'disabled')
           }
+
           setIsSearching(false)
           setIsAlreadyExit(!result.data.data)
           setValue('hospitalName', debouncedName, { shouldValidate: true, shouldDirty: true })
@@ -137,7 +139,7 @@ const HospitalForm = ({
           setIsSearching(false)
           setIsAlreadyExit(false)
         }
-      } catch (error) {}
+      } catch (error) { }
     }
     fetchValidate()
   }, [debouncedName])
@@ -193,7 +195,7 @@ const HospitalForm = ({
       reset(defaultValues)
       setStateOption(defaultValues.state) //set state dropdown value
       setBusinessStateOption(defaultValues.businessState)
-
+      setPreview(defaultValues.hospitalLogoUrl)
       if (defaultValues.patientContactEmail) {
         let patientEmailList = defaultValues.patientContactEmail.split(', ')
         setEmailList(patientEmailList)
@@ -275,7 +277,7 @@ const HospitalForm = ({
         phone: NormalizePhone(data.patientContactPhone),
         // email: data.patientContactEmail,
         email: emailList.join(', ')
-      }    
+      }
     }
 
     try {
@@ -297,6 +299,26 @@ const HospitalForm = ({
     setFeeScheduleChanges(result)
   }
 
+
+  const onClickUpload = async () => {
+    const formData = new FormData()
+    formData.append('1', selectedLogo)
+    let result = await saveLogo(partyRoleId, formData)
+    if (result.data.message == ServiceMsg.OK) {
+      dispatch(notify(`Successfully updated`, 'success'))
+    }
+   
+
+  }
+
+  const onChangeLogo = (event) => {
+    setSelectedLogo(event.target.files[0]);
+    // @ts-ignore
+    btnLogoRef.current.removeAttribute('disabled')
+    const objectUrl = URL.createObjectURL(event.target.files[0])
+    setPreview(objectUrl)
+  }
+
   // update hospital
   const updateHospitalInfo = async () => {
     try {
@@ -309,7 +331,7 @@ const HospitalForm = ({
           dirtyFields.clearTransactionalFee ||
           dirtyFields.patientResponsibilityDiscount ||
           dirtyFields.clearTransactionalFeeforPatientResponsibility ||
-          dirtyFields.pLineEmail|| dirtyFields.hospitalUniqueId) && {
+          dirtyFields.pLineEmail || dirtyFields.hospitalUniqueId) && {
           hospital: {
             name: getValues('hospitalName'),
             healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
@@ -319,7 +341,7 @@ const HospitalForm = ({
             patientResponsibilityDiscount: getValues('patientResponsibilityDiscount'),
             clearTransactionalFeeforPatientResponsibility: getValues('clearTransactionalFeeforPatientResponsibility'),
             pLineEmail: getValues('pLineEmail'),
-            hospitalUniqueId:getValues('hospitalUniqueId')
+            hospitalUniqueId: getValues('hospitalUniqueId')
           }
         }),
         ...((dirtyFields.address1 ||
@@ -335,32 +357,32 @@ const HospitalForm = ({
           postalAddress: [
             ...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
               ? [
-                  {
-                    partyContactTypeId: PartyTypeEnum.primary,
-                    address1: getValues('address1'),
-                    address2: getValues('address2'),
-                    city: getValues('city'),
-                    state: getValues('state'),
-                    zip: getValues('zip')
-                  }
-                ]
+                {
+                  partyContactTypeId: PartyTypeEnum.primary,
+                  address1: getValues('address1'),
+                  address2: getValues('address2'),
+                  city: getValues('city'),
+                  state: getValues('state'),
+                  zip: getValues('zip')
+                }
+              ]
               : []),
 
             ...(dirtyFields.businessAddress1 ||
-            dirtyFields.businessAddress2 ||
-            dirtyFields.businessCity ||
-            dirtyFields.businessState ||
-            dirtyFields.businessZip
+              dirtyFields.businessAddress2 ||
+              dirtyFields.businessCity ||
+              dirtyFields.businessState ||
+              dirtyFields.businessZip
               ? [
-                  {
-                    partyContactTypeId: PartyTypeEnum.shipping,
-                    address1: getValues('businessAddress1'),
-                    address2: getValues('businessAddress2'),
-                    city: getValues('businessCity'),
-                    state: getValues('businessState'),
-                    zip: getValues('businessZip')
-                  }
-                ]
+                {
+                  partyContactTypeId: PartyTypeEnum.shipping,
+                  address1: getValues('businessAddress1'),
+                  address2: getValues('businessAddress2'),
+                  city: getValues('businessCity'),
+                  state: getValues('businessState'),
+                  zip: getValues('businessZip')
+                }
+              ]
               : [])
           ]
         }),
@@ -742,7 +764,7 @@ const HospitalForm = ({
               {/* <MultipleValueTextInput onItemAdded={(item, allItems) => patientAccessContactEmail(allItems)} onItemDeleted={(item, allItems) => setEmailList(allItems)} label='Email' name='item-input' className='form-control-sm' placeholder='Enter whatever items you want; separate them with COMMA or ENTER.' values={emailList} /> */}
               {/* <MultiEmailText handleEmailAdd={changePlineEmail} defalutEmail={plineEmailList} /> */}
               <input type='text' className='form-control-sm' {...register('pLineEmail')} />
-							<div className='small text-danger  pb-2   '>{errors.pLineEmail?.message}</div>
+              <div className='small text-danger  pb-2   '>{errors.pLineEmail?.message}</div>
             </div>
 
             <div className="form-group pline-remit-margin-top">
@@ -750,10 +772,38 @@ const HospitalForm = ({
               {/* <MultipleValueTextInput onItemAdded={(item, allItems) => patientAccessContactEmail(allItems)} onItemDeleted={(item, allItems) => setEmailList(allItems)} label='Email' name='item-input' className='form-control-sm' placeholder='Enter whatever items you want; separate them with COMMA or ENTER.' values={emailList} /> */}
               {/* <MultiEmailText handleEmailAdd={changePlineEmail} defalutEmail={plineEmailList} /> */}
               <input type='text' className='form-control-sm' {...register('hospitalUniqueId')} />
-							<div className='small text-danger  pb-2   '>{errors.hospitalUniqueId?.message}</div>
+              <div className='small text-danger  pb-2   '>{errors.hospitalUniqueId?.message}</div>
             </div>
           </div>
         </div>
+
+
+        {/* Hospital Logo */}
+        {isEdit ? <h5 className="font-weight-bold mt-1">Hospital Logo</h5> : null}
+
+        {isEdit ? (
+
+          <div className="row pb-3 pt">
+            {preview && <div className="col-4">
+              {preview && <img src={preview} width='200' />}
+            </div>}
+            <div className="col-4">
+              <label className="form-text">
+                {' '}
+                Select File <span className="text-danger font-weight-bold ">*</span>{' '}
+              </label>
+
+              <input type="file" name="logo" className="form-control" {...register('logo')} onChange={onChangeLogo} />
+            </div>
+
+            <div className="col-2 mt-5">
+              <button type="button" className="btn btn-primary" ref={btnLogoRef} onClick={onClickUpload}>
+                Upload
+              </button>
+            </div>
+
+          </div>
+        ) : null}
 
         {partyRoleId != null && <EditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges} />}
 
