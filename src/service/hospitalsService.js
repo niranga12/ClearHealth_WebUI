@@ -72,7 +72,10 @@ export const getHospitalEmailSender = () => axiosInstance.get(`hospital/verified
 export const getHospitalSmsSender = () => axiosInstance.get(`hospital/verified/smssender`)
 
 export const saveFeeSchedule = (hospitalId, data) =>
-  axiosInstance.post(`hospital/saveFacilityProcedure/${hospitalId}`, data)
+axiosInstance.post(`hospital/saveFacilityProcedure/${hospitalId}`, data)
+
+export const saveLogo = (hospitalId, data) =>
+axiosInstance.post(`hospital/saveHospitalLogo/${hospitalId}`, data)
 
 export const getFeeSchedule = (hospitalId) => axiosInstance.get(`hospital/feeSchedule/${hospitalId}`)
 

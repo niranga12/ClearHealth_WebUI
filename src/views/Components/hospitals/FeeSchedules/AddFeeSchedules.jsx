@@ -6,17 +6,22 @@ import { getSpecialityList } from 'src/service/providerService'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { deleteFeeSchedule, saveFeeSchedule } from 'src/service/hospitalsService'
+import { deleteFeeSchedule, saveFeeSchedule, saveLogo } from 'src/service/hospitalsService'
 import { useHistory } from 'react-router-dom'
-
+import { ServiceMsg } from 'src/reusable/enum'
+import { useDispatch } from 'react-redux'
+import { notify } from 'reapop'
 const schema = yup.object().shape({
   speciality: yup.string().required('Speciality is required'),
-  file: yup.string().required('File is required')
+  file: yup.string().required('File is required'),
+  logo: yup.string()
 })
 
 const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
   let history = useHistory()
-  let btnRef = useRef()
+  let btnRef = useRef();
+  let btnLogoRef = useRef()
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
@@ -26,16 +31,20 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
     control,
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema), mode: 'all' })
-  const [modal, setModal] = useState(false)
-  const [specialityData, setSpecialityData] = useState([])
-  const [submittedFile, setSubmittedFile] = useState([])
-  const [selectedFile, setSelectedFile] = useState()
-  const [selectedSpeciality, setSelectedSpeciality] = useState()
-  const [table, setTable] = useState([])
+  const [modal, setModal] = useState(false);
+  const [specialityData, setSpecialityData] = useState([]);
+  const [submittedFile, setSubmittedFile] = useState([]);
+  const [selectedFile, setSelectedFile] = useState();
+  const [selectedLogo, setSelectedLogo] = useState();
+  const [preview, setPreview] = useState(null)
+  const [selectedSpeciality, setSelectedSpeciality] = useState();
+  const [table, setTable] = useState([]);
 
   useEffect(() => {
     // @ts-ignore
-    btnRef.current.setAttribute('disabled', 'disabled')
+    btnRef.current.setAttribute('disabled', 'disabled');
+    // @ts-ignore
+    btnLogoRef.current.setAttribute('disabled', 'disabled')
 
     const fetchData = async () => {
       setModal(isFeeSchedule)
@@ -79,6 +88,14 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
     setSelectedFile(event.target.files[0])
   }
 
+  const onChangeLogo = (event) => {
+    setSelectedLogo(event.target.files[0]);
+    // @ts-ignore
+    btnLogoRef.current.removeAttribute('disabled')
+    const objectUrl = URL.createObjectURL(event.target.files[0])
+    setPreview(objectUrl)
+  }
+
   const onChangeSpeciality = (event) => {
     setSelectedSpeciality(event.target.value)
   }
@@ -109,7 +126,18 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
       setValue('file', '')
       setTable(data)
     }
-    
+
+  }
+
+
+  const onClickUpload = async () => {
+    const formData = new FormData()
+    formData.append('1', selectedLogo)
+    let result = await saveLogo(partyRoleId, formData)
+    if (result.data.message == ServiceMsg.OK) {
+      dispatch(notify(`Successfully updated`, 'success'))
+    }
+
   }
 
   const onClose = (event) => {
@@ -118,7 +146,7 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
   }
 
   return (
-    <CModal show={modal} onClose={setModal} closeOnBackdrop={false} size="lg">
+    <CModal show={true} onClose={setModal} closeOnBackdrop={false} size="lg">
       <CModalHeader>
         <CModalTitle>Add Fee Schedules</CModalTitle>
       </CModalHeader>
@@ -166,6 +194,37 @@ const AddFeeSchedules = ({ edit, partyRoleId, isFeeSchedule }) => {
         )}
         {table}
       </CModalBody>
+
+
+      <CModalTitle><div className='ml-3'>Add Hospital Logo</div></CModalTitle>
+
+      <CModalBody>
+        <div className="row ml-2 ">
+          {selectedLogo && <div className="col-5">
+            {selectedLogo && <img src={preview} width='200' />}
+          </div>}
+          <div className="col-5">
+            <label className="form-text">
+              {' '}
+              Select File <span className="text-danger font-weight-bold ">*</span>{' '}
+            </label>
+
+            <input type="file" name="logo" className="form-control" {...register('logo')} onChange={onChangeLogo} />
+          </div>
+
+          <div className="col-2 mt-5">
+            <button type="button" className="btn btn-primary" ref={btnLogoRef} onClick={onClickUpload}>
+              Upload
+            </button>
+          </div>
+        </div>
+       
+      </CModalBody>
+
+
+
+
+
       <CModalFooter>
         <CButton color="secondary" onClick={onClose}>
           Close
