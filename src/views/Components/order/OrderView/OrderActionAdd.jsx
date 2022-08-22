@@ -62,7 +62,16 @@ const OrderActionAdd = ({ data, handleChangeCpt }) => {
       try {
         let result = await getCPTCodesByHospital(data.orderPatientDetails.hospitalPartyRoleId, {})
         //let selected = result.data.data.filter(x => x.Id == data.codeId);
-        setCptList(result.data.data)
+
+        let newListCpt=result.data.data.filter((e)=>{
+          if(!selectedCPT?.orderDetails.find(x => x.code== e.code)) {
+           return e;
+          }
+         });
+        // setCptList(result.data.data)
+
+        setCptList(newListCpt)
+
         // setProvidersList(selected[0].providers);
         //setDefaultValue(selected);
 
