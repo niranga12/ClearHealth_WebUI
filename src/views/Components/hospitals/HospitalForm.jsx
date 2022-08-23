@@ -34,7 +34,7 @@ const schema = yup.object().shape({
   address1: yup.string().required('Address Line 1 is required'),
   address2: yup.string(),
   city: yup.string().required('City is required'),
-  logo: yup.string().required('Logo is required'),
+  // logo: yup.string().required('Logo is required'),
   state: yup.string().required('State is required'),
   zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
   phone: yup.string().test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
