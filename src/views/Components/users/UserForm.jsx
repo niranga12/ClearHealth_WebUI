@@ -444,7 +444,7 @@ const UserForm = ({ defaultValues, isEdit = false, partyRoleId = null }) => {
                <div className="small text-danger  pb-2   ">{errors.email?.message}</div>
                {isSearching && <div>Searching ...</div>}
               
-              {isAlreadyExit? <div className="small text-danger pb-2">Hospital name already taken</div> :''} 
+              {isAlreadyExit? <div className="small text-danger pb-2">Email address already taken</div> :''} 
             </div>
           </div>
         </div>
