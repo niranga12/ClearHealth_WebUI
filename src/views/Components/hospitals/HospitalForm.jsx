@@ -34,6 +34,7 @@ const schema = yup.object().shape({
   address1: yup.string().required('Address Line 1 is required'),
   address2: yup.string(),
   city: yup.string().required('City is required'),
+  logo: yup.string().required('Logo is required'),
   state: yup.string().required('State is required'),
   zip: yup.string().required('Zip is required').matches(ValidationPatterns.zip, 'Zip is not valid'),
   phone: yup.string().test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
@@ -112,6 +113,7 @@ const HospitalForm = ({
   const [hospitalId, setHospitalId] = useState(null)
   const [selectedLogo, setSelectedLogo] = useState();
   const [preview, setPreview] = useState(null)
+  const [islogoAvailable, setIsLogoAvailable] = useState(true)
   // validate organition name
   useEffect(() => {
     const fetchValidate = async () => {
@@ -129,7 +131,7 @@ const HospitalForm = ({
           if (result.data.data) {
             btnRef.current.removeAttribute('disabled')
           } else {
-            btnRef.current.setAttribute('disabled', 'disabled')
+            btnRef.current.setAttribute('disabled', 'disabled');
           }
 
           setIsSearching(false)
@@ -192,6 +194,7 @@ const HospitalForm = ({
   // set default form values
   useEffect(() => {
     try {
+      btnLogoRef.current.setAttribute('disabled', 'disabled')
       reset(defaultValues)
       setStateOption(defaultValues.state) //set state dropdown value
       setBusinessStateOption(defaultValues.businessState)
@@ -212,7 +215,16 @@ const HospitalForm = ({
       btnRef.current.setAttribute('disabled', 'disabled')
     }
     if (isEdit) {
-      updateHospitalInfo()
+      if (preview && islogoAvailable) {
+
+        updateHospitalInfo()
+        setIsLogoAvailable(true);
+      } else {
+        setIsLogoAvailable(false);
+        dispatch(notify('Please upload the hospital logo', 'warning'))
+        btnRef.current.removeAttribute('disabled')
+      }
+
     } else {
       addHospital(data)
     }
@@ -305,7 +317,8 @@ const HospitalForm = ({
     formData.append('1', selectedLogo)
     let result = await saveLogo(partyRoleId, formData)
     if (result.data.message == ServiceMsg.OK) {
-      dispatch(notify(`Successfully updated`, 'success'))
+      dispatch(notify(`Successfully Hospital logo uploaded`, 'success'))
+      setIsLogoAvailable(true);
     }
 
 
@@ -317,6 +330,7 @@ const HospitalForm = ({
     btnLogoRef.current.removeAttribute('disabled')
     const objectUrl = URL.createObjectURL(event.target.files[0])
     setPreview(objectUrl)
+   
   }
 
   // update hospital
@@ -430,7 +444,7 @@ const HospitalForm = ({
     <div className="p-4">
       <form onSubmit={handleSubmit(hospitalFormSubmit)}>
         {/* hospital details */}
-        
+
         <h5 className="font-weight-bold mt-1">Hospital Details </h5>
         <div className="row mb-3">
           <div className="col-md-6">
@@ -778,7 +792,7 @@ const HospitalForm = ({
           </div>
         </div>
 
-        {isEdit ?<div className="border-bottom mb-3"></div>: null}
+        {isEdit ? <div className="border-bottom mb-3"></div> : null}
         {/* Hospital Logo */}
         {isEdit ? <h5 className="font-weight-bold mt-1">Hospital Logo</h5> : null}
 
@@ -795,6 +809,7 @@ const HospitalForm = ({
               </label>
 
               <input type="file" name="logo" className="form-control" {...register('logo')} onChange={onChangeLogo} />
+                {islogoAvailable?'': <div className='small text-danger  pb-2   '>Please upload the hospital logo</div>}  
             </div>
 
             <div className="col-2 mt-5">
@@ -805,7 +820,7 @@ const HospitalForm = ({
 
           </div>
         ) : null}
-        {isEdit ?<div className="border-bottom mb-3"></div>: null}
+        {isEdit ? <div className="border-bottom mb-3"></div> : null}
         {partyRoleId != null && <EditFeeSchedules edit={isEdit} partyRoleId={partyRoleId} updateChanges={getChanges} />}
         <div className="border-bottom mb-3 mt-4"></div>
         {/* Stripe */}
@@ -842,7 +857,7 @@ const HospitalForm = ({
             </div>
           </div>
         ) : null}
-        {isEdit ?<div className="border-bottom mb-3"></div>: null}
+        {isEdit ? <div className="border-bottom mb-3"></div> : null}
         <div className="row">
           {/* <div className='col-md-12'>
 						<button type='submit' ref={btnRef} className='btn btn-primary btn-lg float-right'>
