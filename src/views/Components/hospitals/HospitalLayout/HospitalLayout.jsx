@@ -58,7 +58,8 @@ const HospitalLayout = () => {
   }, [hospitalData])
 
   const goBack = () => {
-    history.goBack()
+    // history.goBack()
+    history.push('/hospitals')
   }
 
   return (
