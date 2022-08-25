@@ -235,6 +235,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             <div>OrderType : {order?.orderSummary?.orderTypeDescription}</div>
             <div>Date Paid : {order?.orderSummary?.datePaid}</div>
             <div>Date Sent : {order?.orderSummary?.dateSent}</div>
+            <div>Date Paid to Provider : {order?.orderSummary?.datePaidToProvider}</div>
             <div>Estimated Full Cost : $ {order?.orderSummary?.estimatedFullCost}</div>
             <div>Out of Pocket Reason : {reason} </div>
             {order?.orderSummary?.orderTypeId === OrderType.PatientResponsibility && (

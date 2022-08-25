@@ -18,13 +18,16 @@ const HospitalSubCategories = () => {
   const [providerPE, setProviderPE] = useState(false)
   const [feeSchedulePE, setFeeSchedulePE] = useState(false)
   const [dashboardPE, setDashboardPE] = useState(false)
+  const [hospitalId, setHospitalId] = useState(null)
   let permissionList = useSelector((state) => state.Permission.UiPermissions)
 
   const location = useLocation()
 
   useEffect(() => {
     const params = new URLSearchParams(location.search)
-    const tap = Number(params.get('tap'))
+    const tap = Number(params.get('tap'));
+    const id = Number(params.get('id'));
+    setHospitalId(id)
     if (tap) {
       setActive(tap)
     }
@@ -105,7 +108,7 @@ const HospitalSubCategories = () => {
               <CTabPane>{active === HospitalTabList.Orders && ordersPE ? <HospitalOrderTable /> : ''}</CTabPane>
               <CTabPane>{active === HospitalTabList.Providers && providerPE ? <HospitalProvider /> : ''}</CTabPane>
               <CTabPane>{active === HospitalTabList.FeeSchedule && feeSchedulePE ? <PricingToolGrid /> : ''}</CTabPane>
-              <CTabPane>{active === HospitalTabList.Dashboard && dashboardPE ? <HospitalDashboard /> : ''}</CTabPane>
+              <CTabPane>{active === HospitalTabList.Dashboard && dashboardPE ? <HospitalDashboard hospitalId={hospitalId}/> : ''}</CTabPane>
               {/* <CTabPane>
                   {`5. payment ${active}`}
                 </CTabPane> */}

@@ -22,10 +22,11 @@ import CurrencyConvertorInt from 'src/reusable/CurrencyConvertorInt'
 //     fromDate: '2021-06-02'
 // }
 
-const HospitalDashboard = () => {
+const HospitalDashboard = (hospitalId) => {
   const [dashboardItems, setdashboardItems] = useState(null)
   const [fromDate, setfromDate] = useState()
   const [toDate, setToDate] = useState()
+  const [facilityPartyRoleID, setFacilityPartyRoleID] = useState()
   // const [searchQuery,setsearchQuery]=useState(initialSearch)
 
   const dispatch = useDispatch()
@@ -33,7 +34,8 @@ const HospitalDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let data = { toDate, fromDate }
+        setFacilityPartyRoleID(hospitalId.hospitalId)
+        let data = { toDate, fromDate, facilityPartyRoleID }
         const result = await getHospitalDashboard(data)
         setdashboardItems(result.data.data)
       } catch (error) {
@@ -88,13 +90,13 @@ const HospitalDashboard = () => {
         <div className="col-md-3">
           <HDwidget title="Conversion Rate" image={conversion} price={dashboardItems?.conversionRate + '%'} />
         </div>
-        <div className="col-md-3">
+        {/* <div className="col-md-3">
           <HDwidget
             title="Incremental Revenue "
             image={increment}
             price={CurrencyConvertorInt(dashboardItems?.incrementalRevenue, true)}
           />
-        </div>
+        </div> */}
 
         <div className="col-md-3">
           <HDwidget
@@ -107,19 +109,19 @@ const HospitalDashboard = () => {
         <div className="col-md-3">
           <HDwidget title="Live Packages " image={livepackages} price={dashboardItems?.livePackages} />
         </div>
-
+{/* 
         <div className="col-md-3">
           <HDwidget
             title="Average Days to collect"
             image={collectDay}
             price={dashboardItems?.avarageDaystoCollect + 'Days'}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="row">
         {/* Service Offered */}
-        <div className="col-md-4 p-3 m-2 LatoRegular">
+        {/* <div className="col-md-4 p-3 m-2 LatoRegular">
           <h5 className="font-weight-bold">Service Offered</h5>
           <ul className="hd-boxcover list-group p-3">
             {dashboardItems?.servicesOffered.map((service, index) => (
@@ -128,7 +130,7 @@ const HospitalDashboard = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
 
         {/* top package sold */}
         <div className="col-md-4 p-3 m-2 LatoRegular">
