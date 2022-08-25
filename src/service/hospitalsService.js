@@ -79,7 +79,7 @@ axiosInstance.post(`hospital/saveHospitalLogo/${hospitalId}`, data)
 
 export const getFeeSchedule = (hospitalId) => axiosInstance.get(`hospital/feeSchedule/${hospitalId}`)
 
-export const deleteFeeSchedule = (hospitalId, specialityId) =>
-  axiosInstance.delete(`hospital/feeSchedule/${hospitalId}/${specialityId}`)
+export const deleteFeeSchedule = (hospitalId, specialityId,fileName) =>
+  axiosInstance.delete(`hospital/feeSchedule/${hospitalId}/${specialityId}`,fileName)
 
 export const updateFeeSchedule = (data) => axiosInstance.put(`hospital/packageUpdate/CPT`, data)

@@ -80,8 +80,10 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
   const onClickDelete = async (event) => {
     try {
       dispatch(loaderShow())
-
-      const result = await deleteFeeSchedule(partyRoleId, event.speciality)
+      let fileName = {
+        fileName: event.fileName
+      }
+      const result = await deleteFeeSchedule(partyRoleId, event.speciality, fileName)
       if (result.data.message == 'OK') {
         updateChanges(true)
         let index = submittedFile.findIndex((x) => x.speciality === event.speciality)
@@ -163,7 +165,7 @@ const EditFeeSchedules = ({ edit, partyRoleId, updateChanges }) => {
 
           <div className="col-2 mt-5">
             <button type="button" className="btn btn-primary" ref={btnRef} onClick={handleSubmission}>
-              Submit 
+              Submit
             </button>
           </div>
         </div>
