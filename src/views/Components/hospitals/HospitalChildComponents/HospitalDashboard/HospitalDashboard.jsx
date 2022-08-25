@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux'
 import HDwidget from './HDwidget'
 import CurrencyFormat from '../../../../../reusable/CurrencyFormat'
 import CurrencyConvertorInt from 'src/reusable/CurrencyConvertorInt'
+import moment from 'moment'
 
 // const initialSearch={
 // 	toDate: '2020-02-02',
@@ -24,8 +25,8 @@ import CurrencyConvertorInt from 'src/reusable/CurrencyConvertorInt'
 
 const HospitalDashboard = (hospitalId) => {
   const [dashboardItems, setdashboardItems] = useState(null)
-  const [fromDate, setfromDate] = useState()
-  const [toDate, setToDate] = useState()
+  const [fromDate, setfromDate] = useState(null)
+  const [toDate, setToDate] = useState(null)
   const [facilityPartyRoleID, setFacilityPartyRoleID] = useState()
   // const [searchQuery,setsearchQuery]=useState(initialSearch)
 
@@ -48,14 +49,15 @@ const HospitalDashboard = (hospitalId) => {
   }, [fromDate, toDate])
 
   const handleFromChange = (value) => {
-    setfromDate(value.toLocaleDateString())
+    let date = moment(value.toLocaleDateString()).format('MM-DD-YYYY');
+    setfromDate(date)
     // let search={...searchQuery ,fromDate:value.toLocaleDateString()}
-
     // setsearchQuery({...searchQuery ,fromDate:value.toLocaleDateString()});
   }
 
   const handleToChange = (value) => {
-    setToDate(value.toLocaleDateString())
+    let date = moment(value.toLocaleDateString()).format('MM-DD-YYYY');
+    setToDate(date)
     // setsearchQuery({...searchQuery, toDate:value.toLocaleDateString()});
   }
 
@@ -109,7 +111,7 @@ const HospitalDashboard = (hospitalId) => {
         <div className="col-md-3">
           <HDwidget title="Live Packages " image={livepackages} price={dashboardItems?.livePackages} />
         </div>
-{/* 
+        {/* 
         <div className="col-md-3">
           <HDwidget
             title="Average Days to collect"
