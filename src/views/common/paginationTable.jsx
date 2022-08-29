@@ -11,26 +11,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const initPage = (currentPage) => {
-  let initNumber = currentPage === 1 ? currentPage : (currentPage - 1) * TableSettingsEnum.ItemPerPage
+const initPage = (currentPage, itemPerPage) => {
+  let initNumber = currentPage === 1 ? currentPage : (currentPage - 1) * itemPerPage
   return initNumber
 }
 
-const lastPage = (currentPage, count) => {
+const lastPage = (currentPage, count, itemPerPage) => {
   let lastNumber =
-    currentPage * TableSettingsEnum.ItemPerPage > count ? count : currentPage * TableSettingsEnum.ItemPerPage
-
+    currentPage * itemPerPage > count ? count : currentPage * itemPerPage
   return lastNumber
 }
 
-const PaginationTable = ({ handlePageChange, countPage = 1, currentPage = 1, count = 0 }) => {
+const PaginationTable = ({ handlePageChange, countPage = 1, currentPage = 1, count = 0, itemPerPage = TableSettingsEnum.ItemPerPage }) => {
   const classes = useStyles()
   return (
     <div className={classes.root}>
       <Pagination count={countPage} shape="rounded" color="primary" className="mb-3" onChange={handlePageChange} />
 
       <div className="table-page-bottom">
-        {initPage(currentPage)}-{lastPage(currentPage, count)} of {count} items
+        {initPage(currentPage, itemPerPage)}-{lastPage(currentPage, count, itemPerPage)} of {count} items
       </div>
     </div>
   )
