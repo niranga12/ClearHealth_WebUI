@@ -244,7 +244,7 @@ const HospitalProviderTable = () => {
           handleAddNew={addNewProvider}
           placeholder="Search here.."
           buttonTitle="New Provider"
-          title="Fee Schedules"
+          title="Providers"
           buttonHide={!isAddProviderPE}
         />
         <DataTable

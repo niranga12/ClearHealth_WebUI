@@ -6,7 +6,7 @@ const HDwidget = ({ title, price, image }) => {
     <div className="card p-3 m-2 hd-boxcover">
       <img src={image} alt="" width="30" height="30" />
       <h5 className="LatoRegular pb-1 pt-3  ">{title}</h5>
-      <h3 className="hd-subtitle font-weight-bold">{price}</h3>
+      <h3 className="hd-subtitle font-weight-bold hd-price">{price}</h3>
     </div>
   )
 }

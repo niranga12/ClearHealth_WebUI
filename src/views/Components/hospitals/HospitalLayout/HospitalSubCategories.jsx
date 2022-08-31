@@ -77,7 +77,7 @@ const HospitalSubCategories = () => {
                 {providerPE && (
                   <CNavLink>
                     <CIcon name="logoProviders" size={'2xl'} className="pr-1" />
-                    Fee Schedules
+                    Providers
                   </CNavLink>
                 )}
               </CNavItem>
