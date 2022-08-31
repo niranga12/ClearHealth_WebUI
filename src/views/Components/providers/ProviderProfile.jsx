@@ -147,7 +147,8 @@ const ProviderProfile = () => {
       email: data.email,
       speciality: data.speciality,
       taxId: data.taxId,
-      nip: data.NPI
+      nip: data.NPI,
+      notificationEmail: data.notificationEmail
       // bankName: data.bankName,
       // accountNumber: data.accountNumber,
       // routing: data.routing

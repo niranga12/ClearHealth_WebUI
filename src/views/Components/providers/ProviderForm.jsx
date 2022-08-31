@@ -21,6 +21,7 @@ import { EnableMaskPhone } from 'src/reusable'
 import ProviderEditFeeSchedules from './FeeSchedules/ProviderEditFeeSchedules'
 import ProviderAddFeeSchedules from './FeeSchedules/ProviderAddFeeSchedules'
 import HospitalNotifyUser from '../hospitals/HospitalNotifyUser'
+import { MultiEmailText } from 'src/reusable/MultiEmailText'
 
 const schema = yup.object().shape({
   healthSystemPartyRoleId: yup.string().required('Health system is required'),
@@ -98,6 +99,9 @@ const ProviderForm = ({
   const [saveProviderId, setSaveProviderId] = useState(null)
   const [isNotify, setIsNotify] = useState(false)
 
+  const [emailList, setEmailList] = useState([])
+  const [isEmailList, setIsEmailList] = useState(false)
+
   const handleBillingChecked = (event) => {
     if (event.target.checked) {
       setValue('billingAddress1', getValues('address1'), {
@@ -135,7 +139,12 @@ const ProviderForm = ({
     reset(defaultValues)
     setStateOption(defaultValues.state) //set state dropdown value
     setBillingStateOption(defaultValues.billingState)
+    console.log(defaultValues)
+    if (defaultValues.notificationEmail) {
 
+      let notificatonEmailList = defaultValues.notificationEmail.split(', ')
+      setEmailList(notificatonEmailList)
+    }
     const params = new URLSearchParams(location.search)
     const tap = params.get('tap')
     const hosName = params.get('hospitalName')
@@ -336,6 +345,7 @@ const ProviderForm = ({
         email: data.email,
         hospitalList: data.hospitalName,
         speciality: data.speciality,
+        notificationEmail: emailList.join(', '),
         ...(groupSelection == 'Individual' && { firstName: data.firstName }),
         ...(groupSelection == 'Individual' && { middleName: data.middleName }),
         ...(groupSelection == 'Individual' && { lastName: data.lastName }),
@@ -466,12 +476,15 @@ const ProviderForm = ({
           dirtyFields.hospitalName ||
           dirtyFields.speciality ||
           dirtyFields.email ||
-          dirtyFields.providerGroup) && {
+          dirtyFields.providerGroup ||
+          isEmailList) && {
           provider: {
             providerTypeId: getValues('providerTypeId'),
             email: getValues('email'),
             hospitalList: getValues('hospitalName'),
             speciality: getValues('speciality'),
+            notificationEmail: emailList.join(', '),
+
             ...(groupSelection == 'Individual' && { firstName: getValues('firstName') }),
             ...(groupSelection == 'Individual' && { middleName: getValues('middleName') }),
             ...(groupSelection == 'Individual' && { lastName: getValues('lastName') }),
@@ -569,6 +582,12 @@ const ProviderForm = ({
       OnError(error, dispatch)
     }
   }
+
+  const changeEmail = (val) => {
+    setEmailList(val)
+    setIsEmailList(true)
+  }
+
 
   return (
     <div className="p-4">
@@ -904,6 +923,15 @@ const ProviderForm = ({
               <div className="small text-danger  pb-2   "> {errors.email?.message} </div>
             </div>
 
+            <div className="form-group margin-minus-top-8">
+              <label className="form-text">Notification Email</label>
+              {/* <MultipleValueTextInput onItemAdded={(item, allItems) => patientAccessContactEmail(allItems)} onItemDeleted={(item, allItems) => setEmailList(allItems)} label='Email' name='item-input' className='form-control-sm' placeholder='Enter whatever items you want; separate them with COMMA or ENTER.' values={emailList} /> */}
+              <MultiEmailText handleEmailAdd={changeEmail} defalutEmail={emailList} />
+              {/* <input type='text' className='form-control-sm' {...register('patientContactEmail')} />
+							<div className='small text-danger  pb-2   '>{errors.patientContactEmail?.message}</div> */}
+            </div>
+
+            
             <div className="form-group">
               <label className="form-text">
                 {' '}
