@@ -139,7 +139,6 @@ const ProviderForm = ({
     reset(defaultValues)
     setStateOption(defaultValues.state) //set state dropdown value
     setBillingStateOption(defaultValues.billingState)
-    console.log(defaultValues)
     if (defaultValues.notificationEmail) {
 
       let notificatonEmailList = defaultValues.notificationEmail.split(', ')
