@@ -20,7 +20,7 @@ import moment from 'moment'
 
 
 const initialSearch = {
-  itemsPerPage: TableSettingsEnum.OrderItemPerPage,
+  itemsPerPage: TableSettingsEnum.ItemPerPage,
   pageNumber: 1,
   searchTerm: '',
   paymentStatus: 1,
@@ -245,7 +245,7 @@ function HospitalOrderTable() {
           // const countQuery = {searchTerm: searchQuery.searchTerm};
           // const resultCount = await getProviderListCountByHospitalId(id,countQuery);
           setCount(resultCount.data.data.totalCount)
-          let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.OrderItemPerPage
+          let pageCount = resultCount.data.data.totalCount / TableSettingsEnum.ItemPerPage
           setPage(Math.ceil(pageCount))
 
           dispatch(loaderHide())
@@ -394,7 +394,7 @@ function HospitalOrderTable() {
                 countPage={page}
                 count={count}
                 currentPage={searchQuery.pageNumber}
-                itemPerPage={TableSettingsEnum.OrderItemPerPage}
+                itemPerPage={TableSettingsEnum.ItemPerPage}
               />
             ) : (
               ''

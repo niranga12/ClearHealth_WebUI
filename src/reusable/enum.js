@@ -5,8 +5,7 @@ export const PartyTypeEnum = {
 }
 
 export const TableSettingsEnum = {
-  ItemPerPage: 5,
-  OrderItemPerPage: 15
+  ItemPerPage: 15,
 }
 
 export const ValidationPatterns = {
