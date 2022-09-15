@@ -15,8 +15,8 @@ const PaymentContent = ({ details, orderId }) => {
           {(details?.orderDetails.outOfPocketReason == OutOfPocketReason.HealthInsurance ||
             details?.orderDetails.outOfPocketReason == OutOfPocketReason.AnnualDeductible ||
             details?.orderDetails.outOfPocketReason == OutOfPocketReason.DeniedPayment) && (
-            <p>This could be due to one of the following reason:</p>
-          )}
+              <p>This could be due to one of the following reason:</p>
+            )}
 
           <ul className="list-unstyled">
             {details?.orderDetails.outOfPocketReason == OutOfPocketReason.HealthInsurance && (
@@ -32,7 +32,7 @@ const PaymentContent = ({ details, orderId }) => {
 
           {details?.orderDetails.outOfPocketReason == OutOfPocketReason.Other && (
             <>
-              <p>This could be due to one of the following reasons:</p>
+              <p>This is due to the following reason::</p>
               <ul className="list-unstyled">
                 <li> - You are currently without a health insurance plan </li>
                 <li> - You have not yet met your annual deductible or </li>
@@ -56,6 +56,11 @@ const PaymentContent = ({ details, orderId }) => {
             To take advantage of this offer, you must pay the full discounted price prior to your procedure. You may
             view your discounted package price and simplify your billing now.
           </p>
+
+          <div>Thank you, </div>
+          <h6 className="font-weight-bold">Customer Support Team </h6>
+
+          <div className="mt-4"> *Please note by utilizing Clear Health, you elected to pay cash. This payment will not be filed with your insurance company. If you would like Clear Health to facilitate your ability to self file please contact us. Your insurer will determine if the claim may be counted towards your deductible.</div>
         </div>
       )}
 
@@ -77,6 +82,12 @@ const PaymentContent = ({ details, orderId }) => {
             <PaymentPrice orderDetail={details} orderId={orderId} />
           </div>
           <p>Take advantage of this rate now and make your day of care hassle-free.</p>
+
+          <div>Thank you, </div>
+          <h6 className="font-weight-bold">Customer Support Team </h6>
+
+          <div className="mt-4"> *Please note by utilizing Clear Health, you elected to pay cash. This payment will not be filed with your insurance company. If you would like Clear Health to facilitate your ability to self file please contact us. Your insurer will determine if the claim may be counted towards your deductible.</div>
+
         </div>
       )}
 
@@ -95,6 +106,12 @@ const PaymentContent = ({ details, orderId }) => {
             Please note that this is the last communication you will receive with this offer. You can take advantage of
             this special discounted rate today and simplify your visit.
           </p>
+
+          <div>Thank you, </div>
+          <h6 className="font-weight-bold">Customer Support Team </h6>
+
+          <div className="mt-4"> *Please note by utilizing Clear Health, you elected to pay cash. This payment will not be filed with your insurance company. If you would like Clear Health to facilitate your ability to self file please contact us. Your insurer will determine if the claim may be counted towards your deductible.</div>
+
         </div>
       )}
 
@@ -113,6 +130,9 @@ const PaymentContent = ({ details, orderId }) => {
             pay in advance of your care. To take advantage of this offer, you must pay prior to your procedure. You may
             view your discounted patient responsibility and simplify your billing now.
           </p>
+
+          <div>Thank you, </div>
+          <h6 className="font-weight-bold">Customer Support Team </h6>
         </div>
       )}
 
@@ -133,6 +153,9 @@ const PaymentContent = ({ details, orderId }) => {
           </div>
 
           <p>Take advantage of this rate now and make your day of care hassle-free.</p>
+
+          <div>Thank you, </div>
+          <h6 className="font-weight-bold">Customer Support Team </h6>
         </div>
       )}
 
@@ -150,6 +173,9 @@ const PaymentContent = ({ details, orderId }) => {
             Please note that this is the last communication you will receive with this offer. You can take advantage of
             this special discounted rate today and simplify your visit.
           </p>
+
+          <div>Thank you, </div>
+          <h6 className="font-weight-bold">Customer Support Team </h6>
         </div>
       )}
     </div>

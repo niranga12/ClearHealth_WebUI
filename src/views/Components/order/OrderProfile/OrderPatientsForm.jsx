@@ -458,10 +458,9 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
               Date of Service <span className="text-danger font-weight-bold ">*</span>
               </label>
               <DateSelector
-                className={` form-control-sm ${isEdit ? 'disable' : ''}`}
+                // className={` form-control-sm ${isEdit ? 'disable' : ''}`}
                 selectedDate={dateOfService}
                 handleDateChange={handleDateOfServiceChange}
-                disableFuture={true}
               />
               <div className="small text-danger  pb-2   ">{errors.patient?.dateOfService?.message}</div>
             </div>

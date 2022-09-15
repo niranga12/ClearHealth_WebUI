@@ -82,8 +82,7 @@ const PaymentMobileLink = () => {
                 <h4>Dear {orderDetail?.orderDetails.firstName}, </h4>
                 <PaymentContent details={orderDetail} orderId={orderId} />
 
-                <div>Thank you, </div>
-                <h6 className="font-weight-bold">Customer Support Team </h6>
+                
               </div>
 
               {/* <div className="col-md-6 offset-md-3">
