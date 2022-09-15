@@ -41,6 +41,7 @@ let schema = yup.object().shape({
       estimatedPayLaterPrice: yup.string(),
       gender: yup.string().required('Please select gender'),
       outOfPocketReason: yup.string().required('Please select Out of Pocket reason'),
+      dateOfService : yup.string().required('Please select Date of service'),
       // email: yup.string().email(' Please enter a valid email'),
       // phone: yup
       // 	.string()
@@ -84,6 +85,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
   const [isMail, setIsmail] = useState(false)
   const [isPhone, setIsPhone] = useState(false)
   const [fromDate, handlefromDateChange] = useState(Date.now())
+  const [dateOfService , handleDateOfServiceChange] = useState(Date.now())
   const [stateChange, setstateChange] = useState(false)
   const [isClearPackage, setisClearPackage] = useState(false)
   const [isPatientResponsibility, setisPatientResponsibility] = useState(false)
@@ -449,6 +451,23 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
               <div className="small text-danger  pb-2   ">{errors.patient?.outOfPocketReason?.message}</div>
             </div>
           </div>
+
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-text">
+              Date of Service <span className="text-danger font-weight-bold ">*</span>
+              </label>
+              <DateSelector
+                className={` form-control-sm ${isEdit ? 'disable' : ''}`}
+                selectedDate={dateOfService}
+                handleDateChange={handleDateOfServiceChange}
+                disableFuture={true}
+              />
+              <div className="small text-danger  pb-2   ">{errors.patient?.dateOfService?.message}</div>
+            </div>
+          </div>
+
+          
         </div>
 
         <div className="row">

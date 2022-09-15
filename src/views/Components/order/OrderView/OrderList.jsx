@@ -238,6 +238,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             <div>Date Paid to Provider : {order?.orderSummary?.datePaidToProvider}</div>
             <div>Estimated Full Cost : $ {order?.orderSummary?.estimatedFullCost}</div>
             <div>Out of Pocket Reason : {reason} </div>
+            <div>Date of Service : {order?.orderSummary?.dateOfService} </div>
             {order?.orderSummary?.orderTypeId === OrderType.PatientResponsibility && (
               <div>Order Total : {order?.orderSummary?.orderTotal} </div>
             )}
@@ -270,9 +271,9 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             {order?.orderSummary?.orderTypeId == OrderType.ClearPackage && (
               <button
                 className="btn btn-view-account ml-3 float-right"
-                disabled={
-                  order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts ||
-                  order?.orderPatientDetails?.attempts > 0
+                disabled={order?.orderPatientDetails?.orderStatus == 'Paid'
+                  // order?.orderPatientDetails?.totalAttempts <= order?.orderPatientDetails?.attempts ||
+                  // order?.orderPatientDetails?.attempts > 0
                 }
                 onClick={AddCPTCode}>
                 Add CPT code

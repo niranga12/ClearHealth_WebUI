@@ -335,12 +335,19 @@ function HospitalOrderTable() {
         disableSortBy: true
       },
       {
-        Header: 'Procedure',
-        accessor: 'procedureDetail', // accessor is the "key" in the data
+        Header: 'Date Of Service',
+        accessor: 'dateOfService', // accessor is the "key" in the data
         disableSortBy: true
 
         // Cell: ({row}) =>( <h5 className='font-weight-normal text-black'> {row.original.speciality} </h5>),
       },
+      // {
+      //   Header: 'Procedure',
+      //   accessor: 'procedureDetail', // accessor is the "key" in the data
+      //   disableSortBy: true
+
+      //   // Cell: ({row}) =>( <h5 className='font-weight-normal text-black'> {row.original.speciality} </h5>),
+      // },
       // {
       // 	Header: 'attempts',
       // 	accessor: 'attempts', // accessor is the "key" in the data
