@@ -118,17 +118,16 @@ const PaymentContent = ({ details, orderId }) => {
       {details?.orderDetails.orderType == OrderType.PatientResponsibility && details?.orderDetails.orderAttempts == 1 && (
         <div>
           <p>
-            Your provider has decided further care is a necessary part of your care. In reviewing your payment
-            responsibility for this procedure, it has been determined that you do have a deductible patient
-            responsibility amount due.
+          Your provider has decided further treatment is a necessary part of your care. After reviewing your insurance eligibility 
+          for this procedure, it has been determined that you are responsible for a deductible payment. 
           </p>
           <div>
             <PaymentPrice orderDetail={details} orderId={orderId} />
           </div>
           <p>
-            {details?.orderDetails?.facilityName} would like to offer you a discount to pay for your deductible if you
-            pay in advance of your care. To take advantage of this offer, you must pay prior to your procedure. You may
-            view your discounted patient responsibility and simplify your billing now.
+            {details?.orderDetails?.facilityName} is offering you a discount if you pay your deductible in advance of your care. 
+             To take advantage of this offer, you must pay prior to the day of your procedure. 
+             View your reduced price offer and simplify your billing now.
           </p>
 
           <div>Thank you, </div>
@@ -139,8 +138,7 @@ const PaymentContent = ({ details, orderId }) => {
       {details?.orderDetails.orderType == OrderType.PatientResponsibility && details?.orderDetails.orderAttempts == 2 && (
         <div>
           <p>
-            We want to make sure you are aware of a discounted, all-inclusive payment option for your upcoming
-            procedure.
+            We want to make sure you are aware of a discounted payment option for your upcoming procedure.
           </p>
 
           <p>
