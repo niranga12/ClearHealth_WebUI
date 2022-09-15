@@ -151,7 +151,6 @@ const OrderForm = () => {
     }
 
     // value?.orderType==OrderType.ClearPackage ? setisCPT(true):setisCPT(false);
-
     setPatientDetail(value)
     // CheckAvilableBtn();
   }

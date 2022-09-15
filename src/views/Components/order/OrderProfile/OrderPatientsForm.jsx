@@ -124,6 +124,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
       fetchData()
       reset(defaultValues)
       handlefromDateChange(defaultValues?.patient?.dateOfBirth)
+      handleDateOfServiceChange(defaultValues?.patient?.dateOfService)
     } catch (error) {
       OnError(error, dispatch)
     }
@@ -161,7 +162,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     }
     if (
       formValue?.contactMethod == ContactMethod.Email &&
-      fromDate &&
+      fromDate && dateOfService &&
       formValue?.firstName &&
       Number(formValue?.contactMethod) >= 0 &&
       formValue?.lastName &&
@@ -178,7 +179,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
           : false
     } else if (
       formValue?.contactMethod == ContactMethod.Phone &&
-      fromDate &&
+      fromDate && dateOfService &&
       formValue?.firstName &&
       formValue?.lastName &&
       Number(formValue?.contactMethod) >= 0 &&
@@ -194,7 +195,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
           : false
     } else if (
       formValue?.contactMethod == ContactMethod.Both &&
-      fromDate &&
+      fromDate && dateOfService &&
       formValue?.firstName &&
       formValue?.lastName &&
       Number(formValue?.contactMethod) >= 0 &&
@@ -214,12 +215,12 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     if (isAviable) {
       // if ( isValid && !errors.hasOwnProperty('patient')  ) {
       const formValue = getValues('patient')
-      let newValue = { ...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY') }
+      let newValue = { ...formValue, dateOfBirth: moment(fromDate).format('MM-DD-YYYY'),dateOfService: moment(dateOfService).format('MM-DD-YYYY') }
       handleForm(newValue)
     } else {
       handleForm(null)
     }
-  }, [stateChange, fromDate])
+  }, [stateChange, fromDate, dateOfService])
 
   return (
     <>
@@ -458,7 +459,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
               Date of Service <span className="text-danger font-weight-bold ">*</span>
               </label>
               <DateSelector
-                // className={` form-control-sm ${isEdit ? 'disable' : ''}`}
+                className={`form-control-sm`}
                 selectedDate={dateOfService}
                 handleDateChange={handleDateOfServiceChange}
               />

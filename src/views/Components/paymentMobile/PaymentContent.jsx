@@ -15,7 +15,7 @@ const PaymentContent = ({ details, orderId }) => {
           {(details?.orderDetails.outOfPocketReason == OutOfPocketReason.HealthInsurance ||
             details?.orderDetails.outOfPocketReason == OutOfPocketReason.AnnualDeductible ||
             details?.orderDetails.outOfPocketReason == OutOfPocketReason.DeniedPayment) && (
-              <p>This could be due to one of the following reason:</p>
+              <p>This is due to the following reason:</p>
             )}
 
           <ul className="list-unstyled">
@@ -32,7 +32,7 @@ const PaymentContent = ({ details, orderId }) => {
 
           {details?.orderDetails.outOfPocketReason == OutOfPocketReason.Other && (
             <>
-              <p>This is due to the following reason::</p>
+              <p>This could be due to one of the following reason:</p>
               <ul className="list-unstyled">
                 <li> - You are currently without a health insurance plan </li>
                 <li> - You have not yet met your annual deductible or </li>
