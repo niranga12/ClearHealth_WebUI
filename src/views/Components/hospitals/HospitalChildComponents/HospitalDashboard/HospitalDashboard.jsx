@@ -92,13 +92,7 @@ const HospitalDashboard = (hospitalId) => {
         <div className="col-md-3">
           <HDwidget title="Conversion Rate" image={conversion} price={dashboardItems?.conversionRate + '%'} />
         </div>
-        {/* <div className="col-md-3">
-          <HDwidget
-            title="Incremental Revenue "
-            image={increment}
-            price={CurrencyConvertorInt(dashboardItems?.incrementalRevenue, true)}
-          />
-        </div> */}
+       
 
         <div className="col-md-3">
           <HDwidget
@@ -109,7 +103,11 @@ const HospitalDashboard = (hospitalId) => {
         </div>
 
         <div className="col-md-3">
-          <HDwidget title="Live Packages " image={livepackages} price={dashboardItems?.livePackages} />
+          <HDwidget title="Patient Responsibility Amount Collected " image={revenue} price={CurrencyConvertorInt(dashboardItems?.patientResponsibilityAmountCollected, true)} />
+        </div>
+
+        <div className="col-md-3">
+          <HDwidget title="Clear Package Amount Collected " image={revenue} price={CurrencyConvertorInt(dashboardItems?.clearPackageAmountCollected, true)} />
         </div>
         {/* 
         <div className="col-md-3">

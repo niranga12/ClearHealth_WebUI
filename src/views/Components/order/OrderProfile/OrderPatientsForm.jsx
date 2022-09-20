@@ -42,6 +42,7 @@ let schema = yup.object().shape({
       gender: yup.string().required('Please select gender'),
       outOfPocketReason: yup.string().required('Please select Out of Pocket reason'),
       dateOfService : yup.string().required('Please select Date of service'),
+      patientAccountNumber : yup.string().required('Please select Patient Account Number'),
       // email: yup.string().email(' Please enter a valid email'),
       // phone: yup
       // 	.string()
@@ -306,8 +307,8 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 {...register('patient.gender')}
                 onBlur={() => setstateChange(!stateChange)}>
                 <option value="">Select</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
+                <option value="0">Male</option>
+                <option value="1">Female</option>
               </select>
               <div className="small text-danger  pb-2   ">{errors.patient?.gender?.message}</div>
             </div>
@@ -464,6 +465,19 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 handleDateChange={handleDateOfServiceChange}
               />
               <div className="small text-danger  pb-2   ">{errors.patient?.dateOfService?.message}</div>
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-text">Patient Account Number</label>
+              <input
+                className="form-control-sm"
+                type="text"
+                {...register('patient.patientAccountNumber')}
+                onBlur={() => setstateChange(!stateChange)}
+              />
+              {/* <div className="small text-danger  pb-2   ">{errors.patient?.estimatedPayLaterPrice?.message}</div> */}
             </div>
           </div>
 

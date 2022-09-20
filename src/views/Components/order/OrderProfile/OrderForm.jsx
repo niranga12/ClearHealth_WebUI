@@ -208,6 +208,7 @@ const OrderForm = () => {
         orderTypeId: patientDetail?.orderType,
         estimatedPayLaterPrice: patientDetail?.estimatedPayLaterPrice,
         outOfPocketReason:patientDetail?.outOfPocketReason,
+        patientAccountNumber:patientDetail?.patientAccountNumber,
         dateOfService:patientDetail?.dateOfService,
         ...(patientDetail.showInsurance == '1' ? { insuranceInfo: { ...SelectedInsuranceDetails } } : {})
       }
@@ -219,6 +220,7 @@ const OrderForm = () => {
         estimatedPayLaterPrice: patientDetail?.estimatedPayLaterPrice,
         outOfPocketReason:patientDetail?.outOfPocketReason,
         dateOfService:patientDetail?.dateOfService,
+        patientAccountNumber:patientDetail?.patientAccountNumber,
         patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
         procedures: SelectedCpt,
         ...(patientDetail.showInsurance == '1' ? { insuranceInfo: { ...SelectedInsuranceDetails } } : {})
@@ -232,6 +234,7 @@ const OrderForm = () => {
         estimatedPayLaterPrice: patientDetail?.estimatedPayLaterPrice,
         outOfPocketReason:patientDetail?.outOfPocketReason,
         dateOfService:patientDetail?.dateOfService,
+        patientAccountNumber:patientDetail?.patientAccountNumber,
         patient: { ...patientDetail, phone: NormalizePhone(patientDetail.phone) },
         procedures: [],
         ...(patientDetail.showInsurance == '1' ? { insuranceInfo: { ...SelectedInsuranceDetails } } : {})
