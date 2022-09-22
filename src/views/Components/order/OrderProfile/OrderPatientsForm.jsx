@@ -122,7 +122,6 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     }
 
     try {
-      console.log(defaultValues)
       fetchData()
       reset(defaultValues)
       handlefromDateChange(defaultValues?.patient?.dateOfBirth)
