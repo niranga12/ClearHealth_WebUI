@@ -66,7 +66,13 @@ const schema = yup.object().shape({
     .required('Clear Transactional Fee for patient responsibility percentage is required.')
     .min(0, 'Min value 0.')
     .max(100, 'Max value 100.')
-    .typeError('Clear Transactional Fee for patient responsibility percentage is required.')
+    .typeError('Clear Transactional Fee for patient responsibility percentage is required.'),
+    transactionDelayPeriod: yup
+    .number()
+    .required('Hospital Delay period is required.')
+    .min(0, 'Min value 0.')
+    .typeError('Hospital Delay period is required.')
+
 })
 
 const HospitalForm = ({
@@ -255,12 +261,12 @@ const HospitalForm = ({
         name: data.hospitalName,
         alertSenderEmail: data.alertSenderEmail,
         alertSenderSMS: data.alertSenderSMS,
-
         clearTransactionalFee: data.clearTransactionalFee,
         patientResponsibilityDiscount: data.patientResponsibilityDiscount,
         clearTransactionalFeeforPatientResponsibility: data.clearTransactionalFeeforPatientResponsibility,
         pLineEmail: data.pLineEmail,
-        hospitalUniqueId: data.hospitalUniqueId
+        hospitalUniqueId: data.hospitalUniqueId,
+        transactionDelayPeriod:data.transactionDelayPeriod
       },
       postalAddress: [
         {
@@ -345,7 +351,7 @@ const HospitalForm = ({
           dirtyFields.clearTransactionalFee ||
           dirtyFields.patientResponsibilityDiscount ||
           dirtyFields.clearTransactionalFeeforPatientResponsibility ||
-          dirtyFields.pLineEmail || dirtyFields.hospitalUniqueId) && {
+          dirtyFields.pLineEmail || dirtyFields.hospitalUniqueId || dirtyFields.transactionDelayPeriod) &&  {
           hospital: {
             name: getValues('hospitalName'),
             healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
@@ -355,7 +361,9 @@ const HospitalForm = ({
             patientResponsibilityDiscount: getValues('patientResponsibilityDiscount'),
             clearTransactionalFeeforPatientResponsibility: getValues('clearTransactionalFeeforPatientResponsibility'),
             pLineEmail: getValues('pLineEmail'),
-            hospitalUniqueId: getValues('hospitalUniqueId')
+            hospitalUniqueId: getValues('hospitalUniqueId'),
+            transactionDelayPeriod:getValues('transactionDelayPeriod')
+            
           }
         }),
         ...((dirtyFields.address1 ||
@@ -485,7 +493,7 @@ const HospitalForm = ({
             </div>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-4">
             <div className="form-group">
               <label className="form-text"> Email Sender </label>
               <select name="" id="" className="form-control-sm" {...register('alertSenderEmail')}>
@@ -501,7 +509,7 @@ const HospitalForm = ({
             </div>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-4">
             <div className="form-group">
               <label className="form-text"> SMS Sender </label>
               <select name="" id="" className="form-control-sm" {...register('alertSenderSMS')}>
@@ -514,6 +522,25 @@ const HospitalForm = ({
                 {/* <option value='test'>test</option> */}
               </select>
               {/* <div className='small text-danger  pb-2   '>{errors.healthSystemPartyRoleId?.message}</div> */}
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-text">
+                {' '}
+                Hospital Delay period <span className="text-danger font-weight-bold ">*</span>{' '}
+              </label>
+
+            
+                <input
+                  className="form-control-sm"
+                  type="number"
+                  min="0"
+                  {...register('transactionDelayPeriod')}
+                />
+             
+              <div className="small text-danger  pb-2   ">{errors.transactionDelayPeriod?.message}</div>
             </div>
           </div>
 
@@ -543,7 +570,6 @@ const HospitalForm = ({
                 {' '}
                 Patient Responsibility Discount <span className="text-danger font-weight-bold ">*</span>{' '}
               </label>
-              <div className="rt-input-input w-100">
                 <input
                   className="form-control-sm remove-percentage"
                   type="number"
@@ -551,7 +577,6 @@ const HospitalForm = ({
                   max="100"
                   {...register('patientResponsibilityDiscount')}
                 />
-              </div>
               <div className="small text-danger  pb-2   ">{errors.patientResponsibilityDiscount?.message}</div>
             </div>
           </div>

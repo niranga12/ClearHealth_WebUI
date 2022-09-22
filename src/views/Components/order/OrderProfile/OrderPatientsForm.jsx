@@ -122,6 +122,7 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
     }
 
     try {
+      console.log(defaultValues)
       fetchData()
       reset(defaultValues)
       handlefromDateChange(defaultValues?.patient?.dateOfBirth)
@@ -307,8 +308,8 @@ const OrderPatientsForm = ({ defaultValues, isEdit = false, handleForm }) => {
                 {...register('patient.gender')}
                 onBlur={() => setstateChange(!stateChange)}>
                 <option value="">Select</option>
-                <option value="0">Male</option>
-                <option value="1">Female</option>
+                <option value='0'>Male</option>
+                <option value='1'>Female</option>
               </select>
               <div className="small text-danger  pb-2   ">{errors.patient?.gender?.message}</div>
             </div>

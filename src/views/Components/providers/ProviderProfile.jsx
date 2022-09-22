@@ -38,7 +38,8 @@ const defalutFormValue = {
   email: '',
   speciality: '',
   taxId: '',
-  nip: ''
+  nip: '',
+  transactionDelayPeriod:''
   // bankName: '',
   // accountNumber: '',
   // routing: '',
@@ -148,7 +149,8 @@ const ProviderProfile = () => {
       speciality: data.speciality,
       taxId: data.taxId,
       nip: data.NPI,
-      notificationEmail: data.notificationEmail
+      notificationEmail: data.notificationEmail,
+      transactionDelayPeriod:data.transactionDelayPeriod
       // bankName: data.bankName,
       // accountNumber: data.accountNumber,
       // routing: data.routing

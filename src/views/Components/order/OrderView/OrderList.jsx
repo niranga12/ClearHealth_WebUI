@@ -239,7 +239,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             <div>Estimated Full Cost : $ {order?.orderSummary?.estimatedFullCost}</div>
             <div>Out of Pocket Reason : {reason} </div>
             <div>Date of Service : {order?.orderSummary?.dateOfService} </div>
-            <div>Patient Account Number : {order?.orderSummary?.patientAccountNumber} </div>
+            {/* <div>Patient Account Number : {order?.orderSummary?.patientAccountNumber} </div> */}
             {order?.orderSummary?.orderTypeId === OrderType.PatientResponsibility && (
               <div>Order Total : {order?.orderSummary?.orderTotal} </div>
             )}

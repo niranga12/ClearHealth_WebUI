@@ -106,7 +106,6 @@ const OrderForm = () => {
 
   // handle selection
   const handleChange = (value) => {
-  
     let result = {
       patient: {
         firstName: value.firstName,
@@ -116,9 +115,11 @@ const OrderForm = () => {
         contactMethod: value.contactMethod,
         email: value.email,
         phone: value.phoneNumber,
-        partyRoleId: value.partyRoleId
+        partyRoleId: value.partyRoleId,
+        gender:value.gender
       }
     }
+    
     setSelectedFormValue(result)
 
     //    result.partyRoleId ? setIsEdit(true) :setIsEdit(false);

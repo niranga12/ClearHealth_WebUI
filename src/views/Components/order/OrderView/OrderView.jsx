@@ -51,7 +51,7 @@ const OrderView = () => {
     setOrderList(null)
 
     const params = new URLSearchParams(location.search)
-    const id = params.get('orderId')
+    const id = params.get('orderId');
     setOrderId(id)
     fetchData(id)
   }, [location])
@@ -78,7 +78,7 @@ const OrderView = () => {
         </CCol>
       </CRow>
       <div className="mt-3">
-        <OrderViewPatient patientDetail={orderList?.orderPatientDetails} />
+        <OrderViewPatient patientDetail={orderList?.orderPatientDetails} order={orderId} />
         {orderList && <OrderCheckEligibility orderDetail={orderList} />}
         <OrderList orderDetail={orderList} handleAddCPT={addCPT} />
         {/* <OrderList/> */}

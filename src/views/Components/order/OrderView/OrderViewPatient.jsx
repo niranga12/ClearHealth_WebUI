@@ -35,7 +35,8 @@ const schema = yup.object().shape({
         //.required('Contact Email is required')
         .email('Contact Email must be a valid email'),
       DOB: yup.string(),
-      contactMethod: yup.string()
+      contactMethod: yup.string(),
+      patientAccountNumber: yup.string()
       // enhancementOn:yup.string().required()
     })
     .when((values, schema) => {
@@ -71,11 +72,11 @@ const orderPhone = (phone) => {
   )
 }
 
-const OrderViewPatient = ({ patientDetail }) => {
+const OrderViewPatient = ({ patientDetail, order }) => {
   const { register, getValues, reset, formState } = useForm({ resolver: yupResolver(schema), mode: 'all' })
 
   const { errors } = formState
-
+  const [orderId, setOrderId] = useState(null)
   const [isEdit, setisEdit] = useState(false)
   const [patient, setPatient] = useState(patientDetail)
   const [fromDate, handlefromDateChange] = useState(null)
@@ -87,11 +88,13 @@ const OrderViewPatient = ({ patientDetail }) => {
   const [isAviable, setIsAviable] = useState(false)
 
   useEffect(() => {
+    setOrderId(order);
     setPatient(patientDetail)
     handlefromDateChange(patientDetail?.DOB)
   }, [patientDetail])
 
   useEffect(() => {
+    
     if (isEdit) {
       let detail = { patientForm: { ...patient } }
       reset(detail)
@@ -166,8 +169,13 @@ const OrderViewPatient = ({ patientDetail }) => {
         contactMethod: updateDetail.contactMethod,
         dateOfBirth: moment(fromDate).format('MM-DD-YYYY'),
         phone: NormalizePhone(updateDetail.phoneNumber)
+      },
+      order:{
+        orderNumber: orderId,
+        patientAccountNumber: updateDetail.patientAccountNumber
       }
     }
+
 
     try {
       let result = await updatePatientByPartyRoleId(patient.patientPartyRoleID, data)
@@ -374,6 +382,29 @@ const OrderViewPatient = ({ patientDetail }) => {
               {isEdit && <div className="small text-danger  pb-2   ">{errors.patientForm?.phoneNumber?.message}</div>}
             </div>
           </div>
+
+
+          <div className="col-md-3">
+            <div className="form-group">
+              <label className="form-text">
+                {' '}
+                Patient Account Number  <span className="text-danger font-weight-bold ">*</span>
+              </label>
+              {isEdit ? (
+                <input
+                  className="form-control-sm"
+                  type="text"
+                  {...register('patientForm.patientAccountNumber')}
+                  onBlur={() => setstateChange(!stateChange)}
+                />
+              ) : (
+                <div className="h5">{patient?.patientAccountNumber}</div>
+              )}
+              {isEdit && <div className="small text-danger  pb-2   ">{errors.patientForm?.patientAccountNumber?.message}</div>}
+            </div>
+          </div>
+
+          
         </div>
       </div>
     </div>

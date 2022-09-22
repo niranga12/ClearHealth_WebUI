@@ -49,7 +49,8 @@ const schema = yup.object().shape({
   email: yup.string().required('Email is required').email('Email must be a valid email'),
   speciality: yup.string().required('Specialty is required'),
   taxId: yup.string(),
-  nip: yup.string().required('NPI is required')
+  nip: yup.string().required('NPI is required'),
+  transactionDelayPeriod: yup.string()
   // bankName: yup.string(),
   // accountNumber: yup.string(),
   // routing: yup.string()
@@ -343,6 +344,7 @@ const ProviderForm = ({
       provider: {
         email: data.email,
         hospitalList: data.hospitalName,
+        transactionDelayPeriod:data.transactionDelayPeriod,
         speciality: data.speciality,
         notificationEmail: emailList.join(', '),
         ...(groupSelection == 'Individual' && { firstName: data.firstName }),
@@ -476,12 +478,14 @@ const ProviderForm = ({
           dirtyFields.speciality ||
           dirtyFields.email ||
           dirtyFields.providerGroup ||
+          dirtyFields.transactionDelayPeriod ||
           isEmailList) && {
           provider: {
             providerTypeId: getValues('providerTypeId'),
             email: getValues('email'),
             hospitalList: getValues('hospitalName'),
             speciality: getValues('speciality'),
+            transactionDelayPeriod: getValues('transactionDelayPeriod'),
             notificationEmail: emailList.join(', '),
 
             ...(groupSelection == 'Individual' && { firstName: getValues('firstName') }),
@@ -504,32 +508,32 @@ const ProviderForm = ({
           postalAddress: [
             ...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
               ? [
-                  {
-                    partyContactTypeId: PartyTypeEnum.primary,
-                    address1: getValues('address1'),
-                    address2: getValues('address2'),
-                    city: getValues('city'),
-                    state: getValues('state'),
-                    zip: getValues('zip')
-                  }
-                ]
+                {
+                  partyContactTypeId: PartyTypeEnum.primary,
+                  address1: getValues('address1'),
+                  address2: getValues('address2'),
+                  city: getValues('city'),
+                  state: getValues('state'),
+                  zip: getValues('zip')
+                }
+              ]
               : []),
 
             ...(dirtyFields.billingAddress1 ||
-            dirtyFields.billingAddress2 ||
-            dirtyFields.billingCity ||
-            dirtyFields.billingState ||
-            dirtyFields.billingZip
+              dirtyFields.billingAddress2 ||
+              dirtyFields.billingCity ||
+              dirtyFields.billingState ||
+              dirtyFields.billingZip
               ? [
-                  {
-                    partyContactTypeId: PartyTypeEnum.shipping,
-                    address1: getValues('billingAddress1'),
-                    address2: getValues('billingAddress2'),
-                    city: getValues('billingCity'),
-                    state: getValues('billingState'),
-                    zip: getValues('billingZip')
-                  }
-                ]
+                {
+                  partyContactTypeId: PartyTypeEnum.shipping,
+                  address1: getValues('billingAddress1'),
+                  address2: getValues('billingAddress2'),
+                  city: getValues('billingCity'),
+                  state: getValues('billingState'),
+                  zip: getValues('billingZip')
+                }
+              ]
               : [])
           ]
         }),
@@ -679,7 +683,7 @@ const ProviderForm = ({
                 <input
                   className="form-control-sm"
                   type="text"
-                 
+
                   onInput={(e) => (e.target.value = FormatText(e.target.value.trim()))}
                   onChange={firstNameChanged}
                   {...register('firstName')}
@@ -718,7 +722,7 @@ const ProviderForm = ({
                   onChange={lastNameChanged}
                   {...register('lastName')}
                 />
-                  <div className="small text-danger  pb-2   ">{errors.lastName?.message} </div>
+                <div className="small text-danger  pb-2   ">{errors.lastName?.message} </div>
                 {/* {showLastNameError ? <div className="small text-danger  pb-2   ">Last name is required</div> : ''} */}
               </div>
             </div>
@@ -930,7 +934,7 @@ const ProviderForm = ({
 							<div className='small text-danger  pb-2   '>{errors.patientContactEmail?.message}</div> */}
             </div>
 
-            
+
             <div className="form-group">
               <label className="form-text">
                 {' '}
@@ -947,22 +951,34 @@ const ProviderForm = ({
               <div className="small text-danger  pb-2   "> {errors.speciality?.message} </div>
             </div>
 
-            <div className="form-group">
-              <label className="form-text">
-                {' '}
-                Tax Id <span className="text-danger font-weight-bold ">{showResults ? '' : '*'}</span>
-              </label>
-              <input type="text" className="form-control-sm" {...register('taxId')} />
-              <div className="small text-danger  pb-2   "> {errors.taxId?.message} </div>
+            <div className="row">
+              <div className="form-group col-md-6">
+                <label className="form-text">
+                  {' '}
+                  Tax Id <span className="text-danger font-weight-bold ">{showResults ? '' : '*'}</span>
+                </label>
+                <input type="text" className="form-control-sm" {...register('taxId')} />
+                <div className="small text-danger  pb-2   "> {errors.taxId?.message} </div>
+              </div>
+
+              <div className="form-group col-md-6">
+                <label className="form-text">
+                  NPI <span className="text-danger font-weight-bold ">{showResults ? '*' : ''}</span>
+                </label>
+                <input type="text" className="form-control-sm" {...register('nip')} />
+                <div className="small text-danger  pb-2   ">{errors.nip?.message}</div>
+              </div>
             </div>
 
             <div className="form-group">
               <label className="form-text">
-                NPI <span className="text-danger font-weight-bold ">{showResults ? '*' : ''}</span>
+                {' '}
+                Hospital Delay period <span className="text-danger font-weight-bold ">*</span>{' '}
               </label>
-              <input type="text" className="form-control-sm" {...register('nip')} />
-              <div className="small text-danger  pb-2   ">{errors.nip?.message}</div>
+              <input  type="number" min="0" className="form-control-sm" {...register('transactionDelayPeriod')} />
+              <div className="small text-danger  pb-2   "> {errors.transactionDelayPeriod?.message} </div>
             </div>
+
           </div>
         </div>
 
