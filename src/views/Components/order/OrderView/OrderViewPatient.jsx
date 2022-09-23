@@ -189,7 +189,8 @@ const OrderViewPatient = ({ patientDetail, order }) => {
           email: updateDetail.email,
           DOB: moment(fromDate).format('MM-DD-YYYY'),
           phoneNumber: NormalizePhone(updateDetail.phoneNumber),
-          contactMethod: updateDetail.contactMethod
+          contactMethod: updateDetail.contactMethod,
+          patientAccountNumber: updateDetail.patientAccountNumber
         }
         setPatient(newData)
         setisEdit(false)
