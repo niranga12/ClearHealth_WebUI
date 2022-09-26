@@ -973,7 +973,7 @@ const ProviderForm = ({
             <div className="form-group">
               <label className="form-text">
                 {' '}
-                Hospital Delay period <span className="text-danger font-weight-bold ">*</span>{' '}
+                Provider Delay period <span className="text-danger font-weight-bold ">*</span>{' '}
               </label>
               <input  type="number" min="0" className="form-control-sm" {...register('transactionDelayPeriod')} />
               <div className="small text-danger  pb-2   "> {errors.transactionDelayPeriod?.message} </div>
