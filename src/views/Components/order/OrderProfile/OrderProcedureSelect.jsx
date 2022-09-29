@@ -106,12 +106,13 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
   return (
     <div className="row">
       <div className="col-md-10 mb-3">
-        <label className="mr-4 float-left pt-2">CPT Code </label>
+        <label className="mr-4 float-left pt-2">CPT Code</label>
         <Select
           options={cptList}
           closeMenuOnSelect={false}
           onChange={handleChange}
-          isMulti
+          isMulti={true}
+          hideSelectedOptions={false}
           getOptionLabel={(option) => `${option.code} - ${option.description}`}
           getOptionValue={(option) => `${option.Id}`}
         />

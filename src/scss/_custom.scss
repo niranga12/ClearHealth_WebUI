@@ -839,6 +839,7 @@ background-color: rgba(91,77,253,0.1);
   border-radius: 10px;
   background-color: #FFFFFF;
   box-shadow: 0 2px 20px 0 rgba(135,135,135,0.07);
+  height: 192px;
 
 }
 .list-dashboard-li{
@@ -1431,4 +1432,9 @@ border-radius: 0;
 }
 .hd-price{
   height: 40px;
+}
+
+.btn-border-radius{
+  border-radius: 10px !important;
+  white-space:nowrap;
 }

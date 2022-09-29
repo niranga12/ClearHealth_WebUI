@@ -82,6 +82,11 @@ function OrderActions({ row }) {
     setModal(true)
   }
 
+  const payOrder = (url) => {
+    window.open(url,'_blank' );
+  }
+  
+
   const approveOrder = async () => {
     try {
       // dispatch(changeOrderTable());
@@ -130,15 +135,25 @@ function OrderActions({ row }) {
       {orderList != null && (
         <div className="container">
           <div className="row">
-            <div className="col-4 p-0">
-              <div className="btn btn-view-account float-right" onClick={actionLink}>
+            <div className="col-3">
+              <div className="btn btn-view-account" onClick={actionLink}>
                 {' '}
                 View Order
               </div>
             </div>
-            <div className="col-4 p-0">
+            <div className="col-3">
               <button
-                className="btn btn-view-account float-right"
+                className="btn btn-view-account"
+                onClick={()=>payOrder(row.original.payOrderUrl)}
+               
+              >
+                {' '}
+                Pay Order
+              </button>
+            </div>
+            <div className="col-3">
+              <button
+                className="btn btn-view-account btn-border-radius"
                 onClick={checkEligibility}
                 disabled={orderList?.insuranceInfo.length != 1}
               >
@@ -146,7 +161,7 @@ function OrderActions({ row }) {
                 Check Eligibility
               </button>
             </div>
-            <div className="col-4 p-0">
+            <div className="col-3 btn-border-radius">
               {row.original.orderStatus === 'Paid' ? (
                 <div className="text-right">{row.original.orderPaidDate} </div>
               ) : (
