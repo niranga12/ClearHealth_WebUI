@@ -111,8 +111,7 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
           options={cptList}
           closeMenuOnSelect={false}
           onChange={handleChange}
-          isMulti={true}
-          hideSelectedOptions={false}
+          isMulti
           getOptionLabel={(option) => `${option.code} - ${option.description}`}
           getOptionValue={(option) => `${option.Id}`}
         />
