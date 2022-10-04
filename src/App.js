@@ -26,7 +26,9 @@ const Payment = React.lazy(() => import('./views/Components/payment/Payment'))
 const OnBoarding = React.lazy(() => import('./views/pages/onboarding/onBoardingComplete'))
 const PaymentMobile = React.lazy(() => import('./views/Components/paymentMobile/PaymentMobileLink'))
 const PaymentVerification = React.lazy(() => import('./views/Components/Payment-Verification/paymentverification'))
-const SuccessPage = React.lazy(() => import('./views/pages/successpage/success'));
+const SuccessPage = React.lazy(() => import('./views/pages/successpage/success'))
+const PaymentDirect = React.lazy(() => import('./views/Components/payment/PaymentDirect'))
+
 class App extends Component {
   render() {
     return (
@@ -96,6 +98,13 @@ class App extends Component {
             <Route exact path="/resetpassword" name="Reset Password" render={(props) => <ResetPW {...props} />} />
             <Route exact path="/resetpassword/:id" name="Reset Password" render={(props) => <ResetPW {...props} />} />
 
+            <AuthRoute exact path="/directpayment" name="direct Pay" render={(props) => <PaymentDirect {...props} />} />
+            <AuthRoute
+              exact
+              path="/directpayment/:id"
+              name="direct Pay"
+              render={(props) => <PaymentDirect {...props} />}
+            />
             <AuthRoute path="/main" name="main" render={(props) => <DashboardMenu {...props} />} />
             {/* <AuthRoute  path="/payment" name="payment" render={props => <Payment {...props}/>} /> */}
 
