@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { MaskFormat, Organizations, PartyTypeEnum, ServiceMsg, ValidationPatterns } from 'src/reusable/enum'
 import { useHistory } from 'react-router-dom'
 import OnError from 'src/_helpers/onerror'
-import { saveHospital, saveLogo, updateHospitalByPartyRoleId } from 'src/service/hospitalsService'
+import { saveHospital, saveLogo, updateHospitalByPartyRoleId, verifyHospitalUniqueId } from 'src/service/hospitalsService'
 import { notify } from 'reapop'
 import InputMask from 'react-input-mask'
 import NormalizePhone from 'src/reusable/NormalizePhone'
@@ -48,7 +48,7 @@ const schema = yup.object().shape({
     .string()
     .test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
   pLineEmail: yup.string().email('Contact Email must be a valid email'),
-  hospitalUniqueId: yup.string(),
+  hospitalUniqueId: yup.string().required('Unit Hospital Number is required.'),
   clearTransactionalFee: yup
     .number()
     .required('Clear Transactional Fee percentage is required.')
@@ -67,7 +67,7 @@ const schema = yup.object().shape({
     .min(0, 'Min value 0.')
     .max(100, 'Max value 100.')
     .typeError('Clear Transactional Fee for patient responsibility percentage is required.'),
-    transactionDelayPeriod: yup
+  transactionDelayPeriod: yup
     .number()
     .required('Hospital Delay period is required.')
     .min(0, 'Min value 0.')
@@ -120,6 +120,7 @@ const HospitalForm = ({
   const [selectedLogo, setSelectedLogo] = useState();
   const [preview, setPreview] = useState(null)
   const [islogoAvailable, setIsLogoAvailable] = useState(true)
+  const [hospitalUniqueIdStatus, setHospitalUniqueIdStatus] = useState(true)
   // validate organition name
   useEffect(() => {
     const fetchValidate = async () => {
@@ -196,6 +197,24 @@ const HospitalForm = ({
     setEmailList(val)
     setIsEmailList(true)
   }
+  const onChangeHospitalUniqueId = async (val) => {
+    let data;
+    if (isEdit) {
+      data = {
+        hospitalUniqueId: val,
+        hospitalPartyRoleId: null
+      }
+    }else{
+      data = {
+        hospitalUniqueId: val,
+        hospitalPartyRoleId: partyRoleId
+      }
+    }
+
+    const result = await verifyHospitalUniqueId(data);
+    setHospitalUniqueIdStatus(result.data.data.availableStatus);
+  }
+
 
   // set default form values
   useEffect(() => {
@@ -266,7 +285,7 @@ const HospitalForm = ({
         clearTransactionalFeeforPatientResponsibility: data.clearTransactionalFeeforPatientResponsibility,
         pLineEmail: data.pLineEmail,
         hospitalUniqueId: data.hospitalUniqueId,
-        transactionDelayPeriod:data.transactionDelayPeriod
+        transactionDelayPeriod: data.transactionDelayPeriod
       },
       postalAddress: [
         {
@@ -299,15 +318,18 @@ const HospitalForm = ({
     }
 
     try {
-      if (newHospital) {
-        let result = await saveHospital(newHospital)
-        if (result.data.message === ServiceMsg.OK) {
-          dispatch(notify(`Successfully added`, 'success'))
-          // history.push('/hospitals');
-          onOpenFeeSchedule(result.data.data)
-          //history.goBack();
+      if (hospitalUniqueIdStatus) {
+        if (newHospital) {
+          let result = await saveHospital(newHospital)
+          if (result.data.message === ServiceMsg.OK) {
+            dispatch(notify(`Successfully added`, 'success'))
+            // history.push('/hospitals');
+            onOpenFeeSchedule(result.data.data)
+            //history.goBack();
+          }
         }
       }
+
     } catch (error) {
       OnError(error, dispatch)
     }
@@ -336,7 +358,7 @@ const HospitalForm = ({
     btnLogoRef.current.removeAttribute('disabled')
     const objectUrl = URL.createObjectURL(event.target.files[0])
     setPreview(objectUrl)
-   
+
   }
 
   // update hospital
@@ -351,7 +373,7 @@ const HospitalForm = ({
           dirtyFields.clearTransactionalFee ||
           dirtyFields.patientResponsibilityDiscount ||
           dirtyFields.clearTransactionalFeeforPatientResponsibility ||
-          dirtyFields.pLineEmail || dirtyFields.hospitalUniqueId || dirtyFields.transactionDelayPeriod) &&  {
+          dirtyFields.pLineEmail || dirtyFields.hospitalUniqueId || dirtyFields.transactionDelayPeriod) && {
           hospital: {
             name: getValues('hospitalName'),
             healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
@@ -362,8 +384,8 @@ const HospitalForm = ({
             clearTransactionalFeeforPatientResponsibility: getValues('clearTransactionalFeeforPatientResponsibility'),
             pLineEmail: getValues('pLineEmail'),
             hospitalUniqueId: getValues('hospitalUniqueId'),
-            transactionDelayPeriod:getValues('transactionDelayPeriod')
-            
+            transactionDelayPeriod: getValues('transactionDelayPeriod')
+
           }
         }),
         ...((dirtyFields.address1 ||
@@ -433,12 +455,14 @@ const HospitalForm = ({
         // btnRef.current.remove("disabled", "disabled");
       } else {
         try {
+          if (hospitalUniqueIdStatus) {
           const result = await updateHospitalByPartyRoleId(partyRoleId, updateHospital)
           if (result.data.message === ServiceMsg.OK) {
             dispatch(notify(`Successfully updated`, 'success'))
             // history.push('/hospitals');
             history.goBack()
           }
+        }
         } catch (error) {
           OnError(error, dispatch)
         }
@@ -532,14 +556,14 @@ const HospitalForm = ({
                 Hospital Delay period <span className="text-danger font-weight-bold ">*</span>{' '}
               </label>
 
-            
-                <input
-                  className="form-control-sm"
-                  type="number"
-                  min="0"
-                  {...register('transactionDelayPeriod')}
-                />
-             
+
+              <input
+                className="form-control-sm"
+                type="number"
+                min="0"
+                {...register('transactionDelayPeriod')}
+              />
+
               <div className="small text-danger  pb-2   ">{errors.transactionDelayPeriod?.message}</div>
             </div>
           </div>
@@ -570,13 +594,13 @@ const HospitalForm = ({
                 {' '}
                 Patient Responsibility Discount <span className="text-danger font-weight-bold ">*</span>{' '}
               </label>
-                <input
-                  className="form-control-sm remove-percentage"
-                  type="number"
-                  min="0"
-                  max="100"
-                  {...register('patientResponsibilityDiscount')}
-                />
+              <input
+                className="form-control-sm remove-percentage"
+                type="number"
+                min="0"
+                max="100"
+                {...register('patientResponsibilityDiscount')}
+              />
               <div className="small text-danger  pb-2   ">{errors.patientResponsibilityDiscount?.message}</div>
             </div>
           </div>
@@ -808,11 +832,12 @@ const HospitalForm = ({
             </div>
 
             <div className="form-group pline-remit-margin-top">
-              <label className="form-t  ext">Unit Hospital Number</label>
+              <label className="form-t  ext">Unit Hospital Number <span className="text-danger font-weight-bold ">*</span></label>
               {/* <MultipleValueTextInput onItemAdded={(item, allItems) => patientAccessContactEmail(allItems)} onItemDeleted={(item, allItems) => setEmailList(allItems)} label='Email' name='item-input' className='form-control-sm' placeholder='Enter whatever items you want; separate them with COMMA or ENTER.' values={emailList} /> */}
               {/* <MultiEmailText handleEmailAdd={changePlineEmail} defalutEmail={plineEmailList} /> */}
-              <input type='text' className='form-control-sm' {...register('hospitalUniqueId')} />
+              <input type='text' className='form-control-sm' {...register('hospitalUniqueId')} onChange={(e) => onChangeHospitalUniqueId(e.target.value)} />
               <div className='small text-danger  pb-2   '>{errors.hospitalUniqueId?.message}</div>
+              {hospitalUniqueIdStatus ? '' : <div className='small text-danger  pb-2   '>Hospital unique id is already exist</div>}
             </div>
           </div>
         </div>
@@ -834,7 +859,7 @@ const HospitalForm = ({
               </label>
 
               <input type="file" name="logo" className="form-control" {...register('logo')} onChange={onChangeLogo} />
-                {islogoAvailable?'': <div className='small text-danger  pb-2   '>Please upload the hospital logo</div>}  
+              {islogoAvailable ? '' : <div className='small text-danger  pb-2   '>Please upload the hospital logo</div>}
             </div>
 
             <div className="col-2 mt-5">

@@ -83,3 +83,5 @@ export const deleteFeeSchedule = (hospitalId, specialityId,fileName) =>
   axiosInstance.delete(`hospital/feeSchedule/${hospitalId}/${specialityId}`,fileName)
 
 export const updateFeeSchedule = (data) => axiosInstance.put(`hospital/packageUpdate/CPT`, data)
+
+export const verifyHospitalUniqueId = (data) => axiosInstance.post(`hospital/verifyHospitalUniqueId`, data)
