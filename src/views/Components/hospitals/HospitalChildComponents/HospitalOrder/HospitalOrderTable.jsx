@@ -145,7 +145,7 @@ function OrderActions({ row }) {
               <button
                 className="btn btn-view-account"
                 onClick={()=>payOrder(row.original.payOrderUrl)}
-               
+                disabled={row.original.orderStatus === 'Paid'}
               >
                 {' '}
                 Pay Order
