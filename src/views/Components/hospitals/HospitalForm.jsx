@@ -835,7 +835,7 @@ const HospitalForm = ({
               <label className="form-t  ext">Unit Hospital Number <span className="text-danger font-weight-bold ">*</span></label>
               {/* <MultipleValueTextInput onItemAdded={(item, allItems) => patientAccessContactEmail(allItems)} onItemDeleted={(item, allItems) => setEmailList(allItems)} label='Email' name='item-input' className='form-control-sm' placeholder='Enter whatever items you want; separate them with COMMA or ENTER.' values={emailList} /> */}
               {/* <MultiEmailText handleEmailAdd={changePlineEmail} defalutEmail={plineEmailList} /> */}
-              <input type='text' className='form-control-sm' {...register('hospitalUniqueId')} onChange={(e) => onChangeHospitalUniqueId(e.target.value)} />
+              <input type='text' maxLength="8" className='form-control-sm' {...register('hospitalUniqueId')} onChange={(e) => onChangeHospitalUniqueId(e.target.value)} />
               <div className='small text-danger  pb-2   '>{errors.hospitalUniqueId?.message}</div>
               {hospitalUniqueIdStatus ? '' : <div className='small text-danger  pb-2   '>Hospital unique id is already exist</div>}
             </div>
