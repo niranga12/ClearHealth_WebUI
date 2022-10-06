@@ -202,12 +202,12 @@ const HospitalForm = ({
     if (isEdit) {
       data = {
         hospitalUniqueId: val,
-        hospitalPartyRoleId: null
+        hospitalPartyRoleId: partyRoleId
       }
     }else{
       data = {
         hospitalUniqueId: val,
-        hospitalPartyRoleId: partyRoleId
+        hospitalPartyRoleId: null
       }
     }
 
