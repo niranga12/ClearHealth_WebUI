@@ -18,6 +18,14 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
   const [changedTable, setchangedTable] = useState([])
 
   const handleChange = (newValue: any, actionMeta: any) => {
+    // TO add the data to list which is selected .
+    if (actionMeta.action == 'select-option') {
+      cptList.concat(actionMeta.option)
+      let newId = `${actionMeta.option.Id} - ${Math.floor(Math.random() * 100)} `
+      let newCptList = [...cptList, { ...actionMeta.option, Id: newId }]
+      setCptList(newCptList)
+    }
+
     let updateData = newValue.map((x) => {
       let previousSelect = selectedCPT.find((y) => y.Id == x.Id)
       if (previousSelect) {
@@ -26,7 +34,7 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
         return x
       }
     })
-    //setting default  provoider first value
+    // setting default  provoider first value
     let defalultProviderData = updateData.map((x) => {
       return {
         ...x,
@@ -35,6 +43,7 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
         })
       }
     })
+
     setSelectedCPT(defalultProviderData)
     handleCPTChange(defalultProviderData)
   }
@@ -46,6 +55,7 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
     const fetchData = async () => {
       try {
         let result = await getCPTCodesByHospital(hospitalId, {})
+
         setCptList(result.data.data)
       } catch (error) {
         OnError(error, dispatch)
@@ -112,8 +122,12 @@ const OrderProcedureSelect = ({ handleCPTChange }) => {
           closeMenuOnSelect={false}
           onChange={handleChange}
           isMulti
-          getOptionLabel={(option) => `${option.code} - ${option.description}`}
+          // multiple
+          // hideSelectedOptions={false}
+          getOptionLabel={(option) => ` ${option.code} - ${option.description}`}
           getOptionValue={(option) => `${option.Id}`}
+          // getOptionValue={(option) => `${option.indexId}-${option.Id}`}
+          // controlShouldRenderValue={true}
         />
       </div>
       <div className="col-md-12">
