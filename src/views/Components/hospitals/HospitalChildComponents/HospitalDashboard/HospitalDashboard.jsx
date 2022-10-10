@@ -37,8 +37,11 @@ const HospitalDashboard = (hospitalId) => {
       try {
         setFacilityPartyRoleID(hospitalId.hospitalId)
         let data = { toDate, fromDate, facilityPartyRoleID }
-        const result = await getHospitalDashboard(data)
-        setdashboardItems(result.data.data)
+        if (toDate != null && fromDate != null && facilityPartyRoleID != undefined) {
+          const result = await getHospitalDashboard(data)
+          setdashboardItems(result.data.data)
+        }
+
       } catch (error) {
         OnError(error, dispatch)
       }
@@ -92,7 +95,7 @@ const HospitalDashboard = (hospitalId) => {
         <div className="col-md-3">
           <HDwidget title="Conversion Rate" image={conversion} price={dashboardItems?.conversionRate + '%'} />
         </div>
-       
+
 
         <div className="col-md-3">
           <HDwidget

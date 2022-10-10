@@ -186,7 +186,6 @@ const ProviderForm = ({
         )
 
         sethsHospitalData(result)
-
         setValue('hospitalName', defaultValues.hospitalName, {
           shouldValidate: false,
           shouldDirty: true
@@ -221,15 +220,15 @@ const ProviderForm = ({
         shouldValidate: true,
         shouldDirty: true
       })
-      setValue('city', result.primaryCity, {
+      setValue('city', result?.primaryCity, {
         shouldValidate: true,
         shouldDirty: true
       })
-      setValue('state', result.primaryState, {
+      setValue('state', result?.primaryState, {
         shouldValidate: true,
         shouldDirty: true
       })
-      setValue('zip', result.primaryZip, {
+      setValue('zip', result?.primaryZip, {
         shouldValidate: true,
         shouldDirty: true
       })
