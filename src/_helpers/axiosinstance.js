@@ -31,7 +31,13 @@ axiosInstance.interceptors.response.use(
     if (error.response.status === 401) {
       localStorage.clear()
       // @ts-ignore
-      window.location = '/login'
+      // window.location = '/login'
+      // return (window.location = '/#/login')
+      return window.location.replace('/')
+
+      // window.location.href = `${window.location.hostname}/#/login`
+      // let history = useHistory()
+      // history.push('/login')
     }
     throw error
   }
