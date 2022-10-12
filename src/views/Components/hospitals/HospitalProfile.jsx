@@ -11,7 +11,8 @@ import {
   getHospitalByPartyRoleId,
   getHospitalEmailSender,
   getHospitalSmsSender,
-  getOnboardinginfo
+  getOnboardinginfo,
+  getRcmTypes
 } from 'src/service/hospitalsService'
 import AdminTitle from 'src/views/common/adminTitle'
 import MetaTitles from 'src/views/common/metaTitles'
@@ -44,7 +45,7 @@ const defalutFormValue = {
   pLineEmail: '',
   hospitalUniqueId: '',
   hospitalLogoUrl:'',
-  transactionDelayPeriod:''
+  transactionDelayPeriod: ''
   // consolidatedInvoice: false,
   // applySAASTax: false,
   // taxId: '',
@@ -68,6 +69,7 @@ const HospitalProfile = () => {
   const [healthSystems, setHealthSystem] = useState([])
   const [emailSenders, setEmailSenders] = useState([])
   const [smsSenders, setSmsSenders] = useState([])
+  const [rcmTypeList, setRcmType] = useState([])
 
   const dispatch = useDispatch()
 
@@ -102,6 +104,10 @@ const HospitalProfile = () => {
         // get SMs sender List
         const sendSmsListResult = await getHospitalSmsSender()
         setSmsSenders(sendSmsListResult.data.data)
+
+         // get RCM Type List
+        const rcmTypeList = await getRcmTypes()
+         setRcmType(rcmTypeList.data.data.rcmTypes)
 
         //getOnboardinginfo
         // const onboarding = await getOnboardinginfo(id);
@@ -162,7 +168,8 @@ const HospitalProfile = () => {
       pLineEmail: data.hospital.pLineEmail,
       hospitalUniqueId: data.hospital.hospitalUniqueId,
       hospitalLogoUrl:data.hospital.hospitalLogoUrl,
-      transactionDelayPeriod:data.hospital.transactionDelayPeriod
+      transactionDelayPeriod: data.hospital.transactionDelayPeriod,
+      rcm:data.hospital.rcm
       // consolidatedInvoice: data.paymentInfo.consolidatedInvoice == 1 ? true : false,
       // applySAASTax: data.paymentInfo.applySAASTax == 1 ? true : false,
       // taxId: data.paymentInfo.taxId,
@@ -195,6 +202,7 @@ const HospitalProfile = () => {
           smsSendersList={smsSenders}
           partyRoleId={partyRoleId}
           onboardingInfo={onboardingInfo}
+          rcmTypeList={ rcmTypeList}
         />
       </div>
     </>

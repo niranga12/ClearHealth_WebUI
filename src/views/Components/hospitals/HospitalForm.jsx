@@ -83,7 +83,8 @@ const HospitalForm = ({
   stateList = [],
   onboardingInfo,
   emailSendersList = [],
-  smsSendersList = []
+  smsSendersList = [],
+  rcmTypeList=[]
 }) => {
   const {
     register,
@@ -285,7 +286,9 @@ const HospitalForm = ({
         clearTransactionalFeeforPatientResponsibility: data.clearTransactionalFeeforPatientResponsibility,
         pLineEmail: data.pLineEmail,
         hospitalUniqueId: data.hospitalUniqueId,
-        transactionDelayPeriod: data.transactionDelayPeriod
+        transactionDelayPeriod: data.transactionDelayPeriod,
+        rcm: data.rcm
+
       },
       postalAddress: [
         {
@@ -373,7 +376,7 @@ const HospitalForm = ({
           dirtyFields.clearTransactionalFee ||
           dirtyFields.patientResponsibilityDiscount ||
           dirtyFields.clearTransactionalFeeforPatientResponsibility ||
-          dirtyFields.pLineEmail || dirtyFields.hospitalUniqueId || dirtyFields.transactionDelayPeriod) && {
+          dirtyFields.pLineEmail || dirtyFields.hospitalUniqueId || dirtyFields.transactionDelayPeriod || dirtyFields.rcm ) && {
           hospital: {
             name: getValues('hospitalName'),
             healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
@@ -384,8 +387,8 @@ const HospitalForm = ({
             clearTransactionalFeeforPatientResponsibility: getValues('clearTransactionalFeeforPatientResponsibility'),
             pLineEmail: getValues('pLineEmail'),
             hospitalUniqueId: getValues('hospitalUniqueId'),
-            transactionDelayPeriod: getValues('transactionDelayPeriod')
-
+            transactionDelayPeriod: getValues('transactionDelayPeriod'),
+            rcm: getValues('rcm')
           }
         }),
         ...((dirtyFields.address1 ||
@@ -479,7 +482,7 @@ const HospitalForm = ({
 
         <h5 className="font-weight-bold mt-1">Hospital Details </h5>
         <div className="row mb-3">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <div className="form-group">
               <label className="form-text">
                 {' '}
@@ -498,7 +501,7 @@ const HospitalForm = ({
             </div>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-4">
             <div className="form-group">
               <label className="form-text">
                 {' '}
@@ -514,6 +517,24 @@ const HospitalForm = ({
                 {/* <option value='test'>test</option> */}
               </select>
               <div className="small text-danger  pb-2   ">{errors.healthSystemPartyRoleId?.message}</div>
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-text">
+                RCM 
+              </label>
+              <select name="" id="" className="form-control-sm" {...register('rcm')}>
+                <option value="">Select</option>
+                {rcmTypeList.map((item, index) => (
+                             
+                  <option key={index} value={item.description}>
+
+                    {item.description}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
