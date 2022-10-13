@@ -75,16 +75,17 @@ export const getHospitalEmailSender = () => axiosInstance.get(`hospital/verified
 export const getHospitalSmsSender = () => axiosInstance.get(`hospital/verified/smssender`)
 
 export const saveFeeSchedule = (hospitalId, data) =>
-axiosInstance.post(`hospital/saveFacilityProcedure/${hospitalId}`, data)
+  axiosInstance.post(`hospital/saveFacilityProcedure/${hospitalId}`, data)
 
-export const saveLogo = (hospitalId, data) =>
-axiosInstance.post(`hospital/saveHospitalLogo/${hospitalId}`, data)
+export const saveLogo = (hospitalId, data) => axiosInstance.post(`hospital/saveHospitalLogo/${hospitalId}`, data)
 
 export const getFeeSchedule = (hospitalId) => axiosInstance.get(`hospital/feeSchedule/${hospitalId}`)
 
-export const deleteFeeSchedule = (hospitalId, specialityId,fileName) =>
-  axiosInstance.delete(`hospital/feeSchedule/${hospitalId}/${specialityId}`,fileName)
+export const deleteFeeSchedule = (hospitalId, specialityId, fileName) =>
+  axiosInstance.delete(`hospital/feeSchedule/${hospitalId}/${specialityId}`, fileName)
 
 export const updateFeeSchedule = (data) => axiosInstance.put(`hospital/packageUpdate/CPT`, data)
 
 export const verifyHospitalUniqueId = (data) => axiosInstance.post(`hospital/verifyHospitalUniqueId`, data)
+
+export const getRcmTypes = () => axiosInstance.get(`hospital/rcmType`)
