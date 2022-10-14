@@ -57,10 +57,14 @@ const PaymentOrder = ({ patientOrder, formChange, handleValid }) => {
     formState
   } = useForm({ resolver: yupResolver(schema), mode: 'all' })
 
-  const { isValid, errors } = formState
+  const { isValid, errors, isDirty, isValidating, isTouched } = formState
 
   const [fieldChange, setFieldChange] = useState(false)
   const [fromDate, handlefromDateChange] = useState(Date.now())
+  
+  
+
+
   // const [stateList, setstateList] = useState(null)
   // const [businessStateOption, setBusinessStateOption] = useState('');
   // const [stateOption, setStateOption] = useState('');
@@ -101,7 +105,7 @@ const PaymentOrder = ({ patientOrder, formChange, handleValid }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fieldChange])
+  }, [fieldChange, isDirty, isValid, isValidating, isTouched])
 
   return (
     <div>
