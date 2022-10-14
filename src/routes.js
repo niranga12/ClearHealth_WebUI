@@ -53,7 +53,7 @@ const UserProfile = React.lazy(() => import('./views/Components/users/UserProfil
 const OrderProfile = React.lazy(() => import('./views/Components/order/OrderProfile/OrderProfile'))
 const OrderView = React.lazy(() => import('./views/Components/order/OrderView/OrderView'))
 const PatientOrderList = React.lazy(() => import('./views/Components/patients/PatientsOrder/PatientsOrderList'))
-
+const Account = React.lazy(() => import('./views/Components/accounts/AccountDashboard'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   // { path: '/dashboard', name: 'Dashboard', component: Dashboard },
@@ -118,7 +118,9 @@ const routes = [
   { path: '/users/profile', name: 'Users Profile', component: UserProfile },
   //order
   { path: '/order', name: 'order', component: OrderProfile, exact: true },
-  { path: '/order/view', name: 'Order View', component: OrderView }
+  { path: '/order/view', name: 'Order View', component: OrderView },
+  //Account
+  { path: '/accounting', name: 'account', component: Account, exact: true },
 ]
 
 export default routes

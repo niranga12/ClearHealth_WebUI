@@ -42,7 +42,7 @@ const DashboardMenuItems = () => {
         </CCol>
 
         <CCol sm="6" md="3" className={PermissionMenu(ScreenPermissions.Accounting, permissionList) ? '' : 'hide'}>
-          <CardWidget title="Accounting" logoName="logoAccounting" />
+          <CardWidget title="Accounting" url="/accounting" logoName="logoAccounting" />
         </CCol>
 
         {/* <CCol sm="6" md="3" className={PermissionMenu(ScreenPermissions.Profile,permissionList)?'':'hide'}>

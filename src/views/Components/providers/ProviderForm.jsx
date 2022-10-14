@@ -76,7 +76,7 @@ const ProviderForm = ({
 
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema), mode: 'all' })
-
+debugger;
   // const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
   const { dirtyFields } = useFormState({ control })
   const [hospitalData, setHospitalData] = useState([])
@@ -105,6 +105,7 @@ const ProviderForm = ({
   const [isEmailList, setIsEmailList] = useState(false)
 
   const handleBillingChecked = (event) => {
+    debugger;
     if (event.target.checked) {
       setValue('billingAddress1', getValues('address1'), {
         shouldValidate: true,
@@ -138,6 +139,7 @@ const ProviderForm = ({
   }
 
   useEffect(() => {
+    debugger;
     reset(defaultValues)
     setStateOption(defaultValues.state) //set state dropdown value
     setBillingStateOption(defaultValues.billingState)
@@ -170,6 +172,7 @@ const ProviderForm = ({
 
   useEffect(() => {
     const fetchData = async () => {
+      debugger;
       if (isEdit || defaultValues.healthSystemPartyRoleId) {
         if (defaultValues.providerTypeId == Provider.Provider) {
           setGroupSelection('Individual')
@@ -178,36 +181,48 @@ const ProviderForm = ({
           setGroupSelection('Group')
           setShowResults(false)
         }
+
+        let hospitalList
+        if(defaultValues.healthSystemPartyRoleId!== ''){
+        let value = {
+          healthSystemPartyRoleId: defaultValues.healthSystemPartyRoleId
+        }
+  
+        // @ts-ignore
+        hospitalList = await getHealthSystemHospitalsList(value);
+        sethsHospitalData(hospitalList.data.data)
+      }
         //setShowRadioButton(false);
         // defaultValuese
 
         // const hospitalList = await getHospitalsList()
-        // let result = hospitalList.data.data.filter(
-        //   (x) => x.healthSystemPartyRoleId == defaultValues.healthSystemPartyRoleId
-        // )
+        let result = hospitalList?.data.data.filter(
+          (x) => x.healthSystemPartyRoleId == defaultValues.healthSystemPartyRoleId
+        )
+        
 
-        // sethsHospitalData(result)
-        // setValue('hospitalName', defaultValues.hospitalName, {
-        //   shouldValidate: false,
-        //   shouldDirty: true
-        // })
+        sethsHospitalData(result)
+        setValue('hospitalName', defaultValues.hospitalName, {
+          shouldValidate: false,
+          shouldDirty: true
+        })
       }
     }
     fetchData()
   }, [isEdit, defaultValues])
 
   const handleHealthSystemChange = (e) => {
-
+    debugger;
     // e.prevent.default()
     // let result = hospitalData.filter((x) => x.healthSystemPartyRoleId == e.target.value)
     const fetchData = async () => {
-
+debugger;
       let value = {
         healthSystemPartyRoleId: e.target.value
       }
 
       const hospitalList = await getHealthSystemHospitalsList(value);
-
+      debugger;
       sethsHospitalData(hospitalList.data.data)
       setValue('healthSystemPartyRoleId', e.target.value, {
         shouldValidate: true,
@@ -222,6 +237,7 @@ const ProviderForm = ({
   }
 
   const handleHospitalChecked = (event) => {
+    debugger;
     if (event.target.checked) {
       let result = hsHospitalData.find((x) => x.partyRoleId == getValues('hospitalName'))
       setValue('address1', result?.primaryAddress1, {
@@ -256,6 +272,7 @@ const ProviderForm = ({
   }
 
   const handleIndividualGroup = (event) => {
+    debugger;
     setGroupSelection(event.target.value)
     if (event.target.value == 'Group') {
       setShowResults(false)
@@ -312,6 +329,7 @@ const ProviderForm = ({
 
   // form submit
   const providerFormSubmit = (data) => {
+    debugger;
     if (isEdit) {
       updateProviderInfo()
     } else {
@@ -321,6 +339,7 @@ const ProviderForm = ({
 
   // save Provider
   const addProvider = async (data) => {
+    debugger;
     setShowFirstNameError(false)
     setShowLastNameError(false)
     setShowGroupNameError(false)
@@ -408,6 +427,7 @@ const ProviderForm = ({
   }
 
   const onOpenFeeSchedule = (result) => {
+    debugger;
     //setHospitalId(result)
     setFeeSchedule(true)
   }
