@@ -76,7 +76,6 @@ const ProviderForm = ({
 
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema), mode: 'all' })
-debugger;
   // const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
   const { dirtyFields } = useFormState({ control })
   const [hospitalData, setHospitalData] = useState([])
@@ -105,7 +104,6 @@ debugger;
   const [isEmailList, setIsEmailList] = useState(false)
 
   const handleBillingChecked = (event) => {
-    debugger;
     if (event.target.checked) {
       setValue('billingAddress1', getValues('address1'), {
         shouldValidate: true,
@@ -139,7 +137,6 @@ debugger;
   }
 
   useEffect(() => {
-    debugger;
     reset(defaultValues)
     setStateOption(defaultValues.state) //set state dropdown value
     setBillingStateOption(defaultValues.billingState)
@@ -172,7 +169,6 @@ debugger;
 
   useEffect(() => {
     const fetchData = async () => {
-      debugger;
       if (isEdit || defaultValues.healthSystemPartyRoleId) {
         if (defaultValues.providerTypeId == Provider.Provider) {
           setGroupSelection('Individual')
@@ -212,17 +208,14 @@ debugger;
   }, [isEdit, defaultValues])
 
   const handleHealthSystemChange = (e) => {
-    debugger;
     // e.prevent.default()
     // let result = hospitalData.filter((x) => x.healthSystemPartyRoleId == e.target.value)
     const fetchData = async () => {
-debugger;
       let value = {
         healthSystemPartyRoleId: e.target.value
       }
 
       const hospitalList = await getHealthSystemHospitalsList(value);
-      debugger;
       sethsHospitalData(hospitalList.data.data)
       setValue('healthSystemPartyRoleId', e.target.value, {
         shouldValidate: true,
@@ -237,7 +230,6 @@ debugger;
   }
 
   const handleHospitalChecked = (event) => {
-    debugger;
     if (event.target.checked) {
       let result = hsHospitalData.find((x) => x.partyRoleId == getValues('hospitalName'))
       setValue('address1', result?.primaryAddress1, {
@@ -272,7 +264,6 @@ debugger;
   }
 
   const handleIndividualGroup = (event) => {
-    debugger;
     setGroupSelection(event.target.value)
     if (event.target.value == 'Group') {
       setShowResults(false)
@@ -329,7 +320,6 @@ debugger;
 
   // form submit
   const providerFormSubmit = (data) => {
-    debugger;
     if (isEdit) {
       updateProviderInfo()
     } else {
@@ -339,7 +329,6 @@ debugger;
 
   // save Provider
   const addProvider = async (data) => {
-    debugger;
     setShowFirstNameError(false)
     setShowLastNameError(false)
     setShowGroupNameError(false)
@@ -427,7 +416,6 @@ debugger;
   }
 
   const onOpenFeeSchedule = (result) => {
-    debugger;
     //setHospitalId(result)
     setFeeSchedule(true)
   }
