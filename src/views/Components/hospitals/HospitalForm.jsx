@@ -47,7 +47,7 @@ const schema = yup.object().shape({
   patientContactPhone: yup
     .string()
     .test('phoneNO', 'Please enter a valid Phone Number', (value) => PhoneNumberMaskValidation(value)),
-  pLineEmail: yup.string().email('Contact Email must be a valid email'),
+  pLineEmail: yup.string(),
   hospitalUniqueId: yup.string().required('Unit Hospital Number is required.'),
   clearTransactionalFee: yup
     .number()
@@ -83,7 +83,8 @@ const HospitalForm = ({
   stateList = [],
   onboardingInfo,
   emailSendersList = [],
-  smsSendersList = []
+  smsSendersList = [],
+  rcmTypeList=[]
 }) => {
   const {
     register,
@@ -105,7 +106,9 @@ const HospitalForm = ({
   let btnRef = useRef()
   let btnLogoRef = useRef()
   const [emailList, setEmailList] = useState([])
+  const [pLineEmail, setPLineEmailList] = useState([])
   const [isEmailList, setIsEmailList] = useState(false)
+  const [isPLineEmailList, setIsPLineEmailList] = useState(false)
 
   // for org name validation
   const [hospitalName, setHospitalName] = useState('')
@@ -197,6 +200,11 @@ const HospitalForm = ({
     setEmailList(val)
     setIsEmailList(true)
   }
+
+  const changePLineEmail = (val) => {
+    setPLineEmailList(val)
+    setIsPLineEmailList(true)
+  }
   const onChangeHospitalUniqueId = async (val) => {
     let data;
     if (isEdit) {
@@ -227,6 +235,11 @@ const HospitalForm = ({
       if (defaultValues.patientContactEmail) {
         let patientEmailList = defaultValues.patientContactEmail.split(', ')
         setEmailList(patientEmailList)
+      }
+
+      if (defaultValues.pLineEmail) {
+        const pLineEmailList = defaultValues.pLineEmail.split(', ')
+        setPLineEmailList(pLineEmailList)
       }
     } catch (error) {
       OnError(error, dispatch)
@@ -283,9 +296,11 @@ const HospitalForm = ({
         clearTransactionalFee: data.clearTransactionalFee,
         patientResponsibilityDiscount: data.patientResponsibilityDiscount,
         clearTransactionalFeeforPatientResponsibility: data.clearTransactionalFeeforPatientResponsibility,
-        pLineEmail: data.pLineEmail,
+        pLineEmail: pLineEmail.join(', '),
         hospitalUniqueId: data.hospitalUniqueId,
-        transactionDelayPeriod: data.transactionDelayPeriod
+        transactionDelayPeriod: data.transactionDelayPeriod,
+        rcm: data.rcm
+
       },
       postalAddress: [
         {
@@ -372,8 +387,8 @@ const HospitalForm = ({
           dirtyFields.alertSenderSMS ||
           dirtyFields.clearTransactionalFee ||
           dirtyFields.patientResponsibilityDiscount ||
-          dirtyFields.clearTransactionalFeeforPatientResponsibility ||
-          dirtyFields.pLineEmail || dirtyFields.hospitalUniqueId || dirtyFields.transactionDelayPeriod) && {
+          dirtyFields.clearTransactionalFeeforPatientResponsibility || dirtyFields.pLineEmail ||
+           dirtyFields.hospitalUniqueId || dirtyFields.transactionDelayPeriod || dirtyFields.rcm || isPLineEmailList) && {
           hospital: {
             name: getValues('hospitalName'),
             healthSystemPartyRoleId: getValues('healthSystemPartyRoleId'),
@@ -382,10 +397,10 @@ const HospitalForm = ({
             clearTransactionalFee: getValues('clearTransactionalFee'),
             patientResponsibilityDiscount: getValues('patientResponsibilityDiscount'),
             clearTransactionalFeeforPatientResponsibility: getValues('clearTransactionalFeeforPatientResponsibility'),
-            pLineEmail: getValues('pLineEmail'),
+            pLineEmail: pLineEmail.join(', '),
             hospitalUniqueId: getValues('hospitalUniqueId'),
-            transactionDelayPeriod: getValues('transactionDelayPeriod')
-
+            transactionDelayPeriod: getValues('transactionDelayPeriod'),
+            rcm: getValues('rcm')
           }
         }),
         ...((dirtyFields.address1 ||
@@ -479,7 +494,7 @@ const HospitalForm = ({
 
         <h5 className="font-weight-bold mt-1">Hospital Details </h5>
         <div className="row mb-3">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <div className="form-group">
               <label className="form-text">
                 {' '}
@@ -498,7 +513,7 @@ const HospitalForm = ({
             </div>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-4">
             <div className="form-group">
               <label className="form-text">
                 {' '}
@@ -514,6 +529,24 @@ const HospitalForm = ({
                 {/* <option value='test'>test</option> */}
               </select>
               <div className="small text-danger  pb-2   ">{errors.healthSystemPartyRoleId?.message}</div>
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-text">
+                RCM 
+              </label>
+              <select name="" id="" className="form-control-sm" {...register('rcm')}>
+                <option value="">Select</option>
+                {rcmTypeList.map((item, index) => (
+                             
+                  <option key={index} value={item.description}>
+
+                    {item.description}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -825,16 +858,13 @@ const HospitalForm = ({
 
             <div className="form-group pline-remit-margin-top">
               <label className="form-t  ext">Email for Pline Remit</label>
-              {/* <MultipleValueTextInput onItemAdded={(item, allItems) => patientAccessContactEmail(allItems)} onItemDeleted={(item, allItems) => setEmailList(allItems)} label='Email' name='item-input' className='form-control-sm' placeholder='Enter whatever items you want; separate them with COMMA or ENTER.' values={emailList} /> */}
-              {/* <MultiEmailText handleEmailAdd={changePlineEmail} defalutEmail={plineEmailList} /> */}
-              <input type='text' className='form-control-sm' {...register('pLineEmail')} />
+              <MultiEmailText handleEmailAdd={changePLineEmail} defalutEmail={pLineEmail} />
               <div className='small text-danger  pb-2   '>{errors.pLineEmail?.message}</div>
             </div>
 
             <div className="form-group pline-remit-margin-top">
               <label className="form-t  ext">Unit Hospital Number <span className="text-danger font-weight-bold ">*</span></label>
               {/* <MultipleValueTextInput onItemAdded={(item, allItems) => patientAccessContactEmail(allItems)} onItemDeleted={(item, allItems) => setEmailList(allItems)} label='Email' name='item-input' className='form-control-sm' placeholder='Enter whatever items you want; separate them with COMMA or ENTER.' values={emailList} /> */}
-              {/* <MultiEmailText handleEmailAdd={changePlineEmail} defalutEmail={plineEmailList} /> */}
               <input type='text' maxLength="8" className='form-control-sm' {...register('hospitalUniqueId')} onChange={(e) => onChangeHospitalUniqueId(e.target.value)} />
               <div className='small text-danger  pb-2   '>{errors.hospitalUniqueId?.message}</div>
               {hospitalUniqueIdStatus ? '' : <div className='small text-danger  pb-2   '>Hospital unique id is already exist</div>}

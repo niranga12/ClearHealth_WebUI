@@ -237,7 +237,10 @@ const HospitalTable = () => {
         Cell: CellHospitalName
         // Cell: ({value}) => <h5 className='font-weight-normal text-black'> {value} </h5>,
       },
-
+      {
+        Header: 'RCM',
+        accessor: 'rcmType'
+      },
       {
         Header: 'Address',
         accessor: 'primaryAddress1', // accessor is the "key" in the data

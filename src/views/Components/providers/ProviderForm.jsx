@@ -10,7 +10,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import OnError from 'src/_helpers/onerror'
 import { notify } from 'reapop'
 import { saveProvider, updateProviderByPartyRoleId } from 'src/service/providerService'
-import { getHospitalsList } from 'src/service/hospitalsService'
+// import { getHospitalsList } from 'src/service/hospitalsService'
 import PhoneNumberMaskValidation from 'src/reusable/PhoneNumberMaskValidation'
 import NormalizePhone from 'src/reusable/NormalizePhone'
 import InputMask from 'react-input-mask'
@@ -22,6 +22,7 @@ import ProviderEditFeeSchedules from './FeeSchedules/ProviderEditFeeSchedules'
 import ProviderAddFeeSchedules from './FeeSchedules/ProviderAddFeeSchedules'
 import HospitalNotifyUser from '../hospitals/HospitalNotifyUser'
 import { MultiEmailText } from 'src/reusable/MultiEmailText'
+import { getHealthSystemHospitalsList } from 'src/service/hospitalsService'
 
 const schema = yup.object().shape({
   healthSystemPartyRoleId: yup.string().required('Health system is required'),
@@ -158,8 +159,8 @@ const ProviderForm = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const hospitalList = await getHospitalsList()
-        setHospitalData(hospitalList.data.data)
+        // const hospitalList = await getHospitalsList()
+        // setHospitalData(hospitalList.data.data)
       } catch (error) {
         OnError(error, dispatch)
       }
@@ -179,34 +180,45 @@ const ProviderForm = ({
         }
         //setShowRadioButton(false);
         // defaultValuese
-        const hospitalList = await getHospitalsList()
 
-        let result = hospitalList.data.data.filter(
-          (x) => x.healthSystemPartyRoleId == defaultValues.healthSystemPartyRoleId
-        )
+        // const hospitalList = await getHospitalsList()
+        // let result = hospitalList.data.data.filter(
+        //   (x) => x.healthSystemPartyRoleId == defaultValues.healthSystemPartyRoleId
+        // )
 
-        sethsHospitalData(result)
-        setValue('hospitalName', defaultValues.hospitalName, {
-          shouldValidate: false,
-          shouldDirty: true
-        })
+        // sethsHospitalData(result)
+        // setValue('hospitalName', defaultValues.hospitalName, {
+        //   shouldValidate: false,
+        //   shouldDirty: true
+        // })
       }
     }
     fetchData()
   }, [isEdit, defaultValues])
 
   const handleHealthSystemChange = (e) => {
-    //e.prevent.default()
-    let result = hospitalData.filter((x) => x.healthSystemPartyRoleId == e.target.value)
-    sethsHospitalData(result)
-    setValue('healthSystemPartyRoleId', e.target.value, {
-      shouldValidate: true,
-      shouldDirty: true
-    })
-    setValue('hospitalName', '', {
-      shouldValidate: false,
-      shouldDirty: true
-    })
+
+    // e.prevent.default()
+    // let result = hospitalData.filter((x) => x.healthSystemPartyRoleId == e.target.value)
+    const fetchData = async () => {
+
+      let value = {
+        healthSystemPartyRoleId: e.target.value
+      }
+
+      const hospitalList = await getHealthSystemHospitalsList(value);
+
+      sethsHospitalData(hospitalList.data.data)
+      setValue('healthSystemPartyRoleId', e.target.value, {
+        shouldValidate: true,
+        shouldDirty: true
+      })
+      setValue('hospitalName', '', {
+        shouldValidate: false,
+        shouldDirty: true
+      })
+    }
+    fetchData()
   }
 
   const handleHospitalChecked = (event) => {
@@ -343,7 +355,7 @@ const ProviderForm = ({
       provider: {
         email: data.email,
         hospitalList: data.hospitalName,
-        transactionDelayPeriod:data.transactionDelayPeriod,
+        transactionDelayPeriod: data.transactionDelayPeriod,
         speciality: data.speciality,
         notificationEmail: emailList.join(', '),
         ...(groupSelection == 'Individual' && { firstName: data.firstName }),
@@ -974,7 +986,7 @@ const ProviderForm = ({
                 {' '}
                 Provider Delay period  <span className="text-danger font-weight-bold ">*</span>{' '}
               </label>
-              <input  type="number" min="0" className="form-control-sm" {...register('transactionDelayPeriod')} />
+              <input type="number" min="0" className="form-control-sm" {...register('transactionDelayPeriod')} />
               <div className="small text-danger  pb-2   "> {errors.transactionDelayPeriod?.message} </div>
             </div>
 
