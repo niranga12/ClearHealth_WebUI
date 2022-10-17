@@ -72,7 +72,7 @@ const _nav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'Accounting',
-    // to: '/base/cards',
+    to: '/accounting',
     icon: <CIcon content={logoAccounting} size={'2xl'} className="m-auto" />,
     screenid: ScreenPermissions.Accounting
   }
