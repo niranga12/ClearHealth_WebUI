@@ -647,16 +647,16 @@ const ProviderForm = ({
                 Hospital<span className="text-danger font-weight-bold ">*</span>{' '}
               </label>
 
-              {hsHospitalData ? <select name="hospitalName" id="hospitalName" className="form-control-sm" {...register('hospitalName')}>
+             <select name="hospitalName" id="hospitalName" className="form-control-sm" {...register('hospitalName')}>
                 <option value="">Select</option>
-                {
+                {hsHospitalData &&
                   hsHospitalData.map((item, index) => (
                     <option key={index} value={item.partyRoleId}>
                       {item.name}
                     </option>
                   ))
                 }
-              </select>:""}
+              </select>
               <div className="small text-danger  pb-2   ">{errors.hospitalName?.message}</div>
             </div>
           </div>
