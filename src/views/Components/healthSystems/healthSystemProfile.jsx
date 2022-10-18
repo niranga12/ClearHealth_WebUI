@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { loaderHide, loaderShow } from 'src/actions/loaderAction'
@@ -12,7 +12,7 @@ import Goback from 'src/views/common/Goback'
 import MetaTitles from 'src/views/common/metaTitles'
 import OnError from 'src/_helpers/onerror'
 import HealthSystemForm from './healthSystemForm'
-
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 const defaultFormvalue = {
   name: '',
   address1: '',
@@ -36,11 +36,13 @@ const HealthSystemProfile = () => {
   const location = useLocation()
   const [partyRoleId, setPartyRoleId] = useState(null)
   const [editProfile, setEditProfile] = useState(false)
+  const [modal, setModal] = useState(false)
   const dispatch = useDispatch()
 
   const [stateList, setstateList] = useState([])
 
-  const [healthSystemData, setHealthSystemData] = useState(defaultFormvalue)
+  const [healthSystemData, setHealthSystemData] = useState(defaultFormvalue);
+  let btnDelete = useRef()
   //if this a edit form get the data
   useEffect(() => {
     const params = new URLSearchParams(location.search)
@@ -61,7 +63,14 @@ const HealthSystemProfile = () => {
           dispatch(loaderShow())
           const result = await getHealthSystemByPartyRoleId(id)
           const formatedData = await updateFormFields(result.data.data)
-
+          debugger;
+          if (result.data.data.hospitalCount == 0) {
+            // @ts-ignore
+            btnDelete.current.removeAttribute('disabled')
+          } else {
+            // @ts-ignore
+            btnDelete.current.setAttribute('disabled', 'disabled')
+          }
           setHealthSystemData(formatedData)
           dispatch(loaderHide())
         } catch (error) {
@@ -95,6 +104,17 @@ const HealthSystemProfile = () => {
     return healthData
   }
 
+  const onDeleteButton = () => {
+    let id = partyRoleId;
+    let data = healthSystemData;
+    debugger;
+    setModal(true)
+  }
+
+  const deleteHealthSystem = () => {
+
+  }
+
   return (
     <>
       <Goback />
@@ -102,7 +122,17 @@ const HealthSystemProfile = () => {
       <div className="card  cover-content pt-2 ">
         {/* for addeing page metas  */}
         <MetaTitles title="Clear Health | Health system Profile" description=" Add update Health system profile  " />
-        <AdminTitle title={editProfile ? 'Edit Health System' : 'Add Health System'} />
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <AdminTitle title={editProfile ? 'Edit Health System' : 'Add Health System'} />
+          </div>
+          <div className="col-md-6">
+            <button type="submit" ref={btnDelete} onClick={onDeleteButton} className="btn btn-primary btn-lg float-right mr-4  mt-3">
+              Delete
+            </button>
+          </div>
+        </div>
+
 
         <HealthSystemForm
           stateList={stateList}
@@ -110,6 +140,26 @@ const HealthSystemProfile = () => {
           isEdit={editProfile}
           partyRoleId={partyRoleId}
         />
+
+
+        <CModal show={modal} onClose={setModal} closeOnBackdrop={false}>
+          <CModalHeader closeButton>
+            <CModalTitle>Delete</CModalTitle>
+          </CModalHeader>
+          {/* <CModalBody>Are you Sure Delete this item {row.original.description}?</CModalBody> */}
+          <CModalBody>
+            <div className="text-center">Are you sure you wish to delete {healthSystemData.name} ?</div>
+            {/* {healthSystemData ? <div className="text-center">{healthSystemData.name} </div> : ''} */}
+          </CModalBody>
+          <CModalFooter>
+            <CButton color="danger" onClick={deleteHealthSystem}>
+              Delete
+            </CButton>{' '}
+            <CButton color="secondary" onClick={() => setModal(false)}>
+              Cancel
+            </CButton>
+          </CModalFooter>
+        </CModal>
       </div>
     </>
   )

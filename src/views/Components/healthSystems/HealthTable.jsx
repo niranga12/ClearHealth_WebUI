@@ -120,7 +120,7 @@ function ActionHealthSystem({ row }) {
         </CDropdownToggle>
         <CDropdownMenu className={`${!isEditHealthPE && !isDeleteHealthPE && !isViewHospital ? 'hide' : ''}`}>
           {isEditHealthPE && <CDropdownItem onClick={redirectToEdit}>Edit</CDropdownItem>}
-          {isDeleteHealthPE && <CDropdownItem>Delete</CDropdownItem>}
+          {/* {isDeleteHealthPE && <CDropdownItem>Delete</CDropdownItem>} */}
           {isViewHospital && <CDropdownItem onClick={redirectToHospital}>View Hospital</CDropdownItem>}
         </CDropdownMenu>
       </CDropdown>

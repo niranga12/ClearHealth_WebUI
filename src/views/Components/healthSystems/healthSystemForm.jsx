@@ -127,7 +127,7 @@ const HealthSystemForm = ({ defaultValues, isEdit = false, partyRoleId = null, s
           setIsSearching(false)
           setIsAlreadyExit(false)
         }
-      } catch (error) {}
+      } catch (error) { }
     }
     fetchValidate()
   }, [debouncedName])
@@ -149,32 +149,32 @@ const HealthSystemForm = ({ defaultValues, isEdit = false, partyRoleId = null, s
           postalAddress: [
             ...(dirtyFields.address1 || dirtyFields.address2 || dirtyFields.city || dirtyFields.state || dirtyFields.zip
               ? [
-                  {
-                    partyContactTypeId: PartyTypeEnum.primary,
-                    address1: getValues('address1'),
-                    address2: getValues('address2'),
-                    city: getValues('city'),
-                    state: getValues('state'),
-                    zip: getValues('zip')
-                  }
-                ]
+                {
+                  partyContactTypeId: PartyTypeEnum.primary,
+                  address1: getValues('address1'),
+                  address2: getValues('address2'),
+                  city: getValues('city'),
+                  state: getValues('state'),
+                  zip: getValues('zip')
+                }
+              ]
               : []),
 
             ...(dirtyFields.shippingAddress1 ||
-            dirtyFields.shippingAddress2 ||
-            dirtyFields.shippingCity ||
-            dirtyFields.shippingState ||
-            dirtyFields.shippingZip
+              dirtyFields.shippingAddress2 ||
+              dirtyFields.shippingCity ||
+              dirtyFields.shippingState ||
+              dirtyFields.shippingZip
               ? [
-                  {
-                    partyContactTypeId: PartyTypeEnum.shipping,
-                    address1: getValues('shippingAddress1'),
-                    address2: getValues('shippingAddress2'),
-                    city: getValues('shippingCity'),
-                    state: getValues('shippingState'),
-                    zip: getValues('shippingZip')
-                  }
-                ]
+                {
+                  partyContactTypeId: PartyTypeEnum.shipping,
+                  address1: getValues('shippingAddress1'),
+                  address2: getValues('shippingAddress2'),
+                  city: getValues('shippingCity'),
+                  state: getValues('shippingState'),
+                  zip: getValues('shippingZip')
+                }
+              ]
               : [])
           ]
         }),
