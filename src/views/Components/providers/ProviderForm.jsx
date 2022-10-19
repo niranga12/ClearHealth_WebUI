@@ -179,15 +179,15 @@ const ProviderForm = ({
         }
 
         let hospitalList
-        if(defaultValues.healthSystemPartyRoleId!== ''){
-        let value = {
-          healthSystemPartyRoleId: defaultValues.healthSystemPartyRoleId
+        if (defaultValues.healthSystemPartyRoleId !== '') {
+          let value = {
+            healthSystemPartyRoleId: defaultValues.healthSystemPartyRoleId
+          }
+
+          // @ts-ignore
+          hospitalList = await getHealthSystemHospitalsList(value);
+          sethsHospitalData(hospitalList.data.data)
         }
-  
-        // @ts-ignore
-        hospitalList = await getHealthSystemHospitalsList(value);
-        sethsHospitalData(hospitalList.data.data)
-      }
         //setShowRadioButton(false);
         // defaultValuese
 
@@ -195,7 +195,7 @@ const ProviderForm = ({
         let result = hospitalList?.data.data.filter(
           (x) => x.healthSystemPartyRoleId == defaultValues.healthSystemPartyRoleId
         )
-        
+
 
         sethsHospitalData(result)
         setValue('hospitalName', defaultValues.hospitalName, {
@@ -647,13 +647,15 @@ const ProviderForm = ({
                 Hospital<span className="text-danger font-weight-bold ">*</span>{' '}
               </label>
 
-              <select name="hospitalName" id="hospitalName" className="form-control-sm" {...register('hospitalName')}>
+             <select name="hospitalName" id="hospitalName" className="form-control-sm" {...register('hospitalName')}>
                 <option value="">Select</option>
-                {hsHospitalData.map((item, index) => (
-                  <option key={index} value={item.partyRoleId}>
-                    {item.name}
-                  </option>
-                ))}
+                {hsHospitalData &&
+                  hsHospitalData.map((item, index) => (
+                    <option key={index} value={item.partyRoleId}>
+                      {item.name}
+                    </option>
+                  ))
+                }
               </select>
               <div className="small text-danger  pb-2   ">{errors.hospitalName?.message}</div>
             </div>
