@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 import { loaderHide, loaderShow } from 'src/actions/loaderAction'
@@ -17,12 +17,11 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
   const location = useLocation()
   const dispatch = useDispatch()
   let history = useHistory()
-
   const [idNumber, handleIdChange] = useState(null)
   const [detail, setDetail] = useState(null)
   const [orderId, setOrderId] = useState(null)
   const [providerId, setProviderId] = useState(null)
-
+  const [checked, setChecked] = useState(null)
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const id = params.get('id')
@@ -65,7 +64,7 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
       const result = await providerPaymentVerification(data)
       if (result.data.message === ServiceMsg.OK) {
         dispatch(notify(`Successfully updated`, 'success'))
-       history.push('/successaction')
+        history.push('/successaction')
       }
     } catch (error) {
       OnError(error, dispatch)
@@ -77,7 +76,7 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
       const result = await facilityPaymentVerification(data)
       if (result.data.message === ServiceMsg.OK) {
         dispatch(notify(`Successfully updated`, 'success'))
-       history.push('/successaction')
+        history.push('/successaction')
       }
     } catch (error) {
       OnError(error, dispatch)
@@ -145,7 +144,18 @@ const PaymentVerificationValidation = ({ verifyHandle, verificationMsg = null })
                   {/* <DateSelector className={'form-control-sm calendar-font '} selectedDate={idNumber} handleDateChange={handleIdChange} disableFuture={true} /> */}
                   {/* <p className="text-danger text-left mt-4">{verificationMsg && verificationMsg}</p> */}
 
-                  <button type="button" className="btn btn-primary  btn-lg  mt-3 mb-2" onClick={submitAccount}>
+                </div>
+                <div className="col-md-12 offset-md-2 mt-4 text-center">
+                  <div className='row'>
+                    <div className="">
+                      <input type="checkbox" id="confirmSubmit" onChange={() => setChecked(!checked)} name="confirmSubmit" value="Bike" />
+
+                      <label className='ml-2'>I entered the Clear Health Payor ID into the patient's account in the EHR</label>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6  offset-md-3  text-center">
+                  <button type="button" disabled={!checked || idNumber == null ? true : false || idNumber == '' ? true : false} className="btn btn-primary  btn-lg  mt-3 mb-2" onClick={submitAccount}>
                     Submit
                   </button>
                 </div>

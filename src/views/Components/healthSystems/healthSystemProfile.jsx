@@ -63,7 +63,6 @@ const HealthSystemProfile = () => {
           dispatch(loaderShow())
           const result = await getHealthSystemByPartyRoleId(id)
           const formatedData = await updateFormFields(result.data.data)
-          debugger;
           if (result.data.data.hospitalCount == 0) {
             // @ts-ignore
             btnDelete.current.removeAttribute('disabled')
