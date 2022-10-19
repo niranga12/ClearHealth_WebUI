@@ -6,7 +6,7 @@ import { loaderHide, loaderShow } from 'src/actions/loaderAction'
 import { Country } from 'src/reusable/enum'
 import { getStateList } from 'src/service/commonService'
 // import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
-import { getHealthSystemByPartyRoleId } from 'src/service/healthsystemService'
+import { deleteHealthSystem, getHealthSystemByPartyRoleId } from 'src/service/healthsystemService'
 import AdminTitle from 'src/views/common/adminTitle'
 import Goback from 'src/views/common/Goback'
 import MetaTitles from 'src/views/common/metaTitles'
@@ -105,14 +105,15 @@ const HealthSystemProfile = () => {
   }
 
   const onDeleteButton = () => {
-    let id = partyRoleId;
-    let data = healthSystemData;
-    debugger;
     setModal(true)
   }
 
-  const deleteHealthSystem = () => {
+  const onDeleteHealthSystem = async (data) => {
 
+    const result = await deleteHealthSystem(partyRoleId);
+    if (result.data.message = 'OK') {
+      setModal(false)
+    }
   }
 
   return (
@@ -126,11 +127,11 @@ const HealthSystemProfile = () => {
           <div className="col-md-6">
             <AdminTitle title={editProfile ? 'Edit Health System' : 'Add Health System'} />
           </div>
-          <div className="col-md-6">
+          {editProfile && <div className="col-md-6">
             <button type="submit" ref={btnDelete} onClick={onDeleteButton} className="btn btn-primary btn-lg float-right mr-4  mt-3">
               Delete
             </button>
-          </div>
+          </div>}
         </div>
 
 
@@ -152,7 +153,7 @@ const HealthSystemProfile = () => {
             {/* {healthSystemData ? <div className="text-center">{healthSystemData.name} </div> : ''} */}
           </CModalBody>
           <CModalFooter>
-            <CButton color="danger" onClick={deleteHealthSystem}>
+            <CButton color="danger" onClick={() => onDeleteHealthSystem(healthSystemData)}>
               Delete
             </CButton>{' '}
             <CButton color="secondary" onClick={() => setModal(false)}>
