@@ -713,6 +713,18 @@ background-color: rgba(91,77,253,0.1);
   color: white;
   
 }
+
+.btn-order-delete{
+  border-radius: 10px;
+  background-color: #d12e2e;
+  border-color:#d12e2e; 
+  color: #FAFAFB ;
+}
+.btn-order-delete:hover{
+  box-shadow:none;
+  color: white;
+  
+}
 .nav-item a{
   color:#383a3d6b
 }

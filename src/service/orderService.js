@@ -35,3 +35,5 @@ export const getOpenOrderById = (orderId) => axiosInstance.get(`openOrder/${orde
 export const verifyInsuranceDetails = (insurancDetails) => axiosInstance.post(`order/verifyInsurance`, insurancDetails);
 
 export const getOutOfPocketReasons = () => axiosInstance.get(`order/outOfPocket/Reasons`)
+
+export const deleteOrder = (orderId,reasons) =>axiosInstance.delete(`order/${orderId}`, { data: {reason: reasons} })

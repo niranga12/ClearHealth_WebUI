@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import OnError from 'src/_helpers/onerror'
 import { useHistory, useLocation } from 'react-router-dom'
 import { notify } from 'reapop'
-import { getOutOfPocketReasons, orderAprove } from 'src/service/orderService'
+import { deleteOrder, getOutOfPocketReasons, orderAprove } from 'src/service/orderService'
 import { OrderType, ServiceMsg } from 'src/reusable/enum'
 import moment from 'moment'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
@@ -35,12 +35,14 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
   let history = useHistory()
   const [isAction, setIsAction] = useState(true)
   const [isNotify, setIsNotify] = useState(false)
+  const [isDeleteOrder, setDeleteOrder] = useState(false)
   const [hospitalName, setHospitalName] = useState(null)
   const [hospitalId, setHospitalId] = useState(null)
   const [addDetails, setAddDetails] = useState(null)
   const [visible, setVisible] = useState(false)
   const [outOfPocketList, setOutOfPocketList] = useState([])
   const [reason, setReason] = useState()
+  const [deleteReason, setDeleteReason] = useState("")
   const btnRef = useRef()
 
   const [editAction, setEditAction] = useState(false)
@@ -151,6 +153,19 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
     }
   }
 
+  const onDeleteOrderBtn = (e) => {
+    setDeleteOrder(true);
+  }
+
+  const onDeleteOrder = async () => {
+    const result = await deleteOrder(orderId, deleteReason)
+    if(result.data.data == "Deleted"){
+      setDeleteOrder(false);
+      dispatch(notify(`Successfully deleted`, 'success'))
+      history.push(`/hospitals/hospital?id=${order?.orderPatientDetails?.hospitalPartyRoleId}`)
+    }
+  }
+
   // for table
   //SETTING COLUMNS NAMES
   const columns = useMemo(
@@ -243,6 +258,13 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             {order?.orderSummary?.orderTypeId === OrderType.PatientResponsibility && (
               <div>Order Total : {order?.orderSummary?.orderTotal} </div>
             )}
+            {order?.orderPatientDetails?.orderStatus === "Deleted" && (
+              <div>Date Deleted : {order?.orderSummary?.statusChangedDate}</div>
+
+            )}
+            {order?.orderPatientDetails?.orderStatus === "Deleted" && (
+              <div>Deleted Reason : {order?.orderSummary?.deletedReason}</div>
+            )}
           </div>
 
           <div className="col-md-6">
@@ -280,6 +302,15 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
                 Add CPT code
               </button>
             )}
+
+            {(
+              <button
+                className="btn btn-order-delete ml-3 float-right"
+               disabled={order?.orderPatientDetails?.orderStatus === "Deleted"}
+                onClick={onDeleteOrderBtn}>
+                Delete
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -300,6 +331,34 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             Add
           </button>{' '}
           <CButton color="secondary" onClick={() => setIsNotify(false)}>
+            Cancel
+          </CButton>
+        </CModalFooter>
+      </CModal>
+
+
+
+      <CModal show={isDeleteOrder} onClose={() => setDeleteOrder(false)} closeOnBackdrop={false}>
+        <CModalHeader closeButton>
+          <CModalTitle>Delete Order</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <div className="">Deleting this order will discontinue all functionalities related to the order</div>
+
+          <div className='row mt-2'>
+            <div className="col-md-5">
+              <div>Please enter the reason</div>
+            </div>
+            <div className="col-md-7">
+              <input className="form-control-sm" onChange={(e) => setDeleteReason(e.target.value)} type="text" />
+            </div>
+          </div>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="danger" onClick={onDeleteOrder}>
+            Delete
+          </CButton>{' '}
+          <CButton color="secondary" onClick={() => setDeleteOrder(false)}>
             Cancel
           </CButton>
         </CModalFooter>

@@ -17,6 +17,7 @@ import OnError from 'src/_helpers/onerror'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react'
 import OrderCheckEligibility from 'src/views/Components/order/OrderView/OrderCheckEligibility/OrderCheckEligibility'
 import moment from 'moment'
+import ReactTooltip from 'react-tooltip'
 
 
 const initialSearch = {
@@ -83,9 +84,9 @@ function OrderActions({ row }) {
   }
 
   const payOrder = (url) => {
-    window.open(url,'_blank' );
+    window.open(url, '_blank');
   }
-  
+
 
   const approveOrder = async () => {
     try {
@@ -144,7 +145,7 @@ function OrderActions({ row }) {
             <div className="col-3">
               <button
                 className="btn btn-view-account"
-                onClick={()=>payOrder(row.original.payOrderUrl)}
+                onClick={() => payOrder(row.original.payOrderUrl)}
                 disabled={row.original.orderStatus === 'Paid'}
               >
                 {' '}
@@ -203,26 +204,19 @@ function OrderActions({ row }) {
   )
 }
 
-// function OrderStatusValue({row}) {
-// 	const {orderStatus} = row.original;
+function OrderStatusValue({ row }) {
+  return (
+    <>
+      <div className='row '>
+        <span>{row.original.orderStatus} {' '}</span>
+        {row.original.orderStatus == 'Deleted' && <span className='fa fa-info-circle pt-1 ml-1' data-tip={row.original.deletedReason}  ></span>}
+        <ReactTooltip place="top" type="warning" effect="float" />
+      </div>
 
-// 	switch (orderStatus) {
-// 		case OrderStatus.Ordered:
-// 			return <div>Ordered</div>;
+    </>
+  )
 
-// 		case OrderStatus.Cancelled:
-// 			return <div>Cancelled</div>;
-
-// 		case OrderStatus.Completed:
-// 			return <div>Completed</div>;
-
-// 		case OrderStatus.Pending:
-// 			return <div>Pending</div>;
-// 		default:
-// 			return <></>;
-// 		// break;
-// 	}
-// }
+}
 
 function HospitalOrderTable() {
   const location = useLocation()
@@ -297,14 +291,14 @@ function HospitalOrderTable() {
 
   const fromDateChange = (e) => {
     if (e) {
-      let fDate= moment(e).format(DateFormat.USFormat)
+      let fDate = moment(e).format(DateFormat.USFormat)
       setFromDate(fDate);
     }
   }
 
   const toDateChange = (e) => {
     if (e) {
-      let tDate= moment(e).format(DateFormat.USFormat)
+      let tDate = moment(e).format(DateFormat.USFormat)
       setToDate(tDate);
     }
   }
@@ -378,9 +372,8 @@ function HospitalOrderTable() {
       {
         Header: 'Status',
         accessor: 'orderStatus', // accessor is the "key" in the data
-        disableSortBy: true
-
-        // Cell: OrderStatusValue,
+        disableSortBy: true,
+        Cell: OrderStatusValue,
       },
 
       {

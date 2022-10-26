@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 import { loaderHide, loaderShow } from 'src/actions/loaderAction'
 import { Country } from 'src/reusable/enum'
 import { getStateList } from 'src/service/commonService'
-// import PhoneNumberFormater from 'src/reusable/PhoneNumberFormater';
+import { notify } from 'reapop'
 import { deleteHealthSystem, getHealthSystemByPartyRoleId } from 'src/service/healthsystemService'
 import AdminTitle from 'src/views/common/adminTitle'
 import Goback from 'src/views/common/Goback'
 import MetaTitles from 'src/views/common/metaTitles'
 import OnError from 'src/_helpers/onerror'
 import HealthSystemForm from './healthSystemForm'
+import { useHistory, useLocation } from 'react-router-dom'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 const defaultFormvalue = {
   name: '',
@@ -32,7 +32,7 @@ const defaultFormvalue = {
 }
 
 const HealthSystemProfile = () => {
-  // let { id } = useParams();
+  let history = useHistory()
   const location = useLocation()
   const [partyRoleId, setPartyRoleId] = useState(null)
   const [editProfile, setEditProfile] = useState(false)
@@ -112,6 +112,8 @@ const HealthSystemProfile = () => {
     const result = await deleteHealthSystem(partyRoleId);
     if (result.data.message = 'OK') {
       setModal(false)
+      dispatch(notify(`Successfully deleted`, 'success'))
+            history.push('/healthsystem') 
     }
   }
 
@@ -144,11 +146,11 @@ const HealthSystemProfile = () => {
 
         <CModal show={modal} onClose={setModal} closeOnBackdrop={false}>
           <CModalHeader closeButton>
-            <CModalTitle>Delete</CModalTitle>
+            <CModalTitle>Delete Health System</CModalTitle>
           </CModalHeader>
           {/* <CModalBody>Are you Sure Delete this item {row.original.description}?</CModalBody> */}
           <CModalBody>
-            <div className="text-center">Are you sure you wish to delete {healthSystemData.name} ?</div>
+            <div className="text-center">Are you sure you want to delete this Health system ?</div>
             {/* {healthSystemData ? <div className="text-center">{healthSystemData.name} </div> : ''} */}
           </CModalBody>
           <CModalFooter>

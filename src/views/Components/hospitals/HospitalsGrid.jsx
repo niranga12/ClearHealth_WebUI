@@ -28,9 +28,9 @@ const HospitalsGrid = () => {
   const backUrl = () => {
     return (
       <CRow>
-        <CCol xs="12" md="12" className="h4 font-lato-bold m-0 cursor-pointer mb-3">
+        <CCol xs="12" md="12" className="h4 font-lato-bold m-0 cursor-pointer mb-3 ">
           <CIcon name="cilArrowLeft" size={'xl'} onClick={redirectHealthSystem} />
-          {healthSystemName}
+          &nbsp; &nbsp;{healthSystemName}
           {/* <span className="pl-3" onClick={redirectHospital}>Hospitals</span>	 */}
         </CCol>
         {/* <CCol xs='12' md='12' className='h2 font-lato-bold hospital-heading'>
