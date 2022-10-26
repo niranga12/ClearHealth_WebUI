@@ -102,6 +102,8 @@ const ProviderForm = ({
 
   const [emailList, setEmailList] = useState([])
   const [isEmailList, setIsEmailList] = useState(false)
+  const [remitEmailList, setRemitEmailList] = useState([])
+  const [isRemitEmailList, setIsRemitEmailList] = useState(false)
 
   const handleBillingChecked = (event) => {
     if (event.target.checked) {
@@ -144,6 +146,12 @@ const ProviderForm = ({
 
       let notificatonEmailList = defaultValues.notificationEmail.split(', ')
       setEmailList(notificatonEmailList)
+    }
+
+    if (defaultValues.remitEmail) {
+
+      let remitEmailList = defaultValues.remitEmail.split(', ')
+      setRemitEmailList(remitEmailList)
     }
     const params = new URLSearchParams(location.search)
     const tap = params.get('tap')
@@ -366,6 +374,7 @@ const ProviderForm = ({
         transactionDelayPeriod: data.transactionDelayPeriod,
         speciality: data.speciality,
         notificationEmail: emailList.join(', '),
+        remitEmail: remitEmailList.join(', '),
         ...(groupSelection == 'Individual' && { firstName: data.firstName }),
         ...(groupSelection == 'Individual' && { middleName: data.middleName }),
         ...(groupSelection == 'Individual' && { lastName: data.lastName }),
@@ -498,15 +507,16 @@ const ProviderForm = ({
           dirtyFields.email ||
           dirtyFields.providerGroup ||
           dirtyFields.transactionDelayPeriod ||
-          isEmailList) && {
+          isEmailList ||
+          isRemitEmailList) && {
           provider: {
             providerTypeId: getValues('providerTypeId'),
             email: getValues('email'),
             hospitalList: getValues('hospitalName'),
             speciality: getValues('speciality'),
             transactionDelayPeriod: getValues('transactionDelayPeriod'),
-            notificationEmail: emailList.join(', '),
-
+              notificationEmail: emailList.join(', '),
+              remitEmail: remitEmailList.join(', '),
             ...(groupSelection == 'Individual' && { firstName: getValues('firstName') }),
             ...(groupSelection == 'Individual' && { middleName: getValues('middleName') }),
             ...(groupSelection == 'Individual' && { lastName: getValues('lastName') }),
@@ -610,6 +620,10 @@ const ProviderForm = ({
     setIsEmailList(true)
   }
 
+  const changeRemitEmail = (val) => {
+    setRemitEmailList(val)
+    setIsRemitEmailList(true)
+  }
 
   return (
     <div className="p-4">
@@ -953,6 +967,11 @@ const ProviderForm = ({
               <MultiEmailText handleEmailAdd={changeEmail} defalutEmail={emailList} />
               {/* <input type='text' className='form-control-sm' {...register('patientContactEmail')} />
 							<div className='small text-danger  pb-2   '>{errors.patientContactEmail?.message}</div> */}
+            </div>
+
+            <div className="form-group margin-minus-top-8">
+              <label className="form-text">Email For Remits</label>
+              <MultiEmailText handleEmailAdd={changeRemitEmail} defalutEmail={remitEmailList} />
             </div>
 
 
