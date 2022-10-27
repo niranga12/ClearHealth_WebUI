@@ -306,7 +306,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
             {(
               <button
                 className="btn btn-order-delete ml-3 float-right"
-               disabled={order?.orderPatientDetails?.orderStatus === "Deleted"}
+               disabled={order?.orderPatientDetails?.orderStatus === "Deleted" || order?.orderPatientDetails?.orderStatus ==="Paid" }
                 onClick={onDeleteOrderBtn}>
                 Delete
               </button>
