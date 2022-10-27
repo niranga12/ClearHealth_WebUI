@@ -259,7 +259,7 @@ const OrderList = ({ orderDetail, handleAddCPT }) => {
               <div>Order Total : {order?.orderSummary?.orderTotal} </div>
             )}
             {order?.orderPatientDetails?.orderStatus === "Deleted" && (
-              <div>Date Deleted : {order?.orderSummary?.statusChangedDate}</div>
+              <div>Date Deleted : {order?.orderSummary?.deletedDate}</div>
 
             )}
             {order?.orderPatientDetails?.orderStatus === "Deleted" && (
