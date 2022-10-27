@@ -150,7 +150,8 @@ const ProviderProfile = () => {
       taxId: data.taxId,
       nip: data.NPI,
       notificationEmail: data.notificationEmail,
-      transactionDelayPeriod:data.transactionDelayPeriod
+      transactionDelayPeriod: data.transactionDelayPeriod,
+      remitEmail: data.remitEmail
       // bankName: data.bankName,
       // accountNumber: data.accountNumber,
       // routing: data.routing
